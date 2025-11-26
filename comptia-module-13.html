@@ -7,1029 +7,1352 @@
     <title>Module 13: Incident Preparation and Investigation - Matheus Almeida</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.policy {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.standard {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .tag.procedure {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        .tag.guideline {
+            background: rgba(139, 148, 158, 0.15);
+            color: #8b949e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="app-container">
-        <!-- Sidebar Navigation -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h2><i class="fas fa-shield-alt"></i> CompTIA Security+</h2>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="comptia-module-1.html"><i class="fas fa-book"></i> Module 1</a></li>
-                <li><a href="comptia-module-2.html"><i class="fas fa-book"></i> Module 2</a></li>
-                <li><a href="comptia-module-3.html"><i class="fas fa-book"></i> Module 3</a></li>
-                <li><a href="comptia-module-4.html"><i class="fas fa-book"></i> Module 4</a></li>
-                <li><a href="comptia-module-5.html"><i class="fas fa-book"></i> Module 5</a></li>
-                <li><a href="comptia-module-6.html"><i class="fas fa-book"></i> Module 6</a></li>
-                <li><a href="comptia-module-7.html"><i class="fas fa-book"></i> Module 7</a></li>
-                <li><a href="comptia-module-8.html"><i class="fas fa-book"></i> Module 8</a></li>
-                <li><a href="comptia-module-9.html"><i class="fas fa-book"></i> Module 9</a></li>
-                <li><a href="comptia-module-10.html"><i class="fas fa-book"></i> Module 10</a></li>
-                <li><a href="comptia-module-11.html"><i class="fas fa-book"></i> Module 11</a></li>
-                <li><a href="comptia-module-12.html"><i class="fas fa-book"></i> Module 12</a></li>
-                <li><a href="comptia-module-13.html" class="active"><i class="fas fa-book"></i> Module 13</a></li>
-                <li><a href="comptia-module-14.html"><i class="fas fa-book"></i> Module 14</a></li>
-                <li><a href="comptia-module-15.html"><i class="fas fa-book"></i> Module 15</a></li>
-                <li><a href="comptia-module-16.html"><i class="fas fa-book"></i> Module 16</a></li>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
             </ul>
         </nav>
+    </header>
+    <main class="container">
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <header class="top-bar">
-                <div class="breadcrumbs">
-                    <span>CompTIA Security+</span> / <span class="current">Module 13</span>
-                </div>
-                <div class="user-profile">
-                    <span class="user-name">Matheus Almeida</span>
-                    <div class="avatar">MA</div>
-                </div>
-            </header>
+        <div class="module-header">
+            <h1>Module 13: Incident Preparation and Investigation</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
 
-            <div class="content-wrapper">
-                <div class="module-header">
-                    <h1>Module 13: Incident Preparation and Investigation</h1>
-                    <p>A comprehensive overview of incident preparation, resilience through redundancy, and incident
-                        investigation.</p>
-                </div>
+        <!-- Main Content Sections -->
+        <section class="module-section">
+            <h2>Incident Preparation and Investigation</h2>
+            <p>The ability of an organization to maintain its operations and services in the face of disruptive
+                events such as natural disasters (hurricanes, floods, earthquakes), human-made disasters
+                (sabotage, industrial mishaps, chemical spills, transportation accidents), and successful
+                cyberattacks is crucial for its survival. Unfortunately, preparation for such events is often
+                severely lacking, as more than half of small businesses reportedly have no plan to react to a
+                cyberattack. This preparation necessitates two major steps: <strong>advanced
+                    preparation</strong> and <strong>post-incident investigation</strong> to learn from mistakes
+                and address vulnerabilities.</p>
 
-                <!-- Main Content Sections -->
-                <section class="module-section">
-                    <h2>Incident Preparation and Investigation</h2>
-                    <p>The ability of an organization to maintain its operations and services in the face of disruptive
-                        events such as natural disasters (hurricanes, floods, earthquakes), human-made disasters
-                        (sabotage, industrial mishaps, chemical spills, transportation accidents), and successful
-                        cyberattacks is crucial for its survival. Unfortunately, preparation for such events is often
-                        severely lacking, as more than half of small businesses reportedly have no plan to react to a
-                        cyberattack. This preparation necessitates two major steps: <strong>advanced
-                            preparation</strong> and <strong>post-incident investigation</strong> to learn from mistakes
-                        and address vulnerabilities.</p>
+            <h3>I. Preparation for a Cyber Incident</h3>
+            <p>Preparing for a cyber event is absolutely essential and primarily involves <strong>business
+                    continuity planning</strong> and <strong>incident response planning</strong>.</p>
 
-                    <h3>I. Preparation for a Cyber Incident</h3>
-                    <p>Preparing for a cyber event is absolutely essential and primarily involves <strong>business
-                            continuity planning</strong> and <strong>incident response planning</strong>.</p>
+            <h4>A. Business Continuity Planning (BCP)</h4>
+            <p><strong>Business continuity</strong> is defined as the ability of an organization to maintain its
+                operations and services despite a disruptive event or major disaster. <strong>Business
+                    continuity planning</strong> is the process an organization undertakes in advance to
+                determine a plan of action to protect itself in the event of a disaster.</p>
+            <p>The outcome of this planning is a <strong>Business Continuity Plan (BCP)</strong>, a strategic
+                document that provides alternative modes of operation for business activities that, if
+                interrupted, could result in a significant loss to the enterprise. The BCP process involves
+                identifying exposure to threats, creating preventive and recovery procedures, and then testing
+                those procedures.</p>
+            <p>A BCP is designed to ensure an organization can achieve <strong>continuity of operations</strong>
+                and is fundamentally recovery planning. A BCP should include the following elements:</p>
+            <ul>
+                <li><strong>High availability (HA):</strong> The ability to withstand all outages (planned and
+                    unplanned, environmental and internal) while providing continuous processing for critical
+                    applications.</li>
+                <li><strong>Scalability:</strong> The capability to cover increased capacity as organizations
+                    grow and expand.</li>
+                <li><strong>Diversity:</strong> Inclusion of different technologies, third-party vendors,
+                    controls, and cryptographic solutions.</li>
+                <li><strong>On-prem and cloud:</strong> Flexibility to address resources moved from on-premises
+                    to the cloud without needing frequent rewrites of the plan.</li>
+            </ul>
+            <p>Related to BCP is the federal initiative known as <strong>Continuity of Operation Planning
+                    (COOP)</strong>, which encourages organizations to address how critical operations will
+                continue under a broad range of negative circumstances using an "all-hazards approach".</p>
 
-                    <h4>A. Business Continuity Planning (BCP)</h4>
-                    <p><strong>Business continuity</strong> is defined as the ability of an organization to maintain its
-                        operations and services despite a disruptive event or major disaster. <strong>Business
-                            continuity planning</strong> is the process an organization undertakes in advance to
-                        determine a plan of action to protect itself in the event of a disaster.</p>
-                    <p>The outcome of this planning is a <strong>Business Continuity Plan (BCP)</strong>, a strategic
-                        document that provides alternative modes of operation for business activities that, if
-                        interrupted, could result in a significant loss to the enterprise. The BCP process involves
-                        identifying exposure to threats, creating preventive and recovery procedures, and then testing
-                        those procedures.</p>
-                    <p>A BCP is designed to ensure an organization can achieve <strong>continuity of operations</strong>
-                        and is fundamentally recovery planning. A BCP should include the following elements:</p>
-                    <ul>
-                        <li><strong>High availability (HA):</strong> The ability to withstand all outages (planned and
-                            unplanned, environmental and internal) while providing continuous processing for critical
-                            applications.</li>
-                        <li><strong>Scalability:</strong> The capability to cover increased capacity as organizations
-                            grow and expand.</li>
-                        <li><strong>Diversity:</strong> Inclusion of different technologies, third-party vendors,
-                            controls, and cryptographic solutions.</li>
-                        <li><strong>On-prem and cloud:</strong> Flexibility to address resources moved from on-premises
-                            to the cloud without needing frequent rewrites of the plan.</li>
-                    </ul>
-                    <p>Related to BCP is the federal initiative known as <strong>Continuity of Operation Planning
-                            (COOP)</strong>, which encourages organizations to address how critical operations will
-                        continue under a broad range of negative circumstances using an "all-hazards approach".</p>
+            <h5>Business Impact Analysis (BIA)</h5>
+            <p>A crucial tool for creating a BCP is the <strong>Business Impact Analysis (BIA)</strong>. A BIA
+                identifies business processes and functions and then quantifies the impact a loss of these
+                functions may have on business operations, covering impacts on property, finance, safety,
+                reputation, and life.</p>
+            <p>The BIA is designed to identify critically important processes:</p>
+            <ul>
+                <li><strong>Mission-essential function:</strong> The core purpose of the enterprise (e.g.,
+                    "Deliver healthcare services to individuals and their families" for a hospital).</li>
+                <li><strong>Critical systems:</strong> Systems that support the mission-essential function
+                    (e.g., maintaining an emergency room facility).</li>
+                <li><strong>Single point of failure:</strong> A component or entity in a system that, if it
+                    fails, will disable the entire system. Minimizing these single failure points results in a
+                    system that can function for an extended period with little downtime.</li>
+            </ul>
+            <p>A BIA also often contains a privacy impact assessment to identify and mitigate privacy risks,
+                including an examination of what Personally Identifiable Information (PII) is being collected
+                and how it is protected. Availability, which is often expressed as a percentage of uptime in a
+                year, is listed below:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Percentage Availability</th>
+                        <th>Corresponding Downtime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>99.9%</strong> (Three Nines)</td>
+                        <td>8.76 hours/year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>99.99%</strong> (Four Nines)</td>
+                        <td>52.6 minutes/year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>99.999%</strong> (Five Nines)</td>
+                        <td>5.26 minutes/year</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                    <h5>Business Impact Analysis (BIA)</h5>
-                    <p>A crucial tool for creating a BCP is the <strong>Business Impact Analysis (BIA)</strong>. A BIA
-                        identifies business processes and functions and then quantifies the impact a loss of these
-                        functions may have on business operations, covering impacts on property, finance, safety,
-                        reputation, and life.</p>
-                    <p>The BIA is designed to identify critically important processes:</p>
-                    <ul>
-                        <li><strong>Mission-essential function:</strong> The core purpose of the enterprise (e.g.,
-                            "Deliver healthcare services to individuals and their families" for a hospital).</li>
-                        <li><strong>Critical systems:</strong> Systems that support the mission-essential function
-                            (e.g., maintaining an emergency room facility).</li>
-                        <li><strong>Single point of failure:</strong> A component or entity in a system that, if it
-                            fails, will disable the entire system. Minimizing these single failure points results in a
-                            system that can function for an extended period with little downtime.</li>
-                    </ul>
-                    <p>A BIA also often contains a privacy impact assessment to identify and mitigate privacy risks,
-                        including an examination of what Personally Identifiable Information (PII) is being collected
-                        and how it is protected. Availability, which is often expressed as a percentage of uptime in a
-                        year, is listed below:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Percentage Availability</th>
-                                <th>Corresponding Downtime</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>99.9%</strong> (Three Nines)</td>
-                                <td>8.76 hours/year</td>
-                            </tr>
-                            <tr>
-                                <td><strong>99.99%</strong> (Four Nines)</td>
-                                <td>52.6 minutes/year</td>
-                            </tr>
-                            <tr>
-                                <td><strong>99.999%</strong> (Five Nines)</td>
-                                <td>5.26 minutes/year</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <h5>Disaster Recovery Plan (DRP)</h5>
+            <p>The <strong>Disaster Recovery Plan (DRP)</strong> is a subset of the BCP that focuses
+                specifically on restoring IT functions and services following an event that causes a significant
+                disruption. The DRP is a detailed, written document that must be updated regularly.</p>
+            <p>A common topic covered in a DRP is the <strong>restoration order</strong>—the sequence in which
+                different systems are reinstated. Factors determining this order include:</p>
+            <ol>
+                <li><strong>Dependencies:</strong> Systems that rely on others (e.g., the network must be
+                    restored before applications that rely on it).</li>
+                <li><strong>Importance of processes:</strong> Critical systems supporting the mission-essential
+                    function or requiring high availability.</li>
+                <li><strong>Alternative business practices:</strong> How long a manual workaround process can
+                    temporarily substitute for normal business activities without causing major problems.</li>
+            </ol>
 
-                    <h5>Disaster Recovery Plan (DRP)</h5>
-                    <p>The <strong>Disaster Recovery Plan (DRP)</strong> is a subset of the BCP that focuses
-                        specifically on restoring IT functions and services following an event that causes a significant
-                        disruption. The DRP is a detailed, written document that must be updated regularly.</p>
-                    <p>A common topic covered in a DRP is the <strong>restoration order</strong>—the sequence in which
-                        different systems are reinstated. Factors determining this order include:</p>
-                    <ol>
-                        <li><strong>Dependencies:</strong> Systems that rely on others (e.g., the network must be
-                            restored before applications that rely on it).</li>
-                        <li><strong>Importance of processes:</strong> Critical systems supporting the mission-essential
-                            function or requiring high availability.</li>
-                        <li><strong>Alternative business practices:</strong> How long a manual workaround process can
-                            temporarily substitute for normal business activities without causing major problems.</li>
-                    </ol>
+            <h4>B. Incident Response Planning</h4>
+            <p>Since successful information security attacks are inevitable, advanced preparation is necessary.
+                An <strong>incident response plan</strong> is a set of written instructions for reacting to a
+                security incident. This plan prevents enterprises from being unable to quickly identify the
+                attack, contain its spread, recover, and learn from the attack.</p>
+            <p>The elements of the incident response plan are the action steps to be taken when an incident
+                occurs, known as the <strong>incident response process</strong>.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Action Step Definition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Preparation</strong></td>
+                        <td>Advanced planning for a cyber event</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Detection</strong></td>
+                        <td>Quickly identifying an attack</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Containment</strong></td>
+                        <td>Stopping the spread of an attack</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Eradication</strong></td>
+                        <td>Eliminating the cause of an incident</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recovery</strong></td>
+                        <td>Recovering from an attack</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lessons Learned</strong></td>
+                        <td>Performing detailed analysis to increase security and improve future response
+                            efforts</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>An incident response plan must also define:</p>
+            <ul>
+                <li><strong>Definitions:</strong> Clear descriptions of the types and categories of documented
+                    incident definitions, outlining what is and is not an incident requiring a response.</li>
+                <li><strong>Incident response teams:</strong> Teams responsible for responding to security
+                    incidents, including technical specialists, public relations employees, and managers.</li>
+                <li><strong>Reporting requirements:</strong> Instructions indicating to whom information should
+                    be distributed and when the security event has escalated to require specific actions
+                    (Stakeholder management).</li>
+            </ul>
 
-                    <h4>B. Incident Response Planning</h4>
-                    <p>Since successful information security attacks are inevitable, advanced preparation is necessary.
-                        An <strong>incident response plan</strong> is a set of written instructions for reacting to a
-                        security incident. This plan prevents enterprises from being unable to quickly identify the
-                        attack, contain its spread, recover, and learn from the attack.</p>
-                    <p>The elements of the incident response plan are the action steps to be taken when an incident
-                        occurs, known as the <strong>incident response process</strong>.</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Phase</th>
-                                <th>Action Step Definition</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Preparation</strong></td>
-                                <td>Advanced planning for a cyber event</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Detection</strong></td>
-                                <td>Quickly identifying an attack</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Containment</strong></td>
-                                <td>Stopping the spread of an attack</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Eradication</strong></td>
-                                <td>Eliminating the cause of an incident</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Recovery</strong></td>
-                                <td>Recovering from an attack</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Lessons Learned</strong></td>
-                                <td>Performing detailed analysis to increase security and improve future response
-                                    efforts</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p>An incident response plan must also define:</p>
-                    <ul>
-                        <li><strong>Definitions:</strong> Clear descriptions of the types and categories of documented
-                            incident definitions, outlining what is and is not an incident requiring a response.</li>
-                        <li><strong>Incident response teams:</strong> Teams responsible for responding to security
-                            incidents, including technical specialists, public relations employees, and managers.</li>
-                        <li><strong>Reporting requirements:</strong> Instructions indicating to whom information should
-                            be distributed and when the security event has escalated to require specific actions
-                            (Stakeholder management).</li>
-                    </ul>
+            <h5>Performing Testing Exercises</h5>
+            <p>It is important to <strong>test</strong> an incident response plan by conducting simulated
+                testing exercises to make necessary adjustments.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Testing Exercise Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tabletop</strong></td>
+                        <td>An exercise where a scenario is discussed, often informally for about 30 minutes
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Walkthrough</strong></td>
+                        <td>A simulated testing exercise</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Simulation</strong></td>
+                        <td>A type of simulated testing exercise for the plan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fail over</strong></td>
+                        <td>A type of simulated testing exercise</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Parallel Processing</strong></td>
+                        <td>A type of simulated testing exercise</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                    <h5>Performing Testing Exercises</h5>
-                    <p>It is important to <strong>test</strong> an incident response plan by conducting simulated
-                        testing exercises to make necessary adjustments.</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Testing Exercise Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Tabletop</strong></td>
-                                <td>An exercise where a scenario is discussed, often informally for about 30 minutes
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Walkthrough</strong></td>
-                                <td>A simulated testing exercise</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Simulation</strong></td>
-                                <td>A type of simulated testing exercise for the plan</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Fail over</strong></td>
-                                <td>A type of simulated testing exercise</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Parallel Processing</strong></td>
-                                <td>A type of simulated testing exercise</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <h5>Studying Attack Frameworks</h5>
+            <p>Organizations can study how attacks occur using <strong>exploitation frameworks</strong>, which
+                serve as models of the thinking and actions of threat actors.</p>
+            <ul>
+                <li><strong>MITRE ATT&CK:</strong> A knowledge base of categorized attacker techniques focused
+                    on how attackers interact with systems, arranged into tactics.</li>
+                <li><strong>The Diamond Model of Intrusion Analysis:</strong> A framework for examining network
+                    intrusion events based on four core interconnected elements: adversary, infrastructure,
+                    capability, and victim.</li>
+                <li><strong>Cyber Kill Chain:</strong> Outlines the systematic, end-to-end steps of an attack,
+                    illustrating that disrupting any one step (especially the early steps) will interrupt the
+                    entire attack process.</li>
+            </ul>
 
-                    <h5>Studying Attack Frameworks</h5>
-                    <p>Organizations can study how attacks occur using <strong>exploitation frameworks</strong>, which
-                        serve as models of the thinking and actions of threat actors.</p>
-                    <ul>
-                        <li><strong>MITRE ATT&CK:</strong> A knowledge base of categorized attacker techniques focused
-                            on how attackers interact with systems, arranged into tactics.</li>
-                        <li><strong>The Diamond Model of Intrusion Analysis:</strong> A framework for examining network
-                            intrusion events based on four core interconnected elements: adversary, infrastructure,
-                            capability, and victim.</li>
-                        <li><strong>Cyber Kill Chain:</strong> Outlines the systematic, end-to-end steps of an attack,
-                            illustrating that disrupting any one step (especially the early steps) will interrupt the
-                            entire attack process.</li>
-                    </ul>
+            <h3>II. Resilience Through Redundancy</h3>
+            <p>Resilience, or elasticity and flexibility, provided by equipment redundancy can aid in incident
+                preparation and recovery during a cyberattack. Redundancy in information security typically
+                involves duplicated servers, drives, networks, power, sites, clouds, and data. The goal of
+                redundancy is to reduce the <strong>mean time to recovery</strong>.</p>
 
-                    <h3>II. Resilience Through Redundancy</h3>
-                    <p>Resilience, or elasticity and flexibility, provided by equipment redundancy can aid in incident
-                        preparation and recovery during a cyberattack. Redundancy in information security typically
-                        involves duplicated servers, drives, networks, power, sites, clouds, and data. The goal of
-                        redundancy is to reduce the <strong>mean time to recovery</strong>.</p>
+            <h4>A. Capacity Planning</h4>
+            <p><strong>Capacity planning</strong> is the process of forecasting the need for future resources by
+                analyzing current maximum capacity against future requirements. This planning aims to prevent
+                both overprovisioning (having too many underutilized resources) and underprovisioning (having
+                too few resources).</p>
+            <p>Capacity planning involves calculating:</p>
+            <ol>
+                <li><strong>People capacity planning:</strong> Calculating future human resources (employees)
+                    needed.</li>
+                <li><strong>Technology capacity planning:</strong> Predicting the number of devices needed.</li>
+                <li><strong>Infrastructure capacity planning:</strong> Predicting the size of the network
+                    needed.</li>
+            </ol>
+            <p>Intentional excess capacity includes <strong>platform diversity</strong>, which is the use of
+                multiple different devices to host or serve an application or service.</p>
 
-                    <h4>A. Capacity Planning</h4>
-                    <p><strong>Capacity planning</strong> is the process of forecasting the need for future resources by
-                        analyzing current maximum capacity against future requirements. This planning aims to prevent
-                        both overprovisioning (having too many underutilized resources) and underprovisioning (having
-                        too few resources).</p>
-                    <p>Capacity planning involves calculating:</p>
-                    <ol>
-                        <li><strong>People capacity planning:</strong> Calculating future human resources (employees)
-                            needed.</li>
-                        <li><strong>Technology capacity planning:</strong> Predicting the number of devices needed.</li>
-                        <li><strong>Infrastructure capacity planning:</strong> Predicting the size of the network
-                            needed.</li>
-                    </ol>
-                    <p>Intentional excess capacity includes <strong>platform diversity</strong>, which is the use of
-                        multiple different devices to host or serve an application or service.</p>
+            <h4>B. Servers</h4>
+            <p>Since servers are critical to network infrastructure, they require <strong>high
+                    availability</strong>. Server redundancy often incorporates multiple servers that appear to
+                users and applications as a single computing resource.</p>
+            <ul>
+                <li><strong>Clustering:</strong> The combination of two or more devices (servers) to appear as a
+                    single unit. A server cluster is interconnected via a public cluster connection (clients see
+                    them as one) and a private cluster connection (servers exchange data).</li>
+                <li><strong>Asymmetric server cluster:</strong> A standby server exists solely to take over if
+                    another server fails; the standby performs no other useful work.</li>
+                <li><strong>Symmetric server cluster:</strong> Every server performs useful work; if one fails,
+                    the remaining servers continue their normal work plus the failed server's work.</li>
+            </ul>
+            <p>Virtualization has reduced the need for large numbers of physical server clusters for disaster
+                recovery because a virtualized image can be quickly moved to another physical server.</p>
 
-                    <h4>B. Servers</h4>
-                    <p>Since servers are critical to network infrastructure, they require <strong>high
-                            availability</strong>. Server redundancy often incorporates multiple servers that appear to
-                        users and applications as a single computing resource.</p>
-                    <ul>
-                        <li><strong>Clustering:</strong> The combination of two or more devices (servers) to appear as a
-                            single unit. A server cluster is interconnected via a public cluster connection (clients see
-                            them as one) and a private cluster connection (servers exchange data).</li>
-                        <li><strong>Asymmetric server cluster:</strong> A standby server exists solely to take over if
-                            another server fails; the standby performs no other useful work.</li>
-                        <li><strong>Symmetric server cluster:</strong> Every server performs useful work; if one fails,
-                            the remaining servers continue their normal work plus the failed server's work.</li>
-                    </ul>
-                    <p>Virtualization has reduced the need for large numbers of physical server clusters for disaster
-                        recovery because a virtualized image can be quickly moved to another physical server.</p>
+            <h4>C. Drives</h4>
+            <p>The two primary types of drives are <strong>Hard Disk Drives (HDDs)</strong>, which use spinning
+                platters, and <strong>Solid-State Drives (SSDs)</strong>, which store data on chips. SSDs are
+                more resistant to failure, more reliable, and fail at a lower rate than HDDs over their first
+                four years of service. Most servers utilize SSDs for booting (due to speed and reliability) and
+                HDDs for data storage (due to lower cost).</p>
+            <p>Since drives cannot typically be repaired, the metric <strong>mean time to repair
+                    (MTTR)</strong>, which is the average time needed to restore a failed component, is often
+                meaningless. Organizations instead rely on <strong>mean time between failures (MTBF)</strong>,
+                which refers to the average amount of time until a component fails, cannot be repaired, and must
+                be replaced. This metric helps determine the necessary stockpile of spare drives for quick
+                replacement.</p>
 
-                    <h4>C. Drives</h4>
-                    <p>The two primary types of drives are <strong>Hard Disk Drives (HDDs)</strong>, which use spinning
-                        platters, and <strong>Solid-State Drives (SSDs)</strong>, which store data on chips. SSDs are
-                        more resistant to failure, more reliable, and fail at a lower rate than HDDs over their first
-                        four years of service. Most servers utilize SSDs for booting (due to speed and reliability) and
-                        HDDs for data storage (due to lower cost).</p>
-                    <p>Since drives cannot typically be repaired, the metric <strong>mean time to repair
-                            (MTTR)</strong>, which is the average time needed to restore a failed component, is often
-                        meaningless. Organizations instead rely on <strong>mean time between failures (MTBF)</strong>,
-                        which refers to the average amount of time until a component fails, cannot be repaired, and must
-                        be replaced. This metric helps determine the necessary stockpile of spare drives for quick
-                        replacement.</p>
-
-                    <h5>RAID</h5>
-                    <p><strong>RAID (Redundant Array of Independent Drives)</strong> is a technology that uses multiple
-                        hard drives for increased reliability and performance. RAID can be implemented either through
-                        software (at the OS level) or hardware (requiring a specialized controller).</p>
-                    <p>The most common levels of RAID are Levels 0, 1, 5, 6, and 10.</p>
-                    <ul>
-                        <li><strong>RAID Level 0 (Striping):</strong> Divides data into sections (stripes) alternated
-                            across drives. It is not fault-tolerant; if one drive fails, all data is lost. It is good
-                            for noncritical storage requiring high speed.</li>
-                        <li><strong>RAID Level 1 (Mirroring):</strong> Connects multiple drives to the same controller,
-                            making them exact duplicates of the primary drive. If the primary drive fails, the others
-                            take over with no data loss. It is best for mission-critical storage. Disk duplexing is a
-                            variation that uses separate controller cards for each disk to protect against single
-                            controller failure.</li>
-                        <li><strong>RAID Level 5 (Distributed Parity):</strong> Distributes parity data (error checking)
-                            across all drives. It combines efficient storage with excellent security and decent
-                            performance, suitable for file and application servers.</li>
-                        <li><strong>Nested RAID (e.g., RAID 10):</strong> Combines two other RAID levels (e.g., RAID 0
-                            and Level 1).</li>
-                    </ul>
-                    <div class="alert alert-warning">
-                        <strong>Caution:</strong> RAID, except for Level 0, offers protection from a single drive
-                        failure, but <strong>it is not intended to replace data backups</strong>; rather, it provides an
-                        immediate, live copy of data in case of failure.
-                    </div>
-
-                    <h5>SAN Multipath</h5>
-                    <p>A <strong>Storage Area Network (SAN)</strong> is a dedicated network storage facility that
-                        consolidates different storage facilities to appear to the server as a single pool of locally
-                        attached devices. <strong>Multipath</strong> is a technique that creates more than one physical
-                        path between devices and a SAN. If one path is interrupted, multipath redirects the connection
-                        to another path.</p>
-
-                    <h4>D. Networks</h4>
-                    <p><strong>Redundant networks</strong> wait in the background and use a replication scheme to keep
-                        their copy of live network information current, ensuring services are always accessible. If a
-                        disaster occurs, the redundant network automatically launches transparently to users.</p>
-                    <p>Redundancy is achieved through various components:</p>
-                    <ul>
-                        <li><strong>NIC Teaming:</strong> Configuring up to 32 physical Network Interface Card (NIC)
-                            adapters on a server into one or more software-based virtual network adapters for redundancy
-                            and faster performance.</li>
-                        <li><strong>Failover ports:</strong> Switches and routers may offer a primary active port and a
-                            standby <strong>failover</strong> network port for physical redundancy.</li>
-                        <li><strong>Load balancers:</strong> Provide network redundancy by blocking traffic to
-                            non-functioning servers.</li>
-                        <li><strong>SDN controllers:</strong> Virtual Software-Defined Network (SDN) controllers can
-                            increase reliability by setting up multiple paths between origin and destination, preventing
-                            impact from the outage of a single link.</li>
-                    </ul>
-
-                    <h4>E. Power</h4>
-                    <p>Maintaining electrical power is essential for redundancy.</p>
-                    <ul>
-                        <li><strong>Dual power supply:</strong> Critical devices like servers can be fitted with dual
-                            power supplies so that if one fails, the other takes over.</li>
-                        <li><strong>Uninterruptible Power Supply (UPS):</strong> A device that maintains power to
-                            equipment in case of an interruption in the primary electrical source. A UPS can communicate
-                            with the network OS to ensure an orderly shutdown by notifying administrators and users,
-                            preventing new logins, disconnecting users, and shutting down the server.</li>
-                    </ul>
-                    <p>The two primary types of UPSs are:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>UPS Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Off-line UPS</strong></td>
-                                <td>The equipment uses standard primary power; the UPS quickly (within milliseconds)
-                                    begins supplying power only when the primary source is interrupted.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>On-line UPS</strong></td>
-                                <td>The UPS is <strong>always running off its battery</strong> while the main power runs
-                                    the battery charger. It cleans the electrical power before it reaches the server and
-                                    can serve as a surge protector.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p>Since a UPS supplies power for only a limited time, organizations often use a
-                        <strong>generator</strong> (powered by diesel, natural gas, or propane) to create backup power.
-                        Commercial generators are permanently installed and include automatic transfer switches that
-                        instantly detect power loss and switch to the backup generator.</p>
-
-                    <h4>F. Sites</h4>
-                    <p>Organizations maintain redundant recovery sites to move operations temporarily if a major
-                        disaster damages the primary facility.</p>
-                    <p>The three basic types of redundant sites are:</p>
-                    <ul>
-                        <li><strong>Hot site:</strong> Essentially a duplicate of the production site. It has all
-                            necessary equipment, office space, and a <strong>live telecommunications link</strong>. Data
-                            backups can be quickly moved, or synchronization may occur automatically, allowing
-                            operations to be moved typically within an hour.</li>
-                        <li><strong>Cold site:</strong> Provides office space, but the customer must provide and install
-                            all equipment. It is less expensive but requires more time to achieve full operation.</li>
-                        <li><strong>Warm site:</strong> Has all equipment installed but <strong>lacks active
-                                Internet/telecommunications facilities</strong> and does not have current backups of
-                            data. This is less expensive than a hot site, but recovery time can be half a day or more.
-                        </li>
-                    </ul>
-                    <p>When creating alternate sites, <strong>geographic dispersal</strong> is important. Sites should
-                        be distributed across a larger area rather than being clustered in a limited area to mitigate
-                        the impact of large-scale environmental or human-made disasters.</p>
-
-                    <h4>G. Clouds</h4>
-                    <p>Cloud computing is increasingly used for recovery, as users can often directly access backed-up
-                        applications and data through the cloud infrastructure. Cloud resilience requires two main
-                        considerations:</p>
-                    <ol>
-                        <li><strong>Geographic dispersal:</strong> Duplicating processes across one or more geographical
-                            areas, known as high availability across zones.</li>
-                        <li><strong>Multi-cloud systems:</strong> Spreading cloud computing across multiple cloud
-                            providers. This allows an organization to tolerate a critical issue that could occur with a
-                            single cloud provider.</li>
-                    </ol>
-
-                    <h4>H. Data</h4>
-                    <p>Data resilience is achieved by copying data. The methods for copying data depend on two critical
-                        calculations:</p>
-                    <ul>
-                        <li><strong>Recovery Point Objective (RPO):</strong> The maximum length of time an organization
-                            can tolerate between data copies. This is the "age" of the data they wish to be able to
-                            restore.</li>
-                        <li><strong>Recovery Time Objective (RTO):</strong> The length of time required to recover the
-                            data that has been copied.</li>
-                    </ul>
-                    <p>Data copies fall into two main types:</p>
-
-                    <h5>Scheduled Event: Backup</h5>
-                    <p>A <strong>backup</strong> is a single scheduled event where data is copied and stored. The
-                        <strong>frequency</strong> is generally once per day. Backups can be stored
-                        <strong>onsite</strong> (immediately available, but vulnerable to site disaster) or
-                        <strong>offsite</strong> (away from the production facility, but raises security and access
-                        delay concerns).</p>
-
-                    <h5>Continuous: Replication</h5>
-                    <p><strong>Replication</strong> is the continuous copying of data, serving as an alternative to a
-                        single scheduled event. Replication techniques include:</p>
-                    <ul>
-                        <li><strong>Snapshot:</strong> Repeatedly takes a “picture” of the state of the data, allowing
-                            restoration from a specific point in time.</li>
-                        <li><strong>Journaling:</strong> Makes a copy of the data whenever a change to the data occurs.
-                        </li>
-                    </ul>
-                    <p>Replication often results in a very low RTO, sometimes to the extent that users do not realize
-                        data was restored. The differences between backups and replication are summarized below:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Feature</th>
-                                <th>Backup (Scheduled Event)</th>
-                                <th>Replication (Continuous)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Frequency</strong></td>
-                                <td>Single scheduled event (e.g., once daily)</td>
-                                <td>Continuous copy (e.g., via journaling or snapshots)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>RPO</strong></td>
-                                <td>Usually measured in hours or days</td>
-                                <td>Usually measured in minutes or seconds</td>
-                            </tr>
-                            <tr>
-                                <td><strong>RTO</strong></td>
-                                <td>Often higher, depending on media access</td>
-                                <td>Often very low; users may not realize restoration occurred</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Method</strong></td>
-                                <td>Data copied and stored</td>
-                                <td>Data continuously copied upon change</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h3>III. Incident Investigation</h3>
-                    <p>Following a cybersecurity incident, a full investigation is required to pinpoint how it occurred,
-                        prevent future incidents, and meet regulatory compliance reporting requirements. Often,
-                        investigations only examine superficial causes, failing to determine exactly what happened and
-                        why.</p>
-                    <p><strong>Root Cause Analysis (RCA)</strong> is the process of discovering the origin (root) cause
-                        of the security event. Incident investigation involves analyzing data sources and performing a
-                        <strong>digital forensics</strong> investigation.</p>
-
-                    <h4>A. Data Sources</h4>
-                    <p>Several data sources provide clues for uncovering how an incident occurred.</p>
-
-                    <h5>Log Files</h5>
-                    <p>A <strong>log</strong> is a record of events that occur. Security logs are particularly important
-                        for incident investigation as they can reveal the type of attack and how existing security
-                        defenses were circumvented.</p>
-                    <p>Logs that typically provide the most beneficial security data for an investigation include:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Log Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Firewall logs</strong></td>
-                                <td>Security data useful for investigation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Intrusion detection systems (IDS)/intrusion prevention systems (IPS)
-                                        logs</strong></td>
-                                <td>Security data useful for investigation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Application logs</strong></td>
-                                <td>Security data useful for investigation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Endpoint logs</strong></td>
-                                <td>Security data useful for investigation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>OS-specific security logs</strong></td>
-                                <td>Security data useful for investigation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Network logs</strong></td>
-                                <td>Security data useful for investigation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Metadata logs</strong></td>
-                                <td>Contains data that describes information about other data (e.g., file type,
-                                    authorship, date/time created)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p><strong>Log management</strong> (transmitting, collecting, analyzing, and disposing of log data)
-                        faces several challenges:</p>
-                    <ol>
-                        <li><strong>Multiple devices generate logs:</strong> Nearly every network device creates logs,
-                            and each device may interpret an event differently, creating a confusing mix of data.</li>
-                        <li><strong>Very large volume of data:</strong> Devices generate huge amounts of data, including
-                            non-security-related events, making filtering overwhelming.</li>
-                        <li><strong>Different log formats:</strong> Different devices record information in different
-                            formats, making combining multiple logs a major challenge.</li>
-                    </ol>
-
-                    <h5>Other Data Sources</h5>
-                    <p>Other useful sources include:</p>
-                    <ul>
-                        <li><strong>Vulnerability scans</strong>.</li>
-                        <li><strong>Security Information and Event Management (SIEM)</strong> products, which
-                            consolidate real-time security monitoring with analysis and reporting. A SIEM
-                            <strong>dashboard</strong> provides alerts, trends, sensitivity, and correlation data
-                            collected from its sensors.</li>
-                        <li><strong>Network Internet Protocol (IP) monitors:</strong> Provide insight by creating
-                            <strong>automated reports</strong> on activity.
-                            <ul>
-                                <li><strong>sFlow</strong> is a <strong>packet capture</strong> sampling protocol that
-                                    generates information based on capturing packets.</li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <h4>B. Digital Forensics</h4>
-                    <p><strong>Digital forensics</strong> is the application of science to questions of interest to the
-                        legal profession, focusing on technology. It involves the <strong>retrieval of
-                            difficult-to-obtain data</strong>, which is usually hidden, altered, or deleted by the
-                        perpetrator. A digital forensics specialist searches for evidence pertaining to cybercrime or
-                        damage.</p>
-                    <p>Digital forensics is often confused with <strong>e-discovery</strong>, which is the electronic
-                        counterpart of manually sifting through documents during legal discovery. E-discovery involves
-                        uploading electronic documents (emails, spreadsheets, PDFs) to a platform where software quickly
-                        searches for information based on key terms.</p>
-
-                    <h5>Forensics Procedures</h5>
-                    <p>When responding to an incident that requires digital forensics, five basic steps are followed:
-                    </p>
-                    <ol>
-                        <li><strong>Secure the Scene:</strong> Immediate action is necessary to prevent digital evidence
-                            from being overwritten or contaminated. This involves documenting the physical surroundings,
-                            identifying and tagging all cables, and taking custody of the device and peripherals.</li>
-                        <li><strong>Preserve the Evidence:</strong> Tasked with ensuring important proof is not
-                            corrupted or destroyed. Placing evidence in sealed bags with tamper-evident seals and
-                            identifying tags helps mitigate <strong>nonrepudiation</strong>. Once data is identified, it
-                            may be placed under a <strong>legal hold</strong>, meaning it cannot be modified, deleted,
-                            or destroyed.</li>
-                        <li><strong>Document Chain of Custody:</strong> A strict <strong>chain of custody</strong> must
-                            be maintained from the beginning of the work. This detailed document
-                            (<strong>provenance</strong>) ensures the evidence was always under strict control and no
-                            unauthorized person had the opportunity to corrupt it. Gaps in custody can lead to severe
-                            legal consequences.</li>
-                        <li><strong>Examine for Evidence:</strong> Specialized tools are used to gather evidence
-                            (<strong>acquisition</strong>). Software tools capture the <strong>system image</strong> (or
-                            a snapshot) of the current state of settings and data. A mirror-image backup (bit-stream
-                            backup) is an evidence-grade backup that replicates all sectors of a drive, including hidden
-                            data storage areas and the swap/pagefile. Common software suites include EnCase and FTK
-                            Imager. Specialized hardware tools, like mobile device forensics tools, extract data such as
-                            Call Detail Records, GPS data, app data, SMS texts, photos, and videos.</li>
-                        <li><strong>Generate a Report:</strong> Upon completion, a detailed written description of the
-                            <strong>acquisition</strong> and <strong>analysis</strong> of the evidence is required
-                            (<strong>reporting</strong>).</li>
-                    </ol>
-
-                    <h5>Order of Volatility</h5>
-                    <p>When examining devices for evidence (artifacts), a specific <strong>order of volatility</strong>
-                        must be followed to preserve the most fragile data first. The first two levels are considered
-                        the most volatile because they change very quickly.</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Order</th>
-                                <th>Examples</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>1</strong></td>
-                                <td><strong>Registers and CPU cache</strong></td>
-                                <td>Extremely volatile and change constantly</td>
-                            </tr>
-                            <tr>
-                                <td><strong>2</strong></td>
-                                <td><strong>Routing tables, ARP cache, process table, kernel statistics, RAM</strong>
-                                </td>
-                                <td>Data can change quickly while the system is operating; kernel statistics move
-                                    between cache and main memory; RAM is lost if power is lost</td>
-                            </tr>
-                            <tr>
-                                <td><strong>3</strong></td>
-                                <td><strong>Temporary file systems</strong></td>
-                                <td>Not subject to the degree of rapid changes as the prior elements</td>
-                            </tr>
-                            <tr>
-                                <td><strong>4</strong></td>
-                                <td><strong>Hard drive</strong></td>
-                                <td>Data is relatively stable</td>
-                            </tr>
-                            <tr>
-                                <td><strong>5</strong></td>
-                                <td><strong>Remote logging and monitoring data</strong></td>
-                                <td>More volatile than hard drive data, but hard drive data is considered more valuable
-                                    and is preserved first</td>
-                            </tr>
-                            <tr>
-                                <td><strong>6</strong></td>
-                                <td><strong>Physical configuration and network topology</strong></td>
-                                <td>Not considered volatile and do not have a significant impact on an investigation
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>7</strong></td>
-                                <td><strong>Archival media</strong></td>
-                                <td>Data that has been preserved in archival form is not volatile</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h3>IV. Cautionary Cybersecurity Trend</h3>
-                    <p>A significant and alarming trend in cybersecurity involves the retrieval of sensitive data from
-                        hardware devices that have been decommissioned and sold on the secondary market. Studies
-                        consistently show that a majority of secondhand computing equipment (hard drives, USB drives,
-                        phones) have incomplete or no data wiping before resale, often containing sensitive personal
-                        data such as contact information, intimate photos, medical history, and financial data.</p>
-                    <p>A recent example involves used <strong>routers</strong> sold on the secondary market, a category
-                        of hardware previously not extensively examined. Security researchers purchased 18 used core
-                        routers from major vendors (Cisco, Fortinet, Juniper Networks). Using only standard router
-                        operating system commands and utilities—not specialized forensic tools—they found sensitive
-                        corporate data on nine of them.</p>
-                    <p>The types of corporate secrets exposed were extensive:</p>
-                    <ul>
-                        <li><strong>VPN credentials or hashed root passwords</strong> (100% of examined routers).</li>
-                        <li><strong>Router-to-router authentication keys</strong> (89%).</li>
-                        <li><strong>Itemized connection details for specific applications</strong> (89%).</li>
-                        <li><strong>Credentials for connecting to other networks as a trusted party</strong> (44%).</li>
-                        <li><strong>Data allowing third-party connections to the network</strong> (33%).</li>
-                        <li><strong>Customer data</strong> (22%).</li>
-                    </ul>
-                    <p>This exposed data included firewall rules, network locations, and information on remote cloud
-                        applications. Threat actors could use this internal information to plan and execute attacks by
-                        impersonating network or internal hosts, or by guessing general security levels across the
-                        environment.</p>
-                    <p>Researchers recommended that hardware vendors:</p>
-                    <ol>
-                        <li>Provide <strong>free, full, and complete instructions</strong> for securely wiping devices,
-                            even for unsupported models.</li>
-                        <li>Ensure secure-wipe instructions use <strong>similar language and terms</strong> across
-                            product lines and the industry.</li>
-                        <li>In future designs, only use <strong>easily removable media</strong> (like SSDs or CF cards)
-                            to store sensitive configuration information, allowing the media to be removed prior to
-                            decommissioning.</li>
-                    </ol>
-                </section>
-
-                <!-- Study Guide Section -->
-                <section class="module-section">
-                    <h2>Study Guide for Incident Preparation and Investigation</h2>
-
-                    <h3>Quiz: Short-Answer Questions</h3>
-                    <div class="interactive-quiz">
-                        <details>
-                            <summary>1. What is the fundamental difference between a Business Continuity Plan (BCP) and
-                                a Disaster Recovery Plan (DRP)?</summary>
-                            <p>A Business Continuity Plan (BCP) is a high-level strategic document focused on
-                                maintaining an organization's overall operations and services during a disruptive event.
-                                A Disaster Recovery Plan (DRP) is a subset of the BCP that specifically details the
-                                technical processes for restoring IT functions and services following a significant
-                                disruption. The DRP is tactical, while the BCP is strategic.</p>
-                        </details>
-                        <details>
-                            <summary>2. Explain the purpose of a Business Impact Analysis (BIA) and identify two of its
-                                primary goals.</summary>
-                            <p>A Business Impact Analysis (BIA) is a tool used to identify business processes and
-                                functions and to quantify the potential impact of their loss. Its primary goals are to
-                                determine the mission-essential functions of the enterprise and to identify critical
-                                systems and any single points of failure that would disable an entire system if they
-                                were to fail.</p>
-                        </details>
-                        <details>
-                            <summary>3. Describe the security risks associated with decommissioned network hardware, as
-                                highlighted by the ESET researchers' study.</summary>
-                            <p>The ESET study found that a significant number of decommissioned routers sold on the
-                                secondary market were not properly wiped of sensitive corporate data. This data included
-                                customer information, network credentials, VPN keys, and firewall rules, which a threat
-                                actor could use to gain inside information and plan a highly effective cyberattack.</p>
-                        </details>
-                        <details>
-                            <summary>4. What are the Recovery Point Objective (RPO) and Recovery Time Objective (RTO),
-                                and how do they relate to data copying strategies?</summary>
-                            <p>The Recovery Point Objective (RPO) is the maximum length of time an organization can
-                                tolerate between data copies, essentially defining the acceptable "age" of the data to
-                                be restored. The Recovery Time Objective (RTO) is the length of time it will take to
-                                actually recover and restore the data after an incident has occurred.</p>
-                        </details>
-                        <details>
-                            <summary>5. List and briefly describe the five main steps involved in a digital forensics
-                                procedure.</summary>
-                            <p>The five basic steps are: 1) Secure the Scene to prevent evidence from being overwritten
-                                or contaminated; 2) Preserve the Evidence to ensure proof is not corrupted; 3) Document
-                                the Chain of Custody to track who handled the evidence at all times; 4) Examine for
-                                Evidence using specialized tools; and 5) Generate a Report detailing the acquisition and
-                                analysis.</p>
-                        </details>
-                        <details>
-                            <summary>6. Explain the concept of a server cluster and differentiate between asymmetric and
-                                symmetric clustering.</summary>
-                            <p>A server cluster is the combination of two or more interconnected servers that appear as
-                                a single unit to provide high availability. In an asymmetric server cluster, a standby
-                                server exists only to take over if the primary server fails. In a symmetric server
-                                cluster, every server performs useful work, and if one fails, the others take on its
-                                workload in addition to their own.</p>
-                        </details>
-                        <details>
-                            <summary>7. What are three key challenges associated with log management in a large
-                                enterprise environment?</summary>
-                            <p>Three key challenges of log management include the vast number of devices generating
-                                logs, the very large volume of data produced, and the fact that different devices use
-                                different log formats. These factors make it difficult to consolidate, filter, and
-                                analyze log data effectively during an investigation.</p>
-                        </details>
-                        <details>
-                            <summary>8. Define the "chain of custody" and explain its importance in an incident
-                                investigation.</summary>
-                            <p>A chain of custody is a detailed document that tracks where evidence was at all times,
-                                from the beginning of an investigation. It documents who handled the systems, for how
-                                long, and how they were managed, ensuring that the evidence was always under strict
-                                control and no unauthorized person had the opportunity to corrupt it. This documentation
-                                is critical for the evidence to be admissible in a court of law.</p>
-                        </details>
-                        <details>
-                            <summary>9. Compare the three types of redundant recovery sites: hot site, cold site, and
-                                warm site.</summary>
-                            <p>A hot site is a fully equipped duplicate of the production site, allowing for immediate
-                                resumption of operations. A cold site provides only office space, requiring the
-                                organization to bring in and install all equipment. A warm site is a compromise,
-                                containing all the necessary equipment but lacking active internet connections or
-                                current data backups.</p>
-                        </details>
-                        <details>
-                            <summary>10. Differentiate between the two main techniques for data replication: snapshot
-                                and journaling.</summary>
-                            <p>A snapshot is a replication technique that takes a "picture" of the state of the data at
-                                repeated intervals, allowing restoration to a specific point in time. Journaling is a
-                                continuous process that makes a copy of the data whenever a change occurs, providing a
-                                more up-to-the-minute replica.</p>
-                        </details>
-                    </div>
-
-                    <h3>Essay Questions</h3>
-                    <div class="essay-questions">
-                        <details>
-                            <summary>1. Analyze the findings of the ESET router study discussed in the source material.
-                                Detail the types of sensitive data discovered, explain how a threat actor could leverage
-                                this information to attack a former owner, and discuss the three specific
-                                recommendations the researchers made for hardware vendors to mitigate this problem in
-                                the future.</summary>
-                            <p class="essay-answer"><em>(Essay format response required. See source material for details
-                                    on ESET study findings, exposed data types like VPN credentials, and vendor
-                                    recommendations regarding secure wipe instructions and removable media.)</em></p>
-                        </details>
-                        <details>
-                            <summary>2. Discuss the concept of achieving resilience through redundancy. Your answer
-                                should cover at least four distinct areas where redundancy can be implemented (e.g.,
-                                servers, drives, power, networks, sites). For each area, describe the specific
-                                technologies or methods used, such as server clustering, RAID, UPS systems, and
-                                redundant networks.</summary>
-                            <p class="essay-answer"><em>(Essay format response required. See source material for details
-                                    on server clustering, RAID levels, UPS types, NIC teaming, and redundant
-                                    sites.)</em></p>
-                        </details>
-                        <details>
-                            <summary>3. Explain the "order of volatility" in the context of digital forensic evidence
-                                acquisition. Detail the rationale behind this hierarchy and provide a comprehensive
-                                overview of the seven levels, from most volatile (registers, CPU cache) to least
-                                volatile (archival media), explaining the types of data found at each level.</summary>
-                            <p class="essay-answer"><em>(Essay format response required. See source material for the
-                                    table on Order of Volatility and descriptions of each level.)</em></p>
-                        </details>
-                        <details>
-                            <summary>4. Compare and contrast scheduled data backups with continuous data replication.
-                                Discuss the pros and cons of each approach, the role of onsite versus offsite storage,
-                                and how the concepts of RPO and RTO apply differently to each method.</summary>
-                            <p class="essay-answer"><em>(Essay format response required. See source material for the
-                                    comparison table between Backup and Replication, and definitions of RPO/RTO.)</em>
-                            </p>
-                        </details>
-                        <details>
-                            <summary>5. Describe the purpose and key components of an Incident Response Plan. Explain
-                                the importance of testing this plan through exercises like tabletop, walkthrough, and
-                                simulation. Furthermore, discuss how studying exploitation frameworks like MITRE ATT&CK,
-                                the Diamond Model of Intrusion Analysis, and the Cyber Kill Chain helps organizations
-                                prepare for real-world attacks.</summary>
-                            <p class="essay-answer"><em>(Essay format response required. See source material for
-                                    Incident Response Plan elements, testing types, and exploitation framework
-                                    descriptions.)</em></p>
-                        </details>
-                    </div>
-
-                    <h3>Glossary of Key Terms</h3>
-                    <div class="glossary-grid">
-                        <div class="glossary-item"><strong>Acquisition:</strong> The process of gathering evidence from
-                            a device using specialized tools.</div>
-                        <div class="glossary-item"><strong>Application Logs:</strong> Logs that record actions performed
-                            by a software application.</div>
-                        <div class="glossary-item"><strong>Asymmetric Server Cluster:</strong> A server cluster in which
-                            a standby server exists only to take over for another server in the event of its failure.
-                        </div>
-                        <div class="glossary-item"><strong>Backup:</strong> A single scheduled event where data is
-                            copied and stored so that it can be used in the event of a disaster.</div>
-                        <div class="glossary-item"><strong>Backup Generator:</strong> A device, often powered by diesel,
-                            natural gas, or propane, that is permanently installed to generate electricity when a
-                            building's primary power is lost.</div>
-                        <div class="glossary-item"><strong>Business Continuity:</strong> The ability of an organization
-                            to maintain its operations and services in the face of a disruptive event or a major
-                            disaster.</div>
-                        <div class="glossary-item"><strong>Business Continuity Plan (BCP):</strong> A strategic document
-                            that provides alternative modes of operation for business activities that, if interrupted,
-                            could result in a significant loss to the enterprise.</div>
-                        <div class="glossary-item"><strong>Business Impact Analysis (BIA):</strong> A process that
-                            identifies business processes and functions and then quantifies the impact a loss of these
-                            functions may have on business operations.</div>
-                        <div class="glossary-item"><strong>Capacity Planning:</strong> The process of forecasting the
-                            need for future resources by analyzing the current environment's capacity and measuring it
-                            against future requirements.</div>
-                        <div class="glossary-item"><strong>Chain of Custody:</strong> A detailed document describing
-                            where evidence was at all times, documenting that it was always under strict control and no
-                            unauthorized person was given the opportunity to corrupt it.</div>
-                        <div class="glossary-item"><strong>Clustering:</strong> The process of combining two or more
-                            devices to appear as a single unit.</div>
-                        <div class="glossary-item"><strong>Cold Site:</strong> A redundant recovery site that provides
-                            office space, but where the customer must provide and install all the equipment needed to
-                            continue operations.</div>
-                        <div class="glossary-item"><strong>Continuity of Operation Planning (COOP):</strong> A federal
-                            initiative intended to encourage organizations to address how critical operations will
-                            continue under a broad range of negative circumstances.</div>
-                        <div class="glossary-item"><strong>Cyber Kill Chain:</strong> A framework that outlines the
-                            systematic steps of a cyberattack, illustrating that attacks are an integrated end-to-end
-                            process.</div>
-                        <div class="glossary-item"><strong>Digital Forensics:</strong> The application of science to
-                            retrieve difficult-to-obtain data—which is usually hidden, altered, or deleted—for legal
-                            purposes, especially pertaining to cybercrime.</div>
-                        <div class="glossary-item"><strong>Disaster Recovery Plan (DRP):</strong> A written document
-                            that details the process for restoring IT resources following an event that causes a
-                            significant disruption in service.</div>
-                        <div class="glossary-item"><strong>E-discovery:</strong> The electronic counterpart of manually
-                            sifting through documents in a legal discovery process, using software to search for
-                            information in electronic documents.</div>
-                        <div class="glossary-item"><strong>Exploitation Frameworks:</strong> Frameworks that model the
-                            thinking and actions of threat actors and describe how attacks occur.</div>
-                        <div class="glossary-item"><strong>Forensics:</strong> The application of science to questions
-                            that are of interest to the legal profession.</div>
-                        <div class="glossary-item"><strong>Geographic Dispersal:</strong> The practice of distributing
-                            sites or data centers across a larger geographical area to mitigate the impact of localized
-                            disasters.</div>
-                        <div class="glossary-item"><strong>Hard Disk Drive (HDD):</strong> A data storage device that
-                            uses spinning magnetic platters, actuator arms, and motors to store and retrieve data.</div>
-                        <div class="glossary-item"><strong>High Availability:</strong> The ability to withstand all
-                            outages—planned and unplanned—while providing continuous processing for critical
-                            applications.</div>
-                        <div class="glossary-item"><strong>Hot Site:</strong> A redundant recovery site that is a
-                            duplicate of the production site and has all the equipment needed for an organization to
-                            continue running immediately.</div>
-                        <div class="glossary-item"><strong>Incident Response Plan:</strong> A set of written
-                            instructions for reacting to an information security incident.</div>
-                        <div class="glossary-item"><strong>Journaling:</strong> A data replication technique that makes
-                            a copy of the data whenever a change to the data occurs.</div>
-                        <div class="glossary-item"><strong>Legal Hold:</strong> A process that ensures data identified
-                            as relevant to a legal case cannot be modified, deleted, erased, or otherwise destroyed.
-                        </div>
-                        <div class="glossary-item"><strong>Log:</strong> A record of events that occur on a system or
-                            network.</div>
-                        <div class="glossary-item"><strong>Mean Time Between Failures (MTBF):</strong> The average
-                            amount of time until a component fails, cannot be repaired, and must be replaced.</div>
-                        <div class="glossary-item"><strong>Mean Time To Repair (MTTR):</strong> The average time needed
-                            to restore a failed component or device to working order. This metric is considered
-                            meaningless for modern electronic components like hard drives, which are replaced rather
-                            than repaired.</div>
-                        <div class="glossary-item"><strong>Mirror-Image Backup:</strong> An evidence-grade backup that
-                            replicates all sectors of a computer hard drive, including all files and any hidden data
-                            storage areas.</div>
-                        <div class="glossary-item"><strong>Mission-Essential Function:</strong> The activity that serves
-                            as the core purpose of an enterprise.</div>
-                        <div class="glossary-item"><strong>MITRE ATT&CK:</strong> A knowledge base of attacker
-                            techniques that have been broken down and classified in detail, focusing on how attackers
-                            interact with systems during an operation.</div>
-                        <div class="glossary-item"><strong>Multicloud Systems:</strong> An approach to spreading cloud
-                            computing across multiple cloud providers to tolerate a critical issue that could occur with
-                            a single provider.</div>
-                        <div class="glossary-item"><strong>Multipath:</strong> A technique for creating more than one
-                            physical path between devices and a Storage Area Network (SAN) to provide redundancy.</div>
-                        <div class="glossary-item"><strong>Off-line UPS:</strong> An uninterruptible power supply where
-                            the equipment is served by the primary power source, and the UPS only begins supplying power
-                            after an interruption is detected.</div>
-                        <div class="glossary-item"><strong>On-line UPS:</strong> An uninterruptible power supply that is
-                            always running off its battery while the main power runs the battery charger, providing
-                            continuous, clean power.</div>
-                        <div class="glossary-item"><strong>Order of Volatility:</strong> The specific order that must be
-                            followed when acquiring digital evidence to preserve the most fragile data first.</div>
-                        <div class="glossary-item"><strong>Platform Diversity:</strong> Using multiple different devices
-                            to host or serve an application or a service to increase resilience.</div>
-                        <div class="glossary-item"><strong>Provenance:</strong> The process of documenting evidence from
-                            the very beginning of an investigation.</div>
-                        <div class="glossary-item"><strong>RAID (Redundant Array of Independent Drives):</strong> A
-                            technology that uses multiple hard drives for increased reliability and performance.</div>
-                        <div class="glossary-item"><strong>Recovery Point Objective (RPO):</strong> The maximum length
-                            of time that an organization can tolerate between data copies; the acceptable "age" of data
-                            for restoration.</div>
-                        <div class="glossary-item"><strong>Recovery Time Objective (RTO):</strong> The length of time it
-                            will take to recover the data that has been copied after an incident.</div>
-                        <div class="glossary-item"><strong>Redundancy:</strong> The inclusion of extra components that
-                            are not strictly necessary to functioning, in case of a failure of other components.</div>
-                        <div class="glossary-item"><strong>Replication:</strong> The process of continuously copying
-                            data as an alternative to single scheduled backups.</div>
-                        <div class="glossary-item"><strong>Root-Cause Analysis (RCA):</strong> The process of
-                            discovering the origin (root) cause of a security event.</div>
-                        <div class="glossary-item"><strong>Server Cluster:</strong> The combination of two or more
-                            servers that are interconnected to appear as one.</div>
-                        <div class="glossary-item"><strong>Single Point of Failure:</strong> A component or entity in a
-                            system that, if it no longer functions, will disable the entire system.</div>
-                        <div class="glossary-item"><strong>Snapshot:</strong> A data replication technique that takes a
-                            "picture" of the state of the data repeatedly.</div>
-                        <div class="glossary-item"><strong>Solid-State Drive (SSD):</strong> A data storage device that
-                            stores data on chips instead of magnetic platters, offering greater reliability and speed
-                            than HDDs.</div>
-                        <div class="glossary-item"><strong>Storage Area Network (SAN):</strong> A dedicated network
-                            storage facility that provides access to data storage over a high-speed network.</div>
-                        <div class="glossary-item"><strong>Symmetric Server Cluster:</strong> A server cluster in which
-                            every server performs useful work, and if one server fails, the remaining servers continue
-                            to perform their normal work as well as that of the failed server.</div>
-                        <div class="glossary-item"><strong>System Image:</strong> A snapshot of the current state of
-                            system elements, containing all current settings and data.</div>
-                        <div class="glossary-item"><strong>Tabletop Exercise:</strong> An incident response testing
-                            exercise involving a discussion of a scenario in an informal environment to identify
-                            weaknesses in a plan.</div>
-                        <div class="glossary-item"><strong>Uninterruptible Power Supply (UPS):</strong> A device that
-                            maintains power to equipment in case of an interruption in the primary electrical power
-                            source.</div>
-                        <div class="glossary-item"><strong>Warm Site:</strong> A redundant recovery site that has all
-                            equipment installed but does not have active Internet or telecommunications facilities and
-                            does not have current backups of data.</div>
-                    </div>
-                </section>
-
-                <!-- Quiz Section -->
-                <div class="quiz-header">
-                    <h2>Full Practice Simulation</h2>
-                    <p>Test your knowledge with practice questions. Select the best answer(s) for each question.</p>
-                </div>
-                <div id="quiz-container">
-                    <!-- Questions will be injected here by JavaScript -->
-                </div>
-
+            <h5>RAID</h5>
+            <p><strong>RAID (Redundant Array of Independent Drives)</strong> is a technology that uses multiple
+                hard drives for increased reliability and performance. RAID can be implemented either through
+                software (at the OS level) or hardware (requiring a specialized controller).</p>
+            <p>The most common levels of RAID are Levels 0, 1, 5, 6, and 10.</p>
+            <ul>
+                <li><strong>RAID Level 0 (Striping):</strong> Divides data into sections (stripes) alternated
+                    across drives. It is not fault-tolerant; if one drive fails, all data is lost. It is good
+                    for noncritical storage requiring high speed.</li>
+                <li><strong>RAID Level 1 (Mirroring):</strong> Connects multiple drives to the same controller,
+                    making them exact duplicates of the primary drive. If the primary drive fails, the others
+                    take over with no data loss. It is best for mission-critical storage. Disk duplexing is a
+                    variation that uses separate controller cards for each disk to protect against single
+                    controller failure.</li>
+                <li><strong>RAID Level 5 (Distributed Parity):</strong> Distributes parity data (error checking)
+                    across all drives. It combines efficient storage with excellent security and decent
+                    performance, suitable for file and application servers.</li>
+                <li><strong>Nested RAID (e.g., RAID 10):</strong> Combines two other RAID levels (e.g., RAID 0
+                    and Level 1).</li>
+            </ul>
+            <div class="alert alert-warning">
+                <strong>Caution:</strong> RAID, except for Level 0, offers protection from a single drive
+                failure, but <strong>it is not intended to replace data backups</strong>; rather, it provides an
+                immediate, live copy of data in case of failure.
             </div>
-            <button id="back-to-top" title="Go to top"><i class="fas fa-arrow-up"></i></button>
-            <footer class="module-footer">
-                <p>CompTIA Security+ SY0-701 Module 13 - Incident Preparation and Investigation</p>
-            </footer>
-        </main>
-    </div>
 
+            <h5>SAN Multipath</h5>
+            <p>A <strong>Storage Area Network (SAN)</strong> is a dedicated network storage facility that
+                consolidates different storage facilities to appear to the server as a single pool of locally
+                attached devices. <strong>Multipath</strong> is a technique that creates more than one physical
+                path between devices and a SAN. If one path is interrupted, multipath redirects the connection
+                to another path.</p>
+
+            <h4>D. Networks</h4>
+            <p><strong>Redundant networks</strong> wait in the background and use a replication scheme to keep
+                their copy of live network information current, ensuring services are always accessible. If a
+                disaster occurs, the redundant network automatically launches transparently to users.</p>
+            <p>Redundancy is achieved through various components:</p>
+            <ul>
+                <li><strong>NIC Teaming:</strong> Configuring up to 32 physical Network Interface Card (NIC)
+                    adapters on a server into one or more software-based virtual network adapters for redundancy
+                    and faster performance.</li>
+                <li><strong>Failover ports:</strong> Switches and routers may offer a primary active port and a
+                    standby <strong>failover</strong> network port for physical redundancy.</li>
+                <li><strong>Load balancers:</strong> Provide network redundancy by blocking traffic to
+                    non-functioning servers.</li>
+                <li><strong>SDN controllers:</strong> Virtual Software-Defined Network (SDN) controllers can
+                    increase reliability by setting up multiple paths between origin and destination, preventing
+                    impact from the outage of a single link.</li>
+            </ul>
+
+            <h4>E. Power</h4>
+            <p>Maintaining electrical power is essential for redundancy.</p>
+            <ul>
+                <li><strong>Dual power supply:</strong> Critical devices like servers can be fitted with dual
+                    power supplies so that if one fails, the other takes over.</li>
+                <li><strong>Uninterruptible Power Supply (UPS):</strong> A device that maintains power to
+                    equipment in case of an interruption in the primary electrical source. A UPS can communicate
+                    with the network OS to ensure an orderly shutdown by notifying administrators and users,
+                    preventing new logins, disconnecting users, and shutting down the server.</li>
+            </ul>
+            <p>The two primary types of UPSs are:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>UPS Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Off-line UPS</strong></td>
+                        <td>The equipment uses standard primary power; the UPS quickly (within milliseconds)
+                            begins supplying power only when the primary source is interrupted.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>On-line UPS</strong></td>
+                        <td>The UPS is <strong>always running off its battery</strong> while the main power runs
+                            the battery charger. It cleans the electrical power before it reaches the server and
+                            can serve as a surge protector.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Since a UPS supplies power for only a limited time, organizations often use a
+                <strong>generator</strong> (powered by diesel, natural gas, or propane) to create backup power.
+                Commercial generators are permanently installed and include automatic transfer switches that
+                instantly detect power loss and switch to the backup generator.
+            </p>
+
+            <h4>F. Sites</h4>
+            <p>Organizations maintain redundant recovery sites to move operations temporarily if a major
+                disaster damages the primary facility.</p>
+            <p>The three basic types of redundant sites are:</p>
+            <ul>
+                <li><strong>Hot site:</strong> Essentially a duplicate of the production site. It has all
+                    necessary equipment, office space, and a <strong>live telecommunications link</strong>. Data
+                    backups can be quickly moved, or synchronization may occur automatically, allowing
+                    operations to be moved typically within an hour.</li>
+                <li><strong>Cold site:</strong> Provides office space, but the customer must provide and install
+                    all equipment. It is less expensive but requires more time to achieve full operation.</li>
+                <li><strong>Warm site:</strong> Has all equipment installed but <strong>lacks active
+                        Internet/telecommunications facilities</strong> and does not have current backups of
+                    data. This is less expensive than a hot site, but recovery time can be half a day or more.
+                </li>
+            </ul>
+            <p>When creating alternate sites, <strong>geographic dispersal</strong> is important. Sites should
+                be distributed across a larger area rather than being clustered in a limited area to mitigate
+                the impact of large-scale environmental or human-made disasters.</p>
+
+            <h4>G. Clouds</h4>
+            <p>Cloud computing is increasingly used for recovery, as users can often directly access backed-up
+                applications and data through the cloud infrastructure. Cloud resilience requires two main
+                considerations:</p>
+            <ol>
+                <li><strong>Geographic dispersal:</strong> Duplicating processes across one or more geographical
+                    areas, known as high availability across zones.</li>
+                <li><strong>Multi-cloud systems:</strong> Spreading cloud computing across multiple cloud
+                    providers. This allows an organization to tolerate a critical issue that could occur with a
+                    single cloud provider.</li>
+            </ol>
+
+            <h4>H. Data</h4>
+            <p>Data resilience is achieved by copying data. The methods for copying data depend on two critical
+                calculations:</p>
+            <ul>
+                <li><strong>Recovery Point Objective (RPO):</strong> The maximum length of time an organization
+                    can tolerate between data copies. This is the "age" of the data they wish to be able to
+                    restore.</li>
+                <li><strong>Recovery Time Objective (RTO):</strong> The length of time required to recover the
+                    data that has been copied.</li>
+            </ul>
+            <p>Data copies fall into two main types:</p>
+
+            <h5>Scheduled Event: Backup</h5>
+            <p>A <strong>backup</strong> is a single scheduled event where data is copied and stored. The
+                <strong>frequency</strong> is generally once per day. Backups can be stored
+                <strong>onsite</strong> (immediately available, but vulnerable to site disaster) or
+                <strong>offsite</strong> (away from the production facility, but raises security and access
+                delay concerns).
+            </p>
+
+            <h5>Continuous: Replication</h5>
+            <p><strong>Replication</strong> is the continuous copying of data, serving as an alternative to a
+                single scheduled event. Replication techniques include:</p>
+            <ul>
+                <li><strong>Snapshot:</strong> Repeatedly takes a “picture” of the state of the data, allowing
+                    restoration from a specific point in time.</li>
+                <li><strong>Journaling:</strong> Makes a copy of the data whenever a change to the data occurs.
+                </li>
+            </ul>
+            <p>Replication often results in a very low RTO, sometimes to the extent that users do not realize
+                data was restored. The differences between backups and replication are summarized below:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Backup (Scheduled Event)</th>
+                        <th>Replication (Continuous)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Frequency</strong></td>
+                        <td>Single scheduled event (e.g., once daily)</td>
+                        <td>Continuous copy (e.g., via journaling or snapshots)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RPO</strong></td>
+                        <td>Usually measured in hours or days</td>
+                        <td>Usually measured in minutes or seconds</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RTO</strong></td>
+                        <td>Often higher, depending on media access</td>
+                        <td>Often very low; users may not realize restoration occurred</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Method</strong></td>
+                        <td>Data copied and stored</td>
+                        <td>Data continuously copied upon change</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>III. Incident Investigation</h3>
+            <p>Following a cybersecurity incident, a full investigation is required to pinpoint how it occurred,
+                prevent future incidents, and meet regulatory compliance reporting requirements. Often,
+                investigations only examine superficial causes, failing to determine exactly what happened and
+                why.</p>
+            <p><strong>Root Cause Analysis (RCA)</strong> is the process of discovering the origin (root) cause
+                of the security event. Incident investigation involves analyzing data sources and performing a
+                <strong>digital forensics</strong> investigation.
+            </p>
+
+            <h4>A. Data Sources</h4>
+            <p>Several data sources provide clues for uncovering how an incident occurred.</p>
+
+            <h5>Log Files</h5>
+            <p>A <strong>log</strong> is a record of events that occur. Security logs are particularly important
+                for incident investigation as they can reveal the type of attack and how existing security
+                defenses were circumvented.</p>
+            <p>Logs that typically provide the most beneficial security data for an investigation include:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Log Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Firewall logs</strong></td>
+                        <td>Security data useful for investigation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Intrusion detection systems (IDS)/intrusion prevention systems (IPS)
+                                logs</strong></td>
+                        <td>Security data useful for investigation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Application logs</strong></td>
+                        <td>Security data useful for investigation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Endpoint logs</strong></td>
+                        <td>Security data useful for investigation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OS-specific security logs</strong></td>
+                        <td>Security data useful for investigation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Network logs</strong></td>
+                        <td>Security data useful for investigation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Metadata logs</strong></td>
+                        <td>Contains data that describes information about other data (e.g., file type,
+                            authorship, date/time created)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Log management</strong> (transmitting, collecting, analyzing, and disposing of log data)
+                faces several challenges:</p>
+            <ol>
+                <li><strong>Multiple devices generate logs:</strong> Nearly every network device creates logs,
+                    and each device may interpret an event differently, creating a confusing mix of data.</li>
+                <li><strong>Very large volume of data:</strong> Devices generate huge amounts of data, including
+                    non-security-related events, making filtering overwhelming.</li>
+                <li><strong>Different log formats:</strong> Different devices record information in different
+                    formats, making combining multiple logs a major challenge.</li>
+            </ol>
+
+            <h5>Other Data Sources</h5>
+            <p>Other useful sources include:</p>
+            <ul>
+                <li><strong>Vulnerability scans</strong>.</li>
+                <li><strong>Security Information and Event Management (SIEM)</strong> products, which
+                    consolidate real-time security monitoring with analysis and reporting. A SIEM
+                    <strong>dashboard</strong> provides alerts, trends, sensitivity, and correlation data
+                    collected from its sensors.
+                </li>
+                <li><strong>Network Internet Protocol (IP) monitors:</strong> Provide insight by creating
+                    <strong>automated reports</strong> on activity.
+                    <ul>
+                        <li><strong>sFlow</strong> is a <strong>packet capture</strong> sampling protocol that
+                            generates information based on capturing packets.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>B. Digital Forensics</h4>
+            <p><strong>Digital forensics</strong> is the application of science to questions of interest to the
+                legal profession, focusing on technology. It involves the <strong>retrieval of
+                    difficult-to-obtain data</strong>, which is usually hidden, altered, or deleted by the
+                perpetrator. A digital forensics specialist searches for evidence pertaining to cybercrime or
+                damage.</p>
+            <p>Digital forensics is often confused with <strong>e-discovery</strong>, which is the electronic
+                counterpart of manually sifting through documents during legal discovery. E-discovery involves
+                uploading electronic documents (emails, spreadsheets, PDFs) to a platform where software quickly
+                searches for information based on key terms.</p>
+
+            <h5>Forensics Procedures</h5>
+            <p>When responding to an incident that requires digital forensics, five basic steps are followed:
+            </p>
+            <ol>
+                <li><strong>Secure the Scene:</strong> Immediate action is necessary to prevent digital evidence
+                    from being overwritten or contaminated. This involves documenting the physical surroundings,
+                    identifying and tagging all cables, and taking custody of the device and peripherals.</li>
+                <li><strong>Preserve the Evidence:</strong> Tasked with ensuring important proof is not
+                    corrupted or destroyed. Placing evidence in sealed bags with tamper-evident seals and
+                    identifying tags helps mitigate <strong>nonrepudiation</strong>. Once data is identified, it
+                    may be placed under a <strong>legal hold</strong>, meaning it cannot be modified, deleted,
+                    or destroyed.</li>
+                <li><strong>Document Chain of Custody:</strong> A strict <strong>chain of custody</strong> must
+                    be maintained from the beginning of the work. This detailed document
+                    (<strong>provenance</strong>) ensures the evidence was always under strict control and no
+                    unauthorized person had the opportunity to corrupt it. Gaps in custody can lead to severe
+                    legal consequences.</li>
+                <li><strong>Examine for Evidence:</strong> Specialized tools are used to gather evidence
+                    (<strong>acquisition</strong>). Software tools capture the <strong>system image</strong> (or
+                    a snapshot) of the current state of settings and data. A mirror-image backup (bit-stream
+                    backup) is an evidence-grade backup that replicates all sectors of a drive, including hidden
+                    data storage areas and the swap/pagefile. Common software suites include EnCase and FTK
+                    Imager. Specialized hardware tools, like mobile device forensics tools, extract data such as
+                    Call Detail Records, GPS data, app data, SMS texts, photos, and videos.</li>
+                <li><strong>Generate a Report:</strong> Upon completion, a detailed written description of the
+                    <strong>acquisition</strong> and <strong>analysis</strong> of the evidence is required
+                    (<strong>reporting</strong>).
+                </li>
+            </ol>
+
+            <h5>Order of Volatility</h5>
+            <p>When examining devices for evidence (artifacts), a specific <strong>order of volatility</strong>
+                must be followed to preserve the most fragile data first. The first two levels are considered
+                the most volatile because they change very quickly.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Examples</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td><strong>Registers and CPU cache</strong></td>
+                        <td>Extremely volatile and change constantly</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td><strong>Routing tables, ARP cache, process table, kernel statistics, RAM</strong>
+                        </td>
+                        <td>Data can change quickly while the system is operating; kernel statistics move
+                            between cache and main memory; RAM is lost if power is lost</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td><strong>Temporary file systems</strong></td>
+                        <td>Not subject to the degree of rapid changes as the prior elements</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td><strong>Hard drive</strong></td>
+                        <td>Data is relatively stable</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td><strong>Remote logging and monitoring data</strong></td>
+                        <td>More volatile than hard drive data, but hard drive data is considered more valuable
+                            and is preserved first</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td><strong>Physical configuration and network topology</strong></td>
+                        <td>Not considered volatile and do not have a significant impact on an investigation
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>7</strong></td>
+                        <td><strong>Archival media</strong></td>
+                        <td>Data that has been preserved in archival form is not volatile</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>IV. Cautionary Cybersecurity Trend</h3>
+            <p>A significant and alarming trend in cybersecurity involves the retrieval of sensitive data from
+                hardware devices that have been decommissioned and sold on the secondary market. Studies
+                consistently show that a majority of secondhand computing equipment (hard drives, USB drives,
+                phones) have incomplete or no data wiping before resale, often containing sensitive personal
+                data such as contact information, intimate photos, medical history, and financial data.</p>
+            <p>A recent example involves used <strong>routers</strong> sold on the secondary market, a category
+                of hardware previously not extensively examined. Security researchers purchased 18 used core
+                routers from major vendors (Cisco, Fortinet, Juniper Networks). Using only standard router
+                operating system commands and utilities—not specialized forensic tools—they found sensitive
+                corporate data on nine of them.</p>
+            <p>The types of corporate secrets exposed were extensive:</p>
+            <ul>
+                <li><strong>VPN credentials or hashed root passwords</strong> (100% of examined routers).</li>
+                <li><strong>Router-to-router authentication keys</strong> (89%).</li>
+                <li><strong>Itemized connection details for specific applications</strong> (89%).</li>
+                <li><strong>Credentials for connecting to other networks as a trusted party</strong> (44%).</li>
+                <li><strong>Data allowing third-party connections to the network</strong> (33%).</li>
+                <li><strong>Customer data</strong> (22%).</li>
+            </ul>
+            <p>This exposed data included firewall rules, network locations, and information on remote cloud
+                applications. Threat actors could use this internal information to plan and execute attacks by
+                impersonating network or internal hosts, or by guessing general security levels across the
+                environment.</p>
+            <p>Researchers recommended that hardware vendors:</p>
+            <ol>
+                <li>Provide <strong>free, full, and complete instructions</strong> for securely wiping devices,
+                    even for unsupported models.</li>
+                <li>Ensure secure-wipe instructions use <strong>similar language and terms</strong> across
+                    product lines and the industry.</li>
+                <li>In future designs, only use <strong>easily removable media</strong> (like SSDs or CF cards)
+                    to store sensitive configuration information, allowing the media to be removed prior to
+                    decommissioning.</li>
+            </ol>
+        </section>
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide for Incident Preparation and Investigation</h2>
+
+            <h3>Quiz: Short-Answer Questions</h3>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. What is the fundamental difference between a Business Continuity Plan (BCP) and
+                        a Disaster Recovery Plan (DRP)?</summary>
+                    <p>A Business Continuity Plan (BCP) is a high-level strategic document focused on
+                        maintaining an organization's overall operations and services during a disruptive event.
+                        A Disaster Recovery Plan (DRP) is a subset of the BCP that specifically details the
+                        technical processes for restoring IT functions and services following a significant
+                        disruption. The DRP is tactical, while the BCP is strategic.</p>
+                </details>
+                <details>
+                    <summary>2. Explain the purpose of a Business Impact Analysis (BIA) and identify two of its
+                        primary goals.</summary>
+                    <p>A Business Impact Analysis (BIA) is a tool used to identify business processes and
+                        functions and to quantify the potential impact of their loss. Its primary goals are to
+                        determine the mission-essential functions of the enterprise and to identify critical
+                        systems and any single points of failure that would disable an entire system if they
+                        were to fail.</p>
+                </details>
+                <details>
+                    <summary>3. Describe the security risks associated with decommissioned network hardware, as
+                        highlighted by the ESET researchers' study.</summary>
+                    <p>The ESET study found that a significant number of decommissioned routers sold on the
+                        secondary market were not properly wiped of sensitive corporate data. This data included
+                        customer information, network credentials, VPN keys, and firewall rules, which a threat
+                        actor could use to gain inside information and plan a highly effective cyberattack.</p>
+                </details>
+                <details>
+                    <summary>4. What are the Recovery Point Objective (RPO) and Recovery Time Objective (RTO),
+                        and how do they relate to data copying strategies?</summary>
+                    <p>The Recovery Point Objective (RPO) is the maximum length of time an organization can
+                        tolerate between data copies, essentially defining the acceptable "age" of the data to
+                        be restored. The Recovery Time Objective (RTO) is the length of time it will take to
+                        actually recover and restore the data after an incident has occurred.</p>
+                </details>
+                <details>
+                    <summary>5. List and briefly describe the five main steps involved in a digital forensics
+                        procedure.</summary>
+                    <p>The five basic steps are: 1) Secure the Scene to prevent evidence from being overwritten
+                        or contaminated; 2) Preserve the Evidence to ensure proof is not corrupted; 3) Document
+                        the Chain of Custody to track who handled the evidence at all times; 4) Examine for
+                        Evidence using specialized tools; and 5) Generate a Report detailing the acquisition and
+                        analysis.</p>
+                </details>
+                <details>
+                    <summary>6. Explain the concept of a server cluster and differentiate between asymmetric and
+                        symmetric clustering.</summary>
+                    <p>A server cluster is the combination of two or more interconnected servers that appear as
+                        a single unit to provide high availability. In an asymmetric server cluster, a standby
+                        server exists only to take over if the primary server fails. In a symmetric server
+                        cluster, every server performs useful work, and if one fails, the others take on its
+                        workload in addition to their own.</p>
+                </details>
+                <details>
+                    <summary>7. What are three key challenges associated with log management in a large
+                        enterprise environment?</summary>
+                    <p>Three key challenges of log management include the vast number of devices generating
+                        logs, the very large volume of data produced, and the fact that different devices use
+                        different log formats. These factors make it difficult to consolidate, filter, and
+                        analyze log data effectively during an investigation.</p>
+                </details>
+                <details>
+                    <summary>8. Define the "chain of custody" and explain its importance in an incident
+                        investigation.</summary>
+                    <p>A chain of custody is a detailed document that tracks where evidence was at all times,
+                        from the beginning of an investigation. It documents who handled the systems, for how
+                        long, and how they were managed, ensuring that the evidence was always under strict
+                        control and no unauthorized person had the opportunity to corrupt it. This documentation
+                        is critical for the evidence to be admissible in a court of law.</p>
+                </details>
+                <details>
+                    <summary>9. Compare the three types of redundant recovery sites: hot site, cold site, and
+                        warm site.</summary>
+                    <p>A hot site is a fully equipped duplicate of the production site, allowing for immediate
+                        resumption of operations. A cold site provides only office space, requiring the
+                        organization to bring in and install all equipment. A warm site is a compromise,
+                        containing all the necessary equipment but lacking active internet connections or
+                        current data backups.</p>
+                </details>
+                <details>
+                    <summary>10. Differentiate between the two main techniques for data replication: snapshot
+                        and journaling.</summary>
+                    <p>A snapshot is a replication technique that takes a "picture" of the state of the data at
+                        repeated intervals, allowing restoration to a specific point in time. Journaling is a
+                        continuous process that makes a copy of the data whenever a change occurs, providing a
+                        more up-to-the-minute replica.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <div class="essay-questions">
+                <details>
+                    <summary>1. Analyze the findings of the ESET router study discussed in the source material.
+                        Detail the types of sensitive data discovered, explain how a threat actor could leverage
+                        this information to attack a former owner, and discuss the three specific
+                        recommendations the researchers made for hardware vendors to mitigate this problem in
+                        the future.</summary>
+                    <p class="essay-answer"><em>(Essay format response required. See source material for details
+                            on ESET study findings, exposed data types like VPN credentials, and vendor
+                            recommendations regarding secure wipe instructions and removable media.)</em></p>
+                </details>
+                <details>
+                    <summary>2. Discuss the concept of achieving resilience through redundancy. Your answer
+                        should cover at least four distinct areas where redundancy can be implemented (e.g.,
+                        servers, drives, power, networks, sites). For each area, describe the specific
+                        technologies or methods used, such as server clustering, RAID, UPS systems, and
+                        redundant networks.</summary>
+                    <p class="essay-answer"><em>(Essay format response required. See source material for details
+                            on server clustering, RAID levels, UPS types, NIC teaming, and redundant
+                            sites.)</em></p>
+                </details>
+                <details>
+                    <summary>3. Explain the "order of volatility" in the context of digital forensic evidence
+                        acquisition. Detail the rationale behind this hierarchy and provide a comprehensive
+                        overview of the seven levels, from most volatile (registers, CPU cache) to least
+                        volatile (archival media), explaining the types of data found at each level.</summary>
+                    <p class="essay-answer"><em>(Essay format response required. See source material for the
+                            table on Order of Volatility and descriptions of each level.)</em></p>
+                </details>
+                <details>
+                    <summary>4. Compare and contrast scheduled data backups with continuous data replication.
+                        Discuss the pros and cons of each approach, the role of onsite versus offsite storage,
+                        and how the concepts of RPO and RTO apply differently to each method.</summary>
+                    <p class="essay-answer"><em>(Essay format response required. See source material for the
+                            comparison table between Backup and Replication, and definitions of RPO/RTO.)</em>
+                    </p>
+                </details>
+                <details>
+                    <summary>5. Describe the purpose and key components of an Incident Response Plan. Explain
+                        the importance of testing this plan through exercises like tabletop, walkthrough, and
+                        simulation. Furthermore, discuss how studying exploitation frameworks like MITRE ATT&CK,
+                        the Diamond Model of Intrusion Analysis, and the Cyber Kill Chain helps organizations
+                        prepare for real-world attacks.</summary>
+                    <p class="essay-answer"><em>(Essay format response required. See source material for
+                            Incident Response Plan elements, testing types, and exploitation framework
+                            descriptions.)</em></p>
+                </details>
+            </div>
+
+            <h3>Glossary of Key Terms</h3>
+            <div class="glossary-grid">
+                <div class="glossary-item"><strong>Acquisition:</strong> The process of gathering evidence from
+                    a device using specialized tools.</div>
+                <div class="glossary-item"><strong>Application Logs:</strong> Logs that record actions performed
+                    by a software application.</div>
+                <div class="glossary-item"><strong>Asymmetric Server Cluster:</strong> A server cluster in which
+                    a standby server exists only to take over for another server in the event of its failure.
+                </div>
+                <div class="glossary-item"><strong>Backup:</strong> A single scheduled event where data is
+                    copied and stored so that it can be used in the event of a disaster.</div>
+                <div class="glossary-item"><strong>Backup Generator:</strong> A device, often powered by diesel,
+                    natural gas, or propane, that is permanently installed to generate electricity when a
+                    building's primary power is lost.</div>
+                <div class="glossary-item"><strong>Business Continuity:</strong> The ability of an organization
+                    to maintain its operations and services in the face of a disruptive event or a major
+                    disaster.</div>
+                <div class="glossary-item"><strong>Business Continuity Plan (BCP):</strong> A strategic document
+                    that provides alternative modes of operation for business activities that, if interrupted,
+                    could result in a significant loss to the enterprise.</div>
+                <div class="glossary-item"><strong>Business Impact Analysis (BIA):</strong> A process that
+                    identifies business processes and functions and then quantifies the impact a loss of these
+                    functions may have on business operations.</div>
+                <div class="glossary-item"><strong>Capacity Planning:</strong> The process of forecasting the
+                    need for future resources by analyzing the current environment's capacity and measuring it
+                    against future requirements.</div>
+                <div class="glossary-item"><strong>Chain of Custody:</strong> A detailed document describing
+                    where evidence was at all times, documenting that it was always under strict control and no
+                    unauthorized person was given the opportunity to corrupt it.</div>
+                <div class="glossary-item"><strong>Clustering:</strong> The process of combining two or more
+                    devices to appear as a single unit.</div>
+                <div class="glossary-item"><strong>Cold Site:</strong> A redundant recovery site that provides
+                    office space, but where the customer must provide and install all the equipment needed to
+                    continue operations.</div>
+                <div class="glossary-item"><strong>Continuity of Operation Planning (COOP):</strong> A federal
+                    initiative intended to encourage organizations to address how critical operations will
+                    continue under a broad range of negative circumstances.</div>
+                <div class="glossary-item"><strong>Cyber Kill Chain:</strong> A framework that outlines the
+                    systematic steps of a cyberattack, illustrating that attacks are an integrated end-to-end
+                    process.</div>
+                <div class="glossary-item"><strong>Digital Forensics:</strong> The application of science to
+                    retrieve difficult-to-obtain data—which is usually hidden, altered, or deleted—for legal
+                    purposes, especially pertaining to cybercrime.</div>
+                <div class="glossary-item"><strong>Disaster Recovery Plan (DRP):</strong> A written document
+                    that details the process for restoring IT resources following an event that causes a
+                    significant disruption in service.</div>
+                <div class="glossary-item"><strong>E-discovery:</strong> The electronic counterpart of manually
+                    sifting through documents in a legal discovery process, using software to search for
+                    information in electronic documents.</div>
+                <div class="glossary-item"><strong>Exploitation Frameworks:</strong> Frameworks that model the
+                    thinking and actions of threat actors and describe how attacks occur.</div>
+                <div class="glossary-item"><strong>Forensics:</strong> The application of science to questions
+                    that are of interest to the legal profession.</div>
+                <div class="glossary-item"><strong>Geographic Dispersal:</strong> The practice of distributing
+                    sites or data centers across a larger geographical area to mitigate the impact of localized
+                    disasters.</div>
+                <div class="glossary-item"><strong>Hard Disk Drive (HDD):</strong> A data storage device that
+                    uses spinning magnetic platters, actuator arms, and motors to store and retrieve data.</div>
+                <div class="glossary-item"><strong>High Availability:</strong> The ability to withstand all
+                    outages—planned and unplanned—while providing continuous processing for critical
+                    applications.</div>
+                <div class="glossary-item"><strong>Hot Site:</strong> A redundant recovery site that is a
+                    duplicate of the production site and has all the equipment needed for an organization to
+                    continue running immediately.</div>
+                <div class="glossary-item"><strong>Incident Response Plan:</strong> A set of written
+                    instructions for reacting to an information security incident.</div>
+                <div class="glossary-item"><strong>Journaling:</strong> A data replication technique that makes
+                    a copy of the data whenever a change to the data occurs.</div>
+                <div class="glossary-item"><strong>Legal Hold:</strong> A process that ensures data identified
+                    as relevant to a legal case cannot be modified, deleted, erased, or otherwise destroyed.
+                </div>
+                <div class="glossary-item"><strong>Log:</strong> A record of events that occur on a system or
+                    network.</div>
+                <div class="glossary-item"><strong>Mean Time Between Failures (MTBF):</strong> The average
+                    amount of time until a component fails, cannot be repaired, and must be replaced.</div>
+                <div class="glossary-item"><strong>Mean Time To Repair (MTTR):</strong> The average time needed
+                    to restore a failed component or device to working order. This metric is considered
+                    meaningless for modern electronic components like hard drives, which are replaced rather
+                    than repaired.</div>
+                <div class="glossary-item"><strong>Mirror-Image Backup:</strong> An evidence-grade backup that
+                    replicates all sectors of a computer hard drive, including all files and any hidden data
+                    storage areas.</div>
+                <div class="glossary-item"><strong>Mission-Essential Function:</strong> The activity that serves
+                    as the core purpose of an enterprise.</div>
+                <div class="glossary-item"><strong>MITRE ATT&CK:</strong> A knowledge base of attacker
+                    techniques that have been broken down and classified in detail, focusing on how attackers
+                    interact with systems during an operation.</div>
+                <div class="glossary-item"><strong>Multicloud Systems:</strong> An approach to spreading cloud
+                    computing across multiple cloud providers to tolerate a critical issue that could occur with
+                    a single provider.</div>
+                <div class="glossary-item"><strong>Multipath:</strong> A technique for creating more than one
+                    physical path between devices and a Storage Area Network (SAN) to provide redundancy.</div>
+                <div class="glossary-item"><strong>Off-line UPS:</strong> An uninterruptible power supply where
+                    the equipment is served by the primary power source, and the UPS only begins supplying power
+                    after an interruption is detected.</div>
+                <div class="glossary-item"><strong>On-line UPS:</strong> An uninterruptible power supply that is
+                    always running off its battery while the main power runs the battery charger, providing
+                    continuous, clean power.</div>
+                <div class="glossary-item"><strong>Order of Volatility:</strong> The specific order that must be
+                    followed when acquiring digital evidence to preserve the most fragile data first.</div>
+                <div class="glossary-item"><strong>Platform Diversity:</strong> Using multiple different devices
+                    to host or serve an application or a service to increase resilience.</div>
+                <div class="glossary-item"><strong>Provenance:</strong> The process of documenting evidence from
+                    the very beginning of an investigation.</div>
+                <div class="glossary-item"><strong>RAID (Redundant Array of Independent Drives):</strong> A
+                    technology that uses multiple hard drives for increased reliability and performance.</div>
+                <div class="glossary-item"><strong>Recovery Point Objective (RPO):</strong> The maximum length
+                    of time that an organization can tolerate between data copies; the acceptable "age" of data
+                    for restoration.</div>
+                <div class="glossary-item"><strong>Recovery Time Objective (RTO):</strong> The length of time it
+                    will take to recover the data that has been copied after an incident.</div>
+                <div class="glossary-item"><strong>Redundancy:</strong> The inclusion of extra components that
+                    are not strictly necessary to functioning, in case of a failure of other components.</div>
+                <div class="glossary-item"><strong>Replication:</strong> The process of continuously copying
+                    data as an alternative to single scheduled backups.</div>
+                <div class="glossary-item"><strong>Root-Cause Analysis (RCA):</strong> The process of
+                    discovering the origin (root) cause of a security event.</div>
+                <div class="glossary-item"><strong>Server Cluster:</strong> The combination of two or more
+                    servers that are interconnected to appear as one.</div>
+                <div class="glossary-item"><strong>Single Point of Failure:</strong> A component or entity in a
+                    system that, if it no longer functions, will disable the entire system.</div>
+                <div class="glossary-item"><strong>Snapshot:</strong> A data replication technique that takes a
+                    "picture" of the state of the data repeatedly.</div>
+                <div class="glossary-item"><strong>Solid-State Drive (SSD):</strong> A data storage device that
+                    stores data on chips instead of magnetic platters, offering greater reliability and speed
+                    than HDDs.</div>
+                <div class="glossary-item"><strong>Storage Area Network (SAN):</strong> A dedicated network
+                    storage facility that provides access to data storage over a high-speed network.</div>
+                <div class="glossary-item"><strong>Symmetric Server Cluster:</strong> A server cluster in which
+                    every server performs useful work, and if one server fails, the remaining servers continue
+                    to perform their normal work as well as that of the failed server.</div>
+                <div class="glossary-item"><strong>System Image:</strong> A snapshot of the current state of
+                    system elements, containing all current settings and data.</div>
+                <div class="glossary-item"><strong>Tabletop Exercise:</strong> An incident response testing
+                    exercise involving a discussion of a scenario in an informal environment to identify
+                    weaknesses in a plan.</div>
+                <div class="glossary-item"><strong>Uninterruptible Power Supply (UPS):</strong> A device that
+                    maintains power to equipment in case of an interruption in the primary electrical power
+                    source.</div>
+                <div class="glossary-item"><strong>Warm Site:</strong> A redundant recovery site that has all
+                    equipment installed but does not have active Internet or telecommunications facilities and
+                    does not have current backups of data.</div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <div class="quiz-header">
+            <h2>Full Practice Simulation</h2>
+            <p>Test your knowledge with practice questions. Select the best answer(s) for each question.</p>
+        </div>
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+        </div>
+
+        </div>
+        <footer class="site-footer">
+            <p>Study Portfolio | Matheus Almeida e Silva</p>
+            <p>&copy; 2025 All Rights Reserved</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
     <script>
-        // Back to Top Button Logic
-        const backToTopButton = document.getElementById("back-to-top");
+        document.addEventListener('DOMContentLoaded', () => {
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                        backToTopBtn.style.display = 'flex';
+                    } else {
+                        backToTopBtn.style.display = 'none';
+                    }
+                });
 
-        window.onscroll = function () {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                backToTopButton.style.display = "block";
-            } else {
-                backToTopButton.style.display = "none";
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
             }
-        };
-
-        backToTopButton.onclick = function () {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        };
+        });
 
         // Quiz Data
         const quizQuestions = [
@@ -1256,78 +1579,80 @@
         ];
 
         // Quiz Logic
-        const quizContainer = document.getElementById('quiz-container');
+        const questions = quizQuestions;
 
         function renderQuiz() {
-            if (quizQuestions.length === 0) return;
-
+            const quizContainer = document.getElementById('quiz-container');
             quizContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
 
-            quizQuestions.forEach((q, index) => {
-                const questionCard = document.createElement('div');
-                questionCard.classList.add('question-card');
+                const qNumber = document.createElement('span');
+                qNumber.className = 'question-number';
+                qNumber.textContent = `QUESTION ${index + 1}`;
 
-                let optionsHtml = '';
-                q.options.forEach((option, i) => {
-                    optionsHtml += `<button class="option-btn" onclick="handleAnswer(${index}, ${i}, this)">${option}</button>`;
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = q.text;
+
+                card.appendChild(qNumber);
+                card.appendChild(qText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options-grid';
+
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation';
+                explanationDiv.textContent = q.explanation;
+
+                q.options.forEach((opt, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = opt;
+                    // Handle single correct index or array
+                    const correctArray = Array.isArray(q.correct) ? q.correct : [q.correct];
+                    btn.onclick = () => handleAnswer(btn, i, correctArray, optionsDiv, explanationDiv);
+                    optionsDiv.appendChild(btn);
                 });
 
-                questionCard.innerHTML = `
-                    <span class="question-number">Question ${index + 1}</span>
-                    <div class="question-text">${q.text}</div>
-                    <div class="options-grid">
-                        ${optionsHtml}
-                    </div>
-                    <div class="explanation" id="explanation-${index}">
-                        ${q.explanation}
-                    </div>
-                `;
-
-                quizContainer.appendChild(questionCard);
+                card.appendChild(optionsDiv);
+                card.appendChild(explanationDiv);
+                quizContainer.appendChild(card);
             });
         }
 
-        function handleAnswer(questionIndex, optionIndex, btnElement) {
-            const question = quizQuestions[questionIndex];
-            const explanationElement = document.getElementById(`explanation-${questionIndex}`);
-            const allOptions = btnElement.parentElement.children;
+        function handleAnswer(btn, index, correctIndices, optionsDiv, explanationDiv) {
+            const buttons = optionsDiv.querySelectorAll('.option-btn');
 
-            // Disable all options
-            for (let btn of allOptions) {
-                btn.classList.add('disabled');
-            }
+            // Disable all buttons
+            buttons.forEach(b => {
+                b.classList.add('disabled');
+                b.onclick = null;
+            });
 
-            // Check if multiple correct answers (array) or single (number)
-            let isCorrect = false;
-            if (Array.isArray(question.correct)) {
-                if (question.correct.includes(optionIndex)) {
-                    btnElement.classList.add('correct');
-                    isCorrect = true;
-                } else {
-                    btnElement.classList.add('incorrect');
-                    // Highlight all correct answers
-                    question.correct.forEach(correctIndex => {
-                        allOptions[correctIndex].classList.add('correct');
-                    });
-                }
+            // Check if correct
+            if (correctIndices.includes(index)) {
+                btn.classList.add('correct');
             } else {
-                // Single choice
-                if (optionIndex === question.correct) {
-                    btnElement.classList.add('correct');
-                    isCorrect = true;
-                } else {
-                    btnElement.classList.add('incorrect');
-                    allOptions[question.correct].classList.add('correct');
-                }
+                btn.classList.add('incorrect');
+                // Show correct answer
+                correctIndices.forEach(correctIndex => {
+                    buttons[correctIndex].classList.add('correct');
+                });
             }
 
             // Show explanation
-            explanationElement.style.display = 'block';
+            explanationDiv.style.display = 'block';
         }
 
         // Initialize Quiz
         renderQuiz();
     </script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 </body>
 
 </html>

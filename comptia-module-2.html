@@ -7,1100 +7,1435 @@
     <title>Module 2: Attack Surfaces and Controls - Matheus Almeida</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.policy {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.standard {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .tag.procedure {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        .tag.guideline {
+            background: rgba(139, 148, 158, 0.15);
+            color: #8b949e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="app-container">
-        <!-- Sidebar Navigation -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h2><i class="fas fa-shield-alt"></i> CompTIA Security+</h2>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="comptia-module-1.html"><i class="fas fa-book"></i> Module 1</a></li>
-                <li><a href="comptia-module-2.html" class="active"><i class="fas fa-book"></i> Module 2</a></li>
-                <li><a href="comptia-module-3.html"><i class="fas fa-book"></i> Module 3</a></li>
-                <li><a href="comptia-module-4.html"><i class="fas fa-book"></i> Module 4</a></li>
-                <li><a href="comptia-module-5.html"><i class="fas fa-book"></i> Module 5</a></li>
-                <li><a href="comptia-module-6.html"><i class="fas fa-book"></i> Module 6</a></li>
-                <li><a href="comptia-module-7.html"><i class="fas fa-book"></i> Module 7</a></li>
-                <li><a href="comptia-module-8.html"><i class="fas fa-book"></i> Module 8</a></li>
-                <li><a href="comptia-module-9.html"><i class="fas fa-book"></i> Module 9</a></li>
-                <li><a href="comptia-module-10.html"><i class="fas fa-book"></i> Module 10</a></li>
-                <li><a href="comptia-module-11.html"><i class="fas fa-book"></i> Module 11</a></li>
-                <li><a href="comptia-module-12.html"><i class="fas fa-book"></i> Module 12</a></li>
-                <li><a href="comptia-module-13.html"><i class="fas fa-book"></i> Module 13</a></li>
-                <li><a href="comptia-module-14.html"><i class="fas fa-book"></i> Module 14</a></li>
-                <li><a href="comptia-module-15.html"><i class="fas fa-book"></i> Module 15</a></li>
-                <li><a href="comptia-module-16.html"><i class="fas fa-book"></i> Module 16</a></li>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
             </ul>
         </nav>
+    </header>
+    <main class="container">
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <header class="top-bar">
-                <div class="breadcrumbs">
-                    <span>CompTIA Security+</span> / <span class="current">Module 2</span>
-                </div>
-                <div class="user-profile">
-                    <span class="user-name">Matheus Almeida</span>
-                    <div class="avatar">MA</div>
-                </div>
-            </header>
+        <div class="module-header">
+            <h1>Module 2: Pervasive Attack Surfaces and Controls</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
 
-            <div class="content-wrapper">
-                <div class="module-header">
-                    <h1>Module 2: Pervasive Attack Surfaces and Controls</h1>
-                    <p>A Didactic Overview of Social Engineering, Physical Security, and Data Controls</p>
-                </div>
+        <!-- Main Content Sections -->
+        <section class="module-section">
+            <h2>Pervasive Attack Surfaces and Controls: A Didactic Overview</h2>
+            <p>The concepts of social engineering, physical security, and data controls are considered
+                <strong>pervasive</strong> in information technology (IT) security, meaning they exist in or
+                spread through every part of the domain. Unlike some IT topics linked narrowly to networking or
+                mobile devices, these elements are universally important for securing information, running the
+                full gamut across the field. Successfully defeating attempts to trick users, ensuring strong
+                physical protection for assets, and implementing necessary controls for data confidentiality,
+                integrity, and availability are fundamental requirements.
+            </p>
 
-                <!-- Main Content Sections -->
-                <section class="module-section">
-                    <h2>Pervasive Attack Surfaces and Controls: A Didactic Overview</h2>
-                    <p>The concepts of social engineering, physical security, and data controls are considered
-                        <strong>pervasive</strong> in information technology (IT) security, meaning they exist in or
-                        spread through every part of the domain. Unlike some IT topics linked narrowly to networking or
-                        mobile devices, these elements are universally important for securing information, running the
-                        full gamut across the field. Successfully defeating attempts to trick users, ensuring strong
-                        physical protection for assets, and implementing necessary controls for data confidentiality,
-                        integrity, and availability are fundamental requirements.
-                    </p>
+            <h3>I. Social Engineering Attacks</h3>
+            <p>Social engineering is one of the most effective types of attacks, relying on tricking a user into
+                taking an action or providing information that benefits the attacker. This practice of deceiving
+                victims for gain has existed for thousands of years, long before modern cyberattacks.</p>
+            <p>Social engineering is a means of eliciting information or convincing a user to take action that
+                weakens security, almost always performed through <strong>deception and manipulation</strong>.
+                Because these attacks exploit people, the attack surface is often described as <strong>human
+                    vectors</strong>. Cybersecurity attacks are frequently successful because they begin with
+                highly successful social engineering, opening the door for subsequent steps. It is estimated
+                that <strong>98 percent</strong> of cybercriminals use social engineering in their attacks.</p>
+            <p>Threat actors, sometimes called "masters of the art of deception," rely heavily on <strong>human
+                    psychology</strong>—a person's conscious and unconscious feelings and thoughts—to persuade
+                targets without them realizing they are being taken advantage of.</p>
 
-                    <h3>I. Social Engineering Attacks</h3>
-                    <p>Social engineering is one of the most effective types of attacks, relying on tricking a user into
-                        taking an action or providing information that benefits the attacker. This practice of deceiving
-                        victims for gain has existed for thousands of years, long before modern cyberattacks.</p>
-                    <p>Social engineering is a means of eliciting information or convincing a user to take action that
-                        weakens security, almost always performed through <strong>deception and manipulation</strong>.
-                        Because these attacks exploit people, the attack surface is often described as <strong>human
-                            vectors</strong>. Cybersecurity attacks are frequently successful because they begin with
-                        highly successful social engineering, opening the door for subsequent steps. It is estimated
-                        that <strong>98 percent</strong> of cybercriminals use social engineering in their attacks.</p>
-                    <p>Threat actors, sometimes called "masters of the art of deception," rely heavily on <strong>human
-                            psychology</strong>—a person's conscious and unconscious feelings and thoughts—to persuade
-                        targets without them realizing they are being taken advantage of.</p>
+            <h4>A. Principles of Human Manipulation</h4>
+            <p>Threat actors create believable, often false scenarios specific to the target to obtain
+                information or gain leverage to breach a system. The following principles of psychology are
+                commonly exploited in social engineering attacks:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Principle</th>
+                        <th>Description</th>
+                        <th>Example (Attacker pretending to be CEO calling help desk)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Authority</strong></td>
+                        <td>Directed by someone impersonating an authority figure or falsely citing their
+                            authority</td>
+                        <td>“I’m the CEO calling.”</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Intimidation</strong></td>
+                        <td>To frighten and coerce by threat</td>
+                        <td>“If you don’t reset my password, I will call your supervisor.”</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Consensus</strong></td>
+                        <td>Influenced by what others do</td>
+                        <td>“I called last week, and your colleague reset my password.”</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scarcity</strong></td>
+                        <td>Something is in short supply</td>
+                        <td>“I can’t waste time here.”</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Urgency</strong></td>
+                        <td>Immediate action is needed</td>
+                        <td>“My meeting with the board starts in 5 minutes.”</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Familiarity</strong></td>
+                        <td>Victim is well known and well received</td>
+                        <td>“I remember reading a good evaluation on you.”</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trust</strong></td>
+                        <td>Confidence</td>
+                        <td>“You know who I am.”</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Another technique is <strong>prepending</strong>, which influences the subject before the event
+                occurs by starting with the desired outcome. For example, combining prepending with the urgency
+                principle: "You need to reset my password immediately because my meeting with the board starts
+                in 5 minutes".</p>
 
-                    <h4>A. Principles of Human Manipulation</h4>
-                    <p>Threat actors create believable, often false scenarios specific to the target to obtain
-                        information or gain leverage to breach a system. The following principles of psychology are
-                        commonly exploited in social engineering attacks:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Principle</th>
-                                <th>Description</th>
-                                <th>Example (Attacker pretending to be CEO calling help desk)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Authority</strong></td>
-                                <td>Directed by someone impersonating an authority figure or falsely citing their
-                                    authority</td>
-                                <td>“I’m the CEO calling.”</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Intimidation</strong></td>
-                                <td>To frighten and coerce by threat</td>
-                                <td>“If you don’t reset my password, I will call your supervisor.”</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Consensus</strong></td>
-                                <td>Influenced by what others do</td>
-                                <td>“I called last week, and your colleague reset my password.”</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Scarcity</strong></td>
-                                <td>Something is in short supply</td>
-                                <td>“I can’t waste time here.”</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Urgency</strong></td>
-                                <td>Immediate action is needed</td>
-                                <td>“My meeting with the board starts in 5 minutes.”</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Familiarity</strong></td>
-                                <td>Victim is well known and well received</td>
-                                <td>“I remember reading a good evaluation on you.”</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Trust</strong></td>
-                                <td>Confidence</td>
-                                <td>“You know who I am.”</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p>Another technique is <strong>prepending</strong>, which influences the subject before the event
-                        occurs by starting with the desired outcome. For example, combining prepending with the urgency
-                        principle: "You need to reset my password immediately because my meeting with the board starts
-                        in 5 minutes".</p>
+            <h4>B. Personal Techniques to Gain Trust</h4>
+            <p>When social engineering involves person-to-person contact, attackers use various personal
+                techniques to gain trust:</p>
+            <ol>
+                <li><strong>Provide a reason:</strong> Adding a rationalization, often using the word "because,"
+                    increases the likelihood of the target providing information.</li>
+                <li><strong>Project confidence:</strong> A threat agent can generate less suspicion by calmly
+                    walking through a restricted area as if they know exactly where they are going, often
+                    greeting people.</li>
+                <li><strong>Use evasion and diversion:</strong> When challenged, an attacker might evade a
+                    question with a vague or irrelevant answer, feign innocence/confusion, or simply deny
+                    allegations until the target doubts their own suspicions. Sometimes, they resort to anger to
+                    cause the target to drop the challenge.</li>
+                <li><strong>Make them laugh:</strong> Humor is an excellent tool to develop a sense of trust and
+                    put people at ease.</li>
+            </ol>
 
-                    <h4>B. Personal Techniques to Gain Trust</h4>
-                    <p>When social engineering involves person-to-person contact, attackers use various personal
-                        techniques to gain trust:</p>
-                    <ol>
-                        <li><strong>Provide a reason:</strong> Adding a rationalization, often using the word "because,"
-                            increases the likelihood of the target providing information.</li>
-                        <li><strong>Project confidence:</strong> A threat agent can generate less suspicion by calmly
-                            walking through a restricted area as if they know exactly where they are going, often
-                            greeting people.</li>
-                        <li><strong>Use evasion and diversion:</strong> When challenged, an attacker might evade a
-                            question with a vague or irrelevant answer, feign innocence/confusion, or simply deny
-                            allegations until the target doubts their own suspicions. Sometimes, they resort to anger to
-                            cause the target to drop the challenge.</li>
-                        <li><strong>Make them laugh:</strong> Humor is an excellent tool to develop a sense of trust and
-                            put people at ease.</li>
-                    </ol>
+            <h4>C. Types of Social Engineering Attacks</h4>
+            <p>Key types of social engineering attacks include phishing, impersonation, redirection,
+                misinformation and disinformation, watering hole attacks, and data reconnaissance.</p>
 
-                    <h4>C. Types of Social Engineering Attacks</h4>
-                    <p>Key types of social engineering attacks include phishing, impersonation, redirection,
-                        misinformation and disinformation, watering hole attacks, and data reconnaissance.</p>
+            <h5>Phishing and its Variations</h5>
+            <p><strong>Phishing</strong> is one of the most common forms of social engineering, involving
+                sending an email or displaying a web announcement that falsely claims to be from a legitimate
+                source to trick the user into taking action. This term is a variation of "fishing," where bait
+                is thrown out hoping some users will "bite". Phishing emails often request users to update
+                personal data such as passwords or credit card numbers, directing them to an imposter website
+                designed to steal the entered information. Phishing is considered one of the <strong>largest and
+                    most consequential cyber threats</strong> facing consumers and enterprises. Phishing is also
+                used to validate email addresses by displaying an image retrieved from a website, confirming the
+                email address is active and valid.</p>
+            <p>Variations include:</p>
+            <ul>
+                <li><strong>Spear Phishing:</strong> Targets specific users (rather than millions generically)
+                    with emails customized to the recipient, often including names and personal details to
+                    appear legitimate.</li>
+                <li><strong>Whaling:</strong> A type of spear phishing that targets "big fish," such as wealthy
+                    individuals or <strong>senior executives</strong> who typically have large sums of money
+                    accessible.</li>
+                <li><strong>Vishing (Voice Phishing):</strong> Uses telephone calls instead of email. The target
+                    often hears a recorded message pretending to be from their bank, instructing them to call an
+                    attacker-controlled number to enter sensitive information via the telephone keypad.</li>
+                <li><strong>Smishing:</strong> Uses the short message service (SMS) to send fraudulent text
+                    messages. This is often combined with callback recorded phone messages asking the user to
+                    enter information for "verification".</li>
+            </ul>
 
-                    <h5>Phishing and its Variations</h5>
-                    <p><strong>Phishing</strong> is one of the most common forms of social engineering, involving
-                        sending an email or displaying a web announcement that falsely claims to be from a legitimate
-                        source to trick the user into taking action. This term is a variation of "fishing," where bait
-                        is thrown out hoping some users will "bite". Phishing emails often request users to update
-                        personal data such as passwords or credit card numbers, directing them to an imposter website
-                        designed to steal the entered information. Phishing is considered one of the <strong>largest and
-                            most consequential cyber threats</strong> facing consumers and enterprises. Phishing is also
-                        used to validate email addresses by displaying an image retrieved from a website, confirming the
-                        email address is active and valid.</p>
-                    <p>Variations include:</p>
+            <h5>Business Email Compromise (BEC)</h5>
+            <p>A BEC is a particular type of phishing attack increasing in popularity that exploits the common
+                business practice of electronically transferring funds or making payments. Attackers leverage
+                the size and complexity of large enterprises by requesting funds from what appears to be a
+                legitimate source, counting on the target complying without investigation. BEC attacks increased
+                by 59 percent as of the third quarter of 2022. BECs are not limited to businesses; users can be
+                victims, such as a request from a relative overseas needing money wired immediately.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>BEC attack</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Bogus invoice</strong></td>
+                        <td>An attacker, pretending to be a legitimate supplier, sends a fake invoice demanding
+                            immediate payment for an overdue account.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Executive fraud</strong></td>
+                        <td>A threat actor poses as a company executive, emailing Finance employees to
+                            immediately transfer funds for an unpublicized new company initiative, instructing
+                            them not to tell anyone.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Account compromise</strong></td>
+                        <td>A Finance Department employee’s email account is compromised, and then vendors are
+                            sent emails demanding immediate payment for a fictitious service.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h5>Impersonation</h5>
+            <p><strong>Impersonation</strong> is masquerading as a real or fictitious character and then acting
+                out that role on a target. Common roles impersonated are managers, IT support, repairpersons, or
+                trusted third parties, often chosen because users resist saying "no" to authority figures.
+                Sometimes the goal of impersonation is specifically to obtain private information, a practice
+                known as <strong>pretexting</strong>.</p>
+            <ul>
+                <li><strong>Brand Impersonation:</strong> The threat actor pretends to be a highly recognizable
+                    and well-known brand (like a major bank) to build immediate recognition and trust, tricking
+                    the target into clicking a link or opening an attachment.</li>
+            </ul>
+
+            <h5>Redirection</h5>
+            <p>When phishing or impersonation fails, threat actors use redirection tactics to send users to fake
+                look-alike sites, often filled with ads that generate revenue for the attacker.</p>
+            <ul>
+                <li><strong>Typo Squatting:</strong> Attackers purchase and register domain names that are
+                    spelled similarly to actual sites (e.g., <em>goggle.com</em> instead of <em>google.com</em>)
+                    to catch users who make typing errors when entering a URL (Uniform Resource Locator).
+                    Squatters prefer to mimic mainstream search engines/social media sites and
+                    financial/banking/online shopping sites.</li>
+                <li><strong>Bitsquatting:</strong> A variation where threat actors register domain names that
+                    are only <strong>one bit different</strong> from the actual name (e.g., <em>aeazon.com</em>
+                    for <em>amazon.com</em>). This exploits the increased likelihood of a RAM memory error
+                    "flipping" a bit in DNS memory.</li>
+                <li><strong>Pharming:</strong> Exploits the conversion of a URL (like <em>www.cengage.com</em>)
+                    into its corresponding IP address. A threat actor may install malware on the user's computer
+                    to perform the redirection, or infect a DNS server, directing large numbers of users to the
+                    fake site.</li>
+            </ul>
+
+            <h5>Misinformation and Disinformation</h5>
+            <ul>
+                <li><strong>Misinformation</strong> is false or inaccurate information, regardless of the intent
+                    to mislead.</li>
+                <li><strong>Disinformation</strong> is false or inaccurate misinformation that comes from a
+                    <strong>malicious intent</strong> and is knowingly false and intentionally spread.
+                </li>
+            </ul>
+            <p>An example of cyber disinformation is a <strong>hoax</strong> or false warning, often sent via
+                email claiming to be from the IT Department and advising the recipient to erase specific files
+                or change security configurations, which allows an attacker to compromise the system or leads
+                the victim to call the attacker’s phone number for help.</p>
+
+            <h5>Watering Hole Attack</h5>
+            <p>Similar to animals gathering at a common watering hole, this attack is directed toward a smaller
+                group of specific individuals, such as executives at a manufacturing company who frequently
+                visit a common website (e.g., a parts supplier). The attacker identifies this common site and
+                infects it with malware, which then makes its way onto the targeted group's computers.</p>
+
+            <h5>Data Reconnaissance</h5>
+            <p>Threat actors use various means to gather valuable information, sometimes without any direct
+                interaction with the target.</p>
+            <ul>
+                <li><strong>Dumpster Diving:</strong> Digging through trash receptacles to find useful
+                    information such as calendars, memos, organizational charts, phone directories, and policy
+                    manuals. Purchasing used technology equipment from which sensitive information has not been
+                    "scrubbed" is similar to dumpster diving.</li>
+                <li><strong>Google Dorking:</strong> Using advanced Google search techniques to find documents
+                    and data that unsuspecting victims have carelessly posted online.</li>
+                <li><strong>Shoulder Surfing:</strong> Casually observing an individual entering secret
+                    information, such as an access code on a keypad. Attackers may use hidden webcams and
+                    smartphone cameras for this.</li>
+            </ul>
+        </section>
+        <!-- END OF PART 1 -->
+        <section class="module-section">
+            <h2>II. Physical Security Controls</h2>
+            <p>Physical security controls are categorized as one of the four broad types of controls (along with
+                managerial, operational, and technical) and are often the most overlooked. Preventing physical
+                access to assets, such as a web server, is as important as preventing remote access. Physical
+                security controls include perimeter defenses, preventing data leakage, and computer hardware
+                security.</p>
+
+            <h3>A. Perimeter Defenses</h3>
+            <p>Perimeter defenses are used to restrict access and include barriers, security guards, sensors,
+                security buffers, and locks.</p>
+
+            <h4>Barriers</h4>
+            <p>Passive barriers restrict unauthorized vehicles or individuals.</p>
+            <ul>
+                <li><strong>Fencing:</strong> A tall, permanent structure usually accompanied by signage and
+                    proper lighting. Standard chain-link fencing offers limited security as it can be easily cut
+                    or climbed.</li>
+                <li><strong>Barricades:</strong> Designed mainly for directing large crowds and are typically
+                    easier to circumvent than fences.</li>
+                <li><strong>Bollards:</strong> Short but sturdy vertical posts used as vehicular traffic
+                    barricades to prevent a car from "ramming" into a secure area.</li>
+            </ul>
+            <p>Modern fencing often includes deterrents, such as those listed in the table below:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Technology</th>
+                        <th>Description</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Anticlimb paint</strong></td>
+                        <td>Nontoxic petroleum gel-based paint that is thickly applied and does not harden,
+                            making climbing difficult.</td>
+                        <td>Typically used on poles, downpipes, wall tops, and railings above head height (8
+                            feet or 2.4 meters).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anticlimb collar</strong></td>
+                        <td>Spiked collar extending horizontally up to 3 feet (1 meter) from the pole.</td>
+                        <td>Serves as both a practical and visual deterrent; used for protecting equipment
+                            mounted on poles or areas where climbing provides easy access over a fence.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Roller barrier</strong></td>
+                        <td>Independently rotating large cups affixed to the top of a fence.</td>
+                        <td>Prevents intruders' hands from gripping the top to climb; often found around public
+                            grounds and schools where a nonaggressive barrier is important.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rotating spikes</strong></td>
+                        <td>Installed at the top of walls, gates, or fences; tri-wing spike collars rotate
+                            around a central spindle.</td>
+                        <td>Designed for high-security areas; can be painted to blend into fencing.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Security Guards</h4>
+            <p>Human guards are an <strong>active security defense</strong> because they patrol, monitor, and
+                can make split-second decisions, differentiating between an intruder and an innocent person.</p>
+            <ul>
+                <li><strong>Two-person integrity/control:</strong> Requiring multiple security guards for higher
+                    protection levels prevents one compromised guard (via bribery or coercion) from facilitating
+                    an attack.</li>
+                <li><strong>Video Surveillance:</strong> Guards often monitor activity captured by cameras,
+                    transmitting signals to receivers (CCTV). High-end cameras can send alerts and start
+                    recording upon detecting movement or suspicious objects (e.g., a backpack).
+                    <strong>Drones</strong> (Unmanned Aerial Vehicles or UAVs) are increasingly used for
+                    monitoring.
+                </li>
+            </ul>
+
+            <h4>Sensors</h4>
+            <p>Sensors detect or measure a physical property and respond to it, supplementing security guards by
+                generating alarms for unexpected actions.</p>
+            <ul>
+                <li><strong>Infrared (IR) Sensors:</strong> Detect IR radiation.
                     <ul>
-                        <li><strong>Spear Phishing:</strong> Targets specific users (rather than millions generically)
-                            with emails customized to the recipient, often including names and personal details to
-                            appear legitimate.</li>
-                        <li><strong>Whaling:</strong> A type of spear phishing that targets "big fish," such as wealthy
-                            individuals or <strong>senior executives</strong> who typically have large sums of money
-                            accessible.</li>
-                        <li><strong>Vishing (Voice Phishing):</strong> Uses telephone calls instead of email. The target
-                            often hears a recorded message pretending to be from their bank, instructing them to call an
-                            attacker-controlled number to enter sensitive information via the telephone keypad.</li>
-                        <li><strong>Smishing:</strong> Uses the short message service (SMS) to send fraudulent text
-                            messages. This is often combined with callback recorded phone messages asking the user to
-                            enter information for "verification".</li>
+                        <li><strong>Active IR sensors</strong> both emit and detect IR (using an LED and
+                            receiver), acting as <strong>proximity sensors</strong> to determine how close an
+                            object is.</li>
+                        <li><strong>Passive IR sensors</strong> only detect IR radiation emitted as heat by
+                            living beings, making them ideal for <strong>motion-based detection</strong>.</li>
                     </ul>
+                </li>
+                <li><strong>Microwave Sensors:</strong> Use high-frequency radio waves, functioning like radar
+                    to detect changes in reflected waves. They are effective for monitoring <strong>large
+                        areas</strong> such as warehouses. They can also sense daylight levels to dim interior
+                    lights for energy savings.</li>
+                <li><strong>Ultrasonic Sensors:</strong> Use ultrasound waves to measure the distance to a
+                    target object by timing the wave return. They are proximity sensors less susceptible to
+                    interference from smoke, gas, or airborne particles compared to IR sensors. In physical
+                    security, they can allow a person to be present but sound an alarm if they move too close to
+                    a door. The distance calculation uses the speed of sound.</li>
+                <li><strong>Pressure Sensors:</strong> Detect if a person has entered a restricted area. Modern
+                    versions can differentiate between targets (pedestrian, car, truck) and determine the
+                    direction of travel. Underground pressure sensors use a controller box and buried plastic
+                    tubes.</li>
+            </ul>
 
-                    <h5>Business Email Compromise (BEC)</h5>
-                    <p>A BEC is a particular type of phishing attack increasing in popularity that exploits the common
-                        business practice of electronically transferring funds or making payments. Attackers leverage
-                        the size and complexity of large enterprises by requesting funds from what appears to be a
-                        legitimate source, counting on the target complying without investigation. BEC attacks increased
-                        by 59 percent as of the third quarter of 2022. BECs are not limited to businesses; users can be
-                        victims, such as a request from a relative overseas needing money wired immediately.</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>BEC attack</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Bogus invoice</strong></td>
-                                <td>An attacker, pretending to be a legitimate supplier, sends a fake invoice demanding
-                                    immediate payment for an overdue account.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Executive fraud</strong></td>
-                                <td>A threat actor poses as a company executive, emailing Finance employees to
-                                    immediately transfer funds for an unpublicized new company initiative, instructing
-                                    them not to tell anyone.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Account compromise</strong></td>
-                                <td>A Finance Department employee’s email account is compromised, and then vendors are
-                                    sent emails demanding immediate payment for a fictitious service.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <h4>Security Buffers</h4>
+            <p>Buffers provide an additional layer of security between nonsecure and secure areas.</p>
+            <ul>
+                <li><strong>High Security: Access Control Vestibule (Mantrap):</strong> An automated buffer
+                    controlling two interlocking doors; only one door can be open at any time. Used in
+                    high-security areas like research labs or cash handling. Historically, a security officer
+                    checked credentials inside the small room (vestibule).</li>
+                <li><strong>Medium Security: Reception Area:</strong> Allows visitors to enter an area where a
+                    receptionist checks credentials before they pass through an inner door. Precautions include
+                    ensuring the receptionist focuses solely on observing visitors, anchoring furnishings, and
+                    having the ability to electrically lock out suspicious persons.</li>
+                <li><strong>Low Security: Waiting Room:</strong> A generic room that serves as a buffer,
+                    typically controlling traffic flow with a check-in window.</li>
+            </ul>
 
-                    <h5>Impersonation</h5>
-                    <p><strong>Impersonation</strong> is masquerading as a real or fictitious character and then acting
-                        out that role on a target. Common roles impersonated are managers, IT support, repairpersons, or
-                        trusted third parties, often chosen because users resist saying "no" to authority figures.
-                        Sometimes the goal of impersonation is specifically to obtain private information, a practice
-                        known as <strong>pretexting</strong>.</p>
+            <h4>Locks</h4>
+            <p>Locks restrict physical access. Key-based locks increase risk because keys can be lost, stolen,
+                or duplicated.</p>
+            <ul>
+                <li><strong>Electronic Locks:</strong> A more secure option that uses buttons pressed in a
+                    proper sequence. They can be programmed to be valid only at specific times and maintain a
+                    record (log) of when the door was opened and by which code.
                     <ul>
-                        <li><strong>Brand Impersonation:</strong> The threat actor pretends to be a highly recognizable
-                            and well-known brand (like a major bank) to build immediate recognition and trust, tricking
-                            the target into clicking a link or opening an attachment.</li>
-                    </ul>
-
-                    <h5>Redirection</h5>
-                    <p>When phishing or impersonation fails, threat actors use redirection tactics to send users to fake
-                        look-alike sites, often filled with ads that generate revenue for the attacker.</p>
-                    <ul>
-                        <li><strong>Typo Squatting:</strong> Attackers purchase and register domain names that are
-                            spelled similarly to actual sites (e.g., <em>goggle.com</em> instead of <em>google.com</em>)
-                            to catch users who make typing errors when entering a URL (Uniform Resource Locator).
-                            Squatters prefer to mimic mainstream search engines/social media sites and
-                            financial/banking/online shopping sites.</li>
-                        <li><strong>Bitsquatting:</strong> A variation where threat actors register domain names that
-                            are only <strong>one bit different</strong> from the actual name (e.g., <em>aeazon.com</em>
-                            for <em>amazon.com</em>). This exploits the increased likelihood of a RAM memory error
-                            "flipping" a bit in DNS memory.</li>
-                        <li><strong>Pharming:</strong> Exploits the conversion of a URL (like <em>www.cengage.com</em>)
-                            into its corresponding IP address. A threat actor may install malware on the user's computer
-                            to perform the redirection, or infect a DNS server, directing large numbers of users to the
-                            fake site.</li>
-                    </ul>
-
-                    <h5>Misinformation and Disinformation</h5>
-                    <ul>
-                        <li><strong>Misinformation</strong> is false or inaccurate information, regardless of the intent
-                            to mislead.</li>
-                        <li><strong>Disinformation</strong> is false or inaccurate misinformation that comes from a
-                            <strong>malicious intent</strong> and is knowingly false and intentionally spread.
+                        <li>A problem with traditional electronic keypads is susceptibility to shoulder surfing
+                            or detecting fingerprint "smudges". Mitigation includes using a <strong>virtual
+                                screen</strong> with four circles where digits are randomly assigned and
+                            rotated, preventing a shoulder surfer from pressing the same circles repeatedly.
                         </li>
                     </ul>
-                    <p>An example of cyber disinformation is a <strong>hoax</strong> or false warning, often sent via
-                        email claiming to be from the IT Department and advising the recipient to erase specific files
-                        or change security configurations, which allows an attacker to compromise the system or leads
-                        the victim to call the attacker’s phone number for help.</p>
+                </li>
+                <li><strong>Smart Locks:</strong> Growing in popularity, these use a smartphone to send a code
+                    via wireless Bluetooth to open the door.</li>
+            </ul>
 
-                    <h5>Watering Hole Attack</h5>
-                    <p>Similar to animals gathering at a common watering hole, this attack is directed toward a smaller
-                        group of specific individuals, such as executives at a manufacturing company who frequently
-                        visit a common website (e.g., a parts supplier). The attacker identifies this common site and
-                        infects it with malware, which then makes its way onto the targeted group's computers.</p>
-
-                    <h5>Data Reconnaissance</h5>
-                    <p>Threat actors use various means to gather valuable information, sometimes without any direct
-                        interaction with the target.</p>
+            <h3>B. Preventing Data Leakage</h3>
+            <p>Physical security also includes controls designed to prevent data from escaping.</p>
+            <ul>
+                <li><strong>Faraday Cage:</strong> Digital electronic devices emit electromagnetic fields, which
+                    can lead to Electromagnetic Interference (EMI) or allow unauthorized persons to detect and
+                    read the signals. A Faraday cage is a metallic enclosure that prevents the entry or escape
+                    of an electromagnetic field. Lightweight <strong>Faraday bags</strong> are used to shield
+                    portable devices, commonly used in crime scene investigations to prevent remote wiping of
+                    evidence.</li>
+                <li><strong>Protected Distribution System (PDS):</strong> A system of cable conduits (hollow
+                    tubes carrying copper or fiber-optic cables) used to protect classified information
+                    transmitted between two secure areas. This is a standard created by the U.S. Department of
+                    Defense (DoD).
                     <ul>
-                        <li><strong>Dumpster Diving:</strong> Digging through trash receptacles to find useful
-                            information such as calendars, memos, organizational charts, phone directories, and policy
-                            manuals. Purchasing used technology equipment from which sensitive information has not been
-                            "scrubbed" is similar to dumpster diving.</li>
-                        <li><strong>Google Dorking:</strong> Using advanced Google search techniques to find documents
-                            and data that unsuspecting victims have carelessly posted online.</li>
-                        <li><strong>Shoulder Surfing:</strong> Casually observing an individual entering secret
-                            information, such as an access code on a keypad. Attackers may use hidden webcams and
-                            smartphone cameras for this.</li>
+                        <li><strong>Hardened carrier PDS:</strong> Cables are installed in a conduit of special
+                            electrical metallic tubing with permanently sealed connections. If buried
+                            underground (e.g., between buildings), the carrier must be <strong>encased in
+                                concrete</strong>, and access points must be locked down. Requires regular
+                            visual inspection.</li>
+                        <li><strong>Alarmed carrier PDS:</strong> The system uses specialized optical fibers
+                            within the conduit to sense acoustic vibrations caused by intruders attempting to
+                            access the cables, triggering an alarm. Advantages include continuous monitoring and
+                            elimination of periodic visual inspections.</li>
                     </ul>
-                </section>
-                <!-- END OF PART 1 -->
-                <section class="module-section">
-                    <h2>II. Physical Security Controls</h2>
-                    <p>Physical security controls are categorized as one of the four broad types of controls (along with
-                        managerial, operational, and technical) and are often the most overlooked. Preventing physical
-                        access to assets, such as a web server, is as important as preventing remote access. Physical
-                        security controls include perimeter defenses, preventing data leakage, and computer hardware
-                        security.</p>
+                </li>
+            </ul>
 
-                    <h3>A. Perimeter Defenses</h3>
-                    <p>Perimeter defenses are used to restrict access and include barriers, security guards, sensors,
-                        security buffers, and locks.</p>
+            <h3>C. Computer Hardware Security</h3>
+            <p>This physical security specifically protects mobile hardware like laptops, which are easily
+                stolen.</p>
+            <ul>
+                <li><strong>Cable Locks:</strong> Most portable devices and expensive monitors have a steel
+                    bracket security slot built into the case. A cable lock can be inserted and secured to the
+                    device, with the cable then connected to an immovable object.</li>
+                <li><strong>Safes and Vaults:</strong> Ruggedized steel boxes with locks used for storage. Safes
+                    can be small (for one laptop) or large, and can be prewired for electrical power and wired
+                    network connections, allowing devices to charge and receive updates while stored.</li>
+            </ul>
+        </section>
 
-                    <h4>Barriers</h4>
-                    <p>Passive barriers restrict unauthorized vehicles or individuals.</p>
+        <section class="module-section">
+            <h2>III. Data Controls</h2>
+            <p>Protecting data is imperative, as it is considered the "lifeblood of technology". Protection
+                strategies require understanding data classifications, types, breach consequences, and effective
+                controls.</p>
+
+            <h3>A. Data Classifications</h3>
+            <p>To determine the appropriate level of protection, data is categorized into distinct
+                classifications. The required protection level is influenced by the data's value, which can
+                range from virtually priceless (like digital photos) to having little value (like old news
+                headlines).</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data type</th>
+                        <th>Description</th>
+                        <th>Recommended handling</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Confidential</strong></td>
+                        <td><strong>Highest level of data sensitivity</strong>.</td>
+                        <td>Should only be made available to users with the highest level of preapproved
+                            authentication.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Private</strong></td>
+                        <td>Restricted data with a medium level of confidentiality.</td>
+                        <td>For users who have a need-to-know basis of the contents.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sensitive</strong></td>
+                        <td>Data that could cause catastrophic harm to the company if disclosed (e.g., technical
+                            specifications for a new product).</td>
+                        <td>Restricted to employees who have a business need to access the data and have been
+                            approved.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Critical</strong></td>
+                        <td>Data classified according to availability needs; if unavailable, the function and
+                            mission would be severely impacted.</td>
+                        <td>Critical data must be rigorously protected.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Public</strong></td>
+                        <td>No risk of release.</td>
+                        <td>For all public consumption; assumed public if no other label is attached.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Restricted</strong></td>
+                        <td>Data that is not available to the public.</td>
+                        <td>Caution should be exercised before using this kind of information in emails.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>When assigning a classification, the data's confidentiality should be considered along with its
+                <strong>integrity and availability</strong>. Note that there is no universal agreement on data
+                classifications, with different entities using three, four, five, or more types.
+            </p>
+
+            <h3>B. Types of Data</h3>
+            <p>Data types categorize data based on their nature, and similar data types would fall into a single
+                data classification.</p>
+            <ul>
+                <li><strong>Regulated Data:</strong> Data subjected to external stipulations concerning who can
+                    view and use it. An example is <strong>Protected Health Information (PHI)</strong>,
+                    regulated by HIPAA (Health Insurance Portability and Accountability Act of 1996).</li>
+                <li><strong>Intellectual Property (IP) Data:</strong> An invention or work resulting from
+                    creativity. IP protection includes patent, trademark, copyright, or trade secret. Threat
+                    actors actively seek to steal IP research.</li>
+                <li><strong>Trade Secret Data:</strong> Undisclosed enterprise data. It must have actual or
+                    potential independent economic value by virtue of not being generally known, have value to
+                    others who cannot legitimately obtain it, and be subject to reasonable efforts to maintain
+                    its secrecy. Unlike patents, trade secret protection has no time limit, but it ceases to
+                    exist if any of the three required elements are lost.</li>
+                <li><strong>Enterprise Information:</strong> Includes <strong>Legal information</strong>
+                    (factual information about the law, considered neutral) and <strong>Financial
+                        information</strong> (data on monetary transactions, such as credit card numbers or
+                    credit ratings).</li>
+                <li><strong>Human- and Non-human-readable Data:</strong>
                     <ul>
-                        <li><strong>Fencing:</strong> A tall, permanent structure usually accompanied by signage and
-                            proper lighting. Standard chain-link fencing offers limited security as it can be easily cut
-                            or climbed.</li>
-                        <li><strong>Barricades:</strong> Designed mainly for directing large crowds and are typically
-                            easier to circumvent than fences.</li>
-                        <li><strong>Bollards:</strong> Short but sturdy vertical posts used as vehicular traffic
-                            barricades to prevent a car from "ramming" into a secure area.</li>
+                        <li><strong>Human-readable data</strong> is what a person can read and interpret.</li>
+                        <li><strong>Non-human-readable data</strong> (machine-readable data) is interpreted by a
+                            device and is not readily understood by a person in its native state. Examples
+                            include <strong>JSON</strong> (JavaScript object notation) and <strong>XML</strong>
+                            (Extensible Markup Language).</li>
                     </ul>
-                    <p>Modern fencing often includes deterrents, such as those listed in the table below:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Technology</th>
-                                <th>Description</th>
-                                <th>Comments</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Anticlimb paint</strong></td>
-                                <td>Nontoxic petroleum gel-based paint that is thickly applied and does not harden,
-                                    making climbing difficult.</td>
-                                <td>Typically used on poles, downpipes, wall tops, and railings above head height (8
-                                    feet or 2.4 meters).</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Anticlimb collar</strong></td>
-                                <td>Spiked collar extending horizontally up to 3 feet (1 meter) from the pole.</td>
-                                <td>Serves as both a practical and visual deterrent; used for protecting equipment
-                                    mounted on poles or areas where climbing provides easy access over a fence.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Roller barrier</strong></td>
-                                <td>Independently rotating large cups affixed to the top of a fence.</td>
-                                <td>Prevents intruders' hands from gripping the top to climb; often found around public
-                                    grounds and schools where a nonaggressive barrier is important.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Rotating spikes</strong></td>
-                                <td>Installed at the top of walls, gates, or fences; tri-wing spike collars rotate
-                                    around a central spindle.</td>
-                                <td>Designed for high-security areas; can be painted to blend into fencing.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                </li>
+            </ul>
 
-                    <h4>Security Guards</h4>
-                    <p>Human guards are an <strong>active security defense</strong> because they patrol, monitor, and
-                        can make split-second decisions, differentiating between an intruder and an innocent person.</p>
+            <h3>C. Data Breach Consequences</h3>
+            <p>Organizations suffering a data breach face significant consequences.</p>
+            <ol>
+                <li><strong>Reputation Damage:</strong> Bad publicity often leads to a tarnished reputation,
+                    evidenced by loss of customers and a drop in stock price. Organizations are usually required
+                    to send data breach letters to users, magnifying the reputational harm.</li>
+                <li><strong>IP Theft:</strong> Loss of Intellectual Property owned by the organization or its
+                    customers.</li>
+                <li><strong>Fines:</strong> Financial penalties assessed under various federal and state laws
+                    (e.g., HIPAA, Sarbox, GLBA, PCI DSS). Organizations in the European Union face fines based
+                    on the General Data Protection Regulation (GDPR), with a second tier imposing fines up to
+                    <strong>20 million euros or 4 percent of the firm’s worldwide annual revenue</strong>,
+                    whichever is higher.
+                </li>
+            </ol>
+
+            <h3>D. Protecting Data: Considerations and Methods</h3>
+            <p>Creating strong data controls involves several general considerations about the data.</p>
+
+            <h4>General Data Considerations</h4>
+            <ul>
+                <li><strong>Data State (Condition):</strong> Data can reside in three states:
                     <ul>
-                        <li><strong>Two-person integrity/control:</strong> Requiring multiple security guards for higher
-                            protection levels prevents one compromised guard (via bribery or coercion) from facilitating
-                            an attack.</li>
-                        <li><strong>Video Surveillance:</strong> Guards often monitor activity captured by cameras,
-                            transmitting signals to receivers (CCTV). High-end cameras can send alerts and start
-                            recording upon detecting movement or suspicious objects (e.g., a backpack).
-                            <strong>Drones</strong> (Unmanned Aerial Vehicles or UAVs) are increasingly used for
-                            monitoring.</li>
+                        <li><strong>Data in processing (Data in use):</strong> Data on which devices are
+                            performing actions (e.g., printing a report).</li>
+                        <li><strong>Data in transit (Data in motion):</strong> Actions that transmit data across
+                            a network (e.g., an email sent across the Internet).</li>
+                        <li><strong>Data at rest:</strong> Data stored on electronic media.</li>
                     </ul>
+                </li>
+                <li><strong>Location:</strong> <strong>Geolocation</strong> identifies the data's location using
+                    techniques encompassing latitude and longitude coordinates. <strong>GeoIP</strong>
+                    (Geolocation by Internet Protocol) relies specifically on the device's IP address.</li>
+                <li><strong>Data Sovereignty:</strong> Country-specific government regulations that apply to
+                    data, usually determined by the country in which the data is collected or processed. Many
+                    countries (e.g., Russia, China, Germany) require citizens' data to be stored on physical
+                    servers within their borders.</li>
+            </ul>
 
-                    <h4>Sensors</h4>
-                    <p>Sensors detect or measure a physical property and respond to it, supplementing security guards by
-                        generating alarms for unexpected actions.</p>
+            <h4>Data Security Methods</h4>
+            <p>Various techniques and technologies enhance data protection.</p>
+            <ul>
+                <li><strong>Data Minimization:</strong> Limiting the collection of personal information to only
+                    what is directly relevant and necessary for a specific task; collection should be adequate,
+                    relevant, and not excessive.</li>
+                <li><strong>Data Masking:</strong> Creating a copy of the original data and using
+                    <strong>obfuscation</strong> (making unintelligible) on sensitive elements (like a Social
+                    Security number). Proper data masking replaces actual information that is not required and
+                    should be <strong>irreversible</strong>. It is one means of <strong>data
+                        sanitization</strong> (the process of cleaning data to provide privacy protection).
+                </li>
+                <li><strong>Tokenization:</strong> Obfuscating sensitive data elements (like account numbers)
+                    into a random string of characters (<strong>token</strong>). The original data and the token
+                    are stored in a <strong>token vault</strong> for retrieval if needed. If the original data
+                    can be restored, it is called <strong>pseudo-anonymization</strong>.</li>
+                <li><strong>Restrictions:</strong> Limits imposed on data access.
                     <ul>
-                        <li><strong>Infrared (IR) Sensors:</strong> Detect IR radiation.
-                            <ul>
-                                <li><strong>Active IR sensors</strong> both emit and detect IR (using an LED and
-                                    receiver), acting as <strong>proximity sensors</strong> to determine how close an
-                                    object is.</li>
-                                <li><strong>Passive IR sensors</strong> only detect IR radiation emitted as heat by
-                                    living beings, making them ideal for <strong>motion-based detection</strong>.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Microwave Sensors:</strong> Use high-frequency radio waves, functioning like radar
-                            to detect changes in reflected waves. They are effective for monitoring <strong>large
-                                areas</strong> such as warehouses. They can also sense daylight levels to dim interior
-                            lights for energy savings.</li>
-                        <li><strong>Ultrasonic Sensors:</strong> Use ultrasound waves to measure the distance to a
-                            target object by timing the wave return. They are proximity sensors less susceptible to
-                            interference from smoke, gas, or airborne particles compared to IR sensors. In physical
-                            security, they can allow a person to be present but sound an alarm if they move too close to
-                            a door. The distance calculation uses the speed of sound.</li>
-                        <li><strong>Pressure Sensors:</strong> Detect if a person has entered a restricted area. Modern
-                            versions can differentiate between targets (pedestrian, car, truck) and determine the
-                            direction of travel. Underground pressure sensors use a controller box and buried plastic
-                            tubes.</li>
+                        <li><strong>Permission restrictions</strong> limit access only to individuals and
+                            devices with a legitimate business need.</li>
+                        <li><strong>Geographic restrictions</strong> limit access to specific locations (e.g.,
+                            HIPAA data only accessible on the hospital campus).</li>
                     </ul>
+                </li>
+                <li><strong>Segmentation:</strong> Identifying data elements' classification, tagging them, and
+                    then separating the most sensitive data. This sensitive data is defined as the "protect
+                    surface," and extra security controls are applied around it.</li>
+            </ul>
 
-                    <h4>Security Buffers</h4>
-                    <p>Buffers provide an additional layer of security between nonsecure and secure areas.</p>
-                    <ul>
-                        <li><strong>High Security: Access Control Vestibule (Mantrap):</strong> An automated buffer
-                            controlling two interlocking doors; only one door can be open at any time. Used in
-                            high-security areas like research labs or cash handling. Historically, a security officer
-                            checked credentials inside the small room (vestibule).</li>
-                        <li><strong>Medium Security: Reception Area:</strong> Allows visitors to enter an area where a
-                            receptionist checks credentials before they pass through an inner door. Precautions include
-                            ensuring the receptionist focuses solely on observing visitors, anchoring furnishings, and
-                            having the ability to electrically lock out suspicious persons.</li>
-                        <li><strong>Low Security: Waiting Room:</strong> A generic room that serves as a buffer,
-                            typically controlling traffic flow with a check-in window.</li>
-                    </ul>
+            <hr>
 
-                    <h4>Locks</h4>
-                    <p>Locks restrict physical access. Key-based locks increase risk because keys can be lost, stolen,
-                        or duplicated.</p>
-                    <ul>
-                        <li><strong>Electronic Locks:</strong> A more secure option that uses buttons pressed in a
-                            proper sequence. They can be programmed to be valid only at specific times and maintain a
-                            record (log) of when the door was opened and by which code.
-                            <ul>
-                                <li>A problem with traditional electronic keypads is susceptibility to shoulder surfing
-                                    or detecting fingerprint "smudges". Mitigation includes using a <strong>virtual
-                                        screen</strong> with four circles where digits are randomly assigned and
-                                    rotated, preventing a shoulder surfer from pressing the same circles repeatedly.
-                                </li>
-                            </ul>
-                        </li>
-                        <li><strong>Smart Locks:</strong> Growing in popularity, these use a smartphone to send a code
-                            via wireless Bluetooth to open the door.</li>
-                    </ul>
+            <p>To solidify understanding, consider the principles of physical security as being analogous to
+                protecting a medieval castle:</p>
+            <ul>
+                <li><strong>Perimeter Defenses</strong> (Fencing, Bollards) are like the outer <strong>moat and
+                        walls</strong>, designed to passively stop invaders.</li>
+                <li><strong>Security Guards</strong> and <strong>Video Surveillance</strong> are the
+                    <strong>archers on the battlements</strong>, providing an active defense and watchful eyes.
+                </li>
+                <li><strong>Security Buffers</strong> (Access Control Vestibules/Mantraps) are the
+                    <strong>gatehouse</strong>, a restricted, interlocking area where identity must be confirmed
+                    before proceeding deeper into the keep.
+                </li>
+                <li><strong>Data Controls</strong> are like protecting the <strong>crown jewels</strong>,
+                    ensuring they are hidden (Confidential), only viewed by trusted advisors
+                    (Private/Sensitive), and locked away (Tokenization/Masking), subject only to the King's laws
+                    (Data Sovereignty).</li>
+            </ul>
+        </section>
 
-                    <h3>B. Preventing Data Leakage</h3>
-                    <p>Physical security also includes controls designed to prevent data from escaping.</p>
-                    <ul>
-                        <li><strong>Faraday Cage:</strong> Digital electronic devices emit electromagnetic fields, which
-                            can lead to Electromagnetic Interference (EMI) or allow unauthorized persons to detect and
-                            read the signals. A Faraday cage is a metallic enclosure that prevents the entry or escape
-                            of an electromagnetic field. Lightweight <strong>Faraday bags</strong> are used to shield
-                            portable devices, commonly used in crime scene investigations to prevent remote wiping of
-                            evidence.</li>
-                        <li><strong>Protected Distribution System (PDS):</strong> A system of cable conduits (hollow
-                            tubes carrying copper or fiber-optic cables) used to protect classified information
-                            transmitted between two secure areas. This is a standard created by the U.S. Department of
-                            Defense (DoD).
-                            <ul>
-                                <li><strong>Hardened carrier PDS:</strong> Cables are installed in a conduit of special
-                                    electrical metallic tubing with permanently sealed connections. If buried
-                                    underground (e.g., between buildings), the carrier must be <strong>encased in
-                                        concrete</strong>, and access points must be locked down. Requires regular
-                                    visual inspection.</li>
-                                <li><strong>Alarmed carrier PDS:</strong> The system uses specialized optical fibers
-                                    within the conduit to sense acoustic vibrations caused by intruders attempting to
-                                    access the cables, triggering an alarm. Advantages include continuous monitoring and
-                                    elimination of periodic visual inspections.</li>
-                            </ul>
-                        </li>
-                    </ul>
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide: Pervasive Attack Surfaces and Controls</h2>
+            <p>This study guide provides a comprehensive review of social engineering, physical security, and
+                data controls. It includes a quiz to test your understanding, essay questions for deeper
+                analysis, and a complete glossary of key terms from the module.</p>
 
-                    <h3>C. Computer Hardware Security</h3>
-                    <p>This physical security specifically protects mobile hardware like laptops, which are easily
-                        stolen.</p>
-                    <ul>
-                        <li><strong>Cable Locks:</strong> Most portable devices and expensive monitors have a steel
-                            bracket security slot built into the case. A cable lock can be inserted and secured to the
-                            device, with the cable then connected to an immovable object.</li>
-                        <li><strong>Safes and Vaults:</strong> Ruggedized steel boxes with locks used for storage. Safes
-                            can be small (for one laptop) or large, and can be prewired for electrical power and wired
-                            network connections, allowing devices to charge and receive updates while stored.</li>
-                    </ul>
-                </section>
+            <h3>Quiz: Short-Answer Questions</h3>
+            <p><em>Instructions: Click on a question to reveal the answer.</em></p>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. What is social engineering, and what is considered its primary attack surface?
+                    </summary>
+                    <p>Social engineering is a method of eliciting information or convincing a user to take an
+                        action that weakens security, primarily through deception and manipulation. Because it
+                        exploits a person rather than a technology vulnerability, its attack surface is
+                        accomplished using "human vectors."</p>
+                </details>
 
-                <section class="module-section">
-                    <h2>III. Data Controls</h2>
-                    <p>Protecting data is imperative, as it is considered the "lifeblood of technology". Protection
-                        strategies require understanding data classifications, types, breach consequences, and effective
-                        controls.</p>
+                <details>
+                    <summary>2. Explain the psychological principles of Authority and Intimidation as they are
+                        used in social engineering attacks.</summary>
+                    <p>The principle of Authority involves an attacker directing a target by impersonating an
+                        authority figure, such as a CEO, to make their request seem legitimate. Intimidation is
+                        used to frighten and coerce a target by threatening negative consequences, such as
+                        telling the target's supervisor if they do not comply with a demand.</p>
+                </details>
 
-                    <h3>A. Data Classifications</h3>
-                    <p>To determine the appropriate level of protection, data is categorized into distinct
-                        classifications. The required protection level is influenced by the data's value, which can
-                        range from virtually priceless (like digital photos) to having little value (like old news
-                        headlines).</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Data type</th>
-                                <th>Description</th>
-                                <th>Recommended handling</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Confidential</strong></td>
-                                <td><strong>Highest level of data sensitivity</strong>.</td>
-                                <td>Should only be made available to users with the highest level of preapproved
-                                    authentication.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Private</strong></td>
-                                <td>Restricted data with a medium level of confidentiality.</td>
-                                <td>For users who have a need-to-know basis of the contents.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Sensitive</strong></td>
-                                <td>Data that could cause catastrophic harm to the company if disclosed (e.g., technical
-                                    specifications for a new product).</td>
-                                <td>Restricted to employees who have a business need to access the data and have been
-                                    approved.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Critical</strong></td>
-                                <td>Data classified according to availability needs; if unavailable, the function and
-                                    mission would be severely impacted.</td>
-                                <td>Critical data must be rigorously protected.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Public</strong></td>
-                                <td>No risk of release.</td>
-                                <td>For all public consumption; assumed public if no other label is attached.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Restricted</strong></td>
-                                <td>Data that is not available to the public.</td>
-                                <td>Caution should be exercised before using this kind of information in emails.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p>When assigning a classification, the data's confidentiality should be considered along with its
-                        <strong>integrity and availability</strong>. Note that there is no universal agreement on data
-                        classifications, with different entities using three, four, five, or more types.</p>
+                <details>
+                    <summary>3. Differentiate between Spear Phishing and Whaling.</summary>
+                    <p>Spear phishing is a targeted email attack that is customized to a specific user, often
+                        including their name and personal details to appear more legitimate. Whaling is a
+                        specific type of spear phishing that targets "big fish," such as wealthy individuals or
+                        senior executives, with the goal of accessing larger sums of money or more valuable
+                        information.</p>
+                </details>
 
-                    <h3>B. Types of Data</h3>
-                    <p>Data types categorize data based on their nature, and similar data types would fall into a single
-                        data classification.</p>
-                    <ul>
-                        <li><strong>Regulated Data:</strong> Data subjected to external stipulations concerning who can
-                            view and use it. An example is <strong>Protected Health Information (PHI)</strong>,
-                            regulated by HIPAA (Health Insurance Portability and Accountability Act of 1996).</li>
-                        <li><strong>Intellectual Property (IP) Data:</strong> An invention or work resulting from
-                            creativity. IP protection includes patent, trademark, copyright, or trade secret. Threat
-                            actors actively seek to steal IP research.</li>
-                        <li><strong>Trade Secret Data:</strong> Undisclosed enterprise data. It must have actual or
-                            potential independent economic value by virtue of not being generally known, have value to
-                            others who cannot legitimately obtain it, and be subject to reasonable efforts to maintain
-                            its secrecy. Unlike patents, trade secret protection has no time limit, but it ceases to
-                            exist if any of the three required elements are lost.</li>
-                        <li><strong>Enterprise Information:</strong> Includes <strong>Legal information</strong>
-                            (factual information about the law, considered neutral) and <strong>Financial
-                                information</strong> (data on monetary transactions, such as credit card numbers or
-                            credit ratings).</li>
-                        <li><strong>Human- and Non-human-readable Data:</strong>
-                            <ul>
-                                <li><strong>Human-readable data</strong> is what a person can read and interpret.</li>
-                                <li><strong>Non-human-readable data</strong> (machine-readable data) is interpreted by a
-                                    device and is not readily understood by a person in its native state. Examples
-                                    include <strong>JSON</strong> (JavaScript object notation) and <strong>XML</strong>
-                                    (Extensible Markup Language).</li>
-                            </ul>
-                        </li>
-                    </ul>
+                <details>
+                    <summary>4. What is a Business Email Compromise (BEC), and what are two common forms it
+                        takes?</summary>
+                    <p>A Business Email Compromise (BEC) is a type of phishing attack that exploits the common
+                        business practice of making electronic payments by sending fraudulent requests for funds
+                        that appear legitimate. Two common forms are the Bogus Invoice, where an attacker
+                        pretends to be a supplier demanding payment, and Executive Fraud, where an attacker
+                        poses as an executive to order an employee to transfer funds.</p>
+                </details>
 
-                    <h3>C. Data Breach Consequences</h3>
-                    <p>Organizations suffering a data breach face significant consequences.</p>
-                    <ol>
-                        <li><strong>Reputation Damage:</strong> Bad publicity often leads to a tarnished reputation,
-                            evidenced by loss of customers and a drop in stock price. Organizations are usually required
-                            to send data breach letters to users, magnifying the reputational harm.</li>
-                        <li><strong>IP Theft:</strong> Loss of Intellectual Property owned by the organization or its
-                            customers.</li>
-                        <li><strong>Fines:</strong> Financial penalties assessed under various federal and state laws
-                            (e.g., HIPAA, Sarbox, GLBA, PCI DSS). Organizations in the European Union face fines based
-                            on the General Data Protection Regulation (GDPR), with a second tier imposing fines up to
-                            <strong>20 million euros or 4 percent of the firm’s worldwide annual revenue</strong>,
-                            whichever is higher.</li>
-                    </ol>
+                <details>
+                    <summary>5. Explain the difference between Typo Squatting and Bitsquatting.</summary>
+                    <p>Typo squatting involves registering domain names that are common misspellings of
+                        legitimate sites (e.g., goggle.com for google.com) to capture traffic from users who
+                        make typing errors. Bitsquatting is more technical, involving the registration of domain
+                        names that are one binary bit different from a legitimate domain, hoping to capture
+                        traffic from rare RAM memory errors that "flip" a bit in a character.</p>
+                </details>
 
-                    <h3>D. Protecting Data: Considerations and Methods</h3>
-                    <p>Creating strong data controls involves several general considerations about the data.</p>
+                <details>
+                    <summary>6. Describe two types of fencing deterrents used to enhance perimeter security.
+                    </summary>
+                    <p>One deterrent is anti-climb paint, a non-hardening, petroleum-based gel that makes
+                        surfaces difficult to climb. Another is the roller barrier, which consists of large,
+                        independently rotating cups affixed to the top of a fence that prevent an intruder from
+                        getting a handhold to climb over.</p>
+                </details>
 
-                    <h4>General Data Considerations</h4>
-                    <ul>
-                        <li><strong>Data State (Condition):</strong> Data can reside in three states:
-                            <ul>
-                                <li><strong>Data in processing (Data in use):</strong> Data on which devices are
-                                    performing actions (e.g., printing a report).</li>
-                                <li><strong>Data in transit (Data in motion):</strong> Actions that transmit data across
-                                    a network (e.g., an email sent across the Internet).</li>
-                                <li><strong>Data at rest:</strong> Data stored on electronic media.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Location:</strong> <strong>Geolocation</strong> identifies the data's location using
-                            techniques encompassing latitude and longitude coordinates. <strong>GeoIP</strong>
-                            (Geolocation by Internet Protocol) relies specifically on the device's IP address.</li>
-                        <li><strong>Data Sovereignty:</strong> Country-specific government regulations that apply to
-                            data, usually determined by the country in which the data is collected or processed. Many
-                            countries (e.g., Russia, China, Germany) require citizens' data to be stored on physical
-                            servers within their borders.</li>
-                    </ul>
+                <details>
+                    <summary>7. What is an access control vestibule and in what type of security environment is
+                        it typically used?</summary>
+                    <p>An access control vestibule, sometimes called a mantrap, is a security buffer with two
+                        interlocking doors where only one door can be open at a time. It is used in
+                        high-security areas like cash handling rooms or research labs to create a controlled
+                        space where credentials can be verified before granting access to the secure area.</p>
+                </details>
 
-                    <h4>Data Security Methods</h4>
-                    <p>Various techniques and technologies enhance data protection.</p>
-                    <ul>
-                        <li><strong>Data Minimization:</strong> Limiting the collection of personal information to only
-                            what is directly relevant and necessary for a specific task; collection should be adequate,
-                            relevant, and not excessive.</li>
-                        <li><strong>Data Masking:</strong> Creating a copy of the original data and using
-                            <strong>obfuscation</strong> (making unintelligible) on sensitive elements (like a Social
-                            Security number). Proper data masking replaces actual information that is not required and
-                            should be <strong>irreversible</strong>. It is one means of <strong>data
-                                sanitization</strong> (the process of cleaning data to provide privacy protection).</li>
-                        <li><strong>Tokenization:</strong> Obfuscating sensitive data elements (like account numbers)
-                            into a random string of characters (<strong>token</strong>). The original data and the token
-                            are stored in a <strong>token vault</strong> for retrieval if needed. If the original data
-                            can be restored, it is called <strong>pseudo-anonymization</strong>.</li>
-                        <li><strong>Restrictions:</strong> Limits imposed on data access.
-                            <ul>
-                                <li><strong>Permission restrictions</strong> limit access only to individuals and
-                                    devices with a legitimate business need.</li>
-                                <li><strong>Geographic restrictions</strong> limit access to specific locations (e.g.,
-                                    HIPAA data only accessible on the hospital campus).</li>
-                            </ul>
-                        </li>
-                        <li><strong>Segmentation:</strong> Identifying data elements' classification, tagging them, and
-                            then separating the most sensitive data. This sensitive data is defined as the "protect
-                            surface," and extra security controls are applied around it.</li>
-                    </ul>
+                <details>
+                    <summary>8. Explain the function of a Faraday cage and an alarmed carrier Protected
+                        Distribution System (PDS) in preventing data leakage.</summary>
+                    <p>A Faraday cage is a metallic enclosure that blocks electromagnetic fields, preventing the
+                        unauthorized interception of signals (EMI) emitted by electronic devices. An alarmed
+                        carrier PDS protects data cables in a conduit containing specialized optical fibers;
+                        these fibers sense acoustic vibrations from any attempt to access the cables and trigger
+                        an alarm.</p>
+                </details>
 
-                    <hr>
+                <details>
+                    <summary>9. List and define the three states data can be in.</summary>
+                    <p>The three data states are data at rest, which is data stored on electronic media; data in
+                        transit (or in motion), which is data being transmitted across a network; and data in
+                        processing (or in use), which is data actively being used by a device for actions like
+                        generating a report.</p>
+                </details>
 
-                    <p>To solidify understanding, consider the principles of physical security as being analogous to
-                        protecting a medieval castle:</p>
-                    <ul>
-                        <li><strong>Perimeter Defenses</strong> (Fencing, Bollards) are like the outer <strong>moat and
-                                walls</strong>, designed to passively stop invaders.</li>
-                        <li><strong>Security Guards</strong> and <strong>Video Surveillance</strong> are the
-                            <strong>archers on the battlements</strong>, providing an active defense and watchful eyes.
-                        </li>
-                        <li><strong>Security Buffers</strong> (Access Control Vestibules/Mantraps) are the
-                            <strong>gatehouse</strong>, a restricted, interlocking area where identity must be confirmed
-                            before proceeding deeper into the keep.</li>
-                        <li><strong>Data Controls</strong> are like protecting the <strong>crown jewels</strong>,
-                            ensuring they are hidden (Confidential), only viewed by trusted advisors
-                            (Private/Sensitive), and locked away (Tokenization/Masking), subject only to the King's laws
-                            (Data Sovereignty).</li>
-                    </ul>
-                </section>
-
-                <!-- Study Guide Section -->
-                <section class="module-section">
-                    <h2>Study Guide: Pervasive Attack Surfaces and Controls</h2>
-                    <p>This study guide provides a comprehensive review of social engineering, physical security, and
-                        data controls. It includes a quiz to test your understanding, essay questions for deeper
-                        analysis, and a complete glossary of key terms from the module.</p>
-
-                    <h3>Quiz: Short-Answer Questions</h3>
-                    <p><em>Instructions: Click on a question to reveal the answer.</em></p>
-                    <div class="interactive-quiz">
-                        <details>
-                            <summary>1. What is social engineering, and what is considered its primary attack surface?
-                            </summary>
-                            <p>Social engineering is a method of eliciting information or convincing a user to take an
-                                action that weakens security, primarily through deception and manipulation. Because it
-                                exploits a person rather than a technology vulnerability, its attack surface is
-                                accomplished using "human vectors."</p>
-                        </details>
-
-                        <details>
-                            <summary>2. Explain the psychological principles of Authority and Intimidation as they are
-                                used in social engineering attacks.</summary>
-                            <p>The principle of Authority involves an attacker directing a target by impersonating an
-                                authority figure, such as a CEO, to make their request seem legitimate. Intimidation is
-                                used to frighten and coerce a target by threatening negative consequences, such as
-                                telling the target's supervisor if they do not comply with a demand.</p>
-                        </details>
-
-                        <details>
-                            <summary>3. Differentiate between Spear Phishing and Whaling.</summary>
-                            <p>Spear phishing is a targeted email attack that is customized to a specific user, often
-                                including their name and personal details to appear more legitimate. Whaling is a
-                                specific type of spear phishing that targets "big fish," such as wealthy individuals or
-                                senior executives, with the goal of accessing larger sums of money or more valuable
-                                information.</p>
-                        </details>
-
-                        <details>
-                            <summary>4. What is a Business Email Compromise (BEC), and what are two common forms it
-                                takes?</summary>
-                            <p>A Business Email Compromise (BEC) is a type of phishing attack that exploits the common
-                                business practice of making electronic payments by sending fraudulent requests for funds
-                                that appear legitimate. Two common forms are the Bogus Invoice, where an attacker
-                                pretends to be a supplier demanding payment, and Executive Fraud, where an attacker
-                                poses as an executive to order an employee to transfer funds.</p>
-                        </details>
-
-                        <details>
-                            <summary>5. Explain the difference between Typo Squatting and Bitsquatting.</summary>
-                            <p>Typo squatting involves registering domain names that are common misspellings of
-                                legitimate sites (e.g., goggle.com for google.com) to capture traffic from users who
-                                make typing errors. Bitsquatting is more technical, involving the registration of domain
-                                names that are one binary bit different from a legitimate domain, hoping to capture
-                                traffic from rare RAM memory errors that "flip" a bit in a character.</p>
-                        </details>
-
-                        <details>
-                            <summary>6. Describe two types of fencing deterrents used to enhance perimeter security.
-                            </summary>
-                            <p>One deterrent is anti-climb paint, a non-hardening, petroleum-based gel that makes
-                                surfaces difficult to climb. Another is the roller barrier, which consists of large,
-                                independently rotating cups affixed to the top of a fence that prevent an intruder from
-                                getting a handhold to climb over.</p>
-                        </details>
-
-                        <details>
-                            <summary>7. What is an access control vestibule and in what type of security environment is
-                                it typically used?</summary>
-                            <p>An access control vestibule, sometimes called a mantrap, is a security buffer with two
-                                interlocking doors where only one door can be open at a time. It is used in
-                                high-security areas like cash handling rooms or research labs to create a controlled
-                                space where credentials can be verified before granting access to the secure area.</p>
-                        </details>
-
-                        <details>
-                            <summary>8. Explain the function of a Faraday cage and an alarmed carrier Protected
-                                Distribution System (PDS) in preventing data leakage.</summary>
-                            <p>A Faraday cage is a metallic enclosure that blocks electromagnetic fields, preventing the
-                                unauthorized interception of signals (EMI) emitted by electronic devices. An alarmed
-                                carrier PDS protects data cables in a conduit containing specialized optical fibers;
-                                these fibers sense acoustic vibrations from any attempt to access the cables and trigger
-                                an alarm.</p>
-                        </details>
-
-                        <details>
-                            <summary>9. List and define the three states data can be in.</summary>
-                            <p>The three data states are data at rest, which is data stored on electronic media; data in
-                                transit (or in motion), which is data being transmitted across a network; and data in
-                                processing (or in use), which is data actively being used by a device for actions like
-                                generating a report.</p>
-                        </details>
-
-                        <details>
-                            <summary>10. Describe the data security methods of Data Masking and Tokenization.</summary>
-                            <p>Data masking creates a copy of original data but makes sensitive elements unintelligible
-                                (obfuscation), with no way to reverse the process back to the original state.
-                                Tokenization also obfuscates sensitive data, but it replaces the data with a random
-                                string of characters (a token) and stores the original data in a secure "token vault,"
-                                allowing for retrieval if needed.</p>
-                        </details>
-                    </div>
-
-                    <h3>Essay Questions</h3>
-                    <p><em>Instructions: Formulate a detailed response to the following prompts, drawing upon the
-                            concepts and information presented in the source material.</em></p>
-                    <ol>
-                        <li>A threat actor plans to infiltrate a large corporation. Describe a multi-stage attack plan
-                            that combines at least three different social engineering techniques (e.g., phishing,
-                            impersonation, data reconnaissance) to gain initial access and then acquire sensitive
-                            financial information.</li>
-                        <li>Compare and contrast the roles of passive physical security barriers (like fencing and
-                            bollards) and active security measures (like security guards and sensor systems). Discuss
-                            how these elements work together to create a layered defense-in-depth strategy for a secure
-                            facility.</li>
-                        <li>An organization is developing a new, highly confidential product. Explain which data
-                            classifications would apply to the research and development data. Detail a comprehensive
-                            data protection strategy using at least four different data security methods (e.g.,
-                            segmentation, restrictions, masking) to protect this intellectual property through its
-                            entire lifecycle (at rest, in transit, and in use).</li>
-                        <li>Discuss the concepts of data sovereignty and geolocation. How do these concepts impact a
-                            multinational corporation's decisions regarding data storage, processing, and security
-                            controls, especially in the context of regulations like the GDPR?</li>
-                        <li>Explain the psychological underpinnings of social engineering by describing how an attacker
-                            could combine the principles of Urgency, Authority, and Familiarity in a single, convincing
-                            vishing attack targeting an employee. Provide a detailed, plausible script for the attack.
-                        </li>
-                    </ol>
-
-                    <h3>Glossary of Key Terms</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Term</th>
-                                <th>Definition</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Access Control Vestibule</td>
-                                <td>An automated buffer to separate a nonsecure area from a secure area, consisting of
-                                    two interlocking doors where only one can be open at a time. Also known as a
-                                    mantrap.</td>
-                            </tr>
-                            <tr>
-                                <td>Alarmed Carrier PDS</td>
-                                <td>A type of Protected Distribution System where the conduit contains specialized
-                                    optical fibers that sense vibrations from intrusion attempts and trigger an alarm.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Bitsquatting</td>
-                                <td>The act of registering domain names that are one binary bit different from a
-                                    legitimate domain name to capture traffic from RAM memory errors.</td>
-                            </tr>
-                            <tr>
-                                <td>Bollard</td>
-                                <td>A short but sturdy vertical post used as a vehicular traffic barricade to prevent a
-                                    car from ramming into a secure area.</td>
-                            </tr>
-                            <tr>
-                                <td>Brand Impersonation</td>
-                                <td>A social engineering attack where a threat actor pretends to be a highly
-                                    recognizable and well-known brand to build immediate recognition and trust with a
-                                    target.</td>
-                            </tr>
-                            <tr>
-                                <td>Business Email Compromise (BEC)</td>
-                                <td>A phishing attack that exploits the practice of electronic payments by sending
-                                    fraudulent requests for funds from what appears to be a legitimate internal or
-                                    external source.</td>
-                            </tr>
-                            <tr>
-                                <td>Confidential</td>
-                                <td>The highest level of data sensitivity classification, intended only for users with
-                                    the highest level of preapproved authentication.</td>
-                            </tr>
-                            <tr>
-                                <td>Critical</td>
-                                <td>A data classification based on availability needs; if this data is unavailable, an
-                                    organization's function and mission would be severely impacted.</td>
-                            </tr>
-                            <tr>
-                                <td>Data at Rest</td>
-                                <td>Data that is stored on electronic media.</td>
-                            </tr>
-                            <tr>
-                                <td>Data Classifications</td>
-                                <td>A system of categorizing data into distinct groups (e.g., Confidential, Private,
-                                    Public) to apply appropriate levels of protection.</td>
-                            </tr>
-                            <tr>
-                                <td>Data in Transit</td>
-                                <td>Data that is being transmitted across a network.</td>
-                            </tr>
-                            <tr>
-                                <td>Data in Use</td>
-                                <td>Data on which actions are being performed by devices; also called data in
-                                    processing.</td>
-                            </tr>
-                            <tr>
-                                <td>Data Masking</td>
-                                <td>A security method that involves creating a copy of original data but using
-                                    obfuscation to make sensitive elements unintelligible, with no means to reverse the
-                                    process.</td>
-                            </tr>
-                            <tr>
-                                <td>Data Minimization</td>
-                                <td>The principle of limiting the collection of personal information to only that which
-                                    is directly relevant and necessary to accomplish a specific task.</td>
-                            </tr>
-                            <tr>
-                                <td>Data Sanitization</td>
-                                <td>The process of cleaning data to provide privacy protection, of which data masking is
-                                    one method.</td>
-                            </tr>
-                            <tr>
-                                <td>Data Sovereignty</td>
-                                <td>Country-specific legal requirements that apply to data, often stipulating that data
-                                    collected within a country must be stored and processed within its borders.</td>
-                            </tr>
-                            <tr>
-                                <td>Data State</td>
-                                <td>The condition of data at any given time, categorized as data at rest, data in
-                                    transit, or data in use.</td>
-                            </tr>
-                            <tr>
-                                <td>Disinformation</td>
-                                <td>False or inaccurate information that is spread with malicious intent.</td>
-                            </tr>
-                            <tr>
-                                <td>Dumpster Diving</td>
-                                <td>A data reconnaissance technique that involves digging through trash receptacles to
-                                    find information useful in an attack, such as memos, calendars, or phone
-                                    directories.</td>
-                            </tr>
-                            <tr>
-                                <td>Faraday Cage</td>
-                                <td>A metallic enclosure made of grounded, fine-mesh screening that prevents the entry
-                                    or escape of an electromagnetic field (EMI).</td>
-                            </tr>
-                            <tr>
-                                <td>Fencing</td>
-                                <td>A tall, permanent barrier used as a physical security control to keep out
-                                    unauthorized personnel.</td>
-                            </tr>
-                            <tr>
-                                <td>Financial Information</td>
-                                <td>Data about the monetary transactions of an enterprise, such as credit card numbers,
-                                    financial statements, and payment histories.</td>
-                            </tr>
-                            <tr>
-                                <td>Geolocation</td>
-                                <td>A term for all techniques used to identify the physical location of a device, often
-                                    expressed in latitude and longitude coordinates.</td>
-                            </tr>
-                            <tr>
-                                <td>Google Dorking</td>
-                                <td>An electronic data reconnaissance technique that uses advanced Google search
-                                    operators to find sensitive information that has been carelessly posted online.</td>
-                            </tr>
-                            <tr>
-                                <td>Hardened Carrier PDS</td>
-                                <td>A type of Protected Distribution System where data cables are installed in a conduit
-                                    made of special electrical metallic tubing with permanently sealed connections.</td>
-                            </tr>
-                            <tr>
-                                <td>Human Vectors</td>
-                                <td>The term for people when they are the attack surface for social engineering attacks.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Human-readable Data</td>
-                                <td>Data that a person can read and interpret.</td>
-                            </tr>
-                            <tr>
-                                <td>Impersonation</td>
-                                <td>A social engineering attack that involves masquerading as a real or fictitious
-                                    character and playing out that role to a target.</td>
-                            </tr>
-                            <tr>
-                                <td>Infrared (IR) Sensor</td>
-                                <td>An electronic device that can measure and detect infrared radiation. Active IR
-                                    sensors emit and detect IR, while passive IR sensors only detect IR emitted from
-                                    objects.</td>
-                            </tr>
-                            <tr>
-                                <td>Intellectual Property (IP) Data</td>
-                                <td>An invention or work resulting from creativity, which can be protected by patent,
-                                    trademark, copyright, or trade secret.</td>
-                            </tr>
-                            <tr>
-                                <td>Legal Information</td>
-                                <td>General factual information about the law and legal processes, distinct from legal
-                                    advice.</td>
-                            </tr>
-                            <tr>
-                                <td>Microwave Sensor</td>
-                                <td>A sensor that uses high-frequency radio waves, similar to radar, to monitor a large
-                                    area for intruders.</td>
-                            </tr>
-                            <tr>
-                                <td>Misinformation</td>
-                                <td>False or inaccurate information, regardless of the intent to mislead.</td>
-                            </tr>
-                            <tr>
-                                <td>Non-human-readable Data</td>
-                                <td>Data that a device can interpret but is not readily understood by a person in its
-                                    native state, such as JSON or XML. Also called machine-readable data.</td>
-                            </tr>
-                            <tr>
-                                <td>Obfuscation</td>
-                                <td>The act of making something unintelligible or unclear, used in data masking.</td>
-                            </tr>
-                            <tr>
-                                <td>Pharming</td>
-                                <td>An attack that exploits the DNS process to redirect a user from a legitimate URL to
-                                    a threat actor's malicious website.</td>
-                            </tr>
-                            <tr>
-                                <td>Phishing</td>
-                                <td>A social engineering attack that involves sending an email or displaying a web
-                                    announcement falsely claiming to be from a legitimate source to trick a user into
-                                    taking an action.</td>
-                            </tr>
-                            <tr>
-                                <td>Pressure Sensor</td>
-                                <td>A sensor that detects changes in pressure to identify if a person or vehicle has
-                                    entered a restricted area, and can often identify the target and direction of
-                                    travel.</td>
-                            </tr>
-                            <tr>
-                                <td>Pretexting</td>
-                                <td>A form of impersonation where the attacker's goal is to obtain private information
-                                    from the target.</td>
-                            </tr>
-                            <tr>
-                                <td>Private</td>
-                                <td>A data classification for restricted data with a medium level of confidentiality,
-                                    accessible on a need-to-know basis.</td>
-                            </tr>
-                            <tr>
-                                <td>Protected Distribution System (PDS)</td>
-                                <td>A system of cable conduits designed to protect classified information being
-                                    transmitted between two secure areas.</td>
-                            </tr>
-                            <tr>
-                                <td>Public</td>
-                                <td>A data classification for information that carries no risk of release and is
-                                    intended for public consumption.</td>
-                            </tr>
-                            <tr>
-                                <td>Regulated Data</td>
-                                <td>Data that is subject to external laws or industry standards regarding its use and
-                                    protection, such as Protected Health Information (PHI) under HIPAA.</td>
-                            </tr>
-                            <tr>
-                                <td>Restricted</td>
-                                <td>A data classification for data that is not available to the public and should be
-                                    handled with caution.</td>
-                            </tr>
-                            <tr>
-                                <td>Segmentation</td>
-                                <td>The data security method of identifying, classifying, and then separating the most
-                                    sensitive data to apply additional, targeted security measures around it.</td>
-                            </tr>
-                            <tr>
-                                <td>Sensitive</td>
-                                <td>A data classification for information that could cause catastrophic harm to an
-                                    organization if disclosed and is restricted to employees with a specific business
-                                    need.</td>
-                            </tr>
-                            <tr>
-                                <td>Sensor</td>
-                                <td>A device that detects or measures a physical property and responds to it, used in
-                                    physical security to generate alarms.</td>
-                            </tr>
-                            <tr>
-                                <td>Shoulder Surfing</td>
-                                <td>A data reconnaissance technique of observing someone entering secret information
-                                    (like a PIN or password) without drawing attention.</td>
-                            </tr>
-                            <tr>
-                                <td>Smishing</td>
-                                <td>A phishing attack that uses the Short Message Service (SMS) to send fraudulent text
-                                    messages.</td>
-                            </tr>
-                            <tr>
-                                <td>Social Engineering</td>
-                                <td>A means of eliciting information or convincing a user to take an action that weakens
-                                    security through deception and manipulation.</td>
-                            </tr>
-                            <tr>
-                                <td>Spear Phishing</td>
-                                <td>A type of phishing attack that targets specific users with customized emails to make
-                                    the message appear more legitimate.</td>
-                            </tr>
-                            <tr>
-                                <td>Tokenization</td>
-                                <td>A data security method that obfuscates sensitive data by replacing it with a random
-                                    string of characters (a token), while storing the original data in a secure token
-                                    vault for later retrieval.</td>
-                            </tr>
-                            <tr>
-                                <td>Trade Secret Data</td>
-                                <td>Undisclosed enterprise data that has economic value by not being generally known and
-                                    is subject to reasonable efforts to maintain its secrecy.</td>
-                            </tr>
-                            <tr>
-                                <td>Typo Squatting</td>
-                                <td>The act of purchasing and registering domain names that are spelled similarly to
-                                    actual sites to capture traffic from users who make typing errors.</td>
-                            </tr>
-                            <tr>
-                                <td>Ultrasonic Sensor</td>
-                                <td>A sensor that uses high-frequency sound waves (ultrasound) to measure the distance
-                                    to a target object, often used for proximity detection.</td>
-                            </tr>
-                            <tr>
-                                <td>Vishing</td>
-                                <td>A phishing attack that uses a telephone call (voice phishing) to trick a target into
-                                    revealing information.</td>
-                            </tr>
-                            <tr>
-                                <td>Watering Hole Attack</td>
-                                <td>An attack directed at a small group of specific individuals by infecting a common
-                                    website they are all known to frequent.</td>
-                            </tr>
-                            <tr>
-                                <td>Whaling</td>
-                                <td>A type of spear phishing that specifically targets wealthy individuals or senior
-                                    executives ("big fish").</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-
-                <!-- Full Simulation Questions Section -->
-                <section class="module-section">
-                    <h2>Full Simulation Questions</h2>
-                    <div class="quiz-header">
-                        <h3>Practice Quiz</h3>
-                        <p>Test your knowledge with these 45 practice questions.</p>
-                    </div>
-                    <div id="quiz-container">
-                        <!-- Quiz questions will be rendered here by JavaScript -->
-                    </div>
-                </section>
-
+                <details>
+                    <summary>10. Describe the data security methods of Data Masking and Tokenization.</summary>
+                    <p>Data masking creates a copy of original data but makes sensitive elements unintelligible
+                        (obfuscation), with no way to reverse the process back to the original state.
+                        Tokenization also obfuscates sensitive data, but it replaces the data with a random
+                        string of characters (a token) and stores the original data in a secure "token vault,"
+                        allowing for retrieval if needed.</p>
+                </details>
             </div>
 
-            <footer class="site-footer">
-                <p>Study Portfolio | Matheus Almeida e Silva</p>
-                <p>&copy; 2025 All Rights Reserved</p>
-            </footer>
-        </main>
-    </div>
+            <h3>Essay Questions</h3>
+            <p><em>Instructions: Formulate a detailed response to the following prompts, drawing upon the
+                    concepts and information presented in the source material.</em></p>
+            <ol>
+                <li>A threat actor plans to infiltrate a large corporation. Describe a multi-stage attack plan
+                    that combines at least three different social engineering techniques (e.g., phishing,
+                    impersonation, data reconnaissance) to gain initial access and then acquire sensitive
+                    financial information.</li>
+                <li>Compare and contrast the roles of passive physical security barriers (like fencing and
+                    bollards) and active security measures (like security guards and sensor systems). Discuss
+                    how these elements work together to create a layered defense-in-depth strategy for a secure
+                    facility.</li>
+                <li>An organization is developing a new, highly confidential product. Explain which data
+                    classifications would apply to the research and development data. Detail a comprehensive
+                    data protection strategy using at least four different data security methods (e.g.,
+                    segmentation, restrictions, masking) to protect this intellectual property through its
+                    entire lifecycle (at rest, in transit, and in use).</li>
+                <li>Discuss the concepts of data sovereignty and geolocation. How do these concepts impact a
+                    multinational corporation's decisions regarding data storage, processing, and security
+                    controls, especially in the context of regulations like the GDPR?</li>
+                <li>Explain the psychological underpinnings of social engineering by describing how an attacker
+                    could combine the principles of Urgency, Authority, and Familiarity in a single, convincing
+                    vishing attack targeting an employee. Provide a detailed, plausible script for the attack.
+                </li>
+            </ol>
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" title="Back to Top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Access Control Vestibule</td>
+                        <td>An automated buffer to separate a nonsecure area from a secure area, consisting of
+                            two interlocking doors where only one can be open at a time. Also known as a
+                            mantrap.</td>
+                    </tr>
+                    <tr>
+                        <td>Alarmed Carrier PDS</td>
+                        <td>A type of Protected Distribution System where the conduit contains specialized
+                            optical fibers that sense vibrations from intrusion attempts and trigger an alarm.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Bitsquatting</td>
+                        <td>The act of registering domain names that are one binary bit different from a
+                            legitimate domain name to capture traffic from RAM memory errors.</td>
+                    </tr>
+                    <tr>
+                        <td>Bollard</td>
+                        <td>A short but sturdy vertical post used as a vehicular traffic barricade to prevent a
+                            car from ramming into a secure area.</td>
+                    </tr>
+                    <tr>
+                        <td>Brand Impersonation</td>
+                        <td>A social engineering attack where a threat actor pretends to be a highly
+                            recognizable and well-known brand to build immediate recognition and trust with a
+                            target.</td>
+                    </tr>
+                    <tr>
+                        <td>Business Email Compromise (BEC)</td>
+                        <td>A phishing attack that exploits the practice of electronic payments by sending
+                            fraudulent requests for funds from what appears to be a legitimate internal or
+                            external source.</td>
+                    </tr>
+                    <tr>
+                        <td>Confidential</td>
+                        <td>The highest level of data sensitivity classification, intended only for users with
+                            the highest level of preapproved authentication.</td>
+                    </tr>
+                    <tr>
+                        <td>Critical</td>
+                        <td>A data classification based on availability needs; if this data is unavailable, an
+                            organization's function and mission would be severely impacted.</td>
+                    </tr>
+                    <tr>
+                        <td>Data at Rest</td>
+                        <td>Data that is stored on electronic media.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Classifications</td>
+                        <td>A system of categorizing data into distinct groups (e.g., Confidential, Private,
+                            Public) to apply appropriate levels of protection.</td>
+                    </tr>
+                    <tr>
+                        <td>Data in Transit</td>
+                        <td>Data that is being transmitted across a network.</td>
+                    </tr>
+                    <tr>
+                        <td>Data in Use</td>
+                        <td>Data on which actions are being performed by devices; also called data in
+                            processing.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Masking</td>
+                        <td>A security method that involves creating a copy of original data but using
+                            obfuscation to make sensitive elements unintelligible, with no means to reverse the
+                            process.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Minimization</td>
+                        <td>The principle of limiting the collection of personal information to only that which
+                            is directly relevant and necessary to accomplish a specific task.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Sanitization</td>
+                        <td>The process of cleaning data to provide privacy protection, of which data masking is
+                            one method.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Sovereignty</td>
+                        <td>Country-specific legal requirements that apply to data, often stipulating that data
+                            collected within a country must be stored and processed within its borders.</td>
+                    </tr>
+                    <tr>
+                        <td>Data State</td>
+                        <td>The condition of data at any given time, categorized as data at rest, data in
+                            transit, or data in use.</td>
+                    </tr>
+                    <tr>
+                        <td>Disinformation</td>
+                        <td>False or inaccurate information that is spread with malicious intent.</td>
+                    </tr>
+                    <tr>
+                        <td>Dumpster Diving</td>
+                        <td>A data reconnaissance technique that involves digging through trash receptacles to
+                            find information useful in an attack, such as memos, calendars, or phone
+                            directories.</td>
+                    </tr>
+                    <tr>
+                        <td>Faraday Cage</td>
+                        <td>A metallic enclosure made of grounded, fine-mesh screening that prevents the entry
+                            or escape of an electromagnetic field (EMI).</td>
+                    </tr>
+                    <tr>
+                        <td>Fencing</td>
+                        <td>A tall, permanent barrier used as a physical security control to keep out
+                            unauthorized personnel.</td>
+                    </tr>
+                    <tr>
+                        <td>Financial Information</td>
+                        <td>Data about the monetary transactions of an enterprise, such as credit card numbers,
+                            financial statements, and payment histories.</td>
+                    </tr>
+                    <tr>
+                        <td>Geolocation</td>
+                        <td>A term for all techniques used to identify the physical location of a device, often
+                            expressed in latitude and longitude coordinates.</td>
+                    </tr>
+                    <tr>
+                        <td>Google Dorking</td>
+                        <td>An electronic data reconnaissance technique that uses advanced Google search
+                            operators to find sensitive information that has been carelessly posted online.</td>
+                    </tr>
+                    <tr>
+                        <td>Hardened Carrier PDS</td>
+                        <td>A type of Protected Distribution System where data cables are installed in a conduit
+                            made of special electrical metallic tubing with permanently sealed connections.</td>
+                    </tr>
+                    <tr>
+                        <td>Human Vectors</td>
+                        <td>The term for people when they are the attack surface for social engineering attacks.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Human-readable Data</td>
+                        <td>Data that a person can read and interpret.</td>
+                    </tr>
+                    <tr>
+                        <td>Impersonation</td>
+                        <td>A social engineering attack that involves masquerading as a real or fictitious
+                            character and playing out that role to a target.</td>
+                    </tr>
+                    <tr>
+                        <td>Infrared (IR) Sensor</td>
+                        <td>An electronic device that can measure and detect infrared radiation. Active IR
+                            sensors emit and detect IR, while passive IR sensors only detect IR emitted from
+                            objects.</td>
+                    </tr>
+                    <tr>
+                        <td>Intellectual Property (IP) Data</td>
+                        <td>An invention or work resulting from creativity, which can be protected by patent,
+                            trademark, copyright, or trade secret.</td>
+                    </tr>
+                    <tr>
+                        <td>Legal Information</td>
+                        <td>General factual information about the law and legal processes, distinct from legal
+                            advice.</td>
+                    </tr>
+                    <tr>
+                        <td>Microwave Sensor</td>
+                        <td>A sensor that uses high-frequency radio waves, similar to radar, to monitor a large
+                            area for intruders.</td>
+                    </tr>
+                    <tr>
+                        <td>Misinformation</td>
+                        <td>False or inaccurate information, regardless of the intent to mislead.</td>
+                    </tr>
+                    <tr>
+                        <td>Non-human-readable Data</td>
+                        <td>Data that a device can interpret but is not readily understood by a person in its
+                            native state, such as JSON or XML. Also called machine-readable data.</td>
+                    </tr>
+                    <tr>
+                        <td>Obfuscation</td>
+                        <td>The act of making something unintelligible or unclear, used in data masking.</td>
+                    </tr>
+                    <tr>
+                        <td>Pharming</td>
+                        <td>An attack that exploits the DNS process to redirect a user from a legitimate URL to
+                            a threat actor's malicious website.</td>
+                    </tr>
+                    <tr>
+                        <td>Phishing</td>
+                        <td>A social engineering attack that involves sending an email or displaying a web
+                            announcement falsely claiming to be from a legitimate source to trick a user into
+                            taking an action.</td>
+                    </tr>
+                    <tr>
+                        <td>Pressure Sensor</td>
+                        <td>A sensor that detects changes in pressure to identify if a person or vehicle has
+                            entered a restricted area, and can often identify the target and direction of
+                            travel.</td>
+                    </tr>
+                    <tr>
+                        <td>Pretexting</td>
+                        <td>A form of impersonation where the attacker's goal is to obtain private information
+                            from the target.</td>
+                    </tr>
+                    <tr>
+                        <td>Private</td>
+                        <td>A data classification for restricted data with a medium level of confidentiality,
+                            accessible on a need-to-know basis.</td>
+                    </tr>
+                    <tr>
+                        <td>Protected Distribution System (PDS)</td>
+                        <td>A system of cable conduits designed to protect classified information being
+                            transmitted between two secure areas.</td>
+                    </tr>
+                    <tr>
+                        <td>Public</td>
+                        <td>A data classification for information that carries no risk of release and is
+                            intended for public consumption.</td>
+                    </tr>
+                    <tr>
+                        <td>Regulated Data</td>
+                        <td>Data that is subject to external laws or industry standards regarding its use and
+                            protection, such as Protected Health Information (PHI) under HIPAA.</td>
+                    </tr>
+                    <tr>
+                        <td>Restricted</td>
+                        <td>A data classification for data that is not available to the public and should be
+                            handled with caution.</td>
+                    </tr>
+                    <tr>
+                        <td>Segmentation</td>
+                        <td>The data security method of identifying, classifying, and then separating the most
+                            sensitive data to apply additional, targeted security measures around it.</td>
+                    </tr>
+                    <tr>
+                        <td>Sensitive</td>
+                        <td>A data classification for information that could cause catastrophic harm to an
+                            organization if disclosed and is restricted to employees with a specific business
+                            need.</td>
+                    </tr>
+                    <tr>
+                        <td>Sensor</td>
+                        <td>A device that detects or measures a physical property and responds to it, used in
+                            physical security to generate alarms.</td>
+                    </tr>
+                    <tr>
+                        <td>Shoulder Surfing</td>
+                        <td>A data reconnaissance technique of observing someone entering secret information
+                            (like a PIN or password) without drawing attention.</td>
+                    </tr>
+                    <tr>
+                        <td>Smishing</td>
+                        <td>A phishing attack that uses the Short Message Service (SMS) to send fraudulent text
+                            messages.</td>
+                    </tr>
+                    <tr>
+                        <td>Social Engineering</td>
+                        <td>A means of eliciting information or convincing a user to take an action that weakens
+                            security through deception and manipulation.</td>
+                    </tr>
+                    <tr>
+                        <td>Spear Phishing</td>
+                        <td>A type of phishing attack that targets specific users with customized emails to make
+                            the message appear more legitimate.</td>
+                    </tr>
+                    <tr>
+                        <td>Tokenization</td>
+                        <td>A data security method that obfuscates sensitive data by replacing it with a random
+                            string of characters (a token), while storing the original data in a secure token
+                            vault for later retrieval.</td>
+                    </tr>
+                    <tr>
+                        <td>Trade Secret Data</td>
+                        <td>Undisclosed enterprise data that has economic value by not being generally known and
+                            is subject to reasonable efforts to maintain its secrecy.</td>
+                    </tr>
+                    <tr>
+                        <td>Typo Squatting</td>
+                        <td>The act of purchasing and registering domain names that are spelled similarly to
+                            actual sites to capture traffic from users who make typing errors.</td>
+                    </tr>
+                    <tr>
+                        <td>Ultrasonic Sensor</td>
+                        <td>A sensor that uses high-frequency sound waves (ultrasound) to measure the distance
+                            to a target object, often used for proximity detection.</td>
+                    </tr>
+                    <tr>
+                        <td>Vishing</td>
+                        <td>A phishing attack that uses a telephone call (voice phishing) to trick a target into
+                            revealing information.</td>
+                    </tr>
+                    <tr>
+                        <td>Watering Hole Attack</td>
+                        <td>An attack directed at a small group of specific individuals by infecting a common
+                            website they are all known to frequent.</td>
+                    </tr>
+                    <tr>
+                        <td>Whaling</td>
+                        <td>A type of spear phishing that specifically targets wealthy individuals or senior
+                            executives ("big fish").</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
+        <!-- Full Simulation Questions Section -->
+        <section class="module-section">
+            <h2>Full Simulation Questions</h2>
+            <div class="quiz-header">
+                <h3>Practice Quiz</h3>
+                <p>Test your knowledge with these 45 practice questions.</p>
+            </div>
+            <div id="quiz-container">
+                <!-- Quiz questions will be rendered here by JavaScript -->
+            </div>
+        </section>
+
+        </div>
+
+        <footer class="site-footer">
+            <p>Study Portfolio | Matheus Almeida e Silva</p>
+            <p>&copy; 2025 All Rights Reserved</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                        backToTopBtn.style.display = 'flex';
+                    } else {
+                        backToTopBtn.style.display = 'none';
+                    }
+                });
+
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+
         const questions = [
             {
                 id: 1,
@@ -1423,25 +1758,27 @@
 
         function renderQuiz() {
             quizContainer.innerHTML = '';
-            questions.forEach((q, index) => {
+            questions.forEach((q) => {
                 const card = document.createElement('div');
                 card.className = 'question-card';
 
-                const questionNumber = document.createElement('div');
-                questionNumber.className = 'question-number';
-                questionNumber.textContent = `Question ${q.id}`;
+                const qNumber = document.createElement('span');
+                qNumber.className = 'question-number';
+                qNumber.textContent = `QUESTION ${q.id}`;
 
-                const questionText = document.createElement('div');
-                questionText.className = 'question-text';
-                questionText.textContent = q.text;
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = q.text;
+
+                card.appendChild(qNumber);
+                card.appendChild(qText);
 
                 const optionsDiv = document.createElement('div');
-                optionsDiv.className = 'options';
+                optionsDiv.className = 'options-grid';
 
                 const explanationDiv = document.createElement('div');
                 explanationDiv.className = 'explanation';
                 explanationDiv.textContent = q.explanation;
-                explanationDiv.style.display = 'none'; // Hide initially
 
                 q.options.forEach((opt, i) => {
                     const btn = document.createElement('button');
@@ -1451,28 +1788,29 @@
                     optionsDiv.appendChild(btn);
                 });
 
-                card.appendChild(questionNumber);
-                card.appendChild(questionText);
                 card.appendChild(optionsDiv);
                 card.appendChild(explanationDiv);
                 quizContainer.appendChild(card);
             });
         }
 
-        function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
-            const buttons = parentDiv.getElementsByClassName('option-btn');
+        function handleAnswer(btn, index, correctIndices, optionsDiv, explanationDiv) {
+            const buttons = optionsDiv.querySelectorAll('.option-btn');
 
             // Disable all buttons
-            Array.from(buttons).forEach(btn => btn.disabled = true);
+            buttons.forEach(b => {
+                b.classList.add('disabled');
+                b.onclick = null;
+            });
 
             // Check if correct
             if (correctIndices.includes(index)) {
-                clickedBtn.classList.add('correct');
+                btn.classList.add('correct');
             } else {
-                clickedBtn.classList.add('incorrect');
-                // Highlight correct answer(s)
-                correctIndices.forEach(i => {
-                    buttons[i].classList.add('correct');
+                btn.classList.add('incorrect');
+                // Show correct answer
+                correctIndices.forEach(correctIndex => {
+                    buttons[correctIndex].classList.add('correct');
                 });
             }
 
@@ -1480,25 +1818,13 @@
             explanationDiv.style.display = 'block';
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const backToTopButton = document.getElementById("back-to-top");
-
-            window.onscroll = function () {
-                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                    backToTopButton.style.display = "block";
-                } else {
-                    backToTopButton.style.display = "none";
-                }
-            };
-
-            backToTopButton.addEventListener("click", function () {
-                document.body.scrollTop = 0;
-                document.documentElement.scrollTop = 0;
-            });
-
-            renderQuiz();
-        });
+        // Initialize Quiz
+        renderQuiz();
     </script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 </body>
 
 </html>

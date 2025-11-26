@@ -7,1228 +7,1548 @@
     <title>Module 3: Cryptography Fundamentals - Matheus Almeida</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.policy {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.standard {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .tag.procedure {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        .tag.guideline {
+            background: rgba(139, 148, 158, 0.15);
+            color: #8b949e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="app-container">
-        <!-- Sidebar Navigation -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h2><i class="fas fa-shield-alt"></i> CompTIA Security+</h2>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="comptia-module-1.html"><i class="fas fa-book"></i> Module 1</a></li>
-                <li><a href="comptia-module-2.html"><i class="fas fa-book"></i> Module 2</a></li>
-                <li><a href="comptia-module-3.html" class="active"><i class="fas fa-book"></i> Module 3</a></li>
-                <li><a href="comptia-module-4.html"><i class="fas fa-book"></i> Module 4</a></li>
-                <li><a href="comptia-module-5.html"><i class="fas fa-book"></i> Module 5</a></li>
-                <li><a href="comptia-module-6.html"><i class="fas fa-book"></i> Module 6</a></li>
-                <li><a href="comptia-module-7.html"><i class="fas fa-book"></i> Module 7</a></li>
-                <li><a href="comptia-module-8.html"><i class="fas fa-book"></i> Module 8</a></li>
-                <li><a href="comptia-module-9.html"><i class="fas fa-book"></i> Module 9</a></li>
-                <li><a href="comptia-module-10.html"><i class="fas fa-book"></i> Module 10</a></li>
-                <li><a href="comptia-module-11.html"><i class="fas fa-book"></i> Module 11</a></li>
-                <li><a href="comptia-module-12.html"><i class="fas fa-book"></i> Module 12</a></li>
-                <li><a href="comptia-module-13.html"><i class="fas fa-book"></i> Module 13</a></li>
-                <li><a href="comptia-module-14.html"><i class="fas fa-book"></i> Module 14</a></li>
-                <li><a href="comptia-module-15.html"><i class="fas fa-book"></i> Module 15</a></li>
-                <li><a href="comptia-module-16.html"><i class="fas fa-book"></i> Module 16</a></li>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
             </ul>
         </nav>
+    </header>
+    <main class="container">
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <header class="top-bar">
-                <div class="breadcrumbs">
-                    <span>CompTIA Security+</span> / <span class="current">Module 3</span>
-                </div>
-                <div class="user-profile">
-                    <span class="user-name">Matheus Almeida</span>
-                    <div class="avatar">MA</div>
-                </div>
-            </header>
+        <div class="module-header">
+            <h1>Module 3: Cryptography Fundamentals</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
 
-            <div class="content-wrapper">
-                <div class="module-header">
-                    <h1>Module 3: Cryptography Fundamentals</h1>
-                    <p>The Fundamentals of Cryptography and Information Security</p>
-                </div>
+        <!-- Main Content Sections -->
+        <section class="module-section">
+            <h2>The Fundamentals of Cryptography and Information Security</h2>
 
-                <!-- Main Content Sections -->
-                <section class="module-section">
-                    <h2>The Fundamentals of Cryptography and Information Security</h2>
+            <h3>I. Defining Cryptography and Its Historical Context</h3>
+            <p>Cryptography is fundamentally <strong>the science of protecting information by transforming it
+                    into an unreadable format</strong>. At its core, it is the practice of <strong>secure
+                    communication in the presence of adversaries</strong>. The main goal of cryptography is to
+                ensure that only the intended recipient can read and process the information.</p>
 
-                    <h3>I. Defining Cryptography and Its Historical Context</h3>
-                    <p>Cryptography is fundamentally <strong>the science of protecting information by transforming it
-                            into an unreadable format</strong>. At its core, it is the practice of <strong>secure
-                            communication in the presence of adversaries</strong>. The main goal of cryptography is to
-                        ensure that only the intended recipient can read and process the information.</p>
+            <h4>Core Terminology</h4>
+            <p>When using cryptography, specific terminology is applied:</p>
+            <ol>
+                <li><strong>Plaintext:</strong> The original, readable data that is input for encryption or the
+                    output of decryption.</li>
+                <li><strong>Ciphertext:</strong> The scrambled, unreadable output data resulting from
+                    encryption.</li>
+                <li><strong>Encryption:</strong> The process of changing the original text (plaintext) into a
+                    scrambled message.</li>
+                <li><strong>Decryption:</strong> The reverse process of changing the ciphertext back to its
+                    original plaintext form.</li>
+                <li><strong>Cleartext:</strong> Unencrypted data that is not intended to be encrypted (it is "in
+                    the clear").</li>
+                <li><strong>Key:</strong> A mathematical value entered into a cryptographic algorithm to produce
+                    the ciphertext. The key is the critical factor that must be kept secret at all costs, even
+                    though the algorithm itself is often public and well-known.</li>
+            </ol>
+            <p>Plaintext data is input into a <strong>cryptographic algorithm</strong> (also called a cipher),
+                which consists of procedures based on a mathematical formula. Just as a key is inserted into a
+                door lock to lock the door, a unique mathematical key is input into the encryption algorithm to
+                "lock" the data by creating the ciphertext.</p>
 
-                    <h4>Core Terminology</h4>
-                    <p>When using cryptography, specific terminology is applied:</p>
-                    <ol>
-                        <li><strong>Plaintext:</strong> The original, readable data that is input for encryption or the
-                            output of decryption.</li>
-                        <li><strong>Ciphertext:</strong> The scrambled, unreadable output data resulting from
-                            encryption.</li>
-                        <li><strong>Encryption:</strong> The process of changing the original text (plaintext) into a
-                            scrambled message.</li>
-                        <li><strong>Decryption:</strong> The reverse process of changing the ciphertext back to its
-                            original plaintext form.</li>
-                        <li><strong>Cleartext:</strong> Unencrypted data that is not intended to be encrypted (it is "in
-                            the clear").</li>
-                        <li><strong>Key:</strong> A mathematical value entered into a cryptographic algorithm to produce
-                            the ciphertext. The key is the critical factor that must be kept secret at all costs, even
-                            though the algorithm itself is often public and well-known.</li>
-                    </ol>
-                    <p>Plaintext data is input into a <strong>cryptographic algorithm</strong> (also called a cipher),
-                        which consists of procedures based on a mathematical formula. Just as a key is inserted into a
-                        door lock to lock the door, a unique mathematical key is input into the encryption algorithm to
-                        "lock" the data by creating the ciphertext.</p>
+            <h4>Cryptography vs. Steganography</h4>
+            <p>The history of hiding messages has roots dating back to the ancient Greeks, who initially focused
+                on hiding the existence of a message rather than its meaning.</p>
+            <ul>
+                <li><strong>Steganography:</strong> Hides the existence of the message or information itself
+                    (from Greek meaning "covered writing"). Examples include writing messages in ink on wooden
+                    tablets covered with wax, hiding messages in a tattoo, or concealing them in metadata of a
+                    digital file. Steganography is a form of obfuscation, which means making something obscure.
+                </li>
+                <li><strong>Cryptography:</strong> Hides the meaning of the message (from Greek meaning "hidden
+                    writing"). This involves transforming or scrambling information so that unauthorized parties
+                    cannot determine its contents.</li>
+            </ul>
+            <p>Steganography is sometimes used in conjunction with encryption, where the data is first encrypted
+                and then hidden, requiring an attacker to first find the data and then decrypt it.</p>
 
-                    <h4>Cryptography vs. Steganography</h4>
-                    <p>The history of hiding messages has roots dating back to the ancient Greeks, who initially focused
-                        on hiding the existence of a message rather than its meaning.</p>
+            <h4>Early Cryptographic Methods</h4>
+            <p>Since simply trying to hide a message (steganography) was often ineffective once discovered, the
+                ancient Greeks turned to making messages intelligible only to the desired recipient, pioneering
+                two methods still used today:</p>
+            <ol>
+                <li><strong>Transposition:</strong> Each letter of the message is rearranged (e.g., 'ran'
+                    becomes 'arn'). For short messages, this can be easily broken, but for longer messages, it
+                    becomes much more difficult for an outsider—though also more difficult for the recipient.
+                </li>
+                <li><strong>Substitution:</strong> One letter is substituted for another letter. Examples
+                    include ROT13, which rotates the alphabet 13 steps (e.g., 'security' becomes 'frphevgl'), or
+                    substituting numbers for letters. A more complex substitution is the <strong>XOR
+                        cipher</strong>, based on the binary operation Exclusive OR.</li>
+            </ol>
+
+            <h3>II. Foundational Security Concepts</h3>
+            <p>Cryptography is essential to information security, protecting data across all its states: data at
+                rest, data in use, and data in transit. The field of cybersecurity is built upon core
+                principles, often summarized by the CIA Triad, plus two additional critical concepts.</p>
+
+            <h4>The CIA Triad and Extended Principles</h4>
+            <p>The main principles of cryptography align with these foundational security concepts:</p>
+            <ul>
+                <li><strong>Confidentiality:</strong> Preventing unauthorized access to information. It ensures
+                    that only authorized individuals can view the data. Techniques like encryption and access
+                    controls are used to maintain confidentiality.</li>
+                <li><strong>Integrity:</strong> Ensuring that information has not been altered, deleted, or
+                    corrupted in any unauthorized way, maintaining its accuracy and reliability. Cryptography
+                    ensures integrity because ciphertext requires a key to be changed. Digital signatures and
+                    hashing are key to maintaining integrity.</li>
+                <li><strong>Authentication:</strong> Verifying the identity of the sender and receiver.
+                    Cryptography can verify the genuineness of the user, preventing messages from imposters.
+                </li>
+                <li><strong>Non-Repudiation:</strong> Proving that a message was sent or received by a specific
+                    individual. This prevents an individual from fraudulently denying they performed an action.
+                </li>
+                <li><strong>Availability:</strong> Guarantees that systems and data are accessible to authorized
+                    users when needed. (While not a direct function of encryption, selecting inappropriate
+                    cryptographic solutions can impact availability through performance issues).</li>
+                <li><strong>Obfuscation:</strong> Making something obscure or unclear. Encryption provides a
+                    degree of obfuscation, though its security depends on the secret key. Obfuscation alone
+                    (security through obscurity) is considered a flawed general information security protection
+                    strategy.</li>
+            </ul>
+
+            <p>The protections offered by cryptography are summarized below:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Characteristic</th>
+                        <th>Description</th>
+                        <th>Protection</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Confidentiality</strong></td>
+                        <td>Ensures that only authorized parties can view the information.</td>
+                        <td>Encrypted information can only be viewed by those who have been provided the key.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integrity</strong></td>
+                        <td>Ensures that the information is correct and no unauthorized person or malicious
+                            software has altered the data.</td>
+                        <td>Encrypted information cannot be changed except by authorized users who have the key.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Authentication</strong></td>
+                        <td>Provides proof of the genuineness of the user.</td>
+                        <td>Proof that the sender was legitimate and not an imposter can be obtained.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nonrepudiation</strong></td>
+                        <td>Proves that a user performed an action.</td>
+                        <td>Individuals are prevented from fraudulently denying that they were involved in a
+                            transaction.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Obfuscation</strong></td>
+                        <td>Makes something obscure or unclear.</td>
+                        <td>By making it obscure, the original information cannot be determined.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>III. Cryptographic Algorithms</h3>
+            <p>Cryptographic algorithms are organized into three broad categories: Hash algorithms, Symmetric
+                cryptographic algorithms, and Asymmetric cryptographic algorithms.</p>
+
+            <h4>1. Hash Algorithms</h4>
+            <p>A hash algorithm is a <strong>one-way function</strong> that takes an input (or 'message') and
+                produces a fixed-size string of characters called a <strong>hash value or digest</strong> (also
+                called a message digest or hash). The process is called <strong>hashing</strong>. It is often
+                described as a <strong>digital fingerprint</strong>. Hashing is a one-way process because it is
+                <strong>computationally infeasible (or impossible)</strong> to reverse it and get the original
+                data from the hash value. Hash algorithms are primarily used to ensure <strong>data
+                    integrity</strong> and for <strong>comparison purposes</strong>.
+            </p>
+            <p>A secure hashing algorithm must have the following characteristics:</p>
+            <ul>
+                <li><strong>Fixed size:</strong> A digest of a short data set must produce the same size digest
+                    as a long data set.</li>
+                <li><strong>Unique:</strong> Two different sets of data cannot produce the same digest; changing
+                    a single letter in one data set should produce an entirely different digest.</li>
+                <li><strong>Original:</strong> It should not be possible to produce a data set that has a
+                    desired or predefined hash.</li>
+                <li><strong>Secure:</strong> The resulting hash cannot be reversed to determine the original
+                    plaintext.</li>
+            </ul>
+
+            <p><strong>Common Hash Algorithms:</strong></p>
+            <ul>
+                <li><strong>Message Digest (MD):</strong> MD5 was the most widely used version, but serious
+                    weaknesses have been identified, and it is no longer considered suitable for use.</li>
+                <li><strong>Secure Hash Algorithm (SHA):</strong> SHA-1 is no longer suitable for use.
+                    <strong>SHA-2</strong> has six variations, with SHA-256, SHA-384, and SHA-512 being common
+                    (the number indicates the digest length in bits) and are currently considered secure.
+                    <strong>SHA-3</strong> was announced in 2015 and was designed to be dissimilar to previous
+                    hash algorithms to prevent threat actors from compromising them based on earlier weaknesses.
+                </li>
+                <li><strong>RipeMD (RACE Integrity Primitives Evaluation Message Digest):</strong> Features two
+                    independent parallel chains of computation whose results are combined. Versions include
+                    RipeMD-160, RipeMD-256, and RipeMD-320.</li>
+                <li><strong>Whirlpool:</strong> Uses a block cipher and returns a 512-bit message digest for
+                    messages less than 2<sup>256</sup> bits. The authors have stated it is not and will never be
+                    patented and may be used free of charge.</li>
+            </ul>
+
+            <p>Hash digests generated from different algorithms vary in length, as illustrated when hashing the
+                word <em>Cengage</em>:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hash</th>
+                        <th>Digest</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RipeMD160</td>
+                        <td>dd52a79bce64a1d145b51ce639e0dadda976516d</td>
+                    </tr>
+                    <tr>
+                        <td>SHA-256</td>
+                        <td>f6c8a86bf6a5128cbaf2ad251b0beaa3604c11c51587de518737537800098d76</td>
+                    </tr>
+                    <tr>
+                        <td>SHA3-512</td>
+                        <td>3a82d58e17f3991413c5f4e9811930b69513bba02a860eed82070f892ab381f9fd926a88cf68745565f51a93b97a1317ae8b84e2dfb798e4a2aa331187dc9e34
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Whirlpool</td>
+                        <td>1428cacf499fce9ef439f95a27f0efdc518e97edf9714e234cfffe0c22dcb0e2c4bd3f22a975670f4a229452062b8bd0c6c9244e4c986f22c61ce951de31c505
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>2. Symmetric Cryptographic Algorithms</h4>
+            <p>Symmetric encryption uses a <strong>single, shared secret key</strong> for both encrypting and
+                decrypting data. This is also known as <strong>private key cryptography</strong>. The sender
+                uses the key to "lock" the message, and the receiver uses the <em>exact same key</em> to
+                "unlock" it.</p>
+            <ul>
+                <li><strong>Characteristics:</strong> This method is <strong>very fast and efficient</strong>,
+                    making it ideal for encrypting large amounts of data.</li>
+                <li><strong>Primary Weakness:</strong> The biggest challenge is <strong>securely sharing the
+                        key</strong> between the two parties. Since the key cannot be sent electronically
+                    unencrypted, secure distribution and maintenance of the single key among multiple
+                    geographically scattered users pose significant challenges.</li>
+                <li><strong>Key Security:</strong> The element that must be kept secret is the key itself.</li>
+            </ul>
+
+            <p><strong>Common Symmetric Algorithms (Strong Algorithms):</strong></p>
+            <ul>
+                <li><strong>Advanced Encryption Standard (AES):</strong> Performs three steps on every 128-bit
+                    block of plaintext. The number of internal rounds depends on the key size (e.g., AES-256
+                    uses 13 rounds for a 256-bit key). To date, no attacks have been successful against AES.
+                </li>
+                <li><strong>Blowfish and Twofish:</strong> Blowfish is a block cipher that operates on 64-bit
+                    blocks with key lengths from 32 to 448 bits. Twofish is a later derivation considered
+                    strong, though less widely used than Blowfish.</li>
+            </ul>
+            <p><em><strong>Note:</strong> Older symmetric algorithms like Data Encryption Standard (DES), Triple
+                    Data Encryption Standard (3DES), and Rivest Cipher (RC) have been deprecated and should no
+                    longer be used.</em></p>
+
+            <h4>3. Asymmetric Cryptographic Algorithms</h4>
+            <p>Asymmetric encryption, also known as <strong>public-key cryptography</strong>, uses a
+                <strong>pair of mathematically linked keys</strong>: a public key and a private key. This method
+                solves the key-sharing problem inherent in symmetric encryption.
+            </p>
+            <ul>
+                <li><strong>Key Function:</strong> The <strong>public key</strong> can be shared freely and is
+                    known to everyone. The <strong>private key</strong> must remain secret and is known only to
+                    the individual it belongs to.</li>
+                <li><strong>Encryption/Decryption:</strong> Data encrypted with the public key can <em>only</em>
+                    be decrypted with the corresponding private key, and vice-versa.</li>
+                <li><strong>Characteristics:</strong> This method is <strong>slower</strong> than symmetric
+                    encryption.</li>
+                <li><strong>Primary Uses:</strong> Authentication, digital signatures, and securely exchanging a
+                    symmetric key.</li>
+                <li><strong>Key Security:</strong> The element that must be kept secret is the <strong>private
+                        key</strong>.</li>
+            </ul>
+
+            <p><strong>Common Asymmetric Algorithms:</strong></p>
+            <ul>
+                <li><strong>RSA:</strong> Published in 1977, RSA’s security is based on
+                    <strong>factoring</strong>, specifically the difficulty for modern computers to quickly
+                    factor the large prime numbers ($p$ and $q$) that make up the value $n$ (where $n = p \times
+                    q$). The public key is the pair $(n, e)$, and the private key is $(n, d)$.
+                </li>
+                <li><strong>Elliptic Curve Cryptography (ECC):</strong> ECC is a newer form of asymmetric
+                    encryption not based on factoring. It uses sloping curves (a set of points satisfying a
+                    specific mathematical equation) instead of large prime numbers. ECC is gaining popularity
+                    because it offers comparable security to RSA with <strong>smaller key sizes</strong>,
+                    leading to faster computations and lower power consumption, making it ideal for mobile
+                    devices. ECC is used by the U.S. government, the Tor project, and for verifying Bitcoin
+                    ownership.</li>
+            </ul>
+
+            <p>The significant difference in key size required for the same security level between RSA and ECC
+                is illustrated below:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>RSA Key Length (bits)</th>
+                        <th>ECC Key Length (bits)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1024</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td>2048</td>
+                        <td>224</td>
+                    </tr>
+                    <tr>
+                        <td>3072</td>
+                        <td>256</td>
+                    </tr>
+                    <tr>
+                        <td>7680</td>
+                        <td>384</td>
+                    </tr>
+                    <tr>
+                        <td>15360</td>
+                        <td>521</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Digital Signatures</h4>
+            <p>Asymmetric cryptography is crucial for creating <strong>digital signatures</strong>, which
+                provide electronic verification of the sender. A digital signature serves as proof, similar to a
+                handwritten signature, but offers additional benefits:</p>
+            <ul>
+                <li><strong>Verify the sender:</strong> Confirms the identity of the originator.</li>
+                <li><strong>Prevent the sender from disowning the message (Nonrepudiation):</strong> The signer
+                    cannot fraudulently claim the signature was forged.</li>
+                <li><strong>Prove the integrity of the message:</strong> Proves the message has not been altered
+                    since it was signed.</li>
+            </ul>
+
+            <p>The process for creating and verifying a digital signature relies on the keys working in both
+                directions:</p>
+            <ol>
+                <li>The sender creates a digest (hash) of the document.</li>
+                <li>The sender <strong>encrypts the digest with their private key</strong>—this encrypted digest
+                    is the digital signature.</li>
+                <li>The sender transmits both the original document and the digital signature.</li>
+                <li>The receiver uses the <strong>sender's public key to decrypt the digital signature</strong>,
+                    revealing the original digest. If decryption fails, the message did not come from the
+                    legitimate sender.</li>
+                <li>The receiver hashes the received document using the same algorithm and compares the newly
+                    generated hash to the decrypted digest. If they match, the message integrity is proven.</li>
+            </ol>
+            <p>The Digital Signature Algorithm (DSA) is a U.S. government standard for digital signatures.</p>
+
+            <h4>Key Exchange</h4>
+            <p>Key exchange is necessary for securely sending and receiving keys, especially symmetric private
+                keys, within normal communication channels.</p>
+            <ul>
+                <li><strong>Diffie-Hellman (DH):</strong> Requires two parties (Alice and Bob) to agree on a
+                    large prime number and a related integer, which can be public. Through mathematical
+                    computations and the exchange of intermediate values, they can separately create the same
+                    shared key.</li>
+                <li><strong>Diffie-Hellman Ephemeral (DHE):</strong> Uses temporary keys (ephemeral keys) that
+                    are used only once and then discarded, unlike DH, which uses the same keys each time.</li>
+                <li><strong>Elliptic Curve Diffie–Hellman (ECDH):</strong> Uses elliptic curve cryptography
+                    instead of prime numbers for computation.</li>
+                <li><strong>Perfect Forward Secrecy:</strong> Public key systems that generate random public
+                    keys that are different for each session. If a secret key is compromised, it cannot reveal
+                    the contents of more than one message.</li>
+            </ul>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Whose key to use</th>
+                        <th>Which key to use</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bob wants to send Alice an encrypted message.</td>
+                        <td>Alice’s key</td>
+                        <td>Public key</td>
+                        <td>When an encrypted message is to be sent, the recipient’s key is used.</td>
+                    </tr>
+                    <tr>
+                        <td>Alice wants to read an encrypted message sent by Bob.</td>
+                        <td>Alice’s key</td>
+                        <td>Private key</td>
+                        <td>An encrypted message can be read only by using the recipient’s private key.</td>
+                    </tr>
+                    <tr>
+                        <td>Bob wants to send a copy to himself of the encrypted message that he sent to Alice.
+                        </td>
+                        <td>Bob’s key</td>
+                        <td>Public key to encrypt; Private key to decrypt</td>
+                        <td>Bob would need to encrypt it with his public key and then use his private key to
+                            decrypt it.</td>
+                    </tr>
+                    <tr>
+                        <td>Bob receives an encrypted reply message from Alice.</td>
+                        <td>Bob’s key</td>
+                        <td>Private key</td>
+                        <td>The recipient’s private key is used to decrypt received messages.</td>
+                    </tr>
+                    <tr>
+                        <td>Bob wants Susan to read Alice’s reply message that he received.</td>
+                        <td>Susan’s key</td>
+                        <td>Public key</td>
+                        <td>The message should be encrypted with Susan’s key for her to decrypt and read with
+                            her private key.</td>
+                    </tr>
+                    <tr>
+                        <td>Bob wants to send Alice a message with a digital signature.</td>
+                        <td>Bob’s key</td>
+                        <td>Private key</td>
+                        <td>Bob’s private key is used to encrypt the hash.</td>
+                    </tr>
+                    <tr>
+                        <td>Alice wants to see Bob’s digital signature.</td>
+                        <td>Bob’s key</td>
+                        <td>Public key</td>
+                        <td>Alice can use Bob’s public key to decrypt the hash because the keys work in both
+                            directions.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="module-section">
+            <h3>IV. Algorithm Variations and Enterprise Security Strategies</h3>
+
+            <h4>Variations of Algorithms</h4>
+            <p>Cryptographic algorithms can vary based on the device used (cipher machines vs. computers) and
+                the amount of data processed (stream vs. block).</p>
+            <ul>
+                <li><strong>Cipher Machines vs. Computers:</strong> Prior to electronic computers, mechanical
+                    devices like the <strong>cipher disk</strong> (developed in 1470) and the <strong>Enigma
+                        machine</strong> (used by Germany during WWII) were used to encrypt data.</li>
+                <li><strong>One-Time Pad (OTP):</strong> A secure cryptographic algorithm that is entirely
+                    hand-calculated. It combines plaintext with a long, random key (pad). OTP is the
+                    <strong>only known encryption method that cannot be broken mathematically</strong>, provided
+                    the pad is used only once and then destroyed.
+                </li>
+            </ul>
+
+            <table>
+                <caption>One-Time Pad (Calculation Example)</caption>
+                <thead>
+                    <tr>
+                        <th>Plaintext</th>
+                        <th>Position in alphabet</th>
+                        <th>Pad</th>
+                        <th>Position in alphabet</th>
+                        <th>Calculation (Example for 's': 19+3-1=21)</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>s</td>
+                        <td>19</td>
+                        <td>c</td>
+                        <td>3</td>
+                        <td>(19 + 3 - 1) = 21 (wrap around > 26)</td>
+                        <td>u</td>
+                    </tr>
+                    <tr>
+                        <td>e</td>
+                        <td>5</td>
+                        <td>b</td>
+                        <td>2</td>
+                        <td></td>
+                        <td>f</td>
+                    </tr>
+                    <tr>
+                        <td>c</td>
+                        <td>3</td>
+                        <td>y</td>
+                        <td>25</td>
+                        <td></td>
+                        <td>a</td>
+                    </tr>
+                    <tr>
+                        <td>r</td>
+                        <td>18</td>
+                        <td>f</td>
+                        <td>6</td>
+                        <td></td>
+                        <td>w</td>
+                    </tr>
+                    <tr>
+                        <td>e</td>
+                        <td>5</td>
+                        <td>e</td>
+                        <td>5</td>
+                        <td></td>
+                        <td>i</td>
+                    </tr>
+                    <tr>
+                        <td>t</td>
+                        <td>20</td>
+                        <td>a</td>
+                        <td>1</td>
+                        <td></td>
+                        <td>T</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul>
+                <li><strong>Stream vs. Block:</strong>
                     <ul>
-                        <li><strong>Steganography:</strong> Hides the existence of the message or information itself
-                            (from Greek meaning "covered writing"). Examples include writing messages in ink on wooden
-                            tablets covered with wax, hiding messages in a tattoo, or concealing them in metadata of a
-                            digital file. Steganography is a form of obfuscation, which means making something obscure.
-                        </li>
-                        <li><strong>Cryptography:</strong> Hides the meaning of the message (from Greek meaning "hidden
-                            writing"). This involves transforming or scrambling information so that unauthorized parties
-                            cannot determine its contents.</li>
+                        <li><strong>Stream cipher:</strong> Takes one character and replaces it with one
+                            character. Stream ciphers are generally <strong>less secure</strong> because the
+                            engine that generates the stream does not vary, only the plaintext changes.</li>
+                        <li><strong>Block cipher:</strong> Manipulates an entire block of plaintext (typically 8
+                            to 16 bytes) at one time. Block ciphers are considered <strong>more secure</strong>
+                            because the output is more random, as the cipher is reset to its original state
+                            after each block is processed.</li>
                     </ul>
-                    <p>Steganography is sometimes used in conjunction with encryption, where the data is first encrypted
-                        and then hidden, requiring an attacker to first find the data and then decrypt it.</p>
+                </li>
+                <li><strong>Sponge Function:</strong> A newer type of algorithm that takes an input string of
+                    any length and returns a string of any requested variable length.</li>
+            </ul>
 
-                    <h4>Early Cryptographic Methods</h4>
-                    <p>Since simply trying to hide a message (steganography) was often ineffective once discovered, the
-                        ancient Greeks turned to making messages intelligible only to the desired recipient, pioneering
-                        two methods still used today:</p>
-                    <ol>
-                        <li><strong>Transposition:</strong> Each letter of the message is rearranged (e.g., 'ran'
-                            becomes 'arn'). For short messages, this can be easily broken, but for longer messages, it
-                            becomes much more difficult for an outsider—though also more difficult for the recipient.
-                        </li>
-                        <li><strong>Substitution:</strong> One letter is substituted for another letter. Examples
-                            include ROT13, which rotates the alphabet 13 steps (e.g., 'security' becomes 'frphevgl'), or
-                            substituting numbers for letters. A more complex substitution is the <strong>XOR
-                                cipher</strong>, based on the binary operation Exclusive OR.</li>
-                    </ol>
+            <h4>Data Protection Strategies</h4>
+            <p>Protecting data requires different strategies depending on the data's state and the type of
+                control implemented.</p>
 
-                    <h3>II. Foundational Security Concepts</h3>
-                    <p>Cryptography is essential to information security, protecting data across all its states: data at
-                        rest, data in use, and data in transit. The field of cybersecurity is built upon core
-                        principles, often summarized by the CIA Triad, plus two additional critical concepts.</p>
+            <h5>Data at Rest vs. Data in Transit</h5>
+            <table>
+                <thead>
+                    <tr>
+                        <th>State</th>
+                        <th>Definition</th>
+                        <th>Primary Threat</th>
+                        <th>Protection Strategy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Data at Rest</strong></td>
+                        <td>Data stored on a device (e.g., hard drive, server, cloud storage).</td>
+                        <td>Unauthorized access to the physical storage medium.</td>
+                        <td><strong>Full disk encryption</strong> (FDE), making data unreadable without a
+                            decryption key.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data in Transit</strong></td>
+                        <td>Data moving across a network (e.g., internet or local network).</td>
+                        <td>Network interception.</td>
+                        <td><strong>Transport encryption</strong>, using protocols like TLS/SSL/HTTPS to create
+                            a secure, encrypted tunnel.</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                    <h4>The CIA Triad and Extended Principles</h4>
-                    <p>The main principles of cryptography align with these foundational security concepts:</p>
+            <h5>Control Types (Defense-in-Depth)</h5>
+            <p>Mitigation techniques reduce the risk and impact of a cyberattack and are often multi-layered.
+                These three types of controls work together to form a "defense-in-depth" strategy:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Control Type</th>
+                        <th>Purpose/Analogy</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Preventative</strong></td>
+                        <td>Designed to stop an attack before it happens (like a locked door).</td>
+                        <td>Firewalls, antivirus software, regular security patching, employee training.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Detective</strong></td>
+                        <td>Aims to identify an ongoing attack or past breach (like an alarm system).</td>
+                        <td>Intrusion Detection Systems (IDS), Security Information and Event Management (SIEM)
+                            systems, network monitoring tools.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Corrective</strong></td>
+                        <td>Used after an attack to minimize damage and restore operations (like a cleanup
+                            crew).</td>
+                        <td>Data backups, disaster recovery plans, incident response procedures.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Relying on just one type of control leaves the system vulnerable at different stages of an
+                attack.</p>
+
+            <h4>Indicators of Malicious Activity (IoCs)</h4>
+            <p>Indicators of Compromise (IoCs) are forensic data signaling a potential security breach. Common
+                indicators of malicious activity include:</p>
+            <ul>
+                <li><strong>Unusual Network Traffic:</strong> Large, sudden spikes in data leaving the network,
+                    connections to known malicious IP addresses, or traffic on unusual ports.</li>
+                <li><strong>Anomalous Account Behavior:</strong> An employee's account logging in at odd hours,
+                    from a different geographical location, or attempting to access unauthorized files.</li>
+                <li><strong>Unauthorized File Modifications:</strong> Critical system files are altered,
+                    encrypted (as in a ransomware attack), or renamed. New, unfamiliar files appear in
+                    unexpected locations.</li>
+                <li><strong>Unexpected System or Application Behavior:</strong> Applications crashing, system
+                    services stopping, or automated scripts running on a machine without a clear purpose.</li>
+            </ul>
+
+            <h3>V. Implementation and Uses of Cryptography</h3>
+            <p>Cryptography is a fundamental technology in modern life used across various applications.</p>
+
+            <h4>Common Uses of Cryptography</h4>
+            <ul>
+                <li><strong>Secure Communication:</strong> Protocols like HTTPS and SSL/TLS secure web browsing,
+                    email, and messaging.</li>
+                <li><strong>Digital Signatures:</strong> Used to verify the authenticity and integrity of
+                    digital documents.</li>
+                <li><strong>Secure Payments:</strong> Protecting online transactions and credit card
+                    information.</li>
+                <li><strong>Secure Storage:</strong> Safeguarding data at rest, such as password protection and
+                    full disk encryption.</li>
+                <li><strong>Cryptocurrencies:</strong> Blockchain technology uses cryptographic principles to
+                    secure transactions and verify ownership.</li>
+                <li><strong>Virtual Private Networks (VPNs):</strong> Creating a secure, encrypted tunnel for
+                    internet traffic.</li>
+            </ul>
+
+            <h4>1. Software Encryption</h4>
+            <p>Software-based cryptography can be applied at the file, disk, or database level.</p>
+            <ul>
+                <li><strong>File and File System Cryptography:</strong> Encrypting individual files (file-level
+                    encryption) or groups of files (file system cryptography). Modern OSs provide native
+                    encryption support, such as Microsoft’s Encrypting File System (EFS) and Apple’s FileVault.
+                    These are transparent to the user; authorized users open files which are decrypted as data
+                    is read from the disk and encrypted when saved. Third-party tools like VeraCrypt and GnuPG
+                    also exist.</li>
+                <li><strong>Disk Encryption:</strong> Applying cryptography to entire disks or sections.
                     <ul>
-                        <li><strong>Confidentiality:</strong> Preventing unauthorized access to information. It ensures
-                            that only authorized individuals can view the data. Techniques like encryption and access
-                            controls are used to maintain confidentiality.</li>
-                        <li><strong>Integrity:</strong> Ensuring that information has not been altered, deleted, or
-                            corrupted in any unauthorized way, maintaining its accuracy and reliability. Cryptography
-                            ensures integrity because ciphertext requires a key to be changed. Digital signatures and
-                            hashing are key to maintaining integrity.</li>
-                        <li><strong>Authentication:</strong> Verifying the identity of the sender and receiver.
-                            Cryptography can verify the genuineness of the user, preventing messages from imposters.
-                        </li>
-                        <li><strong>Non-Repudiation:</strong> Proving that a message was sent or received by a specific
-                            individual. This prevents an individual from fraudulently denying they performed an action.
-                        </li>
-                        <li><strong>Availability:</strong> Guarantees that systems and data are accessible to authorized
-                            users when needed. (While not a direct function of encryption, selecting inappropriate
-                            cryptographic solutions can impact availability through performance issues).</li>
-                        <li><strong>Obfuscation:</strong> Making something obscure or unclear. Encryption provides a
-                            degree of obfuscation, though its security depends on the secret key. Obfuscation alone
-                            (security through obscurity) is considered a flawed general information security protection
-                            strategy.</li>
+                        <li><strong>Full-Disk Encryption (FDE):</strong> Protects the entire drive, including
+                            the operating system (OS) and temporary files. BitLocker is an example of FDE
+                            software included in Microsoft Windows.</li>
+                        <li><strong>Volume-level encryption:</strong> Applied to a volume, which is an
+                            accessible section of a drive with an associated file system.</li>
+                        <li><strong>Partition-level encryption:</strong> May be applied if the partition (a
+                            logical division of a hard drive) is formatted and contains a file system.</li>
                     </ul>
-
-                    <p>The protections offered by cryptography are summarized below:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Characteristic</th>
-                                <th>Description</th>
-                                <th>Protection</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Confidentiality</strong></td>
-                                <td>Ensures that only authorized parties can view the information.</td>
-                                <td>Encrypted information can only be viewed by those who have been provided the key.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Integrity</strong></td>
-                                <td>Ensures that the information is correct and no unauthorized person or malicious
-                                    software has altered the data.</td>
-                                <td>Encrypted information cannot be changed except by authorized users who have the key.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Authentication</strong></td>
-                                <td>Provides proof of the genuineness of the user.</td>
-                                <td>Proof that the sender was legitimate and not an imposter can be obtained.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Nonrepudiation</strong></td>
-                                <td>Proves that a user performed an action.</td>
-                                <td>Individuals are prevented from fraudulently denying that they were involved in a
-                                    transaction.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Obfuscation</strong></td>
-                                <td>Makes something obscure or unclear.</td>
-                                <td>By making it obscure, the original information cannot be determined.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h3>III. Cryptographic Algorithms</h3>
-                    <p>Cryptographic algorithms are organized into three broad categories: Hash algorithms, Symmetric
-                        cryptographic algorithms, and Asymmetric cryptographic algorithms.</p>
-
-                    <h4>1. Hash Algorithms</h4>
-                    <p>A hash algorithm is a <strong>one-way function</strong> that takes an input (or 'message') and
-                        produces a fixed-size string of characters called a <strong>hash value or digest</strong> (also
-                        called a message digest or hash). The process is called <strong>hashing</strong>. It is often
-                        described as a <strong>digital fingerprint</strong>. Hashing is a one-way process because it is
-                        <strong>computationally infeasible (or impossible)</strong> to reverse it and get the original
-                        data from the hash value. Hash algorithms are primarily used to ensure <strong>data
-                            integrity</strong> and for <strong>comparison purposes</strong>.
-                    </p>
-                    <p>A secure hashing algorithm must have the following characteristics:</p>
+                </li>
+                <li><strong>Database Encryption:</strong> Applying cryptography to an organized collection of
+                    structured information (database-level encryption).
                     <ul>
-                        <li><strong>Fixed size:</strong> A digest of a short data set must produce the same size digest
-                            as a long data set.</li>
-                        <li><strong>Unique:</strong> Two different sets of data cannot produce the same digest; changing
-                            a single letter in one data set should produce an entirely different digest.</li>
-                        <li><strong>Original:</strong> It should not be possible to produce a data set that has a
-                            desired or predefined hash.</li>
-                        <li><strong>Secure:</strong> The resulting hash cannot be reversed to determine the original
-                            plaintext.</li>
+                        <li>The two main methods are the plug-in method (attaching an encryption module to the
+                            Database Management System/DBMS) or <strong>transparent data encryption
+                                (TDE)</strong>, which executes encryption and decryption within the database
+                            engine itself. TDE is easier to manage.</li>
+                        <li>Encryption can occur at the database file level, table level, or column level.
+                            Encrypting each row (record-level encryption) or individual data element (cell)
+                            requires careful planning and imposes a significant "performance tax".</li>
                     </ul>
+                </li>
+            </ul>
 
-                    <p><strong>Common Hash Algorithms:</strong></p>
-                    <ul>
-                        <li><strong>Message Digest (MD):</strong> MD5 was the most widely used version, but serious
-                            weaknesses have been identified, and it is no longer considered suitable for use.</li>
-                        <li><strong>Secure Hash Algorithm (SHA):</strong> SHA-1 is no longer suitable for use.
-                            <strong>SHA-2</strong> has six variations, with SHA-256, SHA-384, and SHA-512 being common
-                            (the number indicates the digest length in bits) and are currently considered secure.
-                            <strong>SHA-3</strong> was announced in 2015 and was designed to be dissimilar to previous
-                            hash algorithms to prevent threat actors from compromising them based on earlier weaknesses.
-                        </li>
-                        <li><strong>RipeMD (RACE Integrity Primitives Evaluation Message Digest):</strong> Features two
-                            independent parallel chains of computation whose results are combined. Versions include
-                            RipeMD-160, RipeMD-256, and RipeMD-320.</li>
-                        <li><strong>Whirlpool:</strong> Uses a block cipher and returns a 512-bit message digest for
-                            messages less than 2<sup>256</sup> bits. The authors have stated it is not and will never be
-                            patented and may be used free of charge.</li>
-                    </ul>
+            <h4>2. Hardware Encryption</h4>
+            <p>Hardware encryption is generally considered a more secure option than software encryption because
+                it cannot be exploited by attacks targeting software vulnerabilities.</p>
+            <ul>
+                <li><strong>USB Devices:</strong> Cryptographic features can be built directly into the hardware
+                    of a USB device, automatically encrypting all data written to it. Some devices offer remote
+                    control and tracking or can initiate a self-destruct sequence if stolen.</li>
+                <li><strong>Self-Encrypting Drives (SEDs):</strong> Drives that automatically protect all data
+                    written to them. If the authentication process between the SED and the host device fails on
+                    startup, the SED can deny access or perform a cryptographic erase of the decryption keys.
+                </li>
+                <li><strong>Hardware Security Module (HSM):</strong> A removable external cryptographic device
+                    (USB, expansion card, or network server). An HSM includes an onboard random number
+                    generator, key storage, and accelerated symmetric and asymmetric encryption, performing all
+                    processes in hardware to prevent compromise by malware.</li>
+                <li><strong>Trusted Execution Environment (TEE):</strong> A secure cryptoprocessor (motherboard
+                    chip) internal to the computer, protecting the confidentiality and integrity of code and
+                    data stored on it.</li>
+                <li><strong>Trusted Platform Module (TPM):</strong> An international standard for
+                    cryptoprocessors that provides cryptographic services. A TPM includes a random number
+                    generator, full support for asymmetric encryption, and can test key components during
+                    startup to prevent booting if system files have been altered. Apple and Android devices use
+                    similar technology called a <strong>secure enclave</strong>.</li>
+            </ul>
 
-                    <p>Hash digests generated from different algorithms vary in length, as illustrated when hashing the
-                        word <em>Cengage</em>:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Hash</th>
-                                <th>Digest</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>RipeMD160</td>
-                                <td>dd52a79bce64a1d145b51ce639e0dadda976516d</td>
-                            </tr>
-                            <tr>
-                                <td>SHA-256</td>
-                                <td>f6c8a86bf6a5128cbaf2ad251b0beaa3604c11c51587de518737537800098d76</td>
-                            </tr>
-                            <tr>
-                                <td>SHA3-512</td>
-                                <td>3a82d58e17f3991413c5f4e9811930b69513bba02a860eed82070f892ab381f9fd926a88cf68745565f51a93b97a1317ae8b84e2dfb798e4a2aa331187dc9e34
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Whirlpool</td>
-                                <td>1428cacf499fce9ef439f95a27f0efdc518e97edf9714e234cfffe0c22dcb0e2c4bd3f22a975670f4a229452062b8bd0c6c9244e4c986f22c61ce951de31c505
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <h4>3. Blockchain Technology</h4>
+            <p>A <strong>blockchain</strong> is a <strong>shared, immutable ledger</strong> that facilitates
+                recording transactions and tracking assets in a business network. It is a system where
+                transaction records are maintained across several computers linked in a peer-to-peer network.
+                Blockchain relies heavily on cryptographic hash algorithms, primarily SHA-256, to make it
+                computationally infeasible to tamper with transactions without network consensus.</p>
+            <p>This system is designed to replace inefficient, duplicated ledgers maintained by separate
+                entities (suppliers, retailers, banks) with a single, tamper-evident ledger.</p>
+            <p>There are different types of blockchains:</p>
+            <ol>
+                <li><strong>Public Blockchain (Open Public Ledger):</strong> A network anyone can join, commonly
+                    used for exchanging cryptocurrencies.</li>
+                <li><strong>Private Blockchain:</strong> Operates in a closed network, best suited for internal
+                    enterprise use.</li>
+                <li><strong>Federated Blockchain (Consortium Blockchain):</strong> Used when multiple
+                    organizations require both public and private aspects, involving more than one organization
+                    providing controlled access to preselected nodes.</li>
+            </ol>
 
-                    <h4>2. Symmetric Cryptographic Algorithms</h4>
-                    <p>Symmetric encryption uses a <strong>single, shared secret key</strong> for both encrypting and
-                        decrypting data. This is also known as <strong>private key cryptography</strong>. The sender
-                        uses the key to "lock" the message, and the receiver uses the <em>exact same key</em> to
-                        "unlock" it.</p>
-                    <ul>
-                        <li><strong>Characteristics:</strong> This method is <strong>very fast and efficient</strong>,
-                            making it ideal for encrypting large amounts of data.</li>
-                        <li><strong>Primary Weakness:</strong> The biggest challenge is <strong>securely sharing the
-                                key</strong> between the two parties. Since the key cannot be sent electronically
-                            unencrypted, secure distribution and maintenance of the single key among multiple
-                            geographically scattered users pose significant challenges.</li>
-                        <li><strong>Key Security:</strong> The element that must be kept secret is the key itself.</li>
-                    </ul>
+            <h3>VI. Cryptographic Limitations and Attacks</h3>
+            <p>Cryptography is not an absolute protection and continually faces constraints and attacks.</p>
 
-                    <p><strong>Common Symmetric Algorithms (Strong Algorithms):</strong></p>
-                    <ul>
-                        <li><strong>Advanced Encryption Standard (AES):</strong> Performs three steps on every 128-bit
-                            block of plaintext. The number of internal rounds depends on the key size (e.g., AES-256
-                            uses 13 rounds for a 256-bit key). To date, no attacks have been successful against AES.
-                        </li>
-                        <li><strong>Blowfish and Twofish:</strong> Blowfish is a block cipher that operates on 64-bit
-                            blocks with key lengths from 32 to 448 bits. Twofish is a later derivation considered
-                            strong, though less widely used than Blowfish.</li>
-                    </ul>
-                    <p><em><strong>Note:</strong> Older symmetric algorithms like Data Encryption Standard (DES), Triple
-                            Data Encryption Standard (3DES), and Rivest Cipher (RC) have been deprecated and should no
-                            longer be used.</em></p>
+            <h4>Cryptographic Limitations and Constraints</h4>
+            <p>The importance of using appropriate cryptographic solutions is paramount. Using an inappropriate
+                solution can compromise confidentiality, cause data integrity failures (e.g., due to collision
+                attacks), or lead to performance issues impacting availability.</p>
+            <p>A major constraint is the <strong>resource versus security constraint</strong>. Cryptographic
+                algorithms require time and energy, which are scarce resources in low-power devices (like IoT
+                sensors, which draw very little energy) or applications requiring ultra-fast response times.
+                This has led to the development of <strong>lightweight cryptography</strong>.</p>
+            <p>Other significant constraints include:</p>
+            <ul>
+                <li><strong>Key Management:</strong> The greatest challenge is the secure generation,
+                    distribution, and storage of cryptographic keys. If a key is compromised, the entire
+                    security of the system is at risk.</li>
+                <li><strong>Human Factor:</strong> The human element remains the weakest link; users choosing
+                    weak passwords, falling for phishing, or mishandling private keys can bypass strong
+                    encryption.</li>
+                <li><strong>Performance:</strong> Asymmetric encryption, in particular, requires significant
+                    computational power and can be too slow for real-time applications involving large data
+                    volumes.</li>
+            </ul>
 
-                    <h4>3. Asymmetric Cryptographic Algorithms</h4>
-                    <p>Asymmetric encryption, also known as <strong>public-key cryptography</strong>, uses a
-                        <strong>pair of mathematically linked keys</strong>: a public key and a private key. This method
-                        solves the key-sharing problem inherent in symmetric encryption.
-                    </p>
-                    <ul>
-                        <li><strong>Key Function:</strong> The <strong>public key</strong> can be shared freely and is
-                            known to everyone. The <strong>private key</strong> must remain secret and is known only to
-                            the individual it belongs to.</li>
-                        <li><strong>Encryption/Decryption:</strong> Data encrypted with the public key can <em>only</em>
-                            be decrypted with the corresponding private key, and vice-versa.</li>
-                        <li><strong>Characteristics:</strong> This method is <strong>slower</strong> than symmetric
-                            encryption.</li>
-                        <li><strong>Primary Uses:</strong> Authentication, digital signatures, and securely exchanging a
-                            symmetric key.</li>
-                        <li><strong>Key Security:</strong> The element that must be kept secret is the <strong>private
-                                key</strong>.</li>
-                    </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Limitation</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Speed</strong></td>
+                        <td>The speed of encryption/decryption can be unacceptable in certain instances,
+                            depending on hardware and software factors.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Size</strong></td>
+                        <td>The resulting size of an encrypted file can be up to one-third larger than the
+                            plaintext version.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Weak keys</strong></td>
+                        <td>Some ciphers can produce a weak key that causes the cipher to behave unpredictably
+                            or compromise overall security.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Key length</strong></td>
+                        <td>A short key length (number of bits) results in weaker security.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Longevity</strong></td>
+                        <td>As computers become more powerful, the useful lifetime of ciphers may diminish.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Predictability</strong></td>
+                        <td>A weak random number generator may create predictable output.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reuse</strong></td>
+                        <td>Reusing the same key for each encryption provides a larger data footprint for an
+                            attacker to use in attempting to break the encryption.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Entropy</strong></td>
+                        <td>Low entropy (measure of randomness of a data-generating function) gives the ability
+                            to predict future-generated values.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Computational overhead</strong></td>
+                        <td>Sensors and IoT devices often lack the capacity to accommodate the computational
+                            overhead required for cryptography.</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                    <p><strong>Common Asymmetric Algorithms:</strong></p>
-                    <ul>
-                        <li><strong>RSA:</strong> Published in 1977, RSA’s security is based on
-                            <strong>factoring</strong>, specifically the difficulty for modern computers to quickly
-                            factor the large prime numbers ($p$ and $q$) that make up the value $n$ (where $n = p \times
-                            q$). The public key is the pair $(n, e)$, and the private key is $(n, d)$.
-                        </li>
-                        <li><strong>Elliptic Curve Cryptography (ECC):</strong> ECC is a newer form of asymmetric
-                            encryption not based on factoring. It uses sloping curves (a set of points satisfying a
-                            specific mathematical equation) instead of large prime numbers. ECC is gaining popularity
-                            because it offers comparable security to RSA with <strong>smaller key sizes</strong>,
-                            leading to faster computations and lower power consumption, making it ideal for mobile
-                            devices. ECC is used by the U.S. government, the Tor project, and for verifying Bitcoin
-                            ownership.</li>
-                    </ul>
+            <h4>Attacks on Cryptography</h4>
+            <p>Attacks are generally categorized based on whether they target the key, the algorithm, or the
+                implementation.</p>
 
-                    <p>The significant difference in key size required for the same security level between RSA and ECC
-                        is illustrated below:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>RSA Key Length (bits)</th>
-                                <th>ECC Key Length (bits)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1024</td>
-                                <td>160</td>
-                            </tr>
-                            <tr>
-                                <td>2048</td>
-                                <td>224</td>
-                            </tr>
-                            <tr>
-                                <td>3072</td>
-                                <td>256</td>
-                            </tr>
-                            <tr>
-                                <td>7680</td>
-                                <td>384</td>
-                            </tr>
-                            <tr>
-                                <td>15360</td>
-                                <td>521</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <h5>General Attacks:</h5>
+            <ul>
+                <li><strong>Brute-Force Attack:</strong> An attacker systematically tries every possible key
+                    until the correct one is found. The key length determines the feasibility of this attack.
+                </li>
+                <li><strong>Man-in-the-Middle (MITM) Attack:</strong> An attacker secretly intercepts and relays
+                    communications between two parties who believe they are communicating directly.</li>
+                <li><strong>Side-Channel Attacks:</strong> An attacker analyzes physical characteristics of a
+                    computing system, such as power consumption, timing, or electromagnetic radiation, to
+                    extract information about the cryptographic process.</li>
+                <li><strong>Cryptanalysis:</strong> The study of methods for obtaining the plaintext of a
+                    message without access to the key, often involving mathematical and statistical techniques
+                    to find algorithm vulnerabilities.</li>
+            </ul>
 
-                    <h4>Digital Signatures</h4>
-                    <p>Asymmetric cryptography is crucial for creating <strong>digital signatures</strong>, which
-                        provide electronic verification of the sender. A digital signature serves as proof, similar to a
-                        handwritten signature, but offers additional benefits:</p>
-                    <ul>
-                        <li><strong>Verify the sender:</strong> Confirms the identity of the originator.</li>
-                        <li><strong>Prevent the sender from disowning the message (Nonrepudiation):</strong> The signer
-                            cannot fraudulently claim the signature was forged.</li>
-                        <li><strong>Prove the integrity of the message:</strong> Proves the message has not been altered
-                            since it was signed.</li>
-                    </ul>
+            <h5>Algorithm and Implementation Attacks:</h5>
+            <ul>
+                <li><strong>Known Ciphertext Attack (Ciphertext-only attack):</strong> An attacker uses
+                    sophisticated statistical tools to analyze large sets of captured ciphertext in an attempt
+                    to discover a pattern that may reveal the plaintext or key.</li>
+                <li><strong>Downgrade Attack:</strong> An attacker forces the system to abandon its current,
+                    higher security mode and revert ("fall back") to an older, less secure operational mode
+                    (often due to backward compatibility features), allowing the attacker to target the weaker
+                    mode.</li>
+                <li><strong>Misconfiguration Implementation:</strong> Most cryptographic breaches result from
+                    incorrect choices or misconfigurations of options, such as selecting weak, deprecated
+                    algorithms like DES or SHA-1, or choosing a weaker available algorithm (like SHA-256 over
+                    SHA3-512).</li>
+                <li><strong>Collision Attack:</strong> An attempt to find two input strings for a hash function
+                    that produce the same hash result (a <strong>collision</strong>). This violates the
+                    foundation of a secure hash algorithm. The statistical phenomenon known as the
+                    <strong>birthday attack</strong> makes it easier to find <em>any</em> two inputs that hash
+                    to the same value, rather than finding an input that collides with a specific predefined
+                    hash.
+                </li>
+            </ul>
 
-                    <p>The process for creating and verifying a digital signature relies on the keys working in both
-                        directions:</p>
-                    <ol>
-                        <li>The sender creates a digest (hash) of the document.</li>
-                        <li>The sender <strong>encrypts the digest with their private key</strong>—this encrypted digest
-                            is the digital signature.</li>
-                        <li>The sender transmits both the original document and the digital signature.</li>
-                        <li>The receiver uses the <strong>sender's public key to decrypt the digital signature</strong>,
-                            revealing the original digest. If decryption fails, the message did not come from the
-                            legitimate sender.</li>
-                        <li>The receiver hashes the received document using the same algorithm and compares the newly
-                            generated hash to the decrypted digest. If they match, the message integrity is proven.</li>
-                    </ol>
-                    <p>The Digital Signature Algorithm (DSA) is a U.S. government standard for digital signatures.</p>
+            <h4>The Threat of Quantum Computing</h4>
+            <p>Quantum computing relies on quantum physics using atomic-scale units called
+                <strong>qubits</strong>. Unlike traditional bits (0 or 1), a qubit can be both 0 and 1
+                simultaneously, allowing for parallel calculations and making quantum computers significantly
+                faster and more efficient than today’s machines.
+            </p>
+            <ul>
+                <li><strong>Risk to Cryptography:</strong> Quantum computing poses a severe risk, particularly
+                    to asymmetric cryptography. Because asymmetric security relies on the difficulty of
+                    factoring large prime numbers, a quantum computer could perform this factoring rapidly,
+                    rendering virtually all current asymmetric cryptographic algorithms useless.</li>
+                <li><strong>Mitigation:</strong> Researchers are developing "quantum-safe" encryption proposals,
+                    known as <strong>post-quantum cryptography</strong>, which would be secure against quantum
+                    computer attacks.</li>
+            </ul>
 
-                    <h4>Key Exchange</h4>
-                    <p>Key exchange is necessary for securely sending and receiving keys, especially symmetric private
-                        keys, within normal communication channels.</p>
-                    <ul>
-                        <li><strong>Diffie-Hellman (DH):</strong> Requires two parties (Alice and Bob) to agree on a
-                            large prime number and a related integer, which can be public. Through mathematical
-                            computations and the exchange of intermediate values, they can separately create the same
-                            shared key.</li>
-                        <li><strong>Diffie-Hellman Ephemeral (DHE):</strong> Uses temporary keys (ephemeral keys) that
-                            are used only once and then discarded, unlike DH, which uses the same keys each time.</li>
-                        <li><strong>Elliptic Curve Diffie–Hellman (ECDH):</strong> Uses elliptic curve cryptography
-                            instead of prime numbers for computation.</li>
-                        <li><strong>Perfect Forward Secrecy:</strong> Public key systems that generate random public
-                            keys that are different for each session. If a secret key is compromised, it cannot reveal
-                            the contents of more than one message.</li>
-                    </ul>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>Whose key to use</th>
-                                <th>Which key to use</th>
-                                <th>Explanation</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Bob wants to send Alice an encrypted message.</td>
-                                <td>Alice’s key</td>
-                                <td>Public key</td>
-                                <td>When an encrypted message is to be sent, the recipient’s key is used.</td>
-                            </tr>
-                            <tr>
-                                <td>Alice wants to read an encrypted message sent by Bob.</td>
-                                <td>Alice’s key</td>
-                                <td>Private key</td>
-                                <td>An encrypted message can be read only by using the recipient’s private key.</td>
-                            </tr>
-                            <tr>
-                                <td>Bob wants to send a copy to himself of the encrypted message that he sent to Alice.
-                                </td>
-                                <td>Bob’s key</td>
-                                <td>Public key to encrypt; Private key to decrypt</td>
-                                <td>Bob would need to encrypt it with his public key and then use his private key to
-                                    decrypt it.</td>
-                            </tr>
-                            <tr>
-                                <td>Bob receives an encrypted reply message from Alice.</td>
-                                <td>Bob’s key</td>
-                                <td>Private key</td>
-                                <td>The recipient’s private key is used to decrypt received messages.</td>
-                            </tr>
-                            <tr>
-                                <td>Bob wants Susan to read Alice’s reply message that he received.</td>
-                                <td>Susan’s key</td>
-                                <td>Public key</td>
-                                <td>The message should be encrypted with Susan’s key for her to decrypt and read with
-                                    her private key.</td>
-                            </tr>
-                            <tr>
-                                <td>Bob wants to send Alice a message with a digital signature.</td>
-                                <td>Bob’s key</td>
-                                <td>Private key</td>
-                                <td>Bob’s private key is used to encrypt the hash.</td>
-                            </tr>
-                            <tr>
-                                <td>Alice wants to see Bob’s digital signature.</td>
-                                <td>Bob’s key</td>
-                                <td>Public key</td>
-                                <td>Alice can use Bob’s public key to decrypt the hash because the keys work in both
-                                    directions.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-
-                <section class="module-section">
-                    <h3>IV. Algorithm Variations and Enterprise Security Strategies</h3>
-
-                    <h4>Variations of Algorithms</h4>
-                    <p>Cryptographic algorithms can vary based on the device used (cipher machines vs. computers) and
-                        the amount of data processed (stream vs. block).</p>
-                    <ul>
-                        <li><strong>Cipher Machines vs. Computers:</strong> Prior to electronic computers, mechanical
-                            devices like the <strong>cipher disk</strong> (developed in 1470) and the <strong>Enigma
-                                machine</strong> (used by Germany during WWII) were used to encrypt data.</li>
-                        <li><strong>One-Time Pad (OTP):</strong> A secure cryptographic algorithm that is entirely
-                            hand-calculated. It combines plaintext with a long, random key (pad). OTP is the
-                            <strong>only known encryption method that cannot be broken mathematically</strong>, provided
-                            the pad is used only once and then destroyed.
-                        </li>
-                    </ul>
-
-                    <table>
-                        <caption>One-Time Pad (Calculation Example)</caption>
-                        <thead>
-                            <tr>
-                                <th>Plaintext</th>
-                                <th>Position in alphabet</th>
-                                <th>Pad</th>
-                                <th>Position in alphabet</th>
-                                <th>Calculation (Example for 's': 19+3-1=21)</th>
-                                <th>Result</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>s</td>
-                                <td>19</td>
-                                <td>c</td>
-                                <td>3</td>
-                                <td>(19 + 3 - 1) = 21 (wrap around > 26)</td>
-                                <td>u</td>
-                            </tr>
-                            <tr>
-                                <td>e</td>
-                                <td>5</td>
-                                <td>b</td>
-                                <td>2</td>
-                                <td></td>
-                                <td>f</td>
-                            </tr>
-                            <tr>
-                                <td>c</td>
-                                <td>3</td>
-                                <td>y</td>
-                                <td>25</td>
-                                <td></td>
-                                <td>a</td>
-                            </tr>
-                            <tr>
-                                <td>r</td>
-                                <td>18</td>
-                                <td>f</td>
-                                <td>6</td>
-                                <td></td>
-                                <td>w</td>
-                            </tr>
-                            <tr>
-                                <td>e</td>
-                                <td>5</td>
-                                <td>e</td>
-                                <td>5</td>
-                                <td></td>
-                                <td>i</td>
-                            </tr>
-                            <tr>
-                                <td>t</td>
-                                <td>20</td>
-                                <td>a</td>
-                                <td>1</td>
-                                <td></td>
-                                <td>T</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <ul>
-                        <li><strong>Stream vs. Block:</strong>
-                            <ul>
-                                <li><strong>Stream cipher:</strong> Takes one character and replaces it with one
-                                    character. Stream ciphers are generally <strong>less secure</strong> because the
-                                    engine that generates the stream does not vary, only the plaintext changes.</li>
-                                <li><strong>Block cipher:</strong> Manipulates an entire block of plaintext (typically 8
-                                    to 16 bytes) at one time. Block ciphers are considered <strong>more secure</strong>
-                                    because the output is more random, as the cipher is reset to its original state
-                                    after each block is processed.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Sponge Function:</strong> A newer type of algorithm that takes an input string of
-                            any length and returns a string of any requested variable length.</li>
-                    </ul>
-
-                    <h4>Data Protection Strategies</h4>
-                    <p>Protecting data requires different strategies depending on the data's state and the type of
-                        control implemented.</p>
-
-                    <h5>Data at Rest vs. Data in Transit</h5>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>State</th>
-                                <th>Definition</th>
-                                <th>Primary Threat</th>
-                                <th>Protection Strategy</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Data at Rest</strong></td>
-                                <td>Data stored on a device (e.g., hard drive, server, cloud storage).</td>
-                                <td>Unauthorized access to the physical storage medium.</td>
-                                <td><strong>Full disk encryption</strong> (FDE), making data unreadable without a
-                                    decryption key.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Data in Transit</strong></td>
-                                <td>Data moving across a network (e.g., internet or local network).</td>
-                                <td>Network interception.</td>
-                                <td><strong>Transport encryption</strong>, using protocols like TLS/SSL/HTTPS to create
-                                    a secure, encrypted tunnel.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h5>Control Types (Defense-in-Depth)</h5>
-                    <p>Mitigation techniques reduce the risk and impact of a cyberattack and are often multi-layered.
-                        These three types of controls work together to form a "defense-in-depth" strategy:</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Control Type</th>
-                                <th>Purpose/Analogy</th>
-                                <th>Examples</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Preventative</strong></td>
-                                <td>Designed to stop an attack before it happens (like a locked door).</td>
-                                <td>Firewalls, antivirus software, regular security patching, employee training.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Detective</strong></td>
-                                <td>Aims to identify an ongoing attack or past breach (like an alarm system).</td>
-                                <td>Intrusion Detection Systems (IDS), Security Information and Event Management (SIEM)
-                                    systems, network monitoring tools.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Corrective</strong></td>
-                                <td>Used after an attack to minimize damage and restore operations (like a cleanup
-                                    crew).</td>
-                                <td>Data backups, disaster recovery plans, incident response procedures.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p>Relying on just one type of control leaves the system vulnerable at different stages of an
-                        attack.</p>
-
-                    <h4>Indicators of Malicious Activity (IoCs)</h4>
-                    <p>Indicators of Compromise (IoCs) are forensic data signaling a potential security breach. Common
-                        indicators of malicious activity include:</p>
-                    <ul>
-                        <li><strong>Unusual Network Traffic:</strong> Large, sudden spikes in data leaving the network,
-                            connections to known malicious IP addresses, or traffic on unusual ports.</li>
-                        <li><strong>Anomalous Account Behavior:</strong> An employee's account logging in at odd hours,
-                            from a different geographical location, or attempting to access unauthorized files.</li>
-                        <li><strong>Unauthorized File Modifications:</strong> Critical system files are altered,
-                            encrypted (as in a ransomware attack), or renamed. New, unfamiliar files appear in
-                            unexpected locations.</li>
-                        <li><strong>Unexpected System or Application Behavior:</strong> Applications crashing, system
-                            services stopping, or automated scripts running on a machine without a clear purpose.</li>
-                    </ul>
-
-                    <h3>V. Implementation and Uses of Cryptography</h3>
-                    <p>Cryptography is a fundamental technology in modern life used across various applications.</p>
-
-                    <h4>Common Uses of Cryptography</h4>
-                    <ul>
-                        <li><strong>Secure Communication:</strong> Protocols like HTTPS and SSL/TLS secure web browsing,
-                            email, and messaging.</li>
-                        <li><strong>Digital Signatures:</strong> Used to verify the authenticity and integrity of
-                            digital documents.</li>
-                        <li><strong>Secure Payments:</strong> Protecting online transactions and credit card
-                            information.</li>
-                        <li><strong>Secure Storage:</strong> Safeguarding data at rest, such as password protection and
-                            full disk encryption.</li>
-                        <li><strong>Cryptocurrencies:</strong> Blockchain technology uses cryptographic principles to
-                            secure transactions and verify ownership.</li>
-                        <li><strong>Virtual Private Networks (VPNs):</strong> Creating a secure, encrypted tunnel for
-                            internet traffic.</li>
-                    </ul>
-
-                    <h4>1. Software Encryption</h4>
-                    <p>Software-based cryptography can be applied at the file, disk, or database level.</p>
-                    <ul>
-                        <li><strong>File and File System Cryptography:</strong> Encrypting individual files (file-level
-                            encryption) or groups of files (file system cryptography). Modern OSs provide native
-                            encryption support, such as Microsoft’s Encrypting File System (EFS) and Apple’s FileVault.
-                            These are transparent to the user; authorized users open files which are decrypted as data
-                            is read from the disk and encrypted when saved. Third-party tools like VeraCrypt and GnuPG
-                            also exist.</li>
-                        <li><strong>Disk Encryption:</strong> Applying cryptography to entire disks or sections.
-                            <ul>
-                                <li><strong>Full-Disk Encryption (FDE):</strong> Protects the entire drive, including
-                                    the operating system (OS) and temporary files. BitLocker is an example of FDE
-                                    software included in Microsoft Windows.</li>
-                                <li><strong>Volume-level encryption:</strong> Applied to a volume, which is an
-                                    accessible section of a drive with an associated file system.</li>
-                                <li><strong>Partition-level encryption:</strong> May be applied if the partition (a
-                                    logical division of a hard drive) is formatted and contains a file system.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Database Encryption:</strong> Applying cryptography to an organized collection of
-                            structured information (database-level encryption).
-                            <ul>
-                                <li>The two main methods are the plug-in method (attaching an encryption module to the
-                                    Database Management System/DBMS) or <strong>transparent data encryption
-                                        (TDE)</strong>, which executes encryption and decryption within the database
-                                    engine itself. TDE is easier to manage.</li>
-                                <li>Encryption can occur at the database file level, table level, or column level.
-                                    Encrypting each row (record-level encryption) or individual data element (cell)
-                                    requires careful planning and imposes a significant "performance tax".</li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <h4>2. Hardware Encryption</h4>
-                    <p>Hardware encryption is generally considered a more secure option than software encryption because
-                        it cannot be exploited by attacks targeting software vulnerabilities.</p>
-                    <ul>
-                        <li><strong>USB Devices:</strong> Cryptographic features can be built directly into the hardware
-                            of a USB device, automatically encrypting all data written to it. Some devices offer remote
-                            control and tracking or can initiate a self-destruct sequence if stolen.</li>
-                        <li><strong>Self-Encrypting Drives (SEDs):</strong> Drives that automatically protect all data
-                            written to them. If the authentication process between the SED and the host device fails on
-                            startup, the SED can deny access or perform a cryptographic erase of the decryption keys.
-                        </li>
-                        <li><strong>Hardware Security Module (HSM):</strong> A removable external cryptographic device
-                            (USB, expansion card, or network server). An HSM includes an onboard random number
-                            generator, key storage, and accelerated symmetric and asymmetric encryption, performing all
-                            processes in hardware to prevent compromise by malware.</li>
-                        <li><strong>Trusted Execution Environment (TEE):</strong> A secure cryptoprocessor (motherboard
-                            chip) internal to the computer, protecting the confidentiality and integrity of code and
-                            data stored on it.</li>
-                        <li><strong>Trusted Platform Module (TPM):</strong> An international standard for
-                            cryptoprocessors that provides cryptographic services. A TPM includes a random number
-                            generator, full support for asymmetric encryption, and can test key components during
-                            startup to prevent booting if system files have been altered. Apple and Android devices use
-                            similar technology called a <strong>secure enclave</strong>.</li>
-                    </ul>
-
-                    <h4>3. Blockchain Technology</h4>
-                    <p>A <strong>blockchain</strong> is a <strong>shared, immutable ledger</strong> that facilitates
-                        recording transactions and tracking assets in a business network. It is a system where
-                        transaction records are maintained across several computers linked in a peer-to-peer network.
-                        Blockchain relies heavily on cryptographic hash algorithms, primarily SHA-256, to make it
-                        computationally infeasible to tamper with transactions without network consensus.</p>
-                    <p>This system is designed to replace inefficient, duplicated ledgers maintained by separate
-                        entities (suppliers, retailers, banks) with a single, tamper-evident ledger.</p>
-                    <p>There are different types of blockchains:</p>
-                    <ol>
-                        <li><strong>Public Blockchain (Open Public Ledger):</strong> A network anyone can join, commonly
-                            used for exchanging cryptocurrencies.</li>
-                        <li><strong>Private Blockchain:</strong> Operates in a closed network, best suited for internal
-                            enterprise use.</li>
-                        <li><strong>Federated Blockchain (Consortium Blockchain):</strong> Used when multiple
-                            organizations require both public and private aspects, involving more than one organization
-                            providing controlled access to preselected nodes.</li>
-                    </ol>
-
-                    <h3>VI. Cryptographic Limitations and Attacks</h3>
-                    <p>Cryptography is not an absolute protection and continually faces constraints and attacks.</p>
-
-                    <h4>Cryptographic Limitations and Constraints</h4>
-                    <p>The importance of using appropriate cryptographic solutions is paramount. Using an inappropriate
-                        solution can compromise confidentiality, cause data integrity failures (e.g., due to collision
-                        attacks), or lead to performance issues impacting availability.</p>
-                    <p>A major constraint is the <strong>resource versus security constraint</strong>. Cryptographic
-                        algorithms require time and energy, which are scarce resources in low-power devices (like IoT
-                        sensors, which draw very little energy) or applications requiring ultra-fast response times.
-                        This has led to the development of <strong>lightweight cryptography</strong>.</p>
-                    <p>Other significant constraints include:</p>
-                    <ul>
-                        <li><strong>Key Management:</strong> The greatest challenge is the secure generation,
-                            distribution, and storage of cryptographic keys. If a key is compromised, the entire
-                            security of the system is at risk.</li>
-                        <li><strong>Human Factor:</strong> The human element remains the weakest link; users choosing
-                            weak passwords, falling for phishing, or mishandling private keys can bypass strong
-                            encryption.</li>
-                        <li><strong>Performance:</strong> Asymmetric encryption, in particular, requires significant
-                            computational power and can be too slow for real-time applications involving large data
-                            volumes.</li>
-                    </ul>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Limitation</th>
-                                <th>Explanation</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Speed</strong></td>
-                                <td>The speed of encryption/decryption can be unacceptable in certain instances,
-                                    depending on hardware and software factors.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Size</strong></td>
-                                <td>The resulting size of an encrypted file can be up to one-third larger than the
-                                    plaintext version.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Weak keys</strong></td>
-                                <td>Some ciphers can produce a weak key that causes the cipher to behave unpredictably
-                                    or compromise overall security.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Key length</strong></td>
-                                <td>A short key length (number of bits) results in weaker security.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Longevity</strong></td>
-                                <td>As computers become more powerful, the useful lifetime of ciphers may diminish.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Predictability</strong></td>
-                                <td>A weak random number generator may create predictable output.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Reuse</strong></td>
-                                <td>Reusing the same key for each encryption provides a larger data footprint for an
-                                    attacker to use in attempting to break the encryption.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Entropy</strong></td>
-                                <td>Low entropy (measure of randomness of a data-generating function) gives the ability
-                                    to predict future-generated values.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Computational overhead</strong></td>
-                                <td>Sensors and IoT devices often lack the capacity to accommodate the computational
-                                    overhead required for cryptography.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h4>Attacks on Cryptography</h4>
-                    <p>Attacks are generally categorized based on whether they target the key, the algorithm, or the
-                        implementation.</p>
-
-                    <h5>General Attacks:</h5>
-                    <ul>
-                        <li><strong>Brute-Force Attack:</strong> An attacker systematically tries every possible key
-                            until the correct one is found. The key length determines the feasibility of this attack.
-                        </li>
-                        <li><strong>Man-in-the-Middle (MITM) Attack:</strong> An attacker secretly intercepts and relays
-                            communications between two parties who believe they are communicating directly.</li>
-                        <li><strong>Side-Channel Attacks:</strong> An attacker analyzes physical characteristics of a
-                            computing system, such as power consumption, timing, or electromagnetic radiation, to
-                            extract information about the cryptographic process.</li>
-                        <li><strong>Cryptanalysis:</strong> The study of methods for obtaining the plaintext of a
-                            message without access to the key, often involving mathematical and statistical techniques
-                            to find algorithm vulnerabilities.</li>
-                    </ul>
-
-                    <h5>Algorithm and Implementation Attacks:</h5>
-                    <ul>
-                        <li><strong>Known Ciphertext Attack (Ciphertext-only attack):</strong> An attacker uses
-                            sophisticated statistical tools to analyze large sets of captured ciphertext in an attempt
-                            to discover a pattern that may reveal the plaintext or key.</li>
-                        <li><strong>Downgrade Attack:</strong> An attacker forces the system to abandon its current,
-                            higher security mode and revert ("fall back") to an older, less secure operational mode
-                            (often due to backward compatibility features), allowing the attacker to target the weaker
-                            mode.</li>
-                        <li><strong>Misconfiguration Implementation:</strong> Most cryptographic breaches result from
-                            incorrect choices or misconfigurations of options, such as selecting weak, deprecated
-                            algorithms like DES or SHA-1, or choosing a weaker available algorithm (like SHA-256 over
-                            SHA3-512).</li>
-                        <li><strong>Collision Attack:</strong> An attempt to find two input strings for a hash function
-                            that produce the same hash result (a <strong>collision</strong>). This violates the
-                            foundation of a secure hash algorithm. The statistical phenomenon known as the
-                            <strong>birthday attack</strong> makes it easier to find <em>any</em> two inputs that hash
-                            to the same value, rather than finding an input that collides with a specific predefined
-                            hash.
-                        </li>
-                    </ul>
-
-                    <h4>The Threat of Quantum Computing</h4>
-                    <p>Quantum computing relies on quantum physics using atomic-scale units called
-                        <strong>qubits</strong>. Unlike traditional bits (0 or 1), a qubit can be both 0 and 1
-                        simultaneously, allowing for parallel calculations and making quantum computers significantly
-                        faster and more efficient than today’s machines.
-                    </p>
-                    <ul>
-                        <li><strong>Risk to Cryptography:</strong> Quantum computing poses a severe risk, particularly
-                            to asymmetric cryptography. Because asymmetric security relies on the difficulty of
-                            factoring large prime numbers, a quantum computer could perform this factoring rapidly,
-                            rendering virtually all current asymmetric cryptographic algorithms useless.</li>
-                        <li><strong>Mitigation:</strong> Researchers are developing "quantum-safe" encryption proposals,
-                            known as <strong>post-quantum cryptography</strong>, which would be secure against quantum
-                            computer attacks.</li>
-                    </ul>
-
-                    <div class="alert alert-info">
-                        <strong>Analogy for Cryptography:</strong> If information security is a highly secured vault
-                        protecting your valuable data, then <strong>cryptography</strong> acts like the complex,
-                        advanced combination lock on the door. <strong>Symmetric encryption</strong> is like a single
-                        physical key that everyone must share, making its distribution difficult and risky.
-                        <strong>Asymmetric encryption</strong> is like having a mailbox (the public key) for receiving
-                        messages that anyone can use, but only you possess the unique, private key required to open the
-                        box and read the contents. Meanwhile, <strong>hashing</strong> is like a tamper-evident seal
-                        placed on the outside of a package; it doesn't hide the package, but if even a tiny piece of the
-                        contents is changed, the seal is immediately broken, alerting the recipient to the lack of
-                        integrity.
-                    </div>
-                </section>
-
-                <!-- Study Guide Section -->
-                <section class="module-section">
-                    <h2>Study Guide</h2>
-
-                    <h3>Short-Answer Quiz</h3>
-                    <div class="accordion">
-                        <details>
-                            <summary>1. What is the fundamental difference between cryptography and steganography?
-                            </summary>
-                            <p>Steganography hides the very existence of a message or information, such as writing a
-                                message in ink on a wooden tablet and then covering it with wax. In contrast,
-                                cryptography does not hide the message itself but rather hides its meaning by
-                                transforming it into an unreadable format. Essentially, steganography hides the message,
-                                while cryptography hides the meaning of the message.</p>
-                        </details>
-                        <details>
-                            <summary>2. Explain the primary challenge associated with symmetric encryption and how
-                                asymmetric encryption addresses it.</summary>
-                            <p>The primary challenge of symmetric encryption is the secure distribution and maintenance
-                                of the single, shared key among all parties. If the key is intercepted during
-                                transmission, the entire system is compromised. Asymmetric (or public key) cryptography
-                                solves this by using a pair of keys; the public key can be distributed freely without
-                                risk, while the private key remains secret, thus eliminating the key-sharing problem.
-                            </p>
-                        </details>
-                        <details>
-                            <summary>3. What are the four main characteristics of a secure hash algorithm?</summary>
-                            <p>A secure hash algorithm must have four key characteristics. It must produce a fixed size
-                                digest regardless of the input data's size. The digest must be unique, meaning two
-                                different data sets cannot produce the same digest. It must be original, making it
-                                impossible to produce a data set that has a predefined hash. Finally, it must be secure,
-                                meaning the hash cannot be reversed to determine the original plaintext.</p>
-                        </details>
-                        <details>
-                            <summary>4. Describe the process of creating a digital signature and what it verifies.
-                            </summary>
-                            <p>To create a digital signature, the sender first generates a hash digest of the message.
-                                The sender then encrypts this digest with their own private key. A digital signature
-                                serves to verify the sender's identity, prevent the sender from disowning the message
-                                (non-repudiation), and prove that the message has not been altered since it was signed
-                                (integrity).</p>
-                        </details>
-                        <details>
-                            <summary>5. What is a downgrade attack, and why is it a threat to security?</summary>
-                            <p>A downgrade attack is an attack where an adversary forces a system to abandon its
-                                current, higher-security mode of operation and "fall back" to an older, less secure
-                                mode. This is often possible due to the need for backward compatibility. This attack is
-                                a threat because it allows the attacker to exploit known vulnerabilities in the weaker,
-                                outdated security protocols.</p>
-                        </details>
-                        <details>
-                            <summary>6. Compare and contrast data at rest and data in transit, including the primary
-                                strategy for protecting each.</summary>
-                            <p>Data at rest is data stored on a device like a hard drive or server, where the primary
-                                threat is unauthorized physical access. This data is best protected by full disk
-                                encryption (FDE). Data in transit is data actively moving across a network, where the
-                                main threat is interception. This is protected by transport encryption protocols like
-                                TLS, which create a secure, encrypted tunnel for the data.</p>
-                        </details>
-                        <details>
-                            <summary>7. What is a Trusted Execution Environment (TEE), and what role does a Trusted
-                                Platform Module (TPM) play?</summary>
-                            <p>A Trusted Execution Environment (TEE) is a secure cryptoprocessor, an internal
-                                motherboard chip that cannot be tampered with, which protects the confidentiality and
-                                integrity of code and data stored on it. The Trusted Platform Module (TPM) is an
-                                international standard for such a cryptoprocessor. A TPM provides cryptographic services
-                                like random number generation, key generation, and can test system components at boot to
-                                ensure they haven't been altered.</p>
-                        </details>
-                        <details>
-                            <summary>8. Explain the concept of a collision attack and how the "birthday paradox" relates
-                                to it.</summary>
-                            <p>A collision attack is an attempt to find two different input strings that produce the
-                                exact same hash result, which would undermine data integrity. The "birthday paradox" is
-                                a statistical phenomenon that makes this attack easier than a brute-force approach. It
-                                states that it is much easier to find any two people in a group who share a birthday
-                                than it is to find someone who shares your specific birthday, which translates to it
-                                being easier to find any two inputs that collide than to find an input that collides
-                                with a specific hash.</p>
-                        </details>
-                        <details>
-                            <summary>9. What is a blockchain, and what cryptographic algorithm is fundamental to its
-                                operation?</summary>
-                            <p>A blockchain is a shared, immutable, distributed ledger used to record transactions and
-                                track assets across a peer-to-peer network of computers. It is designed so that
-                                transactions can be recorded only once and cannot be altered without the consensus of
-                                all parties. Blockchain relies heavily on cryptographic hash algorithms, most notably
-                                SHA-256, to securely record its transactions.</p>
-                        </details>
-                        <details>
-                            <summary>10. Identify two key limitations that make it difficult to implement strong
-                                cryptography on low-power devices.</summary>
-                            <p>Implementing strong cryptography on low-power devices like sensors is difficult due to
-                                the "resource versus security constraint." First, cryptographic algorithms require
-                                significant computational power and energy to perform their calculations, both of which
-                                are in short supply on these devices. Second, many applications for these devices
-                                require extremely fast response times, but the computational overhead of strong
-                                encryption can introduce unacceptable delays or latency.</p>
-                        </details>
-                    </div>
-
-                    <h3>Essay Questions</h3>
-                    <div class="accordion">
-                        <details>
-                            <summary>1. Discuss the evolution of cryptography from ancient techniques like transposition
-                                and substitution to modern asymmetric algorithms like RSA and ECC.</summary>
-                            <p class="essay-answer">Analyze the core problems that each new development aimed to solve
-                                and the trade-offs involved (e.g., complexity, security, performance).</p>
-                        </details>
-                        <details>
-                            <summary>2. Explain the CIA Triad (Confidentiality, Integrity, Availability) and the
-                                principles of Authentication and Non-repudiation.</summary>
-                            <p class="essay-answer">For each principle, describe how a specific cryptographic algorithm
-                                or technique (e.g., AES, SHA-256, Digital Signatures) is used to uphold it.</p>
-                        </details>
-                        <details>
-                            <summary>3. Compare and contrast the implementation of cryptography in software versus
-                                hardware.</summary>
-                            <p class="essay-answer">Discuss the advantages and disadvantages of each approach, providing
-                                specific examples such as Full Disk Encryption (FDE), Hardware Security Modules (HSMs),
-                                and Self-Encrypting Drives (SEDs).</p>
-                        </details>
-                        <details>
-                            <summary>4. Describe the primary categories of cryptographic attacks outlined in the source
-                                material, including algorithm attacks, collision attacks, and side-channel attacks.
-                            </summary>
-                            <p class="essay-answer">Explain how a failure in key management or the "human factor" can
-                                undermine even the most secure cryptographic systems.</p>
-                        </details>
-                        <details>
-                            <summary>5. Explain the threat that quantum computing poses to modern asymmetric
-                                cryptography.</summary>
-                            <p class="essay-answer">Describe what makes quantum computers fundamentally different from
-                                classical computers and why this presents a risk. Finally, define the concept of
-                                post-quantum cryptography.</p>
-                        </details>
-                    </div>
-
-                    <h3>Glossary of Key Terms</h3>
-                    <div class="glossary-grid">
-                        <div class="glossary-item">
-                            <strong>Algorithm</strong>
-                            <p>A set of procedures, typically based on a mathematical formula, used in cryptography to
-                                encrypt or decrypt data.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Asymmetric Cryptographic Algorithm</strong>
-                            <p>Also known as public key cryptography, it uses a pair of mathematically related keys (a
-                                public key and a private key) for encryption and decryption.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Authentication</strong>
-                            <p>The process of verifying the identity of a sender, receiver, or user. Cryptography can
-                                provide proof of the genuineness of the user.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Birthday Attack</strong>
-                            <p>A type of cryptographic attack based on the statistical probability of finding a
-                                collision in a hash function. It exploits the "birthday paradox," which shows it's
-                                easier to find any two inputs that produce the same hash than to find an input that
-                                matches a specific hash.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Blockchain</strong>
-                            <p>A shared, immutable, distributed ledger that facilitates recording transactions and
-                                tracking assets in a business network, relying on cryptographic hashing to ensure
-                                integrity.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Block Cipher</strong>
-                            <p>A cryptographic algorithm that manipulates an entire block of plaintext (e.g., 8 to 16
-                                bytes) at one time. It is considered more secure than a stream cipher.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Ciphertext</strong>
-                            <p>The scrambled, unreadable, and encrypted output of a cryptographic algorithm.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Cleartext</strong>
-                            <p>Unencrypted data that is not intended to be encrypted.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Collision</strong>
-                            <p>An event where two different input strings produce the same hash result (digest) from a
-                                hash function.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Confidentiality</strong>
-                            <p>A core principle of information security ensuring that information is kept secret and
-                                private, preventing unauthorized access.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Cryptography</strong>
-                            <p>The science and practice of protecting information by transforming it into an unreadable
-                                format (ciphertext) to ensure secure communication in the presence of adversaries.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Decryption</strong>
-                            <p>The process of changing scrambled ciphertext back into its original, readable plaintext
-                                form using a cryptographic algorithm and key.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Digital Signature</strong>
-                            <p>An electronic verification of a sender, created by encrypting a message's hash digest
-                                with the sender's private key. It ensures authenticity, integrity, and non-repudiation.
-                            </p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Downgrade Attack</strong>
-                            <p>An attack where an adversary forces a system to abandon a modern, high-security mode of
-                                operation and fall back to an older, less secure mode, which can then be exploited.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Encryption</strong>
-                            <p>The process of changing original plaintext into scrambled ciphertext using a
-                                cryptographic algorithm and a key.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Full Disk Encryption (FDE)</strong>
-                            <p>A method of protecting all data on an entire hard drive, including the operating system
-                                and temporary files, by encrypting the whole disk.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Hardware Security Module (HSM)</strong>
-                            <p>A removable external cryptographic device that includes an onboard random number
-                                generator and key storage, performing all cryptographic operations in hardware to
-                                protect against software-based attacks.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Hashing</strong>
-                            <p>The process of using a one-way hash algorithm to create a unique, fixed-size "digital
-                                fingerprint" (a digest or hash) of a set of data, primarily used to ensure data
-                                integrity.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Integrity</strong>
-                            <p>A core principle of information security ensuring that data is trustworthy and has not
-                                been altered, deleted, or corrupted in an unauthorized manner.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Key</strong>
-                            <p>A mathematical value entered into a cryptographic algorithm to produce ciphertext (for
-                                encryption) or plaintext (for decryption).</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Key Exchange</strong>
-                            <p>The process of securely sharing cryptographic keys between two parties. Methods include
-                                Diffie-Hellman (DH) and Elliptic Curve Diffie-Hellman (ECDH).</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Non-Repudiation</strong>
-                            <p>The process of proving that a user performed a specific action, ensuring that they cannot
-                                later deny having sent or received a message.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Obfuscation</strong>
-                            <p>The action of making something obscure, unclear, or unintelligible. Encryption is a form
-                                of obfuscation based on a secret key.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Plaintext</strong>
-                            <p>The original, readable, and unencrypted data that is either the input for encryption or
-                                the output of decryption.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Post-Quantum Cryptography</strong>
-                            <p>Cryptographic algorithms that are designed to be secure against attacks from a quantum
-                                computer.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Private Key</strong>
-                            <p>In asymmetric cryptography, the key that is kept secret by its owner and is used to
-                                decrypt messages encrypted with the corresponding public key.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Public Key</strong>
-                            <p>In asymmetric cryptography, the key that can be freely distributed to anyone and is used
-                                to encrypt messages intended for the owner of the corresponding private key.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Quantum Computing</strong>
-                            <p>A type of computing that uses quantum-physical phenomena, such as qubits that can be both
-                                0 and 1 simultaneously, to perform calculations much faster than classical computers.
-                            </p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Steganography</strong>
-                            <p>The practice of hiding the existence of a message or information within a seemingly
-                                harmless file or object.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Stream Cipher</strong>
-                            <p>A cryptographic algorithm that encrypts data one character at a time. It is generally
-                                considered less secure than a block cipher.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Symmetric Cryptographic Algorithm</strong>
-                            <p>Also known as private key cryptography, it uses a single, shared secret key for both
-                                encrypting and decrypting data.</p>
-                        </div>
-                        <div class="glossary-item">
-                            <strong>Trusted Platform Module (TPM)</strong>
-                            <p>An international standard for a secure cryptoprocessor (a chip on a motherboard) that
-                                provides cryptographic services and can ensure system integrity at boot.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <div class="quiz-header">
-                    <h2>Full Practice Simulation</h2>
-                    <p>Test your knowledge with this interactive quiz.</p>
-                </div>
-                <div id="quiz-container">
-                    <!-- Quiz content injected by JS -->
-                </div>
-
+            <div class="alert alert-info">
+                <strong>Analogy for Cryptography:</strong> If information security is a highly secured vault
+                protecting your valuable data, then <strong>cryptography</strong> acts like the complex,
+                advanced combination lock on the door. <strong>Symmetric encryption</strong> is like a single
+                physical key that everyone must share, making its distribution difficult and risky.
+                <strong>Asymmetric encryption</strong> is like having a mailbox (the public key) for receiving
+                messages that anyone can use, but only you possess the unique, private key required to open the
+                box and read the contents. Meanwhile, <strong>hashing</strong> is like a tamper-evident seal
+                placed on the outside of a package; it doesn't hide the package, but if even a tiny piece of the
+                contents is changed, the seal is immediately broken, alerting the recipient to the lack of
+                integrity.
             </div>
-            <button id="back-to-top" title="Go to top"><i class="fas fa-arrow-up"></i></button>
-            <footer class="module-footer">
-                <p>CompTIA Security+ SY0-701 Module 3 - Cryptography Fundamentals</p>
-            </footer>
-        </main>
-    </div>
+        </section>
 
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide</h2>
+
+            <h3>Short-Answer Quiz</h3>
+            <div class="accordion">
+                <details>
+                    <summary>1. What is the fundamental difference between cryptography and steganography?
+                    </summary>
+                    <p>Steganography hides the very existence of a message or information, such as writing a
+                        message in ink on a wooden tablet and then covering it with wax. In contrast,
+                        cryptography does not hide the message itself but rather hides its meaning by
+                        transforming it into an unreadable format. Essentially, steganography hides the message,
+                        while cryptography hides the meaning of the message.</p>
+                </details>
+                <details>
+                    <summary>2. Explain the primary challenge associated with symmetric encryption and how
+                        asymmetric encryption addresses it.</summary>
+                    <p>The primary challenge of symmetric encryption is the secure distribution and maintenance
+                        of the single, shared key among all parties. If the key is intercepted during
+                        transmission, the entire system is compromised. Asymmetric (or public key) cryptography
+                        solves this by using a pair of keys; the public key can be distributed freely without
+                        risk, while the private key remains secret, thus eliminating the key-sharing problem.
+                    </p>
+                </details>
+                <details>
+                    <summary>3. What are the four main characteristics of a secure hash algorithm?</summary>
+                    <p>A secure hash algorithm must have four key characteristics. It must produce a fixed size
+                        digest regardless of the input data's size. The digest must be unique, meaning two
+                        different data sets cannot produce the same digest. It must be original, making it
+                        impossible to produce a data set that has a predefined hash. Finally, it must be secure,
+                        meaning the hash cannot be reversed to determine the original plaintext.</p>
+                </details>
+                <details>
+                    <summary>4. Describe the process of creating a digital signature and what it verifies.
+                    </summary>
+                    <p>To create a digital signature, the sender first generates a hash digest of the message.
+                        The sender then encrypts this digest with their own private key. A digital signature
+                        serves to verify the sender's identity, prevent the sender from disowning the message
+                        (non-repudiation), and prove that the message has not been altered since it was signed
+                        (integrity).</p>
+                </details>
+                <details>
+                    <summary>5. What is a downgrade attack, and why is it a threat to security?</summary>
+                    <p>A downgrade attack is an attack where an adversary forces a system to abandon its
+                        current, higher-security mode of operation and "fall back" to an older, less secure
+                        mode. This is often possible due to the need for backward compatibility. This attack is
+                        a threat because it allows the attacker to exploit known vulnerabilities in the weaker,
+                        outdated security protocols.</p>
+                </details>
+                <details>
+                    <summary>6. Compare and contrast data at rest and data in transit, including the primary
+                        strategy for protecting each.</summary>
+                    <p>Data at rest is data stored on a device like a hard drive or server, where the primary
+                        threat is unauthorized physical access. This data is best protected by full disk
+                        encryption (FDE). Data in transit is data actively moving across a network, where the
+                        main threat is interception. This is protected by transport encryption protocols like
+                        TLS, which create a secure, encrypted tunnel for the data.</p>
+                </details>
+                <details>
+                    <summary>7. What is a Trusted Execution Environment (TEE), and what role does a Trusted
+                        Platform Module (TPM) play?</summary>
+                    <p>A Trusted Execution Environment (TEE) is a secure cryptoprocessor, an internal
+                        motherboard chip that cannot be tampered with, which protects the confidentiality and
+                        integrity of code and data stored on it. The Trusted Platform Module (TPM) is an
+                        international standard for such a cryptoprocessor. A TPM provides cryptographic services
+                        like random number generation, key generation, and can test system components at boot to
+                        ensure they haven't been altered.</p>
+                </details>
+                <details>
+                    <summary>8. Explain the concept of a collision attack and how the "birthday paradox" relates
+                        to it.</summary>
+                    <p>A collision attack is an attempt to find two different input strings that produce the
+                        exact same hash result, which would undermine data integrity. The "birthday paradox" is
+                        a statistical phenomenon that makes this attack easier than a brute-force approach. It
+                        states that it is much easier to find any two people in a group who share a birthday
+                        than it is to find someone who shares your specific birthday, which translates to it
+                        being easier to find any two inputs that collide than to find an input that collides
+                        with a specific hash.</p>
+                </details>
+                <details>
+                    <summary>9. What is a blockchain, and what cryptographic algorithm is fundamental to its
+                        operation?</summary>
+                    <p>A blockchain is a shared, immutable, distributed ledger used to record transactions and
+                        track assets across a peer-to-peer network of computers. It is designed so that
+                        transactions can be recorded only once and cannot be altered without the consensus of
+                        all parties. Blockchain relies heavily on cryptographic hash algorithms, most notably
+                        SHA-256, to securely record its transactions.</p>
+                </details>
+                <details>
+                    <summary>10. Identify two key limitations that make it difficult to implement strong
+                        cryptography on low-power devices.</summary>
+                    <p>Implementing strong cryptography on low-power devices like sensors is difficult due to
+                        the "resource versus security constraint." First, cryptographic algorithms require
+                        significant computational power and energy to perform their calculations, both of which
+                        are in short supply on these devices. Second, many applications for these devices
+                        require extremely fast response times, but the computational overhead of strong
+                        encryption can introduce unacceptable delays or latency.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <div class="accordion">
+                <details>
+                    <summary>1. Discuss the evolution of cryptography from ancient techniques like transposition
+                        and substitution to modern asymmetric algorithms like RSA and ECC.</summary>
+                    <p class="essay-answer">Analyze the core problems that each new development aimed to solve
+                        and the trade-offs involved (e.g., complexity, security, performance).</p>
+                </details>
+                <details>
+                    <summary>2. Explain the CIA Triad (Confidentiality, Integrity, Availability) and the
+                        principles of Authentication and Non-repudiation.</summary>
+                    <p class="essay-answer">For each principle, describe how a specific cryptographic algorithm
+                        or technique (e.g., AES, SHA-256, Digital Signatures) is used to uphold it.</p>
+                </details>
+                <details>
+                    <summary>3. Compare and contrast the implementation of cryptography in software versus
+                        hardware.</summary>
+                    <p class="essay-answer">Discuss the advantages and disadvantages of each approach, providing
+                        specific examples such as Full Disk Encryption (FDE), Hardware Security Modules (HSMs),
+                        and Self-Encrypting Drives (SEDs).</p>
+                </details>
+                <details>
+                    <summary>4. Describe the primary categories of cryptographic attacks outlined in the source
+                        material, including algorithm attacks, collision attacks, and side-channel attacks.
+                    </summary>
+                    <p class="essay-answer">Explain how a failure in key management or the "human factor" can
+                        undermine even the most secure cryptographic systems.</p>
+                </details>
+                <details>
+                    <summary>5. Explain the threat that quantum computing poses to modern asymmetric
+                        cryptography.</summary>
+                    <p class="essay-answer">Describe what makes quantum computers fundamentally different from
+                        classical computers and why this presents a risk. Finally, define the concept of
+                        post-quantum cryptography.</p>
+                </details>
+            </div>
+
+            <h3>Glossary of Key Terms</h3>
+            <div class="glossary-grid">
+                <div class="glossary-item">
+                    <strong>Algorithm</strong>
+                    <p>A set of procedures, typically based on a mathematical formula, used in cryptography to
+                        encrypt or decrypt data.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Asymmetric Cryptographic Algorithm</strong>
+                    <p>Also known as public key cryptography, it uses a pair of mathematically related keys (a
+                        public key and a private key) for encryption and decryption.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Authentication</strong>
+                    <p>The process of verifying the identity of a sender, receiver, or user. Cryptography can
+                        provide proof of the genuineness of the user.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Birthday Attack</strong>
+                    <p>A type of cryptographic attack based on the statistical probability of finding a
+                        collision in a hash function. It exploits the "birthday paradox," which shows it's
+                        easier to find any two inputs that produce the same hash than to find an input that
+                        matches a specific hash.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Blockchain</strong>
+                    <p>A shared, immutable, distributed ledger that facilitates recording transactions and
+                        tracking assets in a business network, relying on cryptographic hashing to ensure
+                        integrity.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Block Cipher</strong>
+                    <p>A cryptographic algorithm that manipulates an entire block of plaintext (e.g., 8 to 16
+                        bytes) at one time. It is considered more secure than a stream cipher.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Ciphertext</strong>
+                    <p>The scrambled, unreadable, and encrypted output of a cryptographic algorithm.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Cleartext</strong>
+                    <p>Unencrypted data that is not intended to be encrypted.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Collision</strong>
+                    <p>An event where two different input strings produce the same hash result (digest) from a
+                        hash function.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Confidentiality</strong>
+                    <p>A core principle of information security ensuring that information is kept secret and
+                        private, preventing unauthorized access.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Cryptography</strong>
+                    <p>The science and practice of protecting information by transforming it into an unreadable
+                        format (ciphertext) to ensure secure communication in the presence of adversaries.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Decryption</strong>
+                    <p>The process of changing scrambled ciphertext back into its original, readable plaintext
+                        form using a cryptographic algorithm and key.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Digital Signature</strong>
+                    <p>An electronic verification of a sender, created by encrypting a message's hash digest
+                        with the sender's private key. It ensures authenticity, integrity, and non-repudiation.
+                    </p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Downgrade Attack</strong>
+                    <p>An attack where an adversary forces a system to abandon a modern, high-security mode of
+                        operation and fall back to an older, less secure mode, which can then be exploited.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Encryption</strong>
+                    <p>The process of changing original plaintext into scrambled ciphertext using a
+                        cryptographic algorithm and a key.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Full Disk Encryption (FDE)</strong>
+                    <p>A method of protecting all data on an entire hard drive, including the operating system
+                        and temporary files, by encrypting the whole disk.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Hardware Security Module (HSM)</strong>
+                    <p>A removable external cryptographic device that includes an onboard random number
+                        generator and key storage, performing all cryptographic operations in hardware to
+                        protect against software-based attacks.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Hashing</strong>
+                    <p>The process of using a one-way hash algorithm to create a unique, fixed-size "digital
+                        fingerprint" (a digest or hash) of a set of data, primarily used to ensure data
+                        integrity.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Integrity</strong>
+                    <p>A core principle of information security ensuring that data is trustworthy and has not
+                        been altered, deleted, or corrupted in an unauthorized manner.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Key</strong>
+                    <p>A mathematical value entered into a cryptographic algorithm to produce ciphertext (for
+                        encryption) or plaintext (for decryption).</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Key Exchange</strong>
+                    <p>The process of securely sharing cryptographic keys between two parties. Methods include
+                        Diffie-Hellman (DH) and Elliptic Curve Diffie-Hellman (ECDH).</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Non-Repudiation</strong>
+                    <p>The process of proving that a user performed a specific action, ensuring that they cannot
+                        later deny having sent or received a message.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Obfuscation</strong>
+                    <p>The action of making something obscure, unclear, or unintelligible. Encryption is a form
+                        of obfuscation based on a secret key.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Plaintext</strong>
+                    <p>The original, readable, and unencrypted data that is either the input for encryption or
+                        the output of decryption.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Post-Quantum Cryptography</strong>
+                    <p>Cryptographic algorithms that are designed to be secure against attacks from a quantum
+                        computer.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Private Key</strong>
+                    <p>In asymmetric cryptography, the key that is kept secret by its owner and is used to
+                        decrypt messages encrypted with the corresponding public key.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Public Key</strong>
+                    <p>In asymmetric cryptography, the key that can be freely distributed to anyone and is used
+                        to encrypt messages intended for the owner of the corresponding private key.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Quantum Computing</strong>
+                    <p>A type of computing that uses quantum-physical phenomena, such as qubits that can be both
+                        0 and 1 simultaneously, to perform calculations much faster than classical computers.
+                    </p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Steganography</strong>
+                    <p>The practice of hiding the existence of a message or information within a seemingly
+                        harmless file or object.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Stream Cipher</strong>
+                    <p>A cryptographic algorithm that encrypts data one character at a time. It is generally
+                        considered less secure than a block cipher.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Symmetric Cryptographic Algorithm</strong>
+                    <p>Also known as private key cryptography, it uses a single, shared secret key for both
+                        encrypting and decrypting data.</p>
+                </div>
+                <div class="glossary-item">
+                    <strong>Trusted Platform Module (TPM)</strong>
+                    <p>An international standard for a secure cryptoprocessor (a chip on a motherboard) that
+                        provides cryptographic services and can ensure system integrity at boot.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="quiz-header">
+            <h2>Full Practice Simulation</h2>
+            <p>Test your knowledge with this interactive quiz.</p>
+        </div>
+        <div id="quiz-container">
+            <!-- Quiz content injected by JS -->
+        </div>
+
+        </div>
+        <footer class="site-footer">
+            <p>Study Portfolio | Matheus Almeida e Silva</p>
+            <p>&copy; 2025 All Rights Reserved</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
     <script>
-        // Back to Top Button Logic
-        const backToTopButton = document.getElementById("back-to-top");
+        document.addEventListener('DOMContentLoaded', () => {
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                        backToTopBtn.style.display = 'flex';
+                    } else {
+                        backToTopBtn.style.display = 'none';
+                    }
+                });
 
-        window.onscroll = function () {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                backToTopButton.style.display = "block";
-            } else {
-                backToTopButton.style.display = "none";
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
             }
-        };
+        });
 
-        backToTopButton.onclick = function () {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        };
 
         // Quiz Data
         const quizQuestions = [
@@ -1504,52 +1824,79 @@
             }
         ];
 
-        // Quiz Logic
-        const quizContainer = document.getElementById("quiz-container");
+        const questions = quizQuestions;
 
-        quizQuestions.forEach((q, index) => {
-            const questionDiv = document.createElement("div");
-            questionDiv.classList.add("quiz-question");
+        function renderQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
 
-            const questionText = document.createElement("h4");
-            questionText.textContent = `${index + 1}. ${q.question}`;
-            questionDiv.appendChild(questionText);
+                const qNumber = document.createElement('span');
+                qNumber.className = 'question-number';
+                qNumber.textContent = `QUESTION ${index + 1}`;
 
-            const optionsDiv = document.createElement("div");
-            optionsDiv.classList.add("quiz-options");
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = q.question;
 
-            q.options.forEach((option, i) => {
-                const button = document.createElement("button");
-                button.textContent = option;
-                button.onclick = () => checkAnswer(button, i, q.correct, explanationDiv);
-                optionsDiv.appendChild(button);
+                card.appendChild(qNumber);
+                card.appendChild(qText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options-grid';
+
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation';
+                explanationDiv.textContent = q.explanation;
+
+                q.options.forEach((opt, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = opt;
+                    const correctArray = [q.correct];
+                    btn.onclick = () => handleAnswer(btn, i, correctArray, optionsDiv, explanationDiv);
+                    optionsDiv.appendChild(btn);
+                });
+
+                card.appendChild(optionsDiv);
+                card.appendChild(explanationDiv);
+                quizContainer.appendChild(card);
+            });
+        }
+
+        function handleAnswer(btn, index, correctIndices, optionsDiv, explanationDiv) {
+            const buttons = optionsDiv.querySelectorAll('.option-btn');
+
+            // Disable all buttons
+            buttons.forEach(b => {
+                b.classList.add('disabled');
+                b.onclick = null;
             });
 
-            questionDiv.appendChild(optionsDiv);
-
-            const explanationDiv = document.createElement("div");
-            explanationDiv.classList.add("explanation");
-            explanationDiv.textContent = q.explanation;
-            explanationDiv.style.display = "none";
-            questionDiv.appendChild(explanationDiv);
-
-            quizContainer.appendChild(questionDiv);
-        });
-
-        function checkAnswer(button, selected, correct, explanationDiv) {
-            const buttons = button.parentElement.querySelectorAll("button");
-            buttons.forEach(btn => btn.disabled = true);
-
-            if (selected === correct) {
-                button.classList.add("correct");
+            // Check if correct
+            if (correctIndices.includes(index)) {
+                btn.classList.add('correct');
             } else {
-                button.classList.add("incorrect");
-                buttons[correct].classList.add("correct");
+                btn.classList.add('incorrect');
+                // Show correct answer
+                correctIndices.forEach(correctIndex => {
+                    buttons[correctIndex].classList.add('correct');
+                });
             }
 
-            explanationDiv.style.display = "block";
+            // Show explanation
+            explanationDiv.style.display = 'block';
         }
+
+        // Initialize Quiz
+        renderQuiz();
     </script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 </body>
 
 </html>
