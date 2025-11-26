@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 14: Oversight & Operations - Matheus Almeida</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Language Toggle -->
+
+
+    <main class="container">
+        <div class="module-header">
+            <h1>Module 14: Oversight and Operations</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
+
+        <!-- ENGLISH CONTENT -->
+        <div id="content-en">
+            <section class="card">
+                <h2>1. The Context of Technology and Sports (#TrendingCyber)</h2>
+                <p>Technology and sports have a long history, but their integration has deepened drastically.
+                    Originally, technology was introduced clandestinely to gain a competitive advantage, such as the use
+                    of a radio receiver by the NFL's Cleveland Browns in 1956, which was subsequently banned by the
+                    league commissioner until 1994.</p>
+                <p>Currently, sports leagues collect huge volumes of real-time data:</p>
+                <ul>
+                    <li><strong>NFL:</strong> Uses up to 30 ultra-wideband (UWB) receivers and radio frequency
+                        identification (RFID) tags on players, referees, and even the ball, collecting over 200 new data
+                        points on every play.</li>
+                    <li><strong>FIFA (2022 World Cup):</strong> Used 12 cameras with four-dimensional optical tracking,
+                        monitoring 29 points on players' bodies, assisting referees with offside calls and revealing
+                        valuable performance analytics.</li>
+                </ul>
+                <p>Data analytics is changing the game itself (e.g., in baseball, home runs are prioritized over bunts,
+                    and in football, the shotgun formation is preferred over plays under center).</p>
+                <p><strong>Privacy:</strong> This raises serious questions about athlete data privacy, including the use
+                    of data analytics to predict injuries in contract negotiations and whether nutrition and sleep data
+                    should be shared with bettors.</p>
+            </section>
+            <section class="card">
+                <h2>2. Oversight and Administration</h2>
+                <p>Information security is divided into <strong>Oversight</strong> and <strong>Operations</strong>.</p>
+                <ul>
+                    <li><strong>Oversight:</strong> The review and monitoring of processes, policies, plans, programs,
+                        or projects, watching them "from above" ("over"). The goal is to ensure actions achieve expected
+                        results, comply with policies, laws, and ethical standards, and represent good value for money.
+                    </li>
+                    <li><strong>Operations:</strong> The opposite of oversight, being the daily work "in the trenches"
+                        of configuring equipment, applying controls, and reacting to cyber incidents.</li>
+                </ul>
+
+                <h3>2.1. Governance</h3>
+                <p>Governance refers to the structures, systems, and practices an organization implements to assign,
+                    oversee, and report.</p>
+                <p>The three key activities are:</p>
+                <ol>
+                    <li><strong>Assign:</strong> Decision-making responsibilities and setting strategic direction.</li>
+                    <li><strong>Oversee:</strong> Monitoring service delivery, policy/plan implementation, and risk
+                        mitigation.</li>
+                    <li><strong>Report:</strong> Reporting performance to drive continuous improvement and corrective
+                        actions (monitoring and review).</li>
+                </ol>
+
+                <h4>Governance Roles over Data and Systems</h4>
+                <table>
+                    <tr>
+                        <th>Role</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Owner</strong></td>
+                        <td>Person responsible for the information; determines security level and delegates duties.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Controller</strong></td>
+                        <td>Principal party responsible for data collection (obtains consent, stores).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Processor</strong></td>
+                        <td>Proxy acting on behalf of the controller; holds and processes data but makes no decisions on
+                            use.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Custodian</strong></td>
+                        <td>Person assigned day-to-day tasks by the owner (periodically reviews security settings).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DPO</strong></td>
+                        <td>Data Protection Officer. Manager who oversees data privacy compliance and manages risks.
+                        </td>
+                    </tr>
+                </table>
+
+                <h4>Governance Mechanisms</h4>
+                <table>
+                    <tr>
+                        <th>Mechanism</th>
+                        <th>Definition</th>
+                        <th>Nature</th>
+                    </tr>
+                    <tr>
+                        <td><span class="tag policy">Policy</span></td>
+                        <td>Formal statement of rules and requirements (e.g., AUP, SDLC).</td>
+                        <td><strong>Mandatory</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag procedure">Procedure</span></td>
+                        <td>Detailed step-by-step instructions to comply with a policy.</td>
+                        <td><strong>Mandatory</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag standard">Standard</span></td>
+                        <td>Uniform use of technologies or configurations (e.g., PCI DSS).</td>
+                        <td><strong>Mandatory</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag guideline">Guideline</span></td>
+                        <td>General guidance and advice.</td>
+                        <td><strong style="color:var(--highlight)">Voluntary</strong></td>
+                    </tr>
+                </table>
+
+                <h3>2.2. Compliance</h3>
+                <p>Compliance is the process of ensuring an organization adheres to laws and regulations related to
+                    information security and user data privacy.</p>
+                <ul>
+                    <li><strong>Key Regulations:</strong> GDPR (EU), PCI DSS (Payments), HIPAA (US Health).</li>
+                    <li><strong>Importance ("Carrot and Stick"):</strong> Provides "best practices" but imposes severe
+                        penalties (fines, sanctions, loss of license).</li>
+                </ul>
+
+                <h4>Compliance Monitoring</h4>
+                <ul>
+                    <li><strong>Internal Monitoring:</strong> Performed by the organization itself (dedicated team +
+                        automation). Generates internal reports.</li>
+                    <li><strong>External Monitoring:</strong> Performed by third parties (audit). Generates official
+                        attestation.</li>
+                </ul>
+
+                <h4>Data Privacy</h4>
+                <ul>
+                    <li><strong>Explicit Collection:</strong> User provides data for valid need.</li>
+                    <li><strong>Hidden Collection:</strong> Secret tracking (trackers in apps and IoT).</li>
+                </ul>
+                <p><strong>Legal Protections:</strong></p>
+                <ul>
+                    <li><strong>EU (GDPR):</strong> Right to be forgotten (erase data in ~30 days).</li>
+                    <li><strong>USA:</strong> No federal right to be forgotten; sector-specific regulations (HIPAA).
+                    </li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>3. Security Operations</h2>
+                <p>Security work is performed in the <strong>SOC (Security Operations Center)</strong>. The modern SOC
+                    uses automation, orchestration, threat hunting, and AI.</p>
+
+                <h3>3.1. Automation</h3>
+                <p>Necessary due to data volume. Generates faster and scalable protection.</p>
+                <ul>
+                    <li><strong>Benefits:</strong> Efficiency, baseline enforcement, scalability, staff retention (less
+                        burnout).</li>
+                    <li><strong>Risks:</strong> Complexity, cost, technical debt, single point of failure.</li>
+                    <li><strong>Use Cases:</strong> CI/CD, API Integration (iPaaS), Scripting, Guardrails (cloud),
+                        Automated Provisioning.</li>
+                </ul>
+
+                <h3>3.2. Orchestration (SOAR)</h3>
+                <p>Unlike automation (single task), orchestration automates a complete <strong>workflow</strong>,
+                    connecting multiple tools.</p>
+                <p><strong>SOAR:</strong> Security Orchestration, Automation, and Response.</p>
+
+                <h3>3.3. Threat Hunting</h3>
+                <p><strong>Proactive</strong>, iterative, and human activity.</p>
+                <ul>
+                    <li><strong>Premise:</strong> Assumes the network is <em>already infected</em>.</li>
+                    <li><strong>Process:</strong> Hypothesis -> Investigation -> Action.</li>
+                    <li><strong>Maturity:</strong> Level 1 (Initial) to Level 5 (Optimized/Continuous).</li>
+                </ul>
+
+                <h3>3.4. Artificial Intelligence (AI)</h3>
+                <p>Gained popularity with ChatGPT (2022).</p>
+                <ul>
+                    <li><strong>Data Analytics:</strong> Fixed process, relies on humans.</li>
+                    <li><strong>AI:</strong> Autonomous, iterative, dynamic.</li>
+                    <li><strong>Machine Learning (ML):</strong> Subset of AI. Learns from data (statistics) without
+                        explicit programming.</li>
+                </ul>
+                <p><strong>Riscos (Adversarial AI):</strong></p>
+                <ul>
+                    <li>Compromise algorithms.</li>
+                    <li>Taint Training Data.</li>
+                    <li>Malicious use (Mutating malware).</li>
+                </ul>
+            </section>
+            <!-- Study Guide Section (EN) -->
+            <section class="card">
+                <h2>Study Guide: Information Security Oversight and Operations</h2>
+
+                <h3>Quiz: Short-Answer Questions</h3>
+                <p><em>Instructions: Click on a question to reveal the answer.</em></p>
+                <div class="interactive-quiz">
+                    <details>
+                        <summary>1. What is information security governance and what are its three primary activities?
+                        </summary>
+                        <p>Governance refers to the structures, systems, and practices an organization uses for
+                            oversight and administration. Its three core activities are assigning decision-making
+                            responsibilities and strategic direction; overseeing the implementation of policies, plans,
+                            and risk mitigation; and reporting on performance to drive improvements.</p>
+                    </details>
+                    <details>
+                        <summary>2. Differentiate between a security policy and a security procedure.</summary>
+                        <p>A policy is a formal statement from a governing body that outlines specific requirements or
+                            rules that must be met to achieve the organization's strategic objectives. A procedure
+                            provides the detailed, mandatory, step-by-step instructions that an employee must follow to
+                            implement and comply with a given policy.</p>
+                    </details>
+                    <details>
+                        <summary>3. What is compliance monitoring, and what are the two main ways it can be performed?
+                        </summary>
+                        <p>Compliance monitoring refers to the quality assurance tests organizations use to determine
+                            how well their operations adhere to security laws, regulations, and standards. It can be
+                            performed internally by a dedicated compliance team, often using automation tools to
+                            generate reports. It can also be performed externally by a professional third party, which
+                            examines the organization's protections and creates an official report or attestation.</p>
+                    </details>
+                    <details>
+                        <summary>4. Explain the concept of threat hunting and its core assumption regarding the
+                            network's security status.</summary>
+                        <p>Threat hunting is a proactive and predominantly human-led activity to identify a cyber
+                            invasion that has evaded existing security controls. Its core assumption is that the network
+                            is already infected, meaning attackers are currently operating inside the network rather
+                            than trying to enter from the outside.</p>
+                    </details>
+                    <details>
+                        <summary>5. How does security orchestration differ from security automation?</summary>
+                        <p>Security automation involves setting a single security-related task to run on its own without
+                            human intervention. Security orchestration is a broader concept that automates an entire
+                            process or workflow by combining and coordinating multiple individual automated tasks across
+                            different platforms, including hardware, software, and services.</p>
+                    </details>
+                    <details>
+                        <summary>6. Describe the relationship between data analytics, artificial intelligence (AI), and
+                            machine learning (ML).</summary>
+                        <p>Data analytics is the process of examining large data sets to draw conclusions, where
+                            researchers manually create algorithms to find patterns. AI is a subset of data analytics
+                            that is autonomous, using the algorithms to create its own predictive models. ML is a
+                            further subset of AI that uses statistical techniques to "learn" from data and progressively
+                            improve its performance without being explicitly reprogrammed.</p>
+                    </details>
+                    <details>
+                        <summary>7. What is an acceptable-use policy (AUP), and who does it typically cover?</summary>
+                        <p>An acceptable-use policy is a formal written statement that defines the actions users are
+                            permitted to perform while accessing an organization's systems and networking equipment. The
+                            policy's audience is not limited to employees but also includes vendors, contractors, and
+                            visitors, each of whom may have different privileges.</p>
+                    </details>
+                    <details>
+                        <summary>8. Identify two potential risks or negative considerations when implementing advanced
+                            security automation.</summary>
+                        <p>Implementing security automation introduces several risks, including increased complexity in
+                            managing interconnected appliances and higher initial and ongoing support costs. Other risks
+                            include creating technical debt if problems are not addressed immediately and the potential
+                            for a single point of failure if there is an over-reliance on the automated system.</p>
+                    </details>
+                    <details>
+                        <summary>9. Explain the "right to be forgotten" principle as it relates to data protection in
+                            the European Union.</summary>
+                        <p>The "right to be forgotten" is a fundamental principle of EU data protection that gives data
+                            subjects (any living individual whose data is collected) the legal right to have their
+                            private data erased by a data controller without undue delay, which is typically interpreted
+                            to be about 30 days.</p>
+                    </details>
+                    <details>
+                        <summary>10. What is adversarial artificial intelligence, and provide one example of how it can
+                            be used?</summary>
+                        <p>Adversarial artificial intelligence refers to threat actors attacking AI systems or using AI
+                            for malicious purposes. One example is when attackers taint the training data used by a
+                            machine learning system, causing it to produce false negatives and effectively cloak the
+                            attackers' malicious activities from detection. Another example is using AI to develop
+                            mutating malware that can change its structure to evade signature-based defenses.</p>
+                    </details>
+                </div>
+
+                <h3>Essay Questions</h3>
+                <p><em>Instructions: Formulate a detailed response to the following prompts, drawing upon the concepts
+                        and information presented in the source material.</em></p>
+                <ol>
+                    <li>Discuss the evolution of technology in sports as an analogy for the introduction of technology
+                        in security operations. Analyze the privacy concerns raised in both domains and how governance
+                        and compliance principles could be applied to address them.</li>
+                    <li>Compare and contrast the roles of an Incident Responder, a Penetration Tester, and a Threat
+                        Hunter. Discuss their respective goals, tasks, timeframes, and whether their approach is
+                        reactive or proactive.</li>
+                    <li>An organization is moving towards a more automated security posture. Explain the benefits they
+                        can expect to see, such as improved time efficiency and staff retention. Also, detail the
+                        potential risks they must consider, including complexity, cost, and the creation of a single
+                        point of failure.</li>
+                    <li>You are tasked with establishing a governance framework for a new company. Describe the four key
+                        mechanisms for applying governance (policies, procedures, standards, guidelines), explaining the
+                        purpose of each and how they relate to one another. Provide a specific security-related example
+                        for each mechanism.</li>
+                    <li>Analyze the role of Artificial Intelligence (AI) in modern information security. Describe how AI
+                        can assist organizations before, during, and after a cyber attack. Conversely, discuss the risks
+                        of using AI in security and the threat of adversarial AI.</li>
+                </ol>
+
+                <h3>Glossary of Key Terms</h3>
+                <table>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td>Acceptable-Use Policy (AUP)</td>
+                        <td>A policy that defines the actions users may perform while accessing systems and networking
+                            equipment, covering employees, vendors, contractors, and visitors.</td>
+                    </tr>
+                    <tr>
+                        <td>Accountability</td>
+                        <td>A principle of good governance; the obligation of an individual, group, or organization to
+                            answer for a responsibility that has been conferred.</td>
+                    </tr>
+                    <tr>
+                        <td>Adversarial Artificial Intelligence</td>
+                        <td>The practice of threat actors attacking AI systems or taking advantage of AI for malicious
+                            purposes, such as tainting training data or using AI to create mutating malware.</td>
+                    </tr>
+                    <tr>
+                        <td>Application Programming Interface (API)</td>
+                        <td>A link provided by an OS, web browser, or other platform that allows a developer access to
+                            resources at a high level, enabling faster code creation.</td>
+                    </tr>
+                    <tr>
+                        <td>Artificial Intelligence (AI)</td>
+                        <td>A subset of data analytics where technologies can understand and act by themselves based on
+                            acquired information. AI systems are autonomous, iterative, and dynamic.</td>
+                    </tr>
+                    <tr>
+                        <td>Attestation</td>
+                        <td>The verification of a statement's truth or authenticity, such as an external compliance
+                            report serving as an official attestation of compliance monitoring.</td>
+                    </tr>
+                    <tr>
+                        <td>Automation</td>
+                        <td>The use of technology to perform a task or process with minimal human assistance. In
+                            security, it streamlines and speeds up processes to provide timely insights and faster
+                            protection.</td>
+                    </tr>
+                    <tr>
+                        <td>Board</td>
+                        <td>An internal governance body composed of directors who approve strategic organizational goals
+                            and policies.</td>
+                    </tr>
+                    <tr>
+                        <td>Compliance</td>
+                        <td>The process of ensuring that an organization adheres to laws and regulations related to
+                            information security and user data privacy.</td>
+                    </tr>
+                    <tr>
+                        <td>Compliance Monitoring</td>
+                        <td>Quality assurance tests performed by organizations to determine how well their business
+                            operations meet security regulations and standards. It can be internal or external.</td>
+                    </tr>
+                    <tr>
+                        <td>Controller</td>
+                        <td>A data governance role; the principal party responsible for collecting data, acquiring user
+                            consent, and managing access.</td>
+                    </tr>
+                    <tr>
+                        <td>Custodian/Steward</td>
+                        <td>A data governance role; an individual to whom day-to-day actions have been assigned by the
+                            owner, such as reviewing security settings and maintaining access records.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Analytics</td>
+                        <td>A fixed process that examines large data sets to draw conclusions, where researchers
+                            manually create algorithms to learn patterns and correlations from historical data.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Privacy Officer (DPO)</td>
+                        <td>A data governance role; a manager who oversees data privacy compliance and manages data
+                            risk, ensuring the enterprise complies with privacy laws and policies.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Subjects</td>
+                        <td>In the context of the EU, any living individual whose personal data is collected, processed,
+                            and stored by an organization.</td>
+                    </tr>
+                    <tr>
+                        <td>Due Care</td>
+                        <td>The act of taking reasonable steps to secure and protect an organization's assets,
+                            reputation, and finances.</td>
+                    </tr>
+                    <tr>
+                        <td>Due Diligence</td>
+                        <td>The act of identifying and mitigating risks brought on by third parties.</td>
+                    </tr>
+                    <tr>
+                        <td>Employee Offboarding</td>
+                        <td>The procedure entailing actions to be taken when an employee leaves an enterprise, such as
+                            disabling accounts and backing up files.</td>
+                    </tr>
+                    <tr>
+                        <td>Employee Onboarding</td>
+                        <td>The procedure encompassing the tasks associated with hiring a new employee, such as signing
+                            an NDA and configuring accounts.</td>
+                    </tr>
+                    <tr>
+                        <td>Governance</td>
+                        <td>The structures, systems, and practices an organization has in place to assign
+                            decision-making responsibilities, oversee implementation, and report on performance.</td>
+                    </tr>
+                    <tr>
+                        <td>Guardrails (Security)</td>
+                        <td>Automations that constantly watch cloud deployments, find deviations from desired baselines,
+                            and can automatically remediate issues without slowing development.</td>
+                    </tr>
+                    <tr>
+                        <td>Guideline</td>
+                        <td>A governance mechanism that provides general, voluntary guidance and support for policies,
+                            standards, or procedures.</td>
+                    </tr>
+                    <tr>
+                        <td>Incident Response Playbook</td>
+                        <td>A type of procedure that lists specific, mandatory actions to take in response to different
+                            threats.</td>
+                    </tr>
+                    <tr>
+                        <td>Integrity</td>
+                        <td>A principle of good governance; acting in a way that is impartial and ethical, reflected
+                            through compliance with laws and high standards of professionalism.</td>
+                    </tr>
+                    <tr>
+                        <td>Leadership</td>
+                        <td>A principle of good governance; "setting the tone" to encourage personnel to embrace good
+                            governance practices.</td>
+                    </tr>
+                    <tr>
+                        <td>Machine Learning (ML)</td>
+                        <td>A subset of AI that uses statistical techniques to give computer systems the ability to
+                            “learn” or progressively improve performance using data, rather than being explicitly
+                            programmed.</td>
+                    </tr>
+                    <tr>
+                        <td>Noncompliance</td>
+                        <td>The failure to adhere to compliance standards, which can result in penalties such as fines,
+                            sanctions, reputational damage, or loss of license.</td>
+                    </tr>
+                    <tr>
+                        <td>Orchestration (Security)</td>
+                        <td>The automation and combination of many different individual tasks into a single, functional,
+                            automated process or workflow, crossing multiple platforms.</td>
+                    </tr>
+                    <tr>
+                        <td>Oversight</td>
+                        <td>The act of reviewing and monitoring processes, policies, or projects from above to ensure
+                            they achieve expected results and comply with standards, without direct involvement in
+                            operations.</td>
+                    </tr>
+                    <tr>
+                        <td>Owner</td>
+                        <td>A data governance role; the person responsible for the information who determines the level
+                            of security needed and delegates duties.</td>
+                    </tr>
+                    <tr>
+                        <td>Policy</td>
+                        <td>A formal statement from a governing body that outlines specific requirements or rules that
+                            must be met to achieve an organization's strategic objectives.</td>
+                    </tr>
+                    <tr>
+                        <td>Procedure</td>
+                        <td>A governance mechanism that provides detailed, mandatory steps a user must follow to comply
+                            with a policy.</td>
+                    </tr>
+                    <tr>
+                        <td>Processor</td>
+                        <td>A data governance role; a proxy (person or agency) who acts on behalf of the data controller
+                            to hold and process data but does not make decisions about its use.</td>
+                    </tr>
+                    <tr>
+                        <td>Provisioning</td>
+                        <td>The process of creating and setting up an IT infrastructure, including managing user and
+                            system access to resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Right to be Forgotten</td>
+                        <td>A fundamental EU data protection principle giving data subjects the legal right to have
+                            their private data erased by a data controller without undue delay.</td>
+                    </tr>
+                    <tr>
+                        <td>Security Operations Center (SOC)</td>
+                        <td>A function or team within an organization responsible for proactive monitoring, incident
+                            response and recovery, remediation, and other security tasks.</td>
+                    </tr>
+                    <tr>
+                        <td>SOAR Platform</td>
+                        <td>A Security Orchestration, Automation, and Response platform that combines tools to
+                            synthesize and automate security operations, threat intelligence, and incident response.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Standard</td>
+                        <td>A governance mechanism that specifies the uniform use of specific technologies or settings
+                            for secure configurations; can be internal or from a third party like PCI DSS.</td>
+                    </tr>
+                    <tr>
+                        <td>Stewardship</td>
+                        <td>A principle of good governance; the act of responsibly looking after resources on behalf of
+                            the organization.</td>
+                    </tr>
+                    <tr>
+                        <td>Threat Hunting</td>
+                        <td>A proactive, iterative, and predominantly human-led activity to identify a cyber invasion
+                            that has evaded existing security controls, assuming the network is already compromised.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Transparency</td>
+                        <td>A principle of good governance; achieved when decisions and actions are open, allowing
+                            stakeholders access to full, accurate, and clear information.</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+
+        <!-- Study Guide Section (EN) -->
+        <div id="content-en" data-lang="en">
+            <section class="card">
+                <h2>Study Guide: Information Security Oversight & Operations</h2>
+
+                <h3>Quiz: Short-Answer Questions</h3>
+                <p><em>Instructions: Answer the following questions in 2-3 complete sentences based on the provided
+                        material.</em></p>
+                <div class="short-answer-quiz">
+                    <details>
+                        <summary>1. What is information security governance, and what are its three key activities?
+                        </summary>
+                        <div class="answer">
+                            <p>Information security governance refers to the structures, systems, and practices an
+                                organization uses for oversight and administration. Its three key activities are
+                                assigning decision-making responsibilities and strategic direction; overseeing the
+                                implementation of policies, plans, and risk mitigation; and reporting on performance to
+                                drive continuous improvement.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>2. Differentiate between a security policy and a security procedure.</summary>
+                        <div class="answer">
+                            <p>A policy is a formal statement from a governing body outlining specific requirements or
+                                rules that must be met to achieve the organization's strategic objectives. A procedure
+                                provides the detailed, mandatory, step-by-step instructions an employee must follow to
+                                implement and comply with a given policy.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>3. What is compliance monitoring, and what are the two primary ways it can be
+                            conducted?</summary>
+                        <div class="answer">
+                            <p>Compliance monitoring refers to the quality assurance tests organizations use to
+                                determine how well their operations adhere to security laws, regulations, and standards.
+                                It can be conducted internally by a dedicated compliance team, often using automation
+                                tools to generate reports. It can also be conducted externally by a professional third
+                                party, who examines the organization's safeguards and creates an official report or
+                                attestation.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>4. Explain the concept of threat hunting and its central premise regarding the
+                            network's
+                            security status.</summary>
+                        <div class="answer">
+                            <p>Threat hunting is a proactive and predominantly human-led activity to identify a cyber
+                                invasion that has evaded existing security controls. Its central premise is that the
+                                network is already compromised, meaning attackers are currently operating within the
+                                network rather than attempting to break in from the outside.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>5. How does security orchestration differ from security automation?</summary>
+                        <div class="answer">
+                            <p>Security automation involves setting up a single security-related task to run on its own
+                                without human intervention. Security orchestration is a broader concept that automates
+                                an entire process or workflow, combining and coordinating multiple individual automated
+                                tasks across different platforms, including hardware, software, and services.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>6. Describe the relationship between data analytics, artificial intelligence (AI), and
+                            machine learning (ML).</summary>
+                        <div class="answer">
+                            <p>Data analytics is the process of examining large datasets to draw conclusions, where
+                                researchers manually create algorithms to find patterns. AI is a subset of data
+                                analytics that is autonomous, using the algorithms to create its own predictive models.
+                                ML is a further subset of AI that uses statistical techniques to "learn" from data and
+                                progressively improve its performance without being explicitly reprogrammed.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>7. What is an Acceptable Use Policy (AUP), and to whom does it typically apply?
+                        </summary>
+                        <div class="answer">
+                            <p>An Acceptable Use Policy is a formal written statement that defines the actions users are
+                                permitted to perform when accessing an organization's network systems and equipment. The
+                                policy's audience is not limited to employees but also includes vendors, contractors,
+                                and visitors, each of whom may have different privileges.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>8. Identify two potential risks or negative considerations when implementing advanced
+                            security automation.</summary>
+                        <div class="answer">
+                            <p>Implementing security automation introduces several risks, including increased complexity
+                                in managing interconnected devices and higher initial and ongoing support costs. Other
+                                risks include creating technical debt if issues are not addressed promptly and the
+                                potential for a single point of failure if there is over-reliance on the automated
+                                system.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>9. Explain the "right to be forgotten" principle as it relates to data protection in
+                            the
+                            European Union.</summary>
+                        <div class="answer">
+                            <p>The "right to be forgotten" is a fundamental EU data protection principle that gives data
+                                subjects (any living individual whose data is collected) the legal right to have their
+                                private data erased by a data controller without undue delay, which is generally
+                                interpreted as around 30 days.</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>10. What is adversarial artificial intelligence, and provide an example of how it can
+                            be
+                            used?</summary>
+                        <div class="answer">
+                            <p>Adversarial artificial intelligence refers to threat agents attacking AI systems or
+                                leveraging AI for malicious purposes. One example is when attackers taint the training
+                                data used by a machine learning system, causing it to produce false negatives and
+                                effectively hide the attackers' malicious activities from detection. Another example is
+                                using AI to develop mutating malware that can alter its structure to evade
+                                signature-based defenses.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <h3>Essay Questions</h3>
+                <p><em>Instructions: Formulate a detailed response to the following prompts, drawing upon the concepts
+                        and information presented in the source material.</em></p>
+                <ol>
+                    <li>Discuss the evolution of technology in sports as an analogy for the introduction of technology
+                        into security operations. Analyze the privacy concerns raised in both domains and how governance
+                        and compliance principles could be applied to address them.</li>
+                    <li>Compare and contrast the roles of an Incident Responder, a Penetration Tester, and a Threat
+                        Hunter. Discuss their respective objectives, tasks, timelines, and whether their approach is
+                        reactive or proactive.</li>
+                    <li>An organization is moving towards a more automated security posture. Explain the benefits they
+                        can expect to see, such as increased time efficiency and staff retention. Additionally, detail
+                        the potential risks they should consider, including complexity, cost, and the creation of a
+                        single point of failure.</li>
+                    <li>You have been tasked with establishing a governance framework for a new company. Describe the
+                        four main mechanisms for enforcing governance (policies, procedures, standards, guidelines),
+                        explaining the purpose of each and how they relate to one another. Provide a specific
+                        security-related example for each mechanism.</li>
+                    <li>Analyze the role of Artificial Intelligence (AI) in modern information security. Describe how AI
+                        can assist organizations before, during, and after a cyberattack. On the flip side, discuss the
+                        risks of using AI in security and the threat of adversarial AI.</li>
+                </ol>
+
+                <h3>Glossary of Key Terms</h3>
+                <table>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td>Acceptable-Use Policy (AUP)</td>
+                        <td>A policy that defines the actions users are permitted to perform when accessing network
+                            systems and equipment, covering employees, vendors, contractors, and visitors.</td>
+                    </tr>
+                    <tr>
+                        <td>Accountability</td>
+                        <td>A principle of good governance; the obligation of an individual, group, or organization to
+                            answer for a responsibility that has been conferred.</td>
+                    </tr>
+                    <tr>
+                        <td>Adversarial Artificial Intelligence</td>
+                        <td>The practice of threat agents attacking AI systems or leveraging AI for malicious purposes,
+                            such as tainting training data or using AI to create mutating malware.</td>
+                    </tr>
+                    <tr>
+                        <td>Application Programming Interface (API)</td>
+                        <td>A link provided by an OS, web browser, or other platform that allows a developer access to
+                            resources at a high level, enabling faster code creation.</td>
+                    </tr>
+                    <tr>
+                        <td>Artificial Intelligence (AI)</td>
+                        <td>A subset of data analytics where technologies can understand and act by themselves based on
+                            acquired information. AI systems are autonomous, iterative, and dynamic.</td>
+                    </tr>
+                    <tr>
+                        <td>Attestation</td>
+                        <td>The verification of a statement's truth or authenticity, such as an external compliance
+                            report serving as an official attestation of compliance monitoring.</td>
+                    </tr>
+                    <tr>
+                        <td>Automation</td>
+                        <td>The use of technology to perform a task or process with minimal human assistance. In
+                            security, it streamlines and speeds up processes to provide timely insights and faster
+                            protection.</td>
+                    </tr>
+                    <tr>
+                        <td>Board</td>
+                        <td>An internal governance body composed of directors who approve strategic organizational goals
+                            and policies.</td>
+                    </tr>
+                    <tr>
+                        <td>Compliance</td>
+                        <td>The process of ensuring that an organization adheres to laws and regulations related to
+                            information security and user data privacy.</td>
+                    </tr>
+                    <tr>
+                        <td>Compliance Monitoring</td>
+                        <td>Quality assurance tests performed by organizations to determine how well their business
+                            operations meet security regulations and standards. It can be internal or external.</td>
+                    </tr>
+                    <tr>
+                        <td>Controller</td>
+                        <td>A data governance role; the principal party responsible for collecting data, acquiring user
+                            consent, and managing access.</td>
+                    </tr>
+                    <tr>
+                        <td>Custodian/Steward</td>
+                        <td>A data governance role; an individual to whom day-to-day actions have been assigned by the
+                            owner, such as reviewing security settings and maintaining access records.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Analytics</td>
+                        <td>A fixed process that examines large data sets to draw conclusions, where researchers
+                            manually create algorithms to learn patterns and correlations from historical data.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Privacy Officer (DPO)</td>
+                        <td>A data governance role; a manager who oversees data privacy compliance and manages data
+                            risk, ensuring the enterprise complies with privacy laws and policies.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Subjects</td>
+                        <td>In the context of the EU, any living individual whose personal data is collected, processed,
+                            and stored by an organization.</td>
+                    </tr>
+                    <tr>
+                        <td>Due Care</td>
+                        <td>The act of taking reasonable steps to secure and protect an organization's assets,
+                            reputation, and finances.</td>
+                    </tr>
+                    <tr>
+                        <td>Due Diligence</td>
+                        <td>The act of identifying and mitigating risks brought on by third parties.</td>
+                    </tr>
+                    <tr>
+                        <td>Employee Offboarding</td>
+                        <td>The procedure entailing actions to be taken when an employee leaves an enterprise, such as
+                            disabling accounts and backing up files.</td>
+                    </tr>
+                    <tr>
+                        <td>Employee Onboarding</td>
+                        <td>The procedure encompassing the tasks associated with hiring a new employee, such as signing
+                            an NDA and configuring accounts.</td>
+                    </tr>
+                    <tr>
+                        <td>Governance</td>
+                        <td>The structures, systems, and practices an organization has in place to assign
+                            decision-making responsibilities, oversee implementation, and report on performance.</td>
+                    </tr>
+                    <tr>
+                        <td>Guardrails (Security)</td>
+                        <td>Automations that constantly watch cloud deployments, find deviations from desired baselines,
+                            and can automatically remediate issues without slowing development.</td>
+                    </tr>
+                    <tr>
+                        <td>Guideline</td>
+                        <td>A governance mechanism that provides general, voluntary guidance and support for policies,
+                            standards, or procedures.</td>
+                    </tr>
+                    <tr>
+                        <td>Incident Response Playbook</td>
+                        <td>A type of procedure that lists specific, mandatory actions to take in response to different
+                            threats.</td>
+                    </tr>
+                    <tr>
+                        <td>Integrity</td>
+                        <td>A principle of good governance; acting in a way that is impartial and ethical, reflected
+                            through compliance with laws and high standards of professionalism.</td>
+                    </tr>
+                    <tr>
+                        <td>Leadership</td>
+                        <td>A principle of good governance; "setting the tone" to encourage personnel to embrace good
+                            governance practices.</td>
+                    </tr>
+                    <tr>
+                        <td>Machine Learning (ML)</td>
+                        <td>A subset of AI that uses statistical techniques to give computer systems the ability to
+                            “learn” or progressively improve performance using data, rather than being explicitly
+                            programmed.</td>
+                    </tr>
+                    <tr>
+                        <td>Noncompliance</td>
+                        <td>The failure to adhere to compliance standards, which can result in penalties such as fines,
+                            sanctions, reputational damage, or loss of license.</td>
+                    </tr>
+                    <tr>
+                        <td>Orchestration (Security)</td>
+                        <td>The automation and combination of many different individual tasks into a single, functional,
+                            automated process or workflow, crossing multiple platforms.</td>
+                    </tr>
+                    <tr>
+                        <td>Oversight</td>
+                        <td>The act of reviewing and monitoring processes, policies, or projects from above to ensure
+                            they achieve expected results and comply with standards, without direct involvement in
+                            operations.</td>
+                    </tr>
+                    <tr>
+                        <td>Owner</td>
+                        <td>A data governance role; the person responsible for the information who determines the level
+                            of security necessary and delegates duties.</td>
+                    </tr>
+                    <tr>
+                        <td>Policy</td>
+                        <td>A formal statement from a governing body that outlines specific requirements or rules that
+                            must be met to achieve the strategic objectives of an organization.</td>
+                    </tr>
+                    <tr>
+                        <td>Procedure</td>
+                        <td>A governance mechanism that provides detailed, mandatory steps a user must follow to comply
+                            with a policy.</td>
+                    </tr>
+                    <tr>
+                        <td>Processor</td>
+                        <td>A data governance role; a proxy (person or agency) who acts on behalf of the data controller
+                            to hold and process data but does not make decisions about its use.</td>
+                    </tr>
+                    <tr>
+                        <td>Provisioning</td>
+                        <td>The process of creating and setting up an IT infrastructure, including managing user and
+                            system access to resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Right to be Forgotten</td>
+                        <td>A fundamental EU data protection principle giving data subjects the legal right to have
+                            their private data erased by a data controller without undue delay.</td>
+                    </tr>
+                    <tr>
+                        <td>Security Operations Center (SOC)</td>
+                        <td>A function or team within an organization responsible for proactive monitoring, incident
+                            response and recovery, remediation, and other security tasks.</td>
+                    </tr>
+                    <tr>
+                        <td>SOAR Platform</td>
+                        <td>A Security Orchestration, Automation, and Response platform that combines tools to
+                            synthesize and automate security operations, threat intelligence, and incident response.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Standard</td>
+                        <td>A governance mechanism that specifies the uniform use of specific technologies or settings
+                            for secure configurations; can be internal or from a third party like PCI DSS.</td>
+                    </tr>
+                    <tr>
+                        <td>Stewardship</td>
+                        <td>A principle of good governance; the act of responsibly looking after resources on behalf of
+                            the organization.</td>
+                    </tr>
+                    <tr>
+                        <td>Threat Hunting</td>
+                        <td>A proactive, iterative, and predominantly human-led activity to identify a cyber invasion
+                            that has evaded existing security controls, assuming the network is already compromised.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Transparency</td>
+                        <td>A principle of good governance; achieved when decisions and actions are open, allowing
+                            stakeholders access to full, accurate, and clear information.</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+
+
+        <div class="quiz-header">
+            <h2 style="margin:0; color:var(--accent)">⚡ Full Practice Simulation</h2>
+            <p>45 Review Questions</p>
+        </div>
+
+        <div id="quiz-container"></div>
+
+        <div style="margin-top: 2rem; text-align: center;">
+            <a href="comptia-security-plus-labs.html" class="btn-access">Back to Modules</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 M.A. All rights reserved.
+        </div>
+    </footer>
+
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+    <script>
+        // Language Toggle Logic
+
+
+        // Back to Top Logic
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // --- QUIZ LOGIC ---
+        // --- QUIZ DATABASE ---
+        const questions = [
+            {
+                id: 1,
+                text: "Which of the following is correct regarding security automation?",
+                options: ["Security operations have been more manual than automated for many years.", "Security automation requires both AI and ML.", "Security automation has been used since the beginning of cybersecurity.", "Threat hunting relies heavily on cybersecurity automation."],
+                correct: [0],
+                explanation: "Historically, SecOps relied heavily on human manual processes."
+            },
+            {
+                id: 2,
+                text: "Alois is explaining to his parents his new position in a SOC. Which of the following would he NOT say about a SOC?",
+                options: ["It houses the IT security team.", "It is responsible for detecting and analyzing cybersecurity incidents.", "It uses strictly automated processes.", "A SOC responds to cybersecurity incidents."],
+                correct: [2],
+                explanation: "SOCs rely on human analysts, they are not strictly automated."
+            },
+            {
+                id: 3,
+                text: "Matheo is explaining security automation to a new intern. What would he NOT say?",
+                options: ["Using manual processes in a SOC tips the scales in favor of attackers.", "Modern attacks are highly automated, so defenses need to be automated.", "Cybersecurity automation is now required by most certification bodies.", "Time spent on manual processes allows threat actors to spread malware."],
+                correct: [2],
+                explanation: "Automation is recommended, but not a universal requirement of certifiers."
+            },
+            {
+                id: 4,
+                text: "What is Data Correlation?",
+                options: ["Finding linkages from multiple data sources.", "A requirement for using Machine Learning.", "A dated technology that is no longer used.", "Using at least three external and internal sources."],
+                correct: [0]
+            },
+            {
+                id: 5,
+                text: "Which of the following is NOT correct regarding governance?",
+                options: ["Refers to structures and systems to assign and oversee.", "Involves assigning decision-making responsibilities.", "Governance is not concerned with overseeing service delivery or risk mitigation.", "Involves reporting performance to achieve intended outcomes."],
+                correct: [2],
+                explanation: "Governance IS concerned with oversight and risks."
+            },
+            {
+                id: 6,
+                text: "Which of the following is composed of internal directors who approve strategic goals?",
+                options: ["Panel", "Committee", "Board", "Council"],
+                correct: [2]
+            },
+            {
+                id: 7,
+                text: "Who is the principal party responsible for data collection?",
+                options: ["Custodian/Steward", "Owner", "Controller", "Processor"],
+                correct: [2]
+            },
+            {
+                id: 8,
+                text: "Which policy defines actions users can perform when accessing systems?",
+                options: ["ACXT", "RSRS", "BAC", "AUP (Acceptable Use Policy)"],
+                correct: [3]
+            },
+            {
+                id: 9,
+                text: "Which policy describes how applications should be developed?",
+                options: ["SORA", "SCAP", "SDLC (Software Development Lifecycle)", "SARC"],
+                correct: [2]
+            },
+            {
+                id: 10,
+                text: "Which of the following is voluntary and not mandatory?",
+                options: ["Guideline", "Policy", "Standard", "Procedure"],
+                correct: [0]
+            },
+            {
+                id: 11,
+                text: "Lyam is researching scripting. Which of the following is NOT correct?",
+                options: ["JavaScript, PHP, Python, and Ruby are common scripting languages.", "A scripting language runtime is often installed with the OS.", "Scripting has features not found in formal languages.", "Scripting should not be used for automation."],
+                correct: [3],
+                explanation: "On the contrary, scripts are fundamental for automation."
+            },
+            {
+                id: 12,
+                text: "Which of the following is NOT correct regarding Guardrails?",
+                options: ["Guardrails can automatically remediate issues.", "Guardrails add friction to slow down the development process.", "Guardrails constantly monitor cloud deployments.", "Guardrails leverage cloud APIs and automation."],
+                correct: [1],
+                explanation: "Guardrails aim for security WITHOUT adding friction."
+            },
+            {
+                id: 13,
+                text: "What is another name for integrations and application programming interfaces?",
+                options: ["APIaaS", "PaaS", "SaaS", "iPaaS"],
+                correct: [3]
+            },
+            {
+                id: 14,
+                text: "Which of the following involves automating and combining many different tasks and processes?",
+                options: ["Multitask combination (MTC)", "Cybersecurity automation", "Orchestration", "Autoflow"],
+                correct: [2]
+            },
+            {
+                id: 15,
+                text: "Which platform can take immediate action when it detects a malicious action?",
+                options: ["SIEM", "SOAR", "RSOC", "SAII"],
+                correct: [1]
+            },
+            {
+                id: 16,
+                text: "Which Threat Hunting level hunts continuously and shares data with the community?",
+                options: ["Managed", "Defined", "Quantitatively Managed", "Optimized"],
+                correct: [3],
+                explanation: "Level 5 (Optimized) involves continuous hunting and sharing."
+            },
+            {
+                id: 17,
+                text: "Which of the following is NOT a risk associated with using AI in cybersecurity?",
+                options: ["Attackers can try to taint training data (ML) to produce false negatives.", "The time required for AI to provide indicators of attack (IoA) is considered too slow today.", "Threat actors can use AI to bypass defenses.", "AI security applications have vulnerabilities that can be attacked."],
+                correct: [1],
+                explanation: "AI is fast, not slow. The others are real risks."
+            },
+            {
+                id: 18,
+                text: "Which of the following is NOT a characteristic of Threat Hunting?",
+                options: ["Recursive", "Predominantly human", "Iterative", "Proactive"],
+                correct: [0],
+                explanation: "Threat Hunting is Proactive. 'Reactive' or 'Recursive' is incorrect."
+            },
+            {
+                id: 19,
+                text: "AI is a subset of which domain?",
+                options: ["ML", "Data analytics", "SOC", "Threat hunting"],
+                correct: [1],
+                explanation: "AI is presented as a subset of Data Analytics."
+            },
+            {
+                id: 20,
+                text: "Which of the following is NOT an information security task that AI can perform?",
+                options: ["Perform breach risk prediction", "Conduct asset inventory", "Reduce threat exposure", "Configure controls"],
+                correct: [3],
+                explanation: "AI analyzes controls, but final configuration usually requires human validation."
+            },
+            {
+                id: 21,
+                text: "A network of a clinic is breached, and patient data is stolen. Upon investigation, authorities determined poor security practices and levied a fine. Which best describes how the clinic was in violation?",
+                options: ["They did not follow the guidelines.", "They did not follow the proper procedures.", "They did not meet the requirements.", "They did not meet the compliance standards."],
+                correct: [3],
+                explanation: "Compliance involves laws, regulations, and penalties (fines)."
+            },
+            {
+                id: 22,
+                text: "Which of the following governance roles determines the level of security needed for the data and delegates security duties?",
+                options: ["Custodian", "Owner", "Processor", "Controller"],
+                correct: [1],
+                explanation: "The Owner defines the security level and delegates."
+            },
+            {
+                id: 23,
+                text: "Which of the following statements are true when defining artificial intelligence (AI)? (Select correct ones)",
+                options: ["Data analytics is a subset of ML.", "AI is a subset of ML.", "ML is a subset of AI and can create refined algorithms.", "Data analytics relies on human interaction to query data."],
+                correct: [2, 3],
+                explanation: "ML is a subset of AI. Data Analytics relies on human interaction."
+            },
+            {
+                id: 24,
+                text: "Zipporah develops a hypothesis for threat hunting, but it is found to be false. What should you tell her?",
+                options: ["She should look for evidence of the threat elsewhere.", "There is no indication of an infiltration based on the specifics of the hypothesis.", "The threat for which she was hunting is not present.", "The threat has already been contained by the SOC."],
+                correct: [0, 1],
+                explanation: "A false hypothesis isn't a failure, it just means *that* specific threat wasn't found there."
+            },
+            {
+                id: 25,
+                text: "Which of the following is true regarding internal compliance monitoring?",
+                options: ["Automation compliance tools can generate an internal compliance report for auditors.", "Automation compliance tools collect data but do not generate alerts.", "Automation tools should only be used as a supplemental aid.", "It includes random manual spot checks."],
+                correct: [0],
+                explanation: "Automation tools avoid random manual checks and generate reports."
+            },
+            {
+                id: 26,
+                text: "Parisa is deploying security automation to reduce false positives. How will automation help?",
+                options: ["It will be able to find correlations from external and internal data sources.", "It will generate more test data.", "It will analyze internal data faster.", "It will analyze external data faster."],
+                correct: [0],
+                explanation: "Correlating multiple sources reduces false positives."
+            },
+            {
+                id: 27,
+                text: "Which of the following is likely to have the least severe consequences if not complied with?",
+                options: ["Guidelines", "Requirements", "Standards", "Procedures"],
+                correct: [0],
+                explanation: "Guidelines are voluntary."
+            },
+            {
+                id: 28,
+                text: "Idalia works at a government agency responsible for issuing and enforcing security directives. Where does she work?",
+                options: ["Board", "Regulatory", "Enforcement", "Compliance"],
+                correct: [1],
+                explanation: "Regulatory agencies issue and enforce directives."
+            },
+            {
+                id: 29,
+                text: "Omar works in a SOC. Which tasks might he perform? (Select correct options)",
+                options: ["Passive monitoring", "Coordination", "Compliance", "Proactive monitoring"],
+                correct: [1, 2, 3],
+                explanation: "SOC performs proactive monitoring, coordination, and compliance."
+            },
+            {
+                id: 30,
+                text: "Two cousins use an app that tracks location via trackers noted in the EULA. What type of data collection is this?",
+                options: ["Public", "Private", "Overt", "Questionable"],
+                correct: [3],
+                explanation: "Questionable collection is often hidden or without clear business justification."
+            },
+            {
+                id: 31,
+                text: "A graduate reads a document stating vulnerability scans must be performed after network changes. What document is this?",
+                options: ["Policies", "Requirements", "Regulation", "Standards"],
+                correct: [3],
+                explanation: "Standards define specific technical configurations."
+            },
+            {
+                id: 32,
+                text: "You are hired by a company to examine protections and write a verification report. What activity is this?",
+                options: ["Verification of truth.", "Auditing internal monitoring.", "Internal compliance monitoring.", "External compliance monitoring."],
+                correct: [3],
+                explanation: "External monitoring is done by third parties and generates attestation."
+            },
+            {
+                id: 33,
+                text: "A technician (subject) pings (operation) a printer (object). Which statement is NOT true?",
+                options: ["The printer is the subject.", "The ping command is the operation.", "The technician is the subject.", "The printer is the object."],
+                correct: [0],
+                explanation: "The printer is the object, not the subject."
+            },
+            {
+                id: 34,
+                text: "A firm researches AI to mitigate security challenges. Which challenges are they addressing?",
+                options: ["Amount of security-related data produced daily", "Reduction of end-devices", "Shortage of trained security professionals", "Elimination of zero-day vulnerabilities"],
+                correct: [0, 2],
+                explanation: "AI helps with massive data volume and staff shortage (force multiplier)."
+            },
+            {
+                id: 35,
+                text: "Quisha wants to temper reliance on automation to prevent what?",
+                options: ["Too much passive monitoring", "A single point of failure", "Too many false positives", "Generation of too much data"],
+                correct: [1],
+                explanation: "Poorly planned automation creates a single point of failure."
+            },
+            {
+                id: 36,
+                text: "Which statement is true regarding current data protections in the U.S.?",
+                options: ["Different states have different privacy laws (local/regional protections).", "All states must comply with national privacy laws.", "The 'right to be forgotten' is federal law.", "Retention is arbitrary."],
+                correct: [0],
+                explanation: "In the US, protection is fragmented by state laws (like in California)."
+            },
+            {
+                id: 37,
+                text: "Westin needs to control inbound/outbound traffic at the network interface level in the cloud. What should he configure?",
+                options: ["Network interface control", "Access control list", "Network access control", "Security group"],
+                correct: [3],
+                explanation: "Security Groups act as virtual firewalls on cloud network interfaces."
+            },
+            {
+                id: 38,
+                text: "Which statement best describes governance?",
+                options: ["It specifies uniform uses of technologies.", "It provides detailed mandatory steps.", "It is the structures, systems, and practices to assign, oversee, and report.", "It relates to setting the tone."],
+                correct: [2]
+            },
+            {
+                id: 39,
+                text: "An employee is promoted and automatically receives new privileges. What mechanism facilitates this?",
+                options: ["User automation provisioning", "Managed privilege escalation", "Resource automation provisioning", "Access control automation"],
+                correct: [0],
+                explanation: "Automated user provisioning manages role-based access."
+            },
+            {
+                id: 40,
+                text: "Ukya's team develops automations to find deviations from baselines and fix issues in the cloud. What system is this?",
+                options: ["Cloud monitors", "Guardrails", "Cloud safety shields", "Cloud watch"],
+                correct: [1],
+                explanation: "Guardrails monitor drift and automatically fix issues."
+            },
+            {
+                id: 41,
+                text: "A company automatically detects and responds to a DDoS attack. What platform allows this?",
+                options: ["Network access control", "IDS", "SOAR", "Active firewall"],
+                correct: [2],
+                explanation: "SOAR (Orchestration) allows automatic response to complex incidents."
+            },
+            {
+                id: 42,
+                text: "Publilius is hiring for a Governance role. Which words will he likely include in the job posting?",
+                options: ["Controller", "Confidentiality", "Transparency", "Integrity"],
+                correct: [2, 3],
+                explanation: "Transparency and Integrity are governance principles."
+            },
+            {
+                id: 43,
+                text: "A senior official writes documents defining the organization's philosophy on safeguarding information. What are they producing?",
+                options: ["Procedures", "Policies", "Guidelines", "Requirements"],
+                correct: [1],
+                explanation: "Policies define the organization's philosophy and general rules."
+            },
+            {
+                id: 44,
+                text: "A security professional assumes the network is breached and searches for evidence. What are they doing?",
+                options: ["Penetration testing", "Responding to a known incident", "Developing a use case", "Threat hunting"],
+                correct: [3],
+                explanation: "Threat Hunting assumes breach and hunts proactively."
+            },
+            {
+                id: 45,
+                text: "A law firm encourages using AI to improve research efficiency (helping humans). What type of AI is this?",
+                options: ["Assisted intelligence", "Augmented intelligence", "Autonomous intelligence", "Automated intelligence"],
+                correct: [0],
+                explanation: "Assisted Intelligence improves what people already do."
+            }
+        ];
+
+        // --- QUIZ RENDER LOGIC ---
+        const quizContainer = document.getElementById('quiz-container');
+
+        function renderQuiz() {
+            quizContainer.innerHTML = ''; // Clear existing
+
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+
+                // Header
+                const qNumber = document.createElement('span');
+                qNumber.className = 'question-number';
+                qNumber.textContent = `QUESTION ${q.id}`;
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = q.text;
+
+                card.appendChild(qNumber);
+                card.appendChild(qText);
+
+                // Options
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options-grid';
+
+                // Explanation
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation';
+                if (q.explanation) {
+                    explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+                }
+
+                // Get options
+                const opts = q.options;
+
+                opts.forEach((optText, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = optText;
+
+                    btn.onclick = function () {
+                        handleAnswer(btn, index, q.correct, optionsDiv, explanationDiv);
+                    };
+
+                    optionsDiv.appendChild(btn);
+                });
+
+                card.appendChild(optionsDiv);
+                card.appendChild(explanationDiv);
+                quizContainer.appendChild(card);
+            });
+        }
+
+        function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+            const allBtns = parentDiv.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.classList.add('disabled'));
+
+            const isCorrect = correctIndices.includes(index);
+
+            if (isCorrect) {
+                clickedBtn.classList.add('correct');
+            } else {
+                clickedBtn.classList.add('incorrect');
+                correctIndices.forEach(correctIndex => {
+                    allBtns[correctIndex].classList.add('correct');
+                });
+            }
+            explanationDiv.style.display = 'block';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10: Wireless Network Attacks and Defenses - Matheus Almeida</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            color: var(--highlight);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option-btn {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: left;
+            color: var(--text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background: #1f2428;
+            color: var(--text-main);
+        }
+
+        .option-btn.correct {
+            background: rgba(35, 134, 54, 0.2);
+            border-color: var(--accent);
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background: rgba(218, 54, 51, 0.2);
+            border-color: var(--danger);
+            color: #f85149;
+        }
+
+        .option-btn.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .explanation {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(88, 166, 255, 0.1);
+            border-left: 4px solid var(--highlight);
+            border-radius: 4px;
+            display: none;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 10: Wireless Network Attacks and Defenses</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
+
+        <!-- Section 1 -->
+        <section class="module-section">
+            <h2>1. Challenges of Technological Diversity and Security Focus</h2>
+            <p>Wireless technology, especially Wireless Local Area Networks (WLANs) or Wi-Fi, has undergone astonishing
+                growth over the last 25 years. Initially introduced in 1997 with data transmissions at a mere 2 million
+                bits per second (Mbps), Wi-Fi is rapidly advancing, with the forthcoming Wi-Fi 7 (IEEE 802.11be) version
+                designed to transmit at an impressive 46,210 Mbps (or 46 Gbps).</p>
+            <p>This technological evolution has had a profound global impact. Wi-Fi has become ubiquitous—expected in
+                almost every public setting, from coffee shops to sports stadiums—and is an essential driver of the
+                modern economy.</p>
+
+            <h3>Intel's Long-Term Retention Lab</h3>
+            <p>To proactively address the issue of managing technology diversity for security research, Intel
+                established the Long-Term Retention Lab in Costa Rica.</p>
+            <ul>
+                <li><strong>Function:</strong> This facility was created to store both old and new technology devices,
+                    making them available for remote security testing.</li>
+                <li><strong>Capacity and Scope:</strong> Fully functional by 2019, the warehouse currently stores around
+                    3,000 hardware and software items, dating back over 10 years.</li>
+                <li><strong>Security:</strong> Access is strictly controlled, the location is secret, and new employees
+                    must be approved by senior management.</li>
+                <li><strong>Testing:</strong> Engineers worldwide can request specific device configurations for testing
+                    (receiving over 1,000 requests monthly).</li>
+            </ul>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="module-section">
+            <h2>2. Common Wireless Technologies and Attacks</h2>
+            <p>Wireless networks, including Wi-Fi, Bluetooth, and Near Field Communication (NFC), significantly extend
+                the attack surface beyond physical borders, allowing remote exploitation.</p>
+
+            <h3>A. Cellular Networks</h3>
+            <p>Cellular networks are the most widespread wireless networks. They are operated, owned, maintained, and
+                managed by telecommunication service providers. Crucially, end users are not responsible for configuring
+                or securing these cellular networks.</p>
+
+            <h3>B. Bluetooth Attacks</h3>
+            <p>Bluetooth is a wireless Personal Area Network (PAN) technology that uses short-range Radio Frequency (RF)
+                transmissions.</p>
+            <ul>
+                <li><strong>Bluejacking:</strong> An attack that sends unsolicited messages (text, images, or sounds) to
+                    Bluetooth-enabled devices. It is usually considered more annoying than harmful because no data is
+                    stolen.</li>
+                <li><strong>Bluesnarfing:</strong> An attack that accesses unauthorized, confidential information
+                    (emails, calendars, contact lists, photos, or videos) from a wireless device by connecting without
+                    the owner’s knowledge or permission.</li>
+            </ul>
+
+            <h3>C. Near Field Communication (NFC)</h3>
+            <p>NFC is a set of standards used to establish communication between devices brought into very close
+                proximity (within 4 centimeters).</p>
+            <table>
+                <tr>
+                    <th>Vulnerability</th>
+                    <th>Explanation</th>
+                    <th>Defense</th>
+                </tr>
+                <tr>
+                    <td>Eavesdropping</td>
+                    <td>Unencrypted NFC communication can be intercepted.</td>
+                    <td>Users must be aware of surroundings.</td>
+                </tr>
+                <tr>
+                    <td>Data theft</td>
+                    <td>Attackers can "bump" a portable reader to a smartphone.</td>
+                    <td>Turn off NFC in large crowds.</td>
+                </tr>
+                <tr>
+                    <td>MITM</td>
+                    <td>Attacker intercepts NFC communications and forges response.</td>
+                    <td>Configure pairing so one sends, one receives.</td>
+                </tr>
+            </table>
+
+            <h3>D. RFID Attacks</h3>
+            <p>RFID tags are susceptible to attacks such as <strong>RFID Cloning</strong>, which involves capturing data
+                transmitted via RFID and transferring it to another tag.</p>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="module-section">
+            <h2>3. Wireless Local Area Networks (WLAN)</h2>
+            <p>A WLAN (Wi-Fi) is designed to replace or supplement a wired LAN.</p>
+
+            <h3>Enterprise AP Types</h3>
+            <ul>
+                <li><strong>Fat APs (Autonomous):</strong> Independent and self-contained.</li>
+                <li><strong>Thin APs (Lightweight):</strong> Lack internal management; configuration is centralized in a
+                    wireless switch.</li>
+                <li><strong>Controller APs:</strong> Thin APs managed by a dedicated Wireless LAN Controller (WLC).</li>
+                <li><strong>Captive Portal APs:</strong> Used in public areas to force users to agree to an AUP or
+                    login.</li>
+            </ul>
+
+            <h3>Common Wireless Threat Vectors</h3>
+            <table>
+                <tr>
+                    <th>Attack Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Evil Twin</td>
+                    <td>Fake AP with identical SSID to trick users into connecting.</td>
+                </tr>
+                <tr>
+                    <td>Rogue AP</td>
+                    <td>Unauthorized AP installed on a network that bypasses security controls.</td>
+                </tr>
+                <tr>
+                    <td>Deauthentication</td>
+                    <td>Attacker sends spoofed frames to force clients to disconnect.</td>
+                </tr>
+                <tr>
+                    <td>War Driving</td>
+                    <td>Physically driving around to locate vulnerable networks.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section class="module-section">
+            <h2>4. Vulnerabilities in Legacy WLAN Security</h2>
+            <ul>
+                <li><strong>WEP (Wired Equivalent Privacy):</strong> Original protocol, highly insecure due to short IV
+                    length and detectable patterns.</li>
+                <li><strong>WPS (Wi-Fi Protected Setup):</strong> PIN method is vulnerable to brute-force attacks (under
+                    4 hours).</li>
+                <li><strong>MAC Address Filtering:</strong> Vulnerable because MAC addresses are exchanged unencrypted
+                    and can be spoofed.</li>
+                <li><strong>WPA (Wi-Fi Protected Access):</strong> Addressed WEP deficiencies but still has weaknesses.
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section class="module-section">
+            <h2>5. Modern Wireless Security Solutions</h2>
+
+            <h3>A. WPA2</h3>
+            <p>Uses <strong>AES-CCMP</strong> for encryption. <strong>WPA2-Enterprise</strong> uses <strong>IEEE
+                    802.1x</strong> for port-based authentication involving a Supplicant, Authenticator, and
+                Authentication Server (RADIUS).</p>
+
+            <h3>B. WPA3</h3>
+            <p>Key improvements:</p>
+            <ul>
+                <li><strong>SAE (Simultaneous Authentication of Equals):</strong> Secures the handshake against
+                    dictionary attacks.</li>
+                <li><strong>PMF (Protected Management Frames):</strong> Mitigates disassociation attacks.</li>
+                <li><strong>OWE (Opportunistic Wireless Encryption):</strong> Encrypts open networks.</li>
+            </ul>
+        </section>
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide: Wireless Network Attacks and Defenses</h2>
+
+            <h3>Quiz: Short-Answer Questions</h3>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. What are the key differences between the Bluetooth attacks known as Bluejacking and
+                        Bluesnarfing?</summary>
+                    <p>Bluejacking is an attack that sends unsolicited messages, images, or sounds to Bluetooth-enabled
+                        devices and is considered more annoying than harmful as no data is stolen. In contrast,
+                        Bluesnarfing is a more malicious attack that accesses and copies unauthorized information—such
+                        as emails, contact lists, and pictures—from a wireless device through a Bluetooth connection
+                        without the owner's knowledge.</p>
+                </details>
+                <details>
+                    <summary>2. Explain the primary vulnerability of the PIN method in Wi-Fi Protected Setup (WPS).
+                    </summary>
+                    <p>The PIN method in WPS is vulnerable because it has significant design flaws. An attacker can make
+                        unlimited PIN attempts, the last digit is just a checksum, and the router validates the PIN in
+                        two separate halves, effectively requiring an attacker to crack two much shorter PINs instead of
+                        one long one.</p>
+                </details>
+                <details>
+                    <summary>3. What is a captive portal AP, and what is its primary function in a public WLAN?
+                    </summary>
+                    <p>A captive portal AP is a system used in public WLANs that requires user interaction via a
+                        standard web browser before granting broader network access. Its primary function is to present
+                        information, require agreement to an acceptable use policy (AUP), or ask for valid login
+                        credentials, providing a higher degree of security and control.</p>
+                </details>
+                <details>
+                    <summary>4. Describe how Near Field Communication (NFC) establishes a connection and identify one
+                        major security risk associated with its use.</summary>
+                    <p>NFC establishes a two-way connection when devices are brought within 4 centimeters of each other,
+                        using magnetic induction between the internal antennas of an interrogator (like a smartphone)
+                        and a tag. A major security risk is data theft, where an attacker can "bump" a portable reader
+                        against a user's phone in a crowd to steal stored payment information.</p>
+                </details>
+                <details>
+                    <summary>5. What is a rogue access point (AP), and why does it pose a significant security threat to
+                        an enterprise network?</summary>
+                    <p>A rogue AP is an unauthorized access point installed on a network, often by an employee, that
+                        bypasses the organization's primary security controls. It is a significant threat because an
+                        attacker who connects to the rogue AP is effectively behind the corporate firewall, giving them
+                        access to inject malware or steal data from the internal network.</p>
+                </details>
+                <details>
+                    <summary>6. Explain the concept of MAC address filtering and describe its main security weakness.
+                    </summary>
+                    <p>MAC address filtering is a wireless access control method that permits or denies a device from
+                        connecting to a network based on its unique hardware MAC address. Its main security weakness is
+                        that MAC addresses are initially exchanged between devices and the AP in an unencrypted format,
+                        allowing an attacker to monitor the transmission, see an approved MAC address, and spoof it on
+                        their own device.</p>
+                </details>
+                <details>
+                    <summary>7. What are the three most common types of wireless denial-of-service attacks mentioned in
+                        the material?</summary>
+                    <p>The three most common types of wireless denial attacks are jamming, a disassociation attack, and
+                        a duration field values attack. Jamming floods the RF spectrum with interference, a
+                        disassociation attack uses spoofed management frames to force clients off the network, and a
+                        duration field values attack uses a high value in the RTS/CTS protocol to prevent other devices
+                        from transmitting.</p>
+                </details>
+                <details>
+                    <summary>8. How does the WPA2-Enterprise security model handle authentication, and what framework is
+                        used to transport authentication protocols?</summary>
+                    <p>The WPA2-Enterprise model handles authentication using the IEEE 802.1x standard, which provides
+                        port-based authentication where a client (supplicant) must be verified by an authentication
+                        server. The Extensible Authentication Protocol (EAP) is the framework used to transport the
+                        various authentication protocols between the supplicant, authenticator, and authentication
+                        server.</p>
+                </details>
+                <details>
+                    <summary>9. What is an "evil twin" attack, and how does it compromise user data?</summary>
+                    <p>An evil twin is a fraudulent access point set up by an attacker that is designed to mimic a
+                        legitimate, authorized AP. Unsuspecting users' devices connect to the evil twin, allowing the
+                        attacker to intercept the connection and capture all wireless transmissions, including sensitive
+                        data like usernames and passwords.</p>
+                </details>
+                <details>
+                    <summary>10. Identify two key security improvements introduced with WPA3 compared to its
+                        predecessors.</summary>
+                    <p>WPA3 introduces Simultaneous Authentication of Equals (SAE), which increases security during the
+                        initial key exchange handshake, providing stronger protection even if weak passwords are used.
+                        WPA3 also mandates Protected Management Frames (PMFs) to mitigate against disassociation
+                        attacks, which were a known weakness in the IEEE 802.11 standard.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <ol>
+                <li>Trace the evolution of WLAN security from WEP through WPA, WPA2, and WPA3. For each standard,
+                    describe its core encryption and authentication methods, identify its key vulnerabilities, and
+                    explain how its successor attempted to address those weaknesses.</li>
+                <li>Compare and contrast the security risks and attack vectors associated with four different
+                    short-range wireless technologies: Bluetooth, NFC, RFID, and Wi-Fi. Discuss specific attacks for
+                    each (e.g., Bluesnarfing, NFC data theft, RFID cloning, Evil Twin) and the recommended mitigation
+                    strategies.</li>
+                <li>Explain the concept of "blurred edges" in enterprise network security created by the introduction of
+                    WLANs. Detail how attacks like rogue APs and evil twins exploit this blurring, and describe a
+                    comprehensive strategy for detecting and mitigating these threats, including the use of site surveys
+                    and wireless probes.</li>
+                <li>An organization is deploying a new, large-scale enterprise WLAN. Describe the different types of
+                    Access Points (Fat vs. Thin, Controller vs. Stand-alone) and outline the benefits of using a
+                    Wireless LAN Controller (WLC). Explain why a site survey is a critical first step in this deployment
+                    and what tools, such as heat maps and Wi-Fi analyzers, would be used.</li>
+                <li>Detail the IEEE 802.1x authentication process, defining the roles of the supplicant, authenticator,
+                    and authentication server. Explain the function of the Extensible Authentication Protocol (EAP)
+                    framework and compare three specific EAP protocols (e.g., EAP-TLS, EAP-TTLS, EAP-FAST) in terms of
+                    their authentication methods and use cases.</li>
+            </ol>
+
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td>Access Point (AP)</td>
+                    <td>A centrally located WLAN connection device that acts as a base station for the wireless network
+                        and as a bridge between the wireless and wired networks.</td>
+                </tr>
+                <tr>
+                    <td>Bluejacking</td>
+                    <td>An attack that sends unsolicited messages (text, images, or sounds) to Bluetooth-enabled
+                        devices. It is considered more annoying than harmful as no data is stolen.</td>
+                </tr>
+                <tr>
+                    <td>Bluesnarfing</td>
+                    <td>An attack that accesses unauthorized information (emails, contacts, pictures, etc.) from a
+                        wireless device through a Bluetooth connection without the owner's knowledge.</td>
+                </tr>
+                <tr>
+                    <td>Bluetooth</td>
+                    <td>A wireless technology using short-range radio frequency (RF) transmissions for data
+                        communication over short distances, enabling rapid device pairings.</td>
+                </tr>
+                <tr>
+                    <td>Captive Portal AP</td>
+                    <td>An access point that uses a standard web browser to provide information and requires a user to
+                        agree to a policy or present valid login credentials before granting network access.</td>
+                </tr>
+                <tr>
+                    <td>CBC-MAC</td>
+                    <td>A component of the CCMP protocol used in WPA2 that provides data integrity and authentication.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Controller AP</td>
+                    <td>An access point that is managed through a dedicated wireless LAN controller (WLC), which
+                        centralizes configuration and management.</td>
+                </tr>
+                <tr>
+                    <td>CCMP</td>
+                    <td>The cryptographic wireless protocol used for encryption in WPA2, which specifies the use of AES.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Disassociation Attack</td>
+                    <td>A wireless denial attack where an attacker sends spoofed deauthentication or disassociation
+                        management frames to a client, causing it to disconnect from the AP.</td>
+                </tr>
+                <tr>
+                    <td>Duration Field Values Attack</td>
+                    <td>A wireless denial attack where an attacker sends a frame with the duration field set to a high
+                        value, reserving the wireless medium and preventing other devices from transmitting.</td>
+                </tr>
+                <tr>
+                    <td>EAP-FAST</td>
+                    <td>An EAP protocol that securely tunnels any credential form for authentication (such as a password
+                        or a token) using TLS.</td>
+                </tr>
+                <tr>
+                    <td>EAP-TLS</td>
+                    <td>An EAP protocol that uses digital certificates for authentication.</td>
+                </tr>
+                <tr>
+                    <td>EAP-TTLS</td>
+                    <td>An EAP protocol that securely tunnels client password authentication within Transport Layer
+                        Security (TLS) records.</td>
+                </tr>
+                <tr>
+                    <td>Evil Twin</td>
+                    <td>An AP set up by an attacker designed to mimic an authorized AP, tricking users into connecting
+                        so the attacker can capture their data transmissions.</td>
+                </tr>
+                <tr>
+                    <td>Extensible Authentication Protocol (EAP)</td>
+                    <td>A framework for transporting authentication protocols, defining the message format used in
+                        standards like IEEE 802.1x.</td>
+                </tr>
+                <tr>
+                    <td>Heat Map</td>
+                    <td>A visual representation of wireless signal coverage and strength, typically overlaid on a
+                        building floorplan to identify problem areas during a site survey.</td>
+                </tr>
+                <tr>
+                    <td>IEEE 802.1x</td>
+                    <td>A standard that provides port-based authentication, blocking all traffic on a port until a
+                        client is authenticated by an authentication server. It is used by WPA2-Enterprise.</td>
+                </tr>
+                <tr>
+                    <td>Jamming</td>
+                    <td>A wireless denial attack where an attacker uses intentional RF interference to flood the
+                        spectrum with noise, preventing devices from communicating with the AP.</td>
+                </tr>
+                <tr>
+                    <td>MAC Address Filtering</td>
+                    <td>A type of wireless access control that permits or blocks a device from connecting to a network
+                        based on its unique Media Access Control (MAC) address.</td>
+                </tr>
+                <tr>
+                    <td>Near Field Communication (NFC)</td>
+                    <td>A set of standards used to establish two-way communication between devices in very close
+                        proximity (within 4 cm).</td>
+                </tr>
+                <tr>
+                    <td>Piconet</td>
+                    <td>The primary type of Bluetooth network, established when two devices come within range. One
+                        device acts as the "broadcaster" (leader) and the other as the "observer" (follower).</td>
+                </tr>
+                <tr>
+                    <td>Protected EAP (PEAP)</td>
+                    <td>A common EAP protocol designed to simplify 802.1x deployment by using Microsoft Windows logins
+                        and passwords, creating an encrypted channel between the client and authentication server.</td>
+                </tr>
+                <tr>
+                    <td>RFID</td>
+                    <td>A wireless technology used to transmit information between tags (often paper-based) and a
+                        proximity reader. Passive RFID tags are powered by the reader's signal.</td>
+                </tr>
+                <tr>
+                    <td>RFID Cloning</td>
+                    <td>An attack that involves capturing data transmitted from an RFID tag and transferring it to
+                        another tag for nefarious purposes.</td>
+                </tr>
+                <tr>
+                    <td>Rogue AP</td>
+                    <td>An unauthorized access point installed on a network (often by an insider) that allows an
+                        attacker to bypass network security configurations.</td>
+                </tr>
+                <tr>
+                    <td>SAE</td>
+                    <td>A feature of WPA3 designed to increase security during the key exchange handshake, providing
+                        stronger security even if weak passwords are used.</td>
+                </tr>
+                <tr>
+                    <td>Site Survey</td>
+                    <td>An in-depth examination and analysis of a WLAN site, conducted to determine the optimal
+                        placement of APs for adequate coverage and minimal signal bleed.</td>
+                </tr>
+                <tr>
+                    <td>WEP</td>
+                    <td>An early IEEE 802.11 security protocol designed to encrypt wireless transmissions. It is now
+                        considered highly insecure due to several vulnerabilities.</td>
+                </tr>
+                <tr>
+                    <td>WPA</td>
+                    <td>A wireless security protocol introduced to address the flaws in WEP. It has since been
+                        superseded by more secure standards.</td>
+                </tr>
+                <tr>
+                    <td>WPA2</td>
+                    <td>The second generation of WPA, based on the IEEE 802.11i standard. It uses CCMP with AES for
+                        encryption and supports IEEE 802.1x for enterprise authentication.</td>
+                </tr>
+                <tr>
+                    <td>WPA3</td>
+                    <td>The next generation of WPA, offering enhanced security features such as SAE for stronger
+                        handshakes and PMF to protect against disassociation attacks.</td>
+                </tr>
+                <tr>
+                    <td>WPS</td>
+                    <td>An optional means of configuring security on WLANs, designed for ease of use. The PIN method is
+                        known to have significant security flaws.</td>
+                </tr>
+                <tr>
+                    <td>WLAN</td>
+                    <td>Commonly called Wi-Fi, a network designed to replace or supplement a wired Local Area Network
+                        (LAN).</td>
+                </tr>
+                <tr>
+                    <td>WLC</td>
+                    <td>A dedicated, centralized device used to configure and manage multiple controller APs on a
+                        network.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Full Practice Simulation -->
+        <div class="quiz-header">
+            <h2>Full Practice Simulation</h2>
+            <p>Test your knowledge with 45 practice questions. Select the best answer(s) for each question.</p>
+        </div>
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p>&copy; 2024 Matheus Almeida. All rights reserved.</p>
+    </footer>
+
+    <button id="back-to-top" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        // Back to Top Button Logic
+        const backToTopButton = document.getElementById("back-to-top");
+
+        window.onscroll = function () {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                backToTopButton.style.display = "flex";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+
+        backToTopButton.onclick = function () {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        };
+
+        // Quiz Data
+        const quizQuestions = [
+            {
+                id: 1,
+                text: "Simiso has been asked to research a new payment system for the retail stores that her company owns. Which technology is predominantly used for contactless payment systems that she will investigate?",
+                options: [
+                    "Bluetooth",
+                    "Near field communication (NFC)",
+                    "Wi-Fi",
+                    "Radio Frequency ID (RFID)"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: Near field communication (NFC)</strong><br>NFC is explicitly defined as a method for 'contactless payment systems.' Consumer devices like smartphones use NFC to pay at checkout."
+            },
+            {
+                id: 2,
+                text: "Muchaneta is investigating a security incident in which the smartphone of the CEO was compromised and confidential data was stolen. She suspects that it was an attack that used Bluetooth. Which attack would this be?",
+                options: [
+                    "Blueswiping",
+                    "Bluehiking",
+                    "Bluejacking",
+                    "Bluesnarfing"
+                ],
+                correct: 3,
+                explanation: "<strong>Correct Answer: Bluesnarfing</strong><br>Bluesnarfing is defined as an attack that accesses unauthorized information (emails, contacts, etc.) from a wireless device through a Bluetooth connection."
+            },
+            {
+                id: 3,
+                text: "What is a difference between NFC and RFID?",
+                options: [
+                    "NFC is based on wireless technology while RFID is not.",
+                    "RFID is faster than NFC.",
+                    "NFC requires the sender to be very close to the receiver.",
+                    "NFC devices cannot pair as quickly as RFID devices."
+                ],
+                correct: 2,
+                explanation: "<strong>Correct Answer: NFC requires the sender to be very close to the receiver.</strong><br>NFC operates within 4 cm, whereas passive RFID can range from 1/3 inch to 19 feet."
+            },
+            {
+                id: 4,
+                text: "Which of the following attacks transfers the data from one RFID tag to another?",
+                options: [
+                    "RFID swiping",
+                    "RFID cloning",
+                    "RFID duplicating",
+                    "RFID mirroring"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: RFID cloning</strong><br>RFID cloning involves capturing data from a legitimate tag and transferring it to another tag for nefarious use."
+            },
+            {
+                id: 5,
+                text: "Thubelihle has just been informed that an employee has tried to install their own wireless router in the employee lounge. Why is installing this rogue AP an issue?",
+                options: [
+                    "It uses the weaker IEEE 80211i protocol.",
+                    "It allows an attacker to bypass network security configurations.",
+                    "It conflicts with other network firewalls and can cause them to become disabled.",
+                    "It requires the use of vulnerable wireless probes on all mobile devices."
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: It allows an attacker to bypass network security configurations.</strong><br>A rogue AP allows an attacker to connect 'behind the firewall,' bypassing standard security configurations."
+            },
+            {
+                id: 6,
+                text: "Zendaya is helping her neighbor install and configure a new wireless router. Her neighbor wants to use default settings. Which of these is **NOT** a reason Zendaya would give regarding the risks of an improperly configured wireless router?",
+                options: [
+                    "An attacker can steal data from any folder with file sharing enabled.",
+                    "Wireless devices could be susceptible to an INKSPOT attack.",
+                    "User names, passwords, credit card numbers, and other information sent over the WLAN could be captured by an attacker.",
+                    "Malware can be injected into a computer connected to the WLAN."
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: Wireless devices could be susceptible to an INKSPOT attack.</strong><br>'INKSPOT attack' is a fictitious term not mentioned in the text."
+            },
+            {
+                id: 7,
+                text: "Which of these WPS (Wi-Fi Protected Setup) methods is vulnerable?",
+                options: [
+                    "Push-button",
+                    "PIN",
+                    "NXC",
+                    "Click-to-send"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: PIN</strong><br>The PIN method has significant flaws; there is often no lockout limit, and the PIN is validated in two halves, making it easy to brute-force."
+            },
+            {
+                id: 8,
+                text: "Zuri visits a coffee shop and connects to free Wi-Fi. A screen appears asking her to agree to an acceptable use policy (AUP) before continuing. What type of AP portal has she encountered?",
+                options: [
+                    "Rogue portal",
+                    "Approval portal",
+                    "Limited portal",
+                    "Captive portal"
+                ],
+                correct: 3,
+                explanation: "<strong>Correct Answer: Captive portal</strong><br>A captive portal uses a web browser to force users to agree to a policy or provide credentials before granting internet access."
+            },
+            {
+                id: 9,
+                text: "Which of the following is **NOT** a wireless denial attack that attempts to prevent a user from accessing or using a WLAN?",
+                options: [
+                    "RTS/CTS replay attack",
+                    "Duration field values attack",
+                    "Disassociation attack",
+                    "Jamming"
+                ],
+                correct: 0,
+                explanation: "<strong>Correct Answer: RTS/CTS replay attack</strong><br>The text lists jamming, disassociation, and duration field values attacks as the common denial attacks. 'RTS/CTS replay' is not listed as a specific attack type."
+            },
+            {
+                id: 10,
+                text: "Nia is writing an email about a wireless attack designed to capture wireless transmissions from legitimate users. Which type of attack is she describing?",
+                options: [
+                    "NFC capture attack",
+                    "Evil twin attack",
+                    "WPA grab attack",
+                    "Sleeper attack"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: Evil twin attack</strong><br>An evil twin mimics an authorized AP. When users connect to it, the attacker captures their transmissions."
+            },
+            {
+                id: 11,
+                text: "Which of these is a vulnerability of MAC address filtering in a WLAN?",
+                options: [
+                    "Not all operating systems support MACs.",
+                    "APs use IP addresses instead of MACs.",
+                    "The user must enter the MAC.",
+                    "MAC addresses are initially exchanged unencrypted."
+                ],
+                correct: 3,
+                explanation: "<strong>Correct Answer: MAC addresses are initially exchanged unencrypted.</strong><br>Because the address is sent in cleartext, an attacker can easily see the MAC address of an authorized device and spoof it."
+            },
+            {
+                id: 12,
+                text: "Which of the following is **NOT** true about cellular networks?",
+                options: [
+                    "Using a cellular network requires extensive security configurations on the part of the user.",
+                    "Cellular networks are operated by telecommunication service providers.",
+                    "The telecommunication service providers of cellular networks own, maintain, and manage their own network equipment and facilities.",
+                    "The most widespread wireless networks are cellular networks."
+                ],
+                correct: 0,
+                explanation: "<strong>Correct Answer: Using a cellular network requires extensive security configurations on the part of the user.</strong><br>End users are not responsible for configuring or securing the cellular network infrastructure; the provider handles this."
+            },
+            {
+                id: 13,
+                text: "Which of the following is **NOT** true about WLAN versions?",
+                options: [
+                    "New versions of WLANs have appeared regularly.",
+                    "Updated versions have resulted in increased speed, coverage area, and resistance to interference and stronger security.",
+                    "WLAN standards are set by the IEEE.",
+                    "WLAN-IEEE 8ax is the final version to be released."
+                ],
+                correct: 3,
+                explanation: "<strong>Correct Answer: WLAN-IEEE 8ax is the final version to be released.</strong><br>The text mentions Wi-Fi 7 (IEEE 802.11be) is the next version, proving 802.11ax is not the final one."
+            },
+            {
+                id: 14,
+                text: "Which of these is the encryption protocol for WPA2?",
+                options: [
+                    "IEEE 802.1x",
+                    "CCMP",
+                    "XAP",
+                    "CBC-MAC"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: CCMP</strong><br>WPA2 uses AES-CCMP (Counter Mode with Cipher Block Chaining Message Authentication Code Protocol) for encryption."
+            },
+            {
+                id: 15,
+                text: "Which mode provides the highest level of security?",
+                options: [
+                    "WEP mode",
+                    "WPA2-Enterprise mode",
+                    "WPA4-X mode",
+                    "WPA3-Enterprise 192-bit mode"
+                ],
+                correct: 3,
+                explanation: "<strong>Correct Answer: WPA3-Enterprise 192-bit mode</strong><br>WPA3 is the newest generation, and the 192-bit mode is explicitly cited as an optional mode providing 'higher levels of security.'"
+            },
+            {
+                id: 16,
+                text: "Nala needs to purchase WLCs (Wireless LAN Controllers) for the office. What type of AP must she also purchase that can be managed by a WLC?",
+                options: [
+                    "Stand-alone AP",
+                    "Controller AP",
+                    "Fat AP",
+                    "Any type of AP can be managed by a WLC"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: Controller AP</strong><br>Controller APs are designed to be managed by a centralized WLC."
+            },
+            {
+                id: 17,
+                text: "Which WPA3 security feature is designed to increase security at the time of the handshake?",
+                options: [
+                    "WEP",
+                    "SAE",
+                    "OWE",
+                    "PXF"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: SAE (Simultaneous Authentication of Equals)</strong><br>SAE secures the key exchange handshake, preventing dictionary attacks even if weak passwords are used."
+            },
+            {
+                id: 18,
+                text: "Hadiza is explaining EAP (Extensible Authentication Protocol) to a new hire. What would be the best explanation?",
+                options: [
+                    "It is the transport protocol used in TCP/IP for authentication.",
+                    "It is a framework for transporting authentication protocols.",
+                    "It is a subset of WPA2.",
+                    "It is a technology used by IEEE 802.11 for encryption."
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: It is a framework for transporting authentication protocols.</strong><br>EAP is not an authentication protocol itself, but a framework that allows different authentication protocols to be used."
+            },
+            {
+                id: 19,
+                text: "Makena has been asked to recommend an EAP for a system that uses both passwords and tokens with TLS. Which should she recommend?",
+                options: [
+                    "EAP-SSL",
+                    "EAP-TLS",
+                    "EAP-TTLS",
+                    "EAP-FAST"
+                ],
+                correct: 3,
+                explanation: "<strong>Correct Answer: EAP-FAST</strong><br>EAP-FAST securely tunnels any credential form (passwords or tokens) using TLS."
+            },
+            {
+                id: 20,
+                text: "Which of these is a WPA3 technology that mitigates against association attacks?",
+                options: [
+                    "OWE",
+                    "SAE",
+                    "XR3",
+                    "PMF"
+                ],
+                correct: 3,
+                explanation: "<strong>Correct Answer: PMF (Protected Management Frames)</strong><br>PMFs protect management frames (like disassociation frames) from being spoofed, thus mitigating disassociation attacks."
+            },
+            {
+                id: 21,
+                text: "Zara is a wireless IoT engineer. Which hardware certification label is her hardware most likely to comply with for secure IoT connections?",
+                options: [
+                    "OWE",
+                    "WPA2",
+                    "WPA3",
+                    "SAE"
+                ],
+                correct: 2,
+                explanation: "<strong>Correct Answer: WPA3</strong><br>WPA3 is a hardware certification program (not just a protocol) that includes improved interaction capabilities specifically for IoT devices."
+            },
+            {
+                id: 22,
+                text: "A company has adopted the use of the WPA2-Enterprise model. Which of the following accurately describes some of its characteristics? (Select two)",
+                options: [
+                    "It uses port-based authentication to grant access to clients.",
+                    "It uses a supplicant to send messages between the authenticator and the authentication server.",
+                    "It strictly limits access to the authentication server.",
+                    "It uses port security based on the MAC address of the supplicant.",
+                    "EAP-SSL allows it to use digital certificates for authentication."
+                ],
+                correct: [0, 2],
+                explanation: "<strong>Correct Answers: It uses port-based authentication... AND It strictly limits access to the authentication server.</strong><br>WPA2-Enterprise uses IEEE 802.1x, which blocks traffic on a port-by-port basis until authentication occurs. It isolates the authentication server to prevent attacks against it."
+            },
+            {
+                id: 23,
+                text: "Which of the following represents true statements regarding WEP and WPA? (Select two)",
+                options: [
+                    "WEP is an open security protocol, so it provides neither authentication nor authorization.",
+                    "WPA fits into the existing WEP engine without the need for extensive hardware upgrades.",
+                    "WEP-Enterprise and WPA-Enterprise were intended for organizations using port authentication.",
+                    "WEP is not considered secure, but its successor, WPA, is considered a secure option.",
+                    "Although WPA addresses encryption and authentication, it is not considered a secure option."
+                ],
+                correct: [1, 4],
+                explanation: "<strong>Correct Answers: WPA fits into the existing WEP engine... AND Although WPA addresses encryption and authentication, it is not considered a secure option.</strong><br>WPA was designed as a temporary fix compatible with WEP hardware. However, WPA still has significant weaknesses and is no longer considered secure."
+            },
+            {
+                id: 24,
+                text: "A user notices an unauthorized device connected to their wireless router. What change can they make to prevent this?",
+                options: [
+                    "Change the secret shared key required to connect to the network.",
+                    "Enable IP address and MAC address filtering.",
+                    "Disable the ability to generate PINs using WPS.",
+                    "Change the PIN generated by the WPS engine."
+                ],
+                correct: 2,
+                explanation: "<strong>Correct Answer: Disable the ability to generate PINs using WPS.</strong><br>WPS (Wi-Fi Protected Setup) via PIN has major security flaws. Unless the router has specific protections, it is best to disable WPS entirely."
+            },
+            {
+                id: 25,
+                text: "An attacker detects a network called `MyWiFi` alongside corporate networks labeled `WAP-ABCD.EFGH`. What is the attacker most likely to think or do first? (Select two)",
+                options: [
+                    "Think someone installed a rogue AP.",
+                    "Try to connect to one of the WAP-ABCD.EFGH networks.",
+                    "Try to connect to the MyWiFi network.",
+                    "Ignore the MyWiFi network and continue searching.",
+                    "Think the MyWiFi network will likely connect to a honeynet."
+                ],
+                correct: [0, 2],
+                explanation: "<strong>Correct Answers: Think someone installed a rogue AP. AND Try to connect to the MyWiFi network.</strong><br>A generic name like `MyWiFi` inside a corporate zone often indicates a Rogue AP (installed by an employee). Attackers target these because they often bypass corporate security configurations."
+            },
+            {
+                id: 26,
+                text: "Sana receives unsolicited images on her phone promoting a product when she walks by a store. This is akin to what type of attack?",
+                options: [
+                    "Bluespaming",
+                    "Bluejacking",
+                    "Bluetooth injection",
+                    "Bluesnarfing"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: Bluejacking</strong><br>Bluejacking sends unsolicited messages (text, images, sounds) to Bluetooth devices. Unlike Bluesnarfing, it does not steal data."
+            },
+            {
+                id: 27,
+                text: "What are the risks associated with using the PIN printed on the sticker of some wireless routers? (Select two)",
+                options: [
+                    "If the user enters the PIN incorrectly, the wireless router will need a factory reset.",
+                    "If a threat actor gains physical access to the device, they will be able to connect.",
+                    "Using the PIN means an attacker can possibly crack it in four hours or less.",
+                    "The PIN is weak and represents the factory setting password to configure the router.",
+                    "If the sticker detaches and is lost, a factory reset will lock the user out of the WR."
+                ],
+                correct: [1, 2],
+                explanation: "<strong>Correct Answers: If a threat actor gains physical access... AND Using the PIN means an attacker can possibly crack it in four hours or less.</strong><br>Physical access reveals the PIN. Furthermore, because the PIN is validated in two parts, the keyspace is small (11,000 possibilities), allowing a brute-force attack in under 4 hours."
+            },
+            {
+                id: 28,
+                text: "How does AES-CCMP help secure wireless networks? (Select two)",
+                options: [
+                    "The use of CCM with AES provides data integrity.",
+                    "The CBC-MAC component of CCMP provides privacy and authentication.",
+                    "The CBC-MAC component of CCMP provides data integrity and authentication.",
+                    "The use of CCM with AES provides data privacy.",
+                    "The use of CCM with AES provides authentication and authorization."
+                ],
+                correct: [2, 3],
+                explanation: "<strong>Correct Answers: The CBC-MAC component of CCMP provides data integrity and authentication. AND The use of CCM with AES provides data privacy.</strong><br>CCMP uses CCM (Counter Mode) with AES for encryption (privacy) and CBC-MAC (Cipher Block Chaining Message Authentication Code) for integrity and authentication."
+            },
+            {
+                id: 29,
+                text: "A high school IT instructor suspects learners are launching attacks to prevent others from connecting to the wireless network. What are they doing?",
+                options: [
+                    "They are spoofing certain types of management frames.",
+                    "They are continually sending CTS frames.",
+                    "They are tampering with the shared secret key.",
+                    "They are generating strong jamming signals.",
+                    "They are temporarily modifying the initialization vector."
+                ],
+                correct: 0,
+                explanation: "<strong>Correct Answer: They are spoofing certain types of management frames.</strong><br>This describes a **disassociation attack**. Attackers create false deauthentication or disassociation management frames appearing to come from the client or AP, forcing the connection to drop."
+            },
+            {
+                id: 30,
+                text: "You are asked to implement MAC address filtering at a small company. Which of the following represents the way in which you are most likely to apply the requirement?",
+                options: [
+                    "Enable dynamic MAC address filtering for automatic discovery.",
+                    "Specify MAC addresses whose values fall within a defined range.",
+                    "Specify MAC addresses that are allowed to connect.",
+                    "Specify MAC addresses that are not allowed to connect."
+                ],
+                correct: 2,
+                explanation: "<strong>Correct Answer: Specify MAC addresses that are allowed to connect.</strong><br>MAC address filtering is usually implemented by explicitly specifying the MAC addresses of devices that are allowed to connect."
+            },
+            {
+                id: 31,
+                text: "Jovanni opens an ice cream and pastry shop with internet access. As you enter the establishment, there is a sign that reads, 'Wi-Fi Access with Automatic Encryption, no VPN Required.' Which of the following best explains how Jovanni can justify posting such a sign?",
+                options: [
+                    "The wireless router supports WPA3 with PMF.",
+                    "The wireless router supports WPA3 with EAP.",
+                    "The wireless router supports WPA3 with SAE.",
+                    "Jovanni will supply a unique password to every user.",
+                    "The wireless router supports WPA3 with OWE."
+                ],
+                correct: 4,
+                explanation: "<strong>Correct Answer: The wireless router supports WPA3 with OWE.</strong><br>When using an open or public Wi-Fi network, WPA3 will apply individualized data encryption so that every connection between a client and an AP/wireless router will be encrypted with a unique key. Known as Opportunistic Wireless Encryption (OWE)."
+            },
+            {
+                id: 32,
+                text: "You are walking around a long, rectangular one-story building performing a site survey. You observe that too much of the wireless signal is leaking. Which of the following is most likely to mitigate the situation?",
+                options: [
+                    "Use antennas with a lower power rating.",
+                    "Reduce the channel width on the access point.",
+                    "Turn the power level down a notch.",
+                    "Reduce the frequency band on the access point."
+                ],
+                correct: 2,
+                explanation: "<strong>Correct Answer: Turn the power level down a notch.</strong><br>A security feature on some APs is the ability to adjust the level of power at which the wireless LAN (WLAN) transmits."
+            },
+            {
+                id: 33,
+                text: "A builder is constructing an edifice for a company. The builder works with the company's networking team to design and install a wireless network. Which of the following represents considerations the networking team is most likely to factor into the design and implementation process? Select two.",
+                options: [
+                    "Place APs under a raised floor to help prevent theft and tampering.",
+                    "Perform a site survey to ensure coverage is adequate.",
+                    "Minimize the wireless signal strength outside of the building.",
+                    "Configure overlapping channels to operate on different frequencies to prevent interference.",
+                    "Use a Wi-Fi analyzer before starting the installation to ensure proper coverage."
+                ],
+                correct: [1, 2],
+                explanation: "<strong>Correct Answers: Perform a site survey to ensure coverage is adequate. AND Minimize the wireless signal strength outside of the building.</strong><br>A site survey helps to visualize the essential details of the wireless network. For security reasons, a minimum amount of wireless signal should 'bleed' outside the walls of the building."
+            },
+            {
+                id: 34,
+                text: "A threat actor is planning on crafting multiple wireless frames with the intent of having the receiving stations store a value of 65536 (2 raised to the 16th power) in their NAV field. If successful, what will the effect be?",
+                options: [
+                    "A successful wireless denial attack",
+                    "A successful disassociation attack",
+                    "The attacker will be able to probe TCP port 65536.",
+                    "The attempt will be unsuccessful.",
+                    "This will allow the attacker to inject malware."
+                ],
+                correct: 3,
+                explanation: "<strong>Correct Answer: The attempt will be unsuccessful.</strong><br>The attempt will be unsuccessful because the maximum value of the duration field in the RTS frame is 32767 (not 65536)."
+            },
+            {
+                id: 35,
+                text: "The owner of a small bookkeeping office with two employees wants to control access to their wireless network. Which of the following, whether a best practice or not, are you most likely to implement to slightly deter malicious actors who are not well versed in breaching wireless networks? Select two.",
+                options: [
+                    "Disabling the SSID broadcast beacon",
+                    "MAC address filtering",
+                    "IP address and MAC address filtering",
+                    "Layer 3 address filtering"
+                ],
+                correct: [0, 1],
+                explanation: "<strong>Correct Answers: Disabling the SSID broadcast beacon AND MAC address filtering</strong><br>Although normally the SSID is broadcast, it can be restricted. MAC address filtering is the means of access control. Both can serve as a very mild deterrent."
+            },
+            {
+                id: 36,
+                text: "A warehouse clerk uses a handheld barcode scanner to take inventory. Periodically, the clerk takes the scanner to a transfer station and downloads the data from the scanner using NFC technology. The scanner and transfer station connection use a pairing configuration so that one device can only transmit and the other can only receive. What is the benefit of this type of connection?",
+                options: [
+                    "Requires a password",
+                    "Mitigates MITM attacks",
+                    "Prevents eavesdropping",
+                    "Increases data transfer rates"
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: Mitigates MITM attacks</strong><br>With near field communications (NFC), when devices are configured in pairing, one device can only send while the other can only receive. This helps prevent man-in-the-middle (MITM) attacks."
+            },
+            {
+                id: 37,
+                text: "Which one of the following standards provides some level of protection against the fact that there is implicit trust of management frames transmitted across the wireless network?",
+                options: [
+                    "802.11a",
+                    "802.11wx",
+                    "802.11ac",
+                    "802.11ax",
+                    "802.11w"
+                ],
+                correct: 4,
+                explanation: "<strong>Correct Answer: 802.11w</strong><br>The amendment IEEE 802.11w was designed to protect against disassociation attacks, which is possible because of the implicit trust of management frames."
+            },
+            {
+                id: 38,
+                text: "Your company claims they installed APs between 50 and 60 feet apart. However, as you walk around you notice what appears to be APs that are placed only 25 to 30 feet apart. Which of the following is likely to be the most logical explanation?",
+                options: [
+                    "The company installed additional APs for failover purposes.",
+                    "Wireless surveillance cameras have been installed between the APs.",
+                    "Dedicated probes have been installed between the APs.",
+                    "The additional APs are connected to an alternate power source for redundancy."
+                ],
+                correct: 2,
+                explanation: "<strong>Correct Answer: Dedicated probes have been installed between the APs.</strong><br>A dedicated probe is designed to exclusively monitor the RF for transmissions. Dedicated probes look much like standard access points."
+            },
+            {
+                id: 39,
+                text: "An attacker sits in a company lobby claiming he is waiting to meet someone who works there but arrived early. In the meantime, the attacker pulls out a laptop and, to his delight, can successfully intercept and read data from a wireless network. Which of the following best describes a potential vulnerability the attacker exploited? Select three.",
+                options: [
+                    "The access point may have been misconfigured.",
+                    "Someone may have set up a rogue AP.",
+                    "The AP was not using MAC address filtering.",
+                    "The NAV in the management frames were not encrypted.",
+                    "The wireless network was open.",
+                    "The attacker successfully modified the duration field values."
+                ],
+                correct: [0, 1, 4],
+                explanation: "<strong>Correct Answers: The access point may have been misconfigured. OR Someone may have set up a rogue AP. OR The wireless network was open.</strong><br>An attacker can pick up the RF signal from an open or misconfigured AP and read any confidential wireless transmissions."
+            },
+            {
+                id: 40,
+                text: "A consumer is using a wireless router that is three years old. They notice their Internet speed has been slowly degrading over the last week. Upon investigation, it is discovered their system was set up as a file server from which movies could be downloaded. Which of the following best represents an action that could have prevented this breach?",
+                options: [
+                    "Ensured the router was secured and properly configured",
+                    "Replaced the router every two years to benefit from the latest security protocols",
+                    "Updated the firmware on the router to ensure all known vulnerabilities have been patched",
+                    "Used a stronger password to prevent unauthorized access"
+                ],
+                correct: 0,
+                explanation: "<strong>Correct Answer: Ensured the router was secured and properly configured</strong><br>An unsecured or improperly configured wireless router could result in stolen data, malware injection, reading wireless transmission, or the downloading of harmful content."
+            },
+            {
+                id: 41,
+                text: "A company recently had a wireless breach due to an oversight, so they are focused on ensuring all employees, including members of the information technology (IT) department, are trained to the degree appropriate for their role. What major areas should be addressed? Select three.",
+                options: [
+                    "Ensure WEP is using a strong and secure IV.",
+                    "Ensure passive devices are properly shielded.",
+                    "Ensure protections are not overlooked.",
+                    "Ensure Bluetooth observers do not assume a broadcaster posture.",
+                    "Ensure devices are properly configured.",
+                    "Emphasize the importance of security."
+                ],
+                correct: [2, 4, 5],
+                explanation: "<strong>Correct Answers: Ensure protections are not overlooked. AND Ensure devices are properly configured. AND Emphasize the importance of security.</strong><br>Often protections are overlooked or are misconfigured, or users are not aware of their importance."
+            },
+            {
+                id: 42,
+                text: "Gazi is sitting at an airport terminal with his laptop. He connects to the wireless network and sends email messages to his contacts to provide updates on his vacation. Within a couple of days, his contacts are receiving a great deal of spam. Which of the following best describes how Gazi's system may have been compromised?",
+                options: [
+                    "A disassociation attack redirected his computer to a rogue wireless network.",
+                    "Gazi connected to an evil twin.",
+                    "Operating system patches were missing.",
+                    "The anti-malware software was not up to date."
+                ],
+                correct: 1,
+                explanation: "<strong>Correct Answer: Gazi connected to an evil twin.</strong><br>An evil twin is an AP that is set up by an attacker. This AP is designed to mimic an authorized AP, so a user's mobile device will unknowingly connect to this evil twin instead."
+            },
+            {
+                id: 43,
+                text: "From a network security perspective, which of the following statements best describes the notion of hard edges and blurred edges? Select two.",
+                options: [
+                    "Blurred edges have multiple entry points into the network.",
+                    "Hard edges are typically made up of two components.",
+                    "Hard edges include the edge router, walls, and wireless signals.",
+                    "Blurred edges relate to the blending of wired, wireless, and cellular networks."
+                ],
+                correct: [0, 1],
+                explanation: "<strong>Correct Answers: Blurred edges have multiple entry points into the network. AND Hard edges are typically made up of two components.</strong><br>Blurred edges have multiple entry points. Hard edges include the single or limited number of entry points of a wired network and the walls of the building."
+            },
+            {
+                id: 44,
+                text: "Tomi owned 34 percent of a business while Jeriko owned 66 percent in a partnership. They had a fallout because Jeriko was engaging in unethical practices. Unfortunately, Jeriko used a wireless connection from his cell phone to acquire business data from Tomi's phone before parting ways. Which of the following best describes this type of attack and/or how it could be prevented? Select two.",
+                options: [
+                    "Turning off the RFID radio",
+                    "Bluesnarfing",
+                    "Turning off Bluetooth",
+                    "NFC data exfiltration",
+                    "Bluejacking"
+                ],
+                correct: [1, 2],
+                explanation: "<strong>Correct Answers: Bluesnarfing AND Turning off Bluetooth</strong><br>Bluesnarfing is an attack that accesses unauthorized information from a wireless device through a Bluetooth connection. One way to mitigate bluesnarfing is by turning off Bluetooth when not needed."
+            },
+            {
+                id: 45,
+                text: "A store selling athletic shoes tags their assets using RFID technology. A threat actor goes into a store and engages in a nefarious activity such that athletic shoes listed for $250 ring up at the cash register as only costing $50. What type of attack did the threat actor engage in?",
+                options: [
+                    "RFID spoofing",
+                    "MITM",
+                    "Fake tags",
+                    "Unauthorized tag access",
+                    "RFID cloning"
+                ],
+                correct: 4,
+                explanation: "<strong>Correct Answer: RFID cloning</strong><br>In radio-frequency identification (RFID) cloning, an attacker can capture data and then use it in a nefarious manner."
+            }
+        ];
+
+        // Quiz Logic
+        const quizContainer = document.getElementById('quiz-container');
+
+        function renderQuiz() {
+            quizQuestions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.classList.add('question-card');
+
+                let optionsHtml = '';
+                q.options.forEach((option, i) => {
+                    optionsHtml += `<button class="option-btn" onclick="handleAnswer(${index}, ${i}, this)">${option}</button>`;
+                });
+
+                questionCard.innerHTML = `
+                    <span class="question-number">Question ${index + 1}</span>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options-grid">
+                        ${optionsHtml}
+                    </div>
+                    <div class="explanation" id="explanation-${index}">
+                        ${q.explanation}
+                    </div>
+                `;
+
+                quizContainer.appendChild(questionCard);
+            });
+        }
+
+        function handleAnswer(questionIndex, optionIndex, btnElement) {
+            const question = quizQuestions[questionIndex];
+            const explanationElement = document.getElementById(`explanation-${questionIndex}`);
+            const allOptions = btnElement.parentElement.children;
+
+            // Disable all options
+            for (let btn of allOptions) {
+                btn.classList.add('disabled');
+            }
+
+            // Check if multiple correct answers (array) or single (number)
+            let isCorrect = false;
+            if (Array.isArray(question.correct)) {
+                // For multi-select, this logic is simplified for the single-click demo. 
+                // In a real multi-select, we'd wait for submit. 
+                // Here we assume if the clicked option is IN the correct array, it's "correct" for feedback purposes,
+                // but strictly speaking, this UI is single-choice style.
+                // However, the provided questions have "Select two" etc.
+                // To support that properly requires a different UI (checkboxes + submit).
+                // Given the current UI is buttons, we'll treat it as: if you click ONE of the correct answers, it shows green.
+                // If you click a wrong one, it shows red.
+                if (question.correct.includes(optionIndex)) {
+                    btnElement.classList.add('correct');
+                    isCorrect = true;
+                } else {
+                    btnElement.classList.add('incorrect');
+                    // Highlight all correct answers
+                    question.correct.forEach(correctIndex => {
+                        allOptions[correctIndex].classList.add('correct');
+                    });
+                }
+            } else {
+                // Single choice
+                if (optionIndex === question.correct) {
+                    btnElement.classList.add('correct');
+                    isCorrect = true;
+                } else {
+                    btnElement.classList.add('incorrect');
+                    allOptions[question.correct].classList.add('correct');
+                }
+            }
+
+            // Show explanation
+            explanationElement.style.display = 'block';
+        }
+
+        // Initialize Quiz
+        renderQuiz();
+    </script>
+</body>
+
+</html>

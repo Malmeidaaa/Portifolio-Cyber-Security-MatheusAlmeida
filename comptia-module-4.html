@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: Advanced Cryptography - Matheus Almeida</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            color: var(--highlight);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option-btn {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: left;
+            color: var(--text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background: #1f2428;
+            color: var(--text-main);
+        }
+
+        .option-btn.correct {
+            background: rgba(35, 134, 54, 0.2);
+            border-color: var(--accent);
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background: rgba(218, 54, 51, 0.2);
+            border-color: var(--danger);
+            color: #f85149;
+        }
+
+        .option-btn.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .explanation {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(88, 166, 255, 0.1);
+            border-left: 4px solid var(--highlight);
+            border-radius: 4px;
+            display: none;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 4: Advanced Cryptography: Digital Certificates, PKI, and Secure Protocols</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
+
+        <!-- Section I -->
+        <section class="module-section">
+            <h2>I. Introduction and Foundations of Cryptography</h2>
+            <p>Cryptography is crucial for data protection. Although most end-users only utilize what occurs by default,
+                encrypting and decrypting data is considered essential, and often required by regulations for
+                enterprises. Corporate cryptography involves high complexity, especially concerning key management
+                (e.g., how to retrieve Alice's encrypted data if she is suddenly ill?).</p>
+
+            <p>The objectives of Module 4, Advanced Cryptography, are to:</p>
+            <ol>
+                <li>Define digital certificates.</li>
+                <li>Describe the components of Public Key Infrastructure (PKI).</li>
+                <li>List the secure communication and transport protocols.</li>
+                <li>Explain how to implement cryptography.</li>
+            </ol>
+
+            <h3>The #TrendingCyber Scenario: The Strength of Cryptography</h3>
+            <p>The strength of cryptographic security is exemplified by a user ("The Guy" or TG) who forgot the key to
+                his Bitcoin wallet, worth over $300,000. TG had stored the password to his Bitcoin wallet in a
+                password-protected zip file but forgot the zip password, forcing him to seek help to break the file
+                encryption.</p>
+            <p>Mike S., a security professional, and his colleague Nash were hired to crack the zip encryption. Mike
+                knew he <strong>could not break into the Bitcoin wallet itself, as it is too well protected by
+                    cryptography</strong>. However, TG used zip's proprietary encryption algorithm instead of the widely
+                used Advanced Encryption Standard (AES). Using the time stamp from TG's old laptop, Mike could narrow
+                down the search space from 10 sextillion (1 followed by 21 zeros) down to "only" 10 quintillion (1
+                followed by 18 zeros).</p>
+            <p>Mike and Nash used a network of personal computers with Graphics Processing Units (GPUs) to accelerate
+                the attack. Although they initially failed after 10 days, correcting an error in the GPU processing
+                allowed them to find the correct key within one day. Since then, Mike has received numerous requests,
+                including one concerning $4 million in Bitcoin, although he stated breaking the Bitcoin wallet directly
+                is exceedingly difficult.</p>
+
+            <h3>Core Pillars of Data Protection (The CIA Triad)</h3>
+            <p>Using appropriate cryptographic solutions is fundamental to modern security. Cryptography provides the
+                essential tools to achieve the following goals, often referred to as the "CIA Triad":</p>
+
+            <table>
+                <tr>
+                    <th>Pillar</th>
+                    <th>Security Goal</th>
+                    <th>Explanation and Primary Tool</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>Confidentiality (Secrecy)</strong> 🤫</td>
+                    <td>Keeping information secret from unauthorized parties.</td>
+                    <td><strong>Encryption</strong> scrambles plaintext into unreadable ciphertext. Only someone with
+                        the correct key can unscramble it.</td>
+                    <td>Encryption (like TLS/SSL) protects credit card information sent to an online store from hackers
+                        who intercept the data.</td>
+                </tr>
+                <tr>
+                    <td><strong>Integrity (Trustworthiness)</strong> ✅</td>
+                    <td>Ensuring data has not been altered or tampered with in transit.</td>
+                    <td><strong>Hashing algorithms</strong> (like SHA-256) create a unique, fixed-size "fingerprint" of
+                        the data. Any change in data instantly changes the hash.</td>
+                    <td>Calculating the hash value of a downloaded software file to ensure it is the authentic,
+                        unaltered version.</td>
+                </tr>
+                <tr>
+                    <td><strong>Authentication & Non-Repudiation (Proof of Origin)</strong> ✍</td>
+                    <td>Verification of the sender’s identity (Authentication) and proof that the sender truly sent the
+                        message, preventing later denial (Non-Repudiation).</td>
+                    <td><strong>Digital signatures</strong> utilize asymmetric cryptography to accomplish this.</td>
+                    <td>A digital signature on an email or contract verifies the sender and confirms the content has not
+                        been changed since signing.</td>
+                </tr>
+            </table>
+
+            <h3>The Importance of Using Appropriate Cryptographic Solutions</h3>
+            <p>Simply using cryptography is insufficient; the solution must be <strong>appropriate for the
+                    task</strong>.</p>
+            <ol>
+                <li><strong>Right Tool for the Job:</strong> You must use the correct tool for the specific objective.
+                    Encryption should be used for secrecy, hashing for integrity, and digital signatures for
+                    authenticity. Hashing algorithms are one-way processes and cannot be used for confidentiality, as
+                    the original data cannot be recovered.</li>
+                <li><strong>Strength vs. Performance:</strong> The cryptographic strength must align with the data
+                    sensitivity and device capabilities. Using weak, outdated encryption (like DES) for financial
+                    records is dangerously insecure, while using military-grade encryption on a low-power smart
+                    lightbulb would be slow and drain resources.</li>
+                <li><strong>Correct Implementation:</strong> A strong cryptographic algorithm can be rendered useless by
+                    poor implementation, such as using predictable keys or insecure modes of operation. Security experts
+                    advise: "Don't roll your own crypto".</li>
+            </ol>
+
+            <h3>Applying Security Techniques to a Scenario</h3>
+            <p>The following table demonstrates common security techniques applied to protect a small law firm ("Legal
+                Eagles LLC") using a <strong>defense-in-depth</strong> strategy, which involves multiple layers of
+                security:</p>
+
+            <table>
+                <tr>
+                    <th>Layer of Security</th>
+                    <th>Technique Applied</th>
+                    <th>Protection Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Network Security</strong></td>
+                    <td>Firewall</td>
+                    <td>Installed as the first line of defense; configured to block all unsolicited incoming traffic,
+                        preventing automated attacks.</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Network Segmentation</td>
+                    <td>Wi-Fi is separated into <strong>Corporate Wi-Fi</strong> (encrypted with WPA3 for employee
+                        devices) and a separate, isolated <strong>Guest Wi-Fi</strong> for clients.</td>
+                </tr>
+                <tr>
+                    <td><strong>Endpoint Security</strong></td>
+                    <td>Anti-Malware Software</td>
+                    <td>Installed on all workstations and the server to detect and block malicious software like viruses
+                        and ransomware.</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Full-Disk Encryption</td>
+                    <td>Hard drives (laptops and server) are encrypted (e.g., BitLocker/FileVault). If a laptop is
+                        stolen, the thief cannot access client files without the key.</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Patch Management</td>
+                    <td>A policy ensures all operating systems and applications are updated regularly to patch known
+                        security vulnerabilities.</td>
+                </tr>
+                <tr>
+                    <td><strong>Access Control and Identity Management</strong></td>
+                    <td>Principle of Least Privilege</td>
+                    <td>Employees are granted access only to the specific case files they are actively working on,
+                        minimizing the impact of a compromised account.</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Strong Passwords & Multi-Factor Authentication (MFA)</td>
+                    <td>Enforces a strong password policy, and <strong>MFA is required</strong> for cloud email and
+                        remote server access, preventing access with a stolen password alone.</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Protection and Recovery</strong></td>
+                    <td>Regular Backups</td>
+                    <td>Implements a <strong>3-2-1 backup strategy</strong> (3 copies, 2 different media types, 1 stored
+                        off-site) to protect against data loss or ransomware.</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Security Awareness Training</td>
+                    <td>Mandatory training for all employees on how to spot phishing and avoid suspicious downloads,
+                        turning staff into a "human firewall".</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Section II -->
+        <section class="module-section">
+            <h2>II. Digital Certificates</h2>
+            <p>Digital certificates are one of the most common applications of public key cryptography.</p>
+
+            <h3>Defining Digital Certificates</h3>
+            <p>Asymmetric cryptography uses public and private keys; the public key is shared, and the private key is
+                confidential. While asymmetric cryptography protects <strong>confidentiality</strong>, determining the
+                sender's true identity is challenging. A digital signature, created by encrypting a hash digest with the
+                private key, provides a degree of proof by verifying the <strong>owner of the private key</strong>.
+                However, this is vulnerable to an imposter attack.</p>
+
+            <p><strong>The Imposter Public Key Problem:</strong><br>
+                Mallory could intercept a message from Bob, create her own set of keys using Bob’s identity, and send a
+                new message with her imposter digital signature. Alice would retrieve Mallory's imposter public key,
+                believing it belongs to Bob, and be tricked.</p>
+
+            <p><strong>The Solution:</strong><br>
+                The solution requires a <strong>trusted third party</strong> (similar to a government issuing a
+                passport) to verify Bob's identity.</p>
+
+            <p>A <strong>digital certificate</strong> is the technology used to <strong>associate a user’s identity to a
+                    public key</strong> and has been <strong>digitally signed by a trusted third party</strong>. This
+                third party verifies the owner and confirms the public key belongs to that owner.</p>
+
+            <p>A digital certificate is essentially a <strong>verified container for a public key</strong>. It typically
+                contains the owner's name/alias, the owner's public key, the name and digital signature of the issuer,
+                the serial number, and the expiration date. Digital certificates can authenticate users, websites,
+                organizations, devices, servers, emails, and applications.</p>
+
+            <h3>Managing Digital Certificates</h3>
+            <p>Effective management involves Certificate Authorities (CAs) and tools for controlling the certificate
+                lifecycle.</p>
+
+            <h4>Certificate Authorities (CAs)</h4>
+            <p>The formal process for obtaining a digital certificate is known as <strong>Certificate Signing Request
+                    (CSR) generation</strong>.</p>
+            <ol>
+                <li>The user first generates their public and private keys.</li>
+                <li>The user completes a request (CSR) with necessary information (name, email) and electronically signs
+                    it by affixing their public key.</li>
+                <li>The request is sent to a <strong>Registration Authority (RA)</strong>, which is responsible for
+                    <strong>verifying the credentials and authenticity of the applicant</strong>.
+                </li>
+                <li>Once verified, the request is transferred to an <strong>Intermediate Certificate Authority
+                        (Intermediate CA)</strong>. Intermediate CAs are subordinate entities that process requests and
+                    issue digital certificates on behalf of the main <strong>Certificate Authority (CA)</strong>, which
+                    is the party responsible for the certificates.</li>
+            </ol>
+
+            <p><strong>Table 4-1 Digital Certificate Elements</strong> compares the process to obtaining a car title:
+            </p>
+            <table>
+                <tr>
+                    <th>Car title scenario</th>
+                    <th>Digital certificate element</th>
+                    <th>Explanation</th>
+                </tr>
+                <tr>
+                    <td>Car title application</td>
+                    <td>Certificate signing request (CSR) generation</td>
+                    <td>Formal request for digital certificate</td>
+                </tr>
+                <tr>
+                    <td>Sign car title application</td>
+                    <td>Create and affix public key to certificate</td>
+                    <td>Added to digital certificate for security</td>
+                </tr>
+                <tr>
+                    <td>Visit county courthouse</td>
+                    <td>Intermediate certificate authority</td>
+                    <td>Party that can process CSR on behalf of CA</td>
+                </tr>
+                <tr>
+                    <td>Title sent from state DMV</td>
+                    <td>Certificate authority (CA)</td>
+                    <td>Party responsible for digital certificates</td>
+                </tr>
+            </table>
+
+            <p><strong>Applicant Authentication Methods</strong> used by the RA include:</p>
+            <ul>
+                <li><strong>Email:</strong> The simplest form, sufficient for basic email communication, but
+                    insufficient for higher security verifications.</li>
+                <li><strong>Documents:</strong> Requiring specific documentation such as a birth certificate or an
+                    employee badge with a photograph.</li>
+                <li><strong>In person:</strong> Requiring the applicant to apply in person and provide a
+                    government-issued passport or driver’s license to prove existence and identity.</li>
+            </ul>
+
+            <h4>Certificate Management and Revocation</h4>
+            <p>Strong certificate management includes a <strong>Certificate Repository (CR)</strong> and methods for
+                revocation. A <strong>CR</strong> is a publicly accessible centralized directory of digital certificates
+                used to view the status of a certificate.</p>
+            <p>Digital certificates can be revoked before their expiration date for benign reasons (e.g., details
+                changed) or dangerous circumstances (e.g., theft of a private key or theft of digital certificates from
+                a CA). CAs must publish lists of revoked certificates in a timely fashion.</p>
+
+            <p>Two means exist to check the revocation status:</p>
+            <ol>
+                <li><strong>Certificate Revocation List (CRL):</strong> A list of certificate serial numbers that have
+                    been revoked. Many CAs maintain an online CRL, and local devices maintain a local CRL updated via OS
+                    or browser software.</li>
+                <li><strong>Online Certificate Status Protocol (OCSP):</strong> A "request-response" protocol that
+                    performs a <strong>real-time lookup</strong> of a certificate’s status. The web browser sends
+                    information to a trusted entity, the <strong>OCSP Responder</strong>, which provides immediate
+                    revocation information.</li>
+            </ol>
+
+            <p>A variation is <strong>OCSP stapling</strong>. To avoid high traffic volume from real-time lookups by
+                every client, web servers send queries to the OCSP Responder at regular intervals to receive a signed,
+                time-stamped response. During the client handshake, the server <strong>includes (staples)</strong> this
+                previously received OCSP response, which the browser evaluates.</p>
+
+            <p><strong>Table 4-2 Web Browser Certificate Revocation Procedures</strong></p>
+            <table>
+                <tr>
+                    <th>Browser</th>
+                    <th>Procedure name</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Google Chrome</strong></td>
+                    <td>CRLSet</td>
+                    <td>A list of revoked certificates determined by searching CRLs, pushed to the browser as a software
+                        update.</td>
+                </tr>
+                <tr>
+                    <td><strong>Mozilla Firefox</strong></td>
+                    <td>OneCRL</td>
+                    <td>A list of intermediate certificates revoked by CAs, pushed to Firefox in application updates;
+                        the browser can also be configured to query OCSP responders.</td>
+                </tr>
+                <tr>
+                    <td><strong>Apple Safari</strong></td>
+                    <td>No name</td>
+                    <td>Apple collects revoked certificates from CAs that are periodically retrieved; Safari performs an
+                        OCSP check to confirm revocation when requested.</td>
+                </tr>
+                <tr>
+                    <td><strong>Microsoft Edge</strong></td>
+                    <td>CRLSet</td>
+                    <td>The Windows OS checks for server certificate revocation, and Edge relies on this listing.</td>
+                </tr>
+            </table>
+
+            <h3>Types of Digital Certificates</h3>
+            <p>Digital certificates are grouped into root certificates, domain certificates, and hardware and software
+                certificates.</p>
+
+            <h4>1. Root Digital Certificates and Certificate Chaining</h4>
+            <p>Digital certificate verification and organization rely on <strong>certificate chaining</strong>. This
+                creates a path between the few trusted "root" CAs and the many intermediate CAs. Trust is traced back to
+                the highest level of CA, known as the <strong>root of trust</strong>.</p>
+            <ul>
+                <li><strong>Root Digital Certificate:</strong> The beginning point of the chain. It is created and
+                    verified by a CA and is <strong>self-signed</strong> because it does not rely on any higher-level
+                    authority for authentication.</li>
+                <li><strong>Intermediate Certificates:</strong> Issued by Intermediate CAs, these link the root
+                    certificate to the <strong>user digital certificate</strong>, which is the endpoint of the chain.
+                </li>
+            </ul>
+
+            <p>Approved root digital certificates and intermediate certificates are distributed in three primary ways:
+            </p>
+            <ol>
+                <li>Through updates to the Operating System (OS).</li>
+                <li>Through updates to the web browser.</li>
+                <li>Through <strong>pinning</strong>, where the digital certificate is hard-coded (pinned) within the
+                    application or program using it.</li>
+            </ol>
+
+            <p><strong>Root CA Security:</strong> Protecting the integrity of the root CA is essential because a breach
+                could taint all intermediate CAs and issued certificates. A common method is to keep the root CA
+                <strong>offline</strong> (offline CA) and powered down, only bringing it online for specific, infrequent
+                tasks like issuing certificates that authorize intermediate CAs.
+            </p>
+
+            <h4>2. Domain Digital Certificates</h4>
+            <p>Most digital certificates are <strong>web server digital certificates</strong>. They serve two primary
+                functions: ensuring the web server's authenticity to the client and ensuring the authenticity of the
+                cryptographic connection.</p>
+
+            <p>The secure connection is established through a <strong>key exchange</strong> (or handshake).</p>
+            <ol>
+                <li>The browser sends a <code>ClientHello</code> message listing supported cryptographic algorithms.
+                </li>
+                <li>The server responds with a <code>ServerHello</code>, indicating the chosen algorithm and sending its
+                    digital certificate.</li>
+                <li>The browser verifies the certificate, extracts the server's public key, generates a random value
+                    (the <em>pre-master secret</em>), encrypts it with the public key, and sends it back
+                    (<code>ClientKeyExchange</code>).</li>
+                <li>The server decrypts the message to obtain the <em>pre-master secret</em>. Both the server and
+                    browser then create the identical <strong>master secret</strong>, which is used to generate
+                    <strong>session keys</strong> (symmetric keys) for encrypting and decrypting information exchanged
+                    during the session.
+                </li>
+            </ol>
+
+            <p>Types of Domain Digital Certificates:</p>
+            <ul>
+                <li><strong>Domain Validation (DV):</strong> Entry-level certificates that authenticate that an
+                    organization has the right to use a specific domain name, usually by verifying control over the
+                    domain. They indicate nothing about the trustworthiness of the individuals behind the site.</li>
+                <li><strong>Extended Validation (EV):</strong> Requires more extensive verification of the legitimacy of
+                    the business by the Intermediate CA. This includes verifying the legal existence, physical address,
+                    and operational presence of the website owner.</li>
+                <li><strong>Wildcard Digital Certificate:</strong> Used to validate a main domain along with <strong>all
+                        subdomains</strong> (e.g., <code>*.example.com</code> covers <code>www.example.com</code> and
+                    <code>mail.example.com</code>).
+                </li>
+                <li><strong>Subject Alternative Name (SAN):</strong> Addresses the limitation of wildcard certificates
+                    by allowing different values (additional host names, common names) to be associated with a single
+                    certificate. A SAN certificate also permits covering <strong>multiple IP addresses</strong>.</li>
+            </ul>
+
+            <h4>3. Hardware and Software Digital Certificates</h4>
+            <ul>
+                <li><strong>Machine/Computer Digital Certificate:</strong> Used to verify the identity of a device
+                    (e.g., a printer) in a network transaction. Many network devices can create their own self-signed
+                    machine digital certificates.</li>
+                <li><strong>Code Signing Digital Certificate:</strong> Used by software developers to digitally sign a
+                    program, proving the software comes from the signed entity and has not been altered.</li>
+                <li><strong>Email Digital Certificate:</strong> Allows a user to digitally sign and encrypt email
+                    messages. They can also authenticate the authors of documents like Microsoft Word or Adobe PDF
+                    files.</li>
+            </ul>
+
+            <h4>Digital Certificate Attributes and Formats</h4>
+            <p>The standard format for digital certificates is <strong>X.509 Version 3</strong>. X.509 certificates
+                contain several required attributes used for secure connection negotiation:</p>
+            <ul>
+                <li>Certificate validity period.</li>
+                <li>End-host identity information.</li>
+                <li>Encryption keys that will be used.</li>
+                <li>Signature of the issuing CA.</li>
+                <li><strong>Common Name (CN):</strong> The name of the device protected by the certificate (e.g.,
+                    <code>www.example.com</code> or <code>*.example.com</code>).
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section III -->
+        <section class="module-section">
+            <h2>III. Public Key Infrastructure (PKI)</h2>
+            <p>PKI addresses the challenge of managing digital certificates and asymmetric cryptography "at scale"
+                (e.g., in an enterprise with thousands of users).</p>
+
+            <h3>What Is Public Key Infrastructure (PKI)?</h3>
+            <p><strong>Public Key Infrastructure (PKI)</strong> is the underlying infrastructure that serves as a
+                <strong>key management system</strong> for controlling public keys, private keys, and digital
+                certificates across large user populations.
+            </p>
+            <p>PKI is defined as the set of software, hardware, processes, procedures, and policies needed to
+                <strong>create, manage, distribute, use, store, and revoke digital certificates</strong>. The goal of
+                PKI is to establish the identity of people, devices, and services to control access, protect data, and
+                provide accountability. PKI is digital certificate management at scale.
+            </p>
+
+            <h3>Trust Models</h3>
+            <p>Trust, defined as reliance on another person or entity, is a principal foundation of PKI. A trust model
+                defines the type of relationship that exists.</p>
+            <ol>
+                <li><strong>Direct Trust:</strong> A relationship between two individuals because one knows the other.
+                </li>
+                <li><strong>Third-party Trust:</strong> Individuals trust each other because they both trust a common
+                    third party (e.g., trusting a judge in a courtroom; or trusting a CA in PKI).</li>
+                <li><strong>Web of Trust:</strong> A less secure model based on direct trust where users sign and
+                    exchange certificates with all other users, relying on mutual trust.</li>
+            </ol>
+
+            <p>PKI models using a CA:</p>
+            <table>
+                <tr>
+                    <th>PKI Trust Model</th>
+                    <th>Description</th>
+                    <th>Limitations and Benefits</th>
+                </tr>
+                <tr>
+                    <td><strong>Hierarchical Trust Model</strong></td>
+                    <td>Assigns a single hierarchy with one master CA, called the <strong>root</strong>, which signs all
+                        digital certificate authorities with a single key.</td>
+                    <td><strong>Limitation:</strong> High risk; if the root's single private key is compromised, all
+                        digital certificates become worthless. Can create a significant backlog.</td>
+                </tr>
+                <tr>
+                    <td><strong>Distributed Trust Model</strong></td>
+                    <td>Features <strong>multiple CAs</strong> that sign digital certificates.</td>
+                    <td><strong>Benefit:</strong> Eliminates single point of failure; loss of one key only compromises
+                        certificates signed by that CA; distributes the workload. This is the basis for most
+                        certificates on the Internet.</td>
+                </tr>
+                <tr>
+                    <td><strong>Bridge Trust Model</strong></td>
+                    <td>Similar to distributed, but one <strong>Bridge CA</strong> acts as a
+                        <strong>facilitator</strong> to interconnect all other CAs (hierarchical or distributed models).
+                    </td>
+                    <td>The Bridge CA <strong>does not issue certificates</strong> but acts as a hub, allowing different
+                        models to be linked together.</td>
+                </tr>
+            </table>
+
+            <h3>Managing PKI</h3>
+            <p>PKI management involves establishing formal policies and practices.</p>
+            <ul>
+                <li><strong>Certificate Policy (CP):</strong> A published set of rules governing PKI operation,
+                    providing recommended baseline security requirements for the use of CAs, intermediate CAs, and other
+                    PKI components.</li>
+                <li><strong>Certificate Practice Statement (CPS):</strong> A more technical document detailing
+                    <em>how</em> the CA uses and manages certificates, covering specifics like user registration,
+                    issuance, revocation, and private key protection. X.509 certificates often contain a field linking
+                    to the associated CP.
+                </li>
+            </ul>
+
+            <h4>Certificate Life Cycle</h4>
+            <p>A certificate's life cycle is typically divided into four stages:</p>
+            <ol>
+                <li><strong>Creation:</strong> The certificate is issued after the user's identity is positively
+                    verified, and the CA applies its signing key.</li>
+                <li><strong>Suspension:</strong> The certificate’s validity is temporarily suspended (e.g., if an
+                    employee is on leave). A suspended key can be later reinstated.</li>
+                <li><strong>Revocation:</strong> The certificate is permanently invalidated before its normal expiration
+                    date (e.g., due to a lost or compromised private key). The CA updates its CRL. Revoked keys cannot
+                    be reinstated.</li>
+                <li><strong>Expiration:</strong> The certificate can no longer be used after its set expiration date,
+                    requiring the user to obtain a new certificate.</li>
+            </ol>
+
+            <h3>Key Management</h3>
+            <p>Improper certificate and key management is a common vulnerability. Since keys are the foundation of PKI,
+                they require careful management.</p>
+
+            <h4>Key Storage and Usage</h4>
+            <ul>
+                <li><strong>Public Keys:</strong> Stored by embedding them within digital certificates.</li>
+                <li><strong>Private Keys:</strong> Can be stored on the user’s local system (software-based storage),
+                    which is vulnerable to OS attacks, or more securely on <strong>smart cards or tokens</strong>
+                    (hardware storage). Keys must never be shared in plaintext, copies should not be made, and expired
+                    keys must be destroyed.</li>
+                <li><strong>Key Usage:</strong> Dual key pairs can be created for enhanced security: one pair for
+                    encryption (where the public key can be backed up) and a second pair used <strong>only for digital
+                        signatures</strong> (where the public key is never backed up).</li>
+            </ul>
+
+            <h4>Key Handling Procedures</h4>
+            <p>Key management procedures include:</p>
+            <ul>
+                <li><strong>Escrow:</strong> <strong>Key escrow</strong> is the process where keys are managed by a
+                    third party (like a trusted CA). The private key is split, encrypted, and stored in separate
+                    locations, allowing the user to retrieve and combine the halves for decryption if needed.</li>
+                <li><strong>Expiration/Cryptoperiod:</strong> Keys must have an expiration date
+                    (<strong>cryptoperiod</strong>) to prevent an attacker from decrypting messages indefinitely if the
+                    key is stolen.</li>
+                <li><strong>Renewal:</strong> An existing key can be renewed instead of expiring, but continuous renewal
+                    makes them more vulnerable.</li>
+                <li><strong>Revocation:</strong> Permanent invalidation of a key before expiration (e.g., employee
+                    termination). The CA must be immediately notified.</li>
+                <li><strong>Recovery:</strong> Techniques for recovering lost or damaged keys.
+                    <ul>
+                        <li><strong>Key Recovery Agent (KRA):</strong> A highly trusted person designated to recover
+                            lost digital certificates.</li>
+                        <li><strong>M-of-N Control:</strong> The encrypted private key is divided into <em>N</em> parts
+                            and distributed. A smaller subset, the <em>M</em> group, must meet and agree to piece the
+                            key together for recovery. The distribution to multiple users (N group) ensures key recovery
+                            is possible even if one member is absent.</li>
+                    </ul>
+                </li>
+                <li><strong>Destruction:</strong> Removal of all private and public keys along with the user’s
+                    identification information from the CA. Information from revoked or expired keys remains for audit
+                    purposes, but destruction removes it.</li>
+            </ul>
+        </section>
+
+        <!-- Section IV -->
+        <section class="module-section">
+            <h2>IV. Secure Communication and Transport Protocols</h2>
+            <p>Cryptographic algorithms are used to protect data in transit, which is known as
+                <strong>transport/communication encryption</strong>. These protocols often rely on
+                <strong>tunneling</strong>.
+            </p>
+
+            <h3>Tunneling and Encapsulation</h3>
+            <p>Protocols typically rely on "encapsulating" or enveloping the data to be transmitted inside something
+                else.</p>
+            <ul>
+                <li><strong>Encapsulation</strong> is the process of enclosing the encrypted data with an
+                    <strong>additional, unencrypted header</strong>. This is essential because if the entire packet were
+                    encrypted, network routers could not read the header and forward the packet to its destination.
+                </li>
+                <li><strong>Tunneling</strong> refers to the entire process of encapsulation, transmission, and
+                    "de-encapsulation" to transport data securely across a network.</li>
+            </ul>
+
+            <h3>Primary Secure Protocols: TLS and IPSec</h3>
+            <p>The two primary protocols utilizing tunneling are Transport Layer Security (TLS) and IP Security (IPSec).
+            </p>
+
+            <h4>1. Transport Layer Security (TLS)</h4>
+            <ul>
+                <li><strong>Secure Sockets Layer (SSL)</strong> was an early protocol developed by Netscape, but due to
+                    vulnerabilities, it is <strong>deprecated</strong> and has been replaced by <strong>Transport Layer
+                        Security (TLS)</strong>.</li>
+                <li>The current version, <strong>TLS v1.3</strong>, provides a higher degree of protection. It removes
+                    support for older hashing algorithms (MD5 and SHA-224), requires Perfect Forward Secrecy for key
+                    exchange, and encrypts handshake messages after the ServerHello exchange.</li>
+                <li>A <strong>cipher suite</strong> is a named combination of the encryption, authentication, and
+                    Message Authentication Code (MAC) algorithms used with TLS, negotiated during the initial handshake.
+                </li>
+            </ul>
+
+            <h4>2. IP Security (IPSec)</h4>
+            <p><strong>Internet Protocol Security (IPSec)</strong> is a comprehensive suite of protocols for securing
+                Internet Protocol (IP) communications. IPSec encrypts and authenticates <strong>each IP packet</strong>
+                of a session between devices.</p>
+            <p>IPSec is a <strong>transparent security protocol</strong>—it is transparent to applications (which do not
+                need modification), users (who do not need special training), and local software.</p>
+
+            <p><strong>IPSec Protection Areas (Protocols):</strong></p>
+            <ul>
+                <li><strong>Authentication:</strong> Achieved by the <strong>Authentication Header (AH)</strong>
+                    protocol, ensuring packets were sent from the source.</li>
+                <li><strong>Confidentiality:</strong> Achieved by the <strong>Encapsulating Security Payload
+                        (ESP)</strong> protocol, which supports authentication and data encryption.</li>
+                <li><strong>Key Management:</strong> Achieved by <strong>Internet Security Association and Key
+                        Management Protocol/Oakley (ISAKMP/Oakley)</strong>, which generates keys and authenticates the
+                    user using techniques like digital certificates.</li>
+            </ul>
+
+            <p><strong>IPSec Encryption Modes:</strong></p>
+            <ul>
+                <li><strong>Transport Mode:</strong> Encrypts only the data portion (payload) of each packet, leaving
+                    the header unencrypted. Used when a device needs to see the source/destination addresses for
+                    routing.</li>
+                <li><strong>Tunnel Mode:</strong> Encrypts <strong>both the header and the data portion</strong>. The
+                    original packet is treated as the payload of a new packet with added headers. Generally used for
+                    network-to-network communication.</li>
+            </ul>
+
+            <p><strong>Table 4-3 IPSec versus TLS</strong></p>
+            <table>
+                <tr>
+                    <th>Characteristic</th>
+                    <th>IPSec</th>
+                    <th>TLS</th>
+                </tr>
+                <tr>
+                    <td><strong>Definition</strong></td>
+                    <td>A set of protocols that provide security for all IP traffic by directly encrypting IP packets.
+                    </td>
+                    <td>A secure protocol developed for protecting specific information over the Internet.</td>
+                </tr>
+                <tr>
+                    <td><strong>OSI layer</strong></td>
+                    <td>Layer 3.</td>
+                    <td>Layers 4–7.</td>
+                </tr>
+                <tr>
+                    <td><strong>Installation</strong></td>
+                    <td>Generic and requires full client installed on device.</td>
+                    <td>Vendor specific and capabilities incorporated within all web browsers, so no separate client
+                        needed.</td>
+                </tr>
+                <tr>
+                    <td><strong>Configuration</strong></td>
+                    <td>Complex.</td>
+                    <td>Basic.</td>
+                </tr>
+                <tr>
+                    <td><strong>Changes to Protocol</strong></td>
+                    <td>Depends on implementation but no need to change application.</td>
+                    <td>Must change application but not OS.</td>
+                </tr>
+                <tr>
+                    <td><strong>Protections</strong></td>
+                    <td>All IP-based applications.</td>
+                    <td>Web-enabled applications, file sharing, and email.</td>
+                </tr>
+            </table>
+
+            <p><strong>IPSec Architectures and Implementation:</strong></p>
+            <ul>
+                <li><strong>Devices:</strong> Installing IPSec on all devices provides the highest "end-to-end"
+                    security, although it requires more work on large networks. Alternatively, installing it only on
+                    routers secures traffic outside the enterprise.</li>
+                <li><strong>Integration into TCP/IP:</strong> <strong>IPv6</strong> has integrated IPSec features,
+                    making it the best option. IPv4 requires changes to the IP implementation on each device.</li>
+                <li><strong>Architectures:</strong>
+                    <ul>
+                        <li><strong>Bump in the Stack (BITS):</strong> IPSec acts as a separate architectural layer
+                            between the IP layer and the Data Link layer, intercepting data as it moves down the
+                            protocol stack. BITS adds IPSec to <strong>legacy hosts</strong>.</li>
+                        <li><strong>Bump in the Wire (BITW):</strong> Adds a <strong>hardware device</strong> that
+                            provides IPSec services by intercepting outgoing data and adding protection. BITW adds IPSec
+                            to <strong>legacy network equipment</strong>.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Other Secure Protocols</h3>
+            <ul>
+                <li><strong>Hypertext Transport Protocol Secure (HTTPS):</strong> The secure version of HTTP, sent over
+                    TLS (or SSL). HTTPS uses port <strong>443</strong> instead of HTTP's port 80 and is indicated by
+                    <code>https://</code>.
+                </li>
+                <li><strong>Secure Shell (SSH):</strong> An encrypted alternative to the Telnet protocol. It is a
+                    Linux/UNIX-based command interface used for securely accessing a remote computer. Both the client
+                    and server are authenticated using a digital certificate.</li>
+                <li><strong>Secure/Multipurpose Internet Mail Extensions (S/MIME):</strong> A protocol for securing
+                    email messages. It allows users to send messages that are both encrypted and digitally signed.</li>
+                <li><strong>Secure Real-time Transport Protocol (SRTP):</strong> A secure extension that protects
+                    transmissions using the Real-Time Transport Protocol (RTP). It provides security features like
+                    message authentication and confidentiality for <strong>Voice over IP (VoIP)</strong> communications.
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section V -->
+        <section class="module-section">
+            <h2>V. Implementing Cryptography</h2>
+            <p>Correct implementation of cryptography is necessary to prevent vulnerabilities. Implementation involves
+                understanding key strength, secret algorithms, and block cipher modes of operation.</p>
+
+            <h3>Key Strength</h3>
+            <p>A cryptographic key is a value used as input to an algorithm to transform plaintext into ciphertext.
+                Three primary characteristics determine the key's resiliency to attacks (key strength):</p>
+            <ol>
+                <li><strong>Randomness:</strong> The key must be random with no predictable pattern to thwart attacker
+                    attempts to uncover it.</li>
+                <li><strong>Cryptoperiod:</strong> The length of time for which a key is authorized for use. A limited
+                    cryptoperiod protects the ciphertext from extended cryptanalysis and limits exposure time if
+                    compromised.</li>
+                <li><strong>Key Length:</strong> Shorter keys are easier to break. The <strong>key space</strong> is all
+                    possible values for a specific key. The formula for determining key space in symmetric algorithms is
+                    character-set<sup>key-length</sup>. Increasing key length significantly impacts security.</li>
+            </ol>
+
+            <h3>Secret Algorithms</h3>
+            <p>While keys (except public keys) must be kept secret, the same does <strong>not</strong> apply to
+                algorithms. Historically, attempts to keep algorithms secret have failed. For cryptography to be useful,
+                it needs to be widespread, making secrecy difficult.</p>
+            <p>The <strong>Kerckhoffs’s Principles</strong> (1883) state that systems should not require secrecy. Today,
+                this principle is applied by separating algorithms from keys: <strong>algorithms are public, while keys
+                    are private</strong>.</p>
+
+            <h3>Block Cipher Modes of Operation</h3>
+            <p>A block cipher manipulates an <strong>entire block of plaintext</strong> at one time. The plaintext is
+                divided into blocks of specific lengths, and each block is encrypted independently. A block cipher mode
+                of operation specifies how these blocks should be handled.</p>
+            <p>Common modes include:</p>
+            <ul>
+                <li><strong>Electronic Code Book (ECB):</strong> The most basic mode; each block is encrypted
+                    separately. <strong>If two plaintext blocks are identical, they are encrypted into identical
+                        ciphertext blocks</strong>. This repetition is a vulnerability, and ECB is <strong>not
+                        considered suitable for use</strong>.</li>
+                <li><strong>Cipher Block Chaining (CBC):</strong> A common mode where each ciphertext block is "fed
+                    back" and XORed with the next plaintext block before being encrypted. This makes the ciphertext
+                    dependent on the previous block, making it much harder to break than ECB.</li>
+                <li><strong>Counter (CTR):</strong> Requires both the sender and receiver to access a counter that
+                    computes a new value for each ciphertext block exchange. The weakness lies in requiring a
+                    synchronous counter.</li>
+                <li><strong>Galois/Counter (GCM):</strong> This mode both encrypts the plaintext and computes a
+                    <strong>Message Authentication Code (MAC)</strong>, providing both privacy (encryption) and
+                    integrity (MAC). It uses a counter and includes <strong>Additional Authentication Data
+                        (AAD)</strong> in the transmission.
+                </li>
+            </ul>
+        </section>
+
+
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide for Advanced Cryptography</h2>
+
+            <h3>Quiz: Short-Answer Questions</h3>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. What fundamental weakness of a digital signature does a digital certificate address?
+                    </summary>
+                    <p>A digital signature can only prove that the sender's private key was used to encrypt the
+                        signature digest, but it cannot definitively confirm the true identity of the sender. An
+                        imposter could create their own key pair under the sender's name and trick a recipient. A
+                        digital certificate solves this by having a trusted third party verify the owner's identity and
+                        digitally sign their public key, associating the identity with the key.</p>
+                </details>
+                <details>
+                    <summary>2. Describe the process of a Certificate Signing Request (CSR) generation.</summary>
+                    <p>A user who wants a digital certificate first creates a public and private key pair. They then
+                        complete a request, affix their public key, and send it to a Registration Authority (RA) to
+                        verify their credentials. Once verified, the request is transferred to an Intermediate
+                        Certificate Authority (CA), which processes the request and issues the digital certificate.</p>
+                </details>
+                <details>
+                    <summary>3. Explain the difference between a Certificate Revocation List (CRL) and the Online
+                        Certificate Status Protocol (OCSP).</summary>
+                    <p>A CRL is a list of certificate serial numbers that have been revoked, which is maintained by a CA
+                        and can be queried or pushed to devices via updates. In contrast, OCSP is a request-response
+                        protocol that performs a real-time lookup of a specific certificate's status by sending a query
+                        to a trusted OCSP Responder.</p>
+                </details>
+                <details>
+                    <summary>4. What is certificate chaining and what is the role of a root digital certificate in this
+                        process?</summary>
+                    <p>Certificate chaining is the process of linking several certificates together to establish trust.
+                        The chain begins with a root digital certificate, which is created, verified, and self-signed by
+                        a high-level Certificate Authority (CA). The trust flows from this root certificate through one
+                        or more intermediate certificates down to the end-user's certificate, establishing a verifiable
+                        "root of trust."</p>
+                </details>
+                <details>
+                    <summary>5. What is Public Key Infrastructure (PKI) and what is its primary goal?</summary>
+                    <p>Public Key Infrastructure (PKI) is the comprehensive framework of software, hardware, policies,
+                        and procedures needed to manage digital certificates and public/private keys on a large scale.
+                        Its primary goal is to establish the identity of people, devices, and services in order to
+                        control access to resources, protect data, and provide accountability.</p>
+                </details>
+                <details>
+                    <summary>6. Briefly describe the hierarchical trust model for PKI and list one of its limitations.
+                    </summary>
+                    <p>The hierarchical trust model assigns a single master Certificate Authority (CA), called the root,
+                        which signs all digital certificates for an organization with a single key. A major limitation
+                        is that if this single CA's private key were compromised, all digital certificates it issued
+                        would become worthless. It can also create a significant backlog, as a single CA must verify and
+                        sign all certificates.</p>
+                </details>
+                <details>
+                    <summary>7. Explain the concept of key escrow as a key handling procedure.</summary>
+                    <p>Key escrow is a key management process where keys are managed by a trusted third party. The
+                        private key is split into parts, and each part is encrypted and stored separately by the third
+                        party. This allows an authorized user to retrieve the parts, combine them, and recover the key
+                        if it is lost, relieving the end-user from the risk of permanent key loss.</p>
+                </details>
+                <details>
+                    <summary>8. What is the primary difference between IPSec's transport mode and tunnel mode?</summary>
+                    <p>IPSec's transport mode encrypts only the data portion (payload) of each IP packet, leaving the
+                        header unencrypted, which is typically used when a device needs to see routing information. The
+                        more secure tunnel mode encrypts both the header and the data portion by encapsulating the
+                        entire original packet inside a new packet, a method generally used for network-to-network
+                        communication.</p>
+                </details>
+                <details>
+                    <summary>9. List and briefly define the three primary characteristics that determine a key's
+                        strength.</summary>
+                    <p>The three characteristics of key strength are randomness, ensuring the key has no predictable
+                        pattern; cryptoperiod, the authorized length of time a key can be used; and key length, as
+                        longer keys create a larger key space and are harder to break through brute-force attacks.</p>
+                </details>
+                <details>
+                    <summary>10. What is the main vulnerability of the Electronic Code Book (ECB) block cipher mode of
+                        operation?</summary>
+                    <p>The main vulnerability of the ECB mode is that identical plaintext blocks are encrypted into
+                        identical ciphertext blocks. An attacker can exploit this repetition to analyze patterns, modify
+                        the message by reshuffling blocks, or substitute one encrypted block for another.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <ol>
+                <li>Describe the core pillars of data protection provided by cryptography (Confidentiality, Integrity,
+                    Authentication/Non-Repudiation). For each pillar, explain the primary cryptographic tool used (e.g.,
+                    encryption, hashing) and provide a real-world example of its application.</li>
+                <li>Using the "Legal Eagles LLC" scenario, explain how a "defense-in-depth" strategy is applied across
+                    the five layers of security: Network Security, Endpoint Security, Access Control, Data Protection,
+                    and Security Awareness Training.</li>
+                <li>Compare and contrast the four main types of domain digital certificates: Domain Validation (DV),
+                    Extended Validation (EV), Wildcard, and Subject Alternative Name (SAN). Discuss the specific use
+                    case, level of validation, and limitations for each.</li>
+                <li>Explain the complete life cycle of a digital certificate, detailing each of the four stages:
+                    creation, suspension, revocation, and expiration. Within this context, discuss the roles of the CA,
+                    RA, CRL, and OCSP.</li>
+                <li>Detail the key management procedures that ensure cryptographic keys are handled properly throughout
+                    their life cycle. Your explanation should cover escrow, expiration, renewal, revocation, recovery
+                    (including M-of-N control), suspension, and destruction.</li>
+            </ol>
+
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td>Block Cipher Mode of Operation</td>
+                    <td>A specification that dictates how a block cipher should handle the division and encryption of
+                        plaintext blocks. Common modes include ECB, CBC, CTR, and GCM.</td>
+                </tr>
+                <tr>
+                    <td>Certificate Authority (CA)</td>
+                    <td>A party responsible for digital certificates. A root CA is the highest-level authority, while
+                        intermediate CAs can process requests and issue certificates on its behalf.</td>
+                </tr>
+                <tr>
+                    <td>Certificate Chaining</td>
+                    <td>The process of linking several certificates together to establish trust. The chain traces from a
+                        user digital certificate, through intermediate certificates, back to a trusted root digital
+                        certificate.</td>
+                </tr>
+                <tr>
+                    <td>Certificate Policy (CP)</td>
+                    <td>A published set of rules that governs the operation of a Public Key Infrastructure (PKI) and
+                        provides baseline security requirements for its components.</td>
+                </tr>
+                <tr>
+                    <td>Certificate Practice Statement (CPS)</td>
+                    <td>A technical document that describes in detail how a CA uses and manages certificates, including
+                        procedures for registration, issuance, and revocation.</td>
+                </tr>
+                <tr>
+                    <td>Certificate Repository (CR)</td>
+                    <td>A publicly accessible centralized directory of digital certificates that can be used to view the
+                        status of a certificate.</td>
+                </tr>
+                <tr>
+                    <td>Certificate Revocation List (CRL)</td>
+                    <td>A list of certificate serial numbers that have been revoked before their expiration date. CAs
+                        maintain these lists for users to check a certificate's status.</td>
+                </tr>
+                <tr>
+                    <td>Certificate Signing Request (CSR) Generation</td>
+                    <td>The entire process a user follows to obtain a digital certificate, including creating keys,
+                        completing a request, and having credentials verified by a Registration Authority and processed
+                        by a CA.</td>
+                </tr>
+                <tr>
+                    <td>Cipher Suite</td>
+                    <td>A named combination of encryption, authentication, and message authentication code (MAC)
+                        algorithms used with protocols like TLS during the initial connection handshake.</td>
+                </tr>
+                <tr>
+                    <td>Code Signing</td>
+                    <td>The use of a digital certificate by a software developer to digitally sign a program. This
+                        proves the software's origin and that it has not been altered or compromised.</td>
+                </tr>
+                <tr>
+                    <td>Cryptoperiod</td>
+                    <td>The length of time for which a cryptographic key is authorized for use. Limiting the
+                        cryptoperiod helps protect against extended cryptanalysis if a key is compromised.</td>
+                </tr>
+                <tr>
+                    <td>Digital Certificate</td>
+                    <td>A technology used to associate a user’s identity to a public key. It is a container for the
+                        public key that has been digitally signed by a trusted third party, verifying the owner's
+                        identity.</td>
+                </tr>
+                <tr>
+                    <td>Digital Signature</td>
+                    <td>An electronic verification of a sender. It is created by generating a digest (hash) of a
+                        document and then encrypting that digest with the sender's private key.</td>
+                </tr>
+                <tr>
+                    <td>Extended Validation (EV) Certificate</td>
+                    <td>A type of domain digital certificate that requires extensive verification of the legitimacy of
+                        the business, including its legal existence, physical address, and operational presence.</td>
+                </tr>
+                <tr>
+                    <td>Internet Protocol Security (IPSec)</td>
+                    <td>A suite of protocols for securing Internet Protocol (IP) communications by encrypting and
+                        authenticating each IP packet of a session. It operates at OSI Layer 3.</td>
+                </tr>
+                <tr>
+                    <td>Key Escrow</td>
+                    <td>A process in which keys are managed by a trusted third party. The private key is split, and each
+                        half is encrypted and stored separately, allowing for recovery by the user if the key is lost.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Key Management System</td>
+                    <td>The framework and services for controlling public keys, private keys, and digital certificates,
+                        often as part of a larger PKI.</td>
+                </tr>
+                <tr>
+                    <td>M-of-N Control</td>
+                    <td>A key recovery technique where a private key is encrypted, divided into N parts, and distributed
+                        among a group of individuals (the N group). A smaller subset (the M group) must agree to combine
+                        their parts to recover the key.</td>
+                </tr>
+                <tr>
+                    <td>Online Certificate Status Protocol (OCSP)</td>
+                    <td>A "request-response" protocol that performs a real-time lookup of a certificate’s status by
+                        sending its information to a trusted entity called an OCSP Responder.</td>
+                </tr>
+                <tr>
+                    <td>OCSP Stapling</td>
+                    <td>A variation of OCSP where a web server queries the OCSP Responder at regular intervals and
+                        receives a signed, time-stamped response. The server then "staples" this response to the TLS/SSL
+                        handshake, improving efficiency.</td>
+                </tr>
+                <tr>
+                    <td>Public Key Infrastructure (PKI)</td>
+                    <td>The set of hardware, software, processes, policies, and procedures needed to create, manage,
+                        distribute, use, store, and revoke digital certificates across large populations. It is
+                        essentially digital certificate management at scale.</td>
+                </tr>
+                <tr>
+                    <td>Root of Trust</td>
+                    <td>The concept that the trust of a certificate can be traced back to the highest level of CA. This
+                        is established through certificate chaining starting with a root digital certificate.</td>
+                </tr>
+                <tr>
+                    <td>Self-Signed</td>
+                    <td>A characteristic of a root digital certificate, which is signed by its own creator (the CA)
+                        because there is no higher-level authority to verify it.</td>
+                </tr>
+                <tr>
+                    <td>Subject Alternative Name (SAN) Certificate</td>
+                    <td>A certificate that allows multiple host names (sites, IP addresses, common names) to be
+                        protected by a single digital certificate.</td>
+                </tr>
+                <tr>
+                    <td>Third Party</td>
+                    <td>In cryptography, a trusted entity, different from the sender or receiver, that verifies the
+                        identity of an individual and their public key. Certificate Authorities are trusted third
+                        parties.</td>
+                </tr>
+                <tr>
+                    <td>Transport Layer Security (TLS)</td>
+                    <td>A secure communication and transport protocol that is the modern replacement for SSL. It is used
+                        to create an encrypted data path between a client and a server, such as in HTTPS.</td>
+                </tr>
+                <tr>
+                    <td>Transport/Communication Encryption</td>
+                    <td>The use of cryptographic algorithms to protect data while it is in transit across a network.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tunneling</td>
+                    <td>A technique for transporting data securely across a network. It involves encapsulating encrypted
+                        data with an additional, unencrypted header so that it can be routed through a public network
+                        while its contents remain protected.</td>
+                </tr>
+                <tr>
+                    <td>Wildcard Digital Certificate</td>
+                    <td>A certificate used to validate a main domain along with all of its first-level subdomains (e.g.,
+                        *.example.com would cover www.example.com and mail.example.com).</td>
+                </tr>
+                <tr>
+                    <td>X.509</td>
+                    <td>The standard format for digital certificates, which specifies the attributes (fields) that a
+                        certificate must contain, such as validity period, issuer signature, and common name.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Full Practice Simulation -->
+        <div class="quiz-header">
+            <h2>Full Practice Simulation</h2>
+            <p>Test your knowledge with 45 practice questions. Select the best answer(s) for each question.</p>
+        </div>
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Back to Top functionality
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Quiz Data
+            const questions = [
+                {
+                    id: 1,
+                    text: "Alarik is explaining to a colleague about digital certificates. Which of the following statements would he use to correctly describe the need for digital certificates?",
+                    options: [
+                        "It can speed up processing time when using a web browser.",
+                        "It can hide the public key so that it cannot be abused.",
+                        "It can confirm the true identity of the sender of an encrypted message.",
+                        "It can replace digital signatures with a more robust technology."
+                    ],
+                    correct: [2],
+                    explanation: "A digital certificate solves the \"imposter\" problem inherent in simple public keys or digital signatures. It uses a trusted third party to associate a user's identity with a public key, ensuring the person claiming to be the sender is actually who they say they are."
+                },
+                {
+                    id: 2,
+                    text: "What is a technology used to associate a user’s identity to a public key and has been digitally signed by a trusted third party?",
+                    options: [
+                        "Digital signature",
+                        "Digital certificate",
+                        "Digital codebook",
+                        "Digital signing repository (DSR)"
+                    ],
+                    correct: [1],
+                    explanation: "The text defines a digital certificate specifically as \"a technology used to associate a user's identity to a public key and has been digitally signed by a trusted third party\"."
+                },
+                {
+                    id: 3,
+                    text: "Ville has been asked by his supervisor to review the contents of a questionable digital certificate. Which of the following would Ville NOT find in it?",
+                    options: [
+                        "Owner’s private key",
+                        "Serial number of the digital certificate",
+                        "Name of the issuer",
+                        "Owner’s name or alias"
+                    ],
+                    correct: [0],
+                    explanation: "Digital certificates are designed to distribute public keys. The corresponding private key must always be kept confidential by the owner and is never included in the certificate itself."
+                },
+                {
+                    id: 4,
+                    text: "Who is responsible for verifying the credentials of an applicant for a digital certificate?",
+                    options: [
+                        "CA",
+                        "Registration authority",
+                        "CSR",
+                        "Intermediate CSR"
+                    ],
+                    correct: [1],
+                    explanation: "The applicant sends their request to a registration authority (RA), which is the entity responsible for verifying the credentials of the applicant before the request is passed to the Certificate Authority (CA)."
+                },
+                {
+                    id: 5,
+                    text: "Which of the following is NOT a means by which a person requesting a digital certificate can be authenticated?",
+                    options: [
+                        "Birth certificate",
+                        "Employee badge",
+                        "Email",
+                        "Telephone number"
+                    ],
+                    correct: [3],
+                    explanation: "The text lists valid authentication methods as email, documents (such as birth certificates or employee badges), and in-person verification. A telephone number is not listed as a standard means of authentication for certificates."
+                },
+                {
+                    id: 6,
+                    text: "What is the strongest technology that would assure Alice that Bob is the sender of a message?",
+                    options: [
+                        "Digital signature",
+                        "Encrypted signature",
+                        "Digest",
+                        "Digital certificate"
+                    ],
+                    correct: [3],
+                    explanation: "While a digital signature proves the owner of a private key sent the message, it does not prove who the owner is (an imposter could own the keys). A digital certificate provides the strongest assurance because a trusted third party validates the identity of the key owner."
+                },
+                {
+                    id: 7,
+                    text: "What is a publicly accessible centralized directory of digital certificates that can be used to view the status of a digital certificate?",
+                    options: [
+                        "CA",
+                        "CR",
+                        "CB",
+                        "CX"
+                    ],
+                    correct: [1],
+                    explanation: "A Certificate Repository (CR) is defined as a \"publicly accessible centralized directory of digital certificates that can be used to view the status of a digital certificate\"."
+                },
+                {
+                    id: 8,
+                    text: "Ansgar is studying how digital certificates can be used. Which of the following is NOT a use of a digital certificate?",
+                    options: [
+                        "To encrypt messages for secure email communications",
+                        "To encrypt channels to provide secure communication between clients and servers",
+                        "To verify the authenticity of the CA",
+                        "To verify the identity of clients and servers on the web"
+                    ],
+                    correct: [2],
+                    explanation: "Digital certificates are used to verify the identity of the holder (such as a client, server, or email sender) to a third party. While Root CAs have self-signed certificates, the primary \"use\" of a certificate in this context is not to verify the CA itself, but for the CA to verify others."
+                },
+                {
+                    id: 9,
+                    text: "Which of the following performs a real-time lookup of a certificate’s status?",
+                    options: [
+                        "Pinning",
+                        "OCSP",
+                        "Clipping",
+                        "Remote lookup protocol (RLP)"
+                    ],
+                    correct: [1],
+                    explanation: "The Online Certificate Status Protocol (OCSP) is designed to perform a real-time lookup of a certificate's status, unlike a CRL which is a downloaded list."
+                },
+                {
+                    id: 10,
+                    text: "Which of the following is NOT true about a root digital certificate?",
+                    options: [
+                        "The next level down is one or more intermediate certificates.",
+                        "It is self-signed.",
+                        "It is created and verified by a CA.",
+                        "It is the endpoint of the chain."
+                    ],
+                    correct: [3],
+                    explanation: "The root digital certificate is the beginning of the chain (or the anchor). The user digital certificate is the endpoint of the chain."
+                },
+                {
+                    id: 11,
+                    text: "Tordis has been asked to acquire a digital certificate that will cover all the subdomains of a new site. Which type of certificate would he acquire?",
+                    options: [
+                        "Omnibus digital certificate",
+                        "Subname digital certificate",
+                        "Wildcard digital certificate",
+                        "NAXX"
+                    ],
+                    correct: [2],
+                    explanation: "A wildcard digital certificate (e.g., *.example.com) is used to validate a main domain along with all of its subdomains."
+                },
+                {
+                    id: 12,
+                    text: "Bengt is setting up a new web server that will have several IP addresses. He only wants to acquire a single digital certificate. Which type of certificate will he acquire?",
+                    options: [
+                        "SAN",
+                        "Asterisk digital certificate (ADC)",
+                        "Domain digital certificate",
+                        "EV"
+                    ],
+                    correct: [0],
+                    explanation: "The Subject Alternative Name (SAN) certificate allows a single certificate to cover multiple different host names or multiple IP addresses."
+                },
+                {
+                    id: 13,
+                    text: "What is the standard format for digital certificates?",
+                    options: [
+                        "CN",
+                        "RCN",
+                        "CER x9",
+                        "X.509 Version 3"
+                    ],
+                    correct: [3],
+                    explanation: "The text explicitly states that the standard format for digital certificates is X.509 Version 3."
+                },
+                {
+                    id: 14,
+                    text: "Which of the following is false about PKI?",
+                    options: [
+                        "It is the underlying infrastructure that serves as a key management system for controlling public keys, private keys, and digital certificates.",
+                        "It is the set of software, hardware, processes, procedures, and policies that are needed to create, manage, distribute, use, store, and revoke digital certificates across large user populations.",
+                        "It is digital certificate management at scale.",
+                        "It must be used by all enterprises with over 1,000 employees."
+                    ],
+                    correct: [3],
+                    explanation: "Options A, B, and C are all definitions of PKI provided in the text. Option D is false because there is no specific rule mandating PKI usage based on a specific number of employees."
+                },
+                {
+                    id: 15,
+                    text: "Which is the first step in a key exchange?",
+                    options: [
+                        "The browser generates a random value (“pre-master secret”).",
+                        "The web server sends a message (“ServerHello”) to the client.",
+                        "The web browser verifies the server certificate.",
+                        "The web browser sends a message (“ClientHello”) to the server."
+                    ],
+                    correct: [3],
+                    explanation: "As illustrated in Figure 4-7 and described in the text, the handshake begins when the web browser sends a \"ClientHello\" message to the server."
+                },
+                {
+                    id: 16,
+                    text: "Dag wants to set up a trust model in which he only will serve as a CA. Which trust model will he choose?",
+                    options: [
+                        "Bridge trust model",
+                        "Distributed trust model",
+                        "Hierarchical trust model",
+                        "Sole trust model"
+                    ],
+                    correct: [2],
+                    explanation: "The hierarchical trust model uses a single hierarchy with one master CA (the root). This is suitable for an organization where one CA is responsible for all certificates."
+                },
+                {
+                    id: 17,
+                    text: "Einar has been asked to create a new policy that outlines the process in which keys are managed by a third party and the private key is split with each half encrypted. What policy is Einar creating?",
+                    options: [
+                        "Key recovery policy",
+                        "Key expiration policy",
+                        "Extended validation policy",
+                        "Key escrow policy"
+                    ],
+                    correct: [3],
+                    explanation: "Key escrow is the specific process described where a private key is split, encrypted, and managed by a third party."
+                },
+                {
+                    id: 18,
+                    text: "Which of the following is the most comprehensive secure communication and transport protocol?",
+                    options: [
+                        "SSL",
+                        "TLS",
+                        "IPSec",
+                        "HSS"
+                    ],
+                    correct: [2],
+                    explanation: "IPSec is considered the most comprehensive and robust protocol because it protects the IP protocol itself (Layer 3), meaning it protects everything in the TCP/IP suite that runs on top of it."
+                },
+                {
+                    id: 19,
+                    text: "Gjord has been assigned to design an implementation of IPSec at an old manufacturing plant that has legacy network equipment and many devices. Which implementation will he choose?",
+                    options: [
+                        "SRSR",
+                        "AR Stack",
+                        "BITW",
+                        "BITS"
+                    ],
+                    correct: [2],
+                    explanation: "Bump In The Wire (BITW) adds a hardware device to provide IPSec services. It is specifically used for legacy network equipment, whereas BITS is used for legacy hosts."
+                },
+                {
+                    id: 20,
+                    text: "Which of the following is NOT a primary characteristic for determining the resiliency of a key to attacks?",
+                    options: [
+                        "Randomness",
+                        "Key derivation",
+                        "Cryptoperiod",
+                        "Key length"
+                    ],
+                    correct: [1],
+                    explanation: "The three primary characteristics determining key strength listed in the text are Randomness, Cryptoperiod, and Key length."
+                },
+                {
+                    id: 21,
+                    text: "Which of the following is a characteristic that helps determine the strength of a key? Select three.",
+                    options: [
+                        "Key space",
+                        "Randomness",
+                        "Cryptoperiod",
+                        "Lifecycle",
+                        "Duration",
+                        "Impermanence"
+                    ],
+                    correct: [0, 1, 2],
+                    explanation: "The text states that three primary characteristics determine the resiliency (strength) of a key: randomness (no predictable pattern), cryptoperiod (length of time authorized for use), and key length (which determines the key space)."
+                },
+                {
+                    id: 22,
+                    text: "Which of the following represents valid methods of establishing whether a certificate has been revoked? Select two.",
+                    options: [
+                        "Harvesting revoked certificates and pushing them to the user's browser",
+                        "Using the OCSP",
+                        "Checking the expiration date",
+                        "Configure a certificate revocation repository"
+                    ],
+                    correct: [0, 1],
+                    explanation: "The Online Certificate Status Protocol (OCSP) performs real-time lookups. Additionally, modern browsers use a method of harvesting lists of revoked certificates from CAs and pushing them to the browser to improve speed and reliability."
+                },
+                {
+                    id: 23,
+                    text: "A user retrieves the two halves of a key from two different parties and combines them to create a copy of the key. Which of the following terms best describes the process being used to manage the keys?",
+                    options: [
+                        "Key bonding",
+                        "Key escrow",
+                        "M-of-N control",
+                        "Key activation"
+                    ],
+                    correct: [1],
+                    explanation: "Key escrow is the process where a private key is split, encrypted, and registered with a third party. The user can retrieve the halves to recreate the key for decryption."
+                },
+                {
+                    id: 24,
+                    text: "Assume a REAL ID can be used for federal identification and a traditional ID cannot. Which of the following, in the form of an analogy, can be used to authenticate the person requesting a digital certificate?",
+                    options: [
+                        "A digital certificate authenticated with an email address is like a REAL ID.",
+                        "A digital certificate authenticated with a certificate revocation list query is like a REAL ID.",
+                        "A digital certificate authenticated with a birth certificate is like a REAL ID.",
+                        "A digital certificate authenticated with a digital signature is like a REAL ID."
+                    ],
+                    correct: [2],
+                    explanation: "A registration authority can confirm the authenticity of an applicant by requiring specific documentation, such as a birth certificate or a government-issued passport/driver's license."
+                },
+                {
+                    id: 25,
+                    text: "Which of the following represents valid entities for which digital certificates can be used? Select all that apply.",
+                    options: [
+                        "PDF file",
+                        "Email",
+                        "Software",
+                        "Printer",
+                        "Word document"
+                    ],
+                    correct: [0, 1, 2, 3],
+                    explanation: "Digital certificates can verify the identity of hardware (like a printer via machine certificate), sign software (code signing), encrypt/sign email, and authenticate authors of documents like PDF files."
+                },
+                {
+                    id: 26,
+                    text: "How is a digital signature different, or similar, to a digital certificate? Select two.",
+                    options: [
+                        "In some respects, a digital signature is like a passport or driver's license.",
+                        "A digital signature can be used to confirm the sender's identity.",
+                        "Both are signed by a third party to confirm the sender's authenticity.",
+                        "A digital certificate helps confirm its owner's identity.",
+                        "A digital certificate is more trustworthy than a digital signature."
+                    ],
+                    correct: [3, 4],
+                    explanation: "A digital signature only proves the owner of a key signed a message, but not who the owner is. A digital certificate is more trustworthy because a trusted third party validates the owner's identity."
+                },
+                {
+                    id: 27,
+                    text: "Part of your responsibilities include maintaining the root CA as well as the intermediate CAs for a large organization. What should you do to ensure the security of the root CA?",
+                    options: [
+                        "Ensure all traffic flowing to and from the root CA is encrypted and disable wireless access.",
+                        "Allow local access only from an isolated network.",
+                        "Keep it powered down until you need to issue or reissue certificates.",
+                        "Require two-factor authentication for local and remote access."
+                    ],
+                    correct: [2],
+                    explanation: "To ensure security and integrity, a root CA is often kept in an offline state and even \"powered down,\" only brought online for specific tasks like issuing certificates for intermediate CAs."
+                },
+                {
+                    id: 28,
+                    text: "Which of the following is a true statement regarding the indicated block cipher mode? Select two.",
+                    options: [
+                        "Although ECB uses a basic approach, it is still among the most effective block cipher modes.",
+                        "CTR requires the control engine on the sender and receiver to be synchronized.",
+                        "GCM computes a MAC to ensure the message was not tampered with during transmission.",
+                        "CBC uses the output of a round of encryption as input for the next round."
+                    ],
+                    correct: [2, 3],
+                    explanation: "CBC (Cipher Block Chaining) feeds the output of one encryption round into the next. GCM (Galois/Counter Mode) computes a Message Authentication Code (MAC) to ensure data integrity."
+                },
+                {
+                    id: 29,
+                    text: "A digital certificate needs to be added to a CRL. If there is too much delay in adding it to the CRL, what is a potential consequence, if any?",
+                    options: [
+                        "Security may be compromised.",
+                        "There are no consequences because it is inactive.",
+                        "You will not be able to encrypt or decrypt using the corresponding private key.",
+                        "You will not be able to encrypt or decrypt using the corresponding public key.",
+                        "The expiration date will automatically be extended, increasing the potential for abuse."
+                    ],
+                    correct: [0],
+                    explanation: "If CAs do not publish revoked certificates in a timely fashion, security may be compromised because users might trust a certificate that is actually invalid."
+                },
+                {
+                    id: 30,
+                    text: "An employee was expected to return to work after a three-month leave due to personal issues. However, because of additional issues, the leave has been extended by nine months. What is a possible action the company could take regarding the employee's digital certificate? Select two.",
+                    options: [
+                        "Delete it",
+                        "Decommission it",
+                        "Expire it",
+                        "Annul it",
+                        "Suspend it",
+                        "Revoke it"
+                    ],
+                    correct: [4, 5],
+                    explanation: "Certificates can be suspended for a specific period (like a leave of absence). If the user does not return or if the key is compromised, the certificate can be revoked."
+                },
+                {
+                    id: 31,
+                    text: "Vladimiro adopted a key storage policy at his company that includes both a hardware and a software solution. Which of the following statements represents issues he may need to consider? Select two.",
+                    options: [
+                        "Store keys in folders that are themselves encrypted.",
+                        "Store keys in folders that are password protected.",
+                        "Treat unrevoked keys with the same level of security as active keys.",
+                        "Encrypted keys can be shared in plaintext but not unencrypted keys.",
+                        "Back up expired keys and place them in an offline medium."
+                    ],
+                    correct: [0, 1],
+                    explanation: "To ensure basic protection for keys stored in software, they should be stored in files or folders that are password protected or encrypted."
+                },
+                {
+                    id: 32,
+                    text: "Kuruvilla is looking for a new online game to play. During his exploration, the browser gives an indication that there was a network error. Which of the following may have caused this condition?",
+                    options: [
+                        "The certificate on the OCSP responder server is in a revoked state.",
+                        "The certificate for the site he is accessing has been revoked.",
+                        "OCSP was not able to access the server it was trying to contact.",
+                        "The web server Kuruvilla is trying to access is currently in an offline state."
+                    ],
+                    correct: [2],
+                    explanation: "If a browser cannot reach the OCSP Responder server (e.g., the server is down), it often reports a network error (soft-fail) and may ignore the revocation check."
+                },
+                {
+                    id: 33,
+                    text: "Which of the following represents attributes, or attribute examples, that an X.509 digital certificate must include? Select three.",
+                    options: [
+                        "*.mysite.com",
+                        "www.mysite.com",
+                        "URL",
+                        "Revocation status field",
+                        "IP address of end device",
+                        "Encryption keys"
+                    ],
+                    correct: [0, 1, 5],
+                    explanation: "X.509 certificates include attributes such as encryption keys (public keys) and the Common Name (CN). The CN can be a single domain (www.mysite.com) or a wildcard (*.mysite.com)."
+                },
+                {
+                    id: 34,
+                    text: "Which of the following most accurately describes the CSR generation process?",
+                    options: [
+                        "Create keys, sign request with private key, send private key to RA, CA issues digital certificate.",
+                        "Create keys, sign request with private key, send public key to RA, CA issues digital certificate.",
+                        "Create keys, sign request with public key, send public key to RA, CA issues digital certificate.",
+                        "Create keys, sign request with public key, send private key to RA, CA issues digital certificate."
+                    ],
+                    correct: [2],
+                    explanation: "The user generates keys and completes a request. The text states the user \"electronically signs it by affixing their public key and then sends it to a registration authority.\" Once verified, the CA issues the certificate."
+                },
+                {
+                    id: 35,
+                    text: "Which of the following represents an improvement made to the current version of TLS outlined in this module? Select two.",
+                    options: [
+                        "Encrypts handshake messages after the ServerHello exchange.",
+                        "Provides support for SSL to ensure backward compatibility.",
+                        "Removes support for MD5 and replaces it with SHA-224.",
+                        "Uses Perfect Forward Secrecy for public key-based key exchange."
+                    ],
+                    correct: [0, 3],
+                    explanation: "TLS v1.3 removes support for weak algorithms like MD5 and SHA-224, requires Perfect Forward Secrecy, and encrypts handshake messages after the ServerHello."
+                },
+                {
+                    id: 36,
+                    text: "Amir uses an asymmetric algorithm to send a message along with a digital signature to a recipient. Based on this information, what conclusion can you draw?",
+                    options: [
+                        "The digital signature was created using Amir's public key.",
+                        "The recipient can conclusively say the message was sent by Amir.",
+                        "If the message is intercepted it cannot be compromised.",
+                        "Amir may not own the key used to create the digital signature."
+                    ],
+                    correct: [3],
+                    explanation: "A digital signature proves the private key owner sent the message, but it does not prove the identity of the owner. An imposter could pretend to be Amir. Without a digital certificate, the recipient cannot be certain Amir owns the key."
+                },
+                {
+                    id: 37,
+                    text: "IPSec is considered a transparent protocol. Which of the following statements best describes what this means? Select two.",
+                    options: [
+                        "IPSec advertises its existence to deter malicious actors.",
+                        "IPSec is natively part of the IPv4 and IPv6 protocol.",
+                        "IPSec can be easily configured to operate on any piece of hardware.",
+                        "Programs do not need to be modified to run under IPSec.",
+                        "Users do not need to be trained on specific security procedures."
+                    ],
+                    correct: [3, 4],
+                    explanation: "IPSec is transparent to applications (programs do not need modification) and users (no specific training required)."
+                },
+                {
+                    id: 38,
+                    text: "A key was revoked before it expired. Xan takes the revoked key out of the revocation state and reactivates it to extract and decrypt old messages from an email archival system. What is this type of key reactivation called?",
+                    options: [
+                        "Key recovery",
+                        "A revoked key cannot be reinstated.",
+                        "Key reinstatement",
+                        "Key reestablishment"
+                    ],
+                    correct: [1],
+                    explanation: "Revocation is permanent. Revoked keys cannot be reinstated."
+                },
+                {
+                    id: 39,
+                    text: "PKI is the underlying infrastructure used for controlling which of the following entities? Select two.",
+                    options: [
+                        "Key storage",
+                        "Bridge trust model",
+                        "Public keys",
+                        "Digital certificates",
+                        "Certificate policy"
+                    ],
+                    correct: [2, 3],
+                    explanation: "PKI is defined as the key management system for controlling public keys, private keys, and digital certificates."
+                },
+                {
+                    id: 40,
+                    text: "What type of information are you most likely to find in a digital signature and/or in a digital certificate? Select two.",
+                    options: [
+                        "A digital certificate contains a private key.",
+                        "A digital signature can contain an email address.",
+                        "A digital signature contains a public key.",
+                        "A digital certificate can contain a postal address.",
+                        "A digital certificate contains a digital signature.",
+                        "A digital signature contains an expiration date."
+                    ],
+                    correct: [3, 4],
+                    explanation: "A digital certificate contains the digital signature of the issuer and user information such as a postal address."
+                },
+                {
+                    id: 41,
+                    text: "As a security compliance specialist, you are asked to produce CP and CPS documents. Which of the following statements most accurately defines these two types of documents? Select three.",
+                    options: [
+                        "A CP is a set of rules that govern the operation of a PKI.",
+                        "A CP describes in detail how the CA uses and manages certificates.",
+                        "A CPS is a more technical document than a CP.",
+                        "The CPS provides recommended baseline security requirements for the operation of CAs.",
+                        "A CPS can be referenced in the OID of a digital certificate.",
+                        "A CP includes information on how end-users register for a digital certificate."
+                    ],
+                    correct: [0, 2, 4],
+                    explanation: "A Certificate Policy (CP) governs PKI operation rules. A Certificate Practice Statement (CPS) is a more technical document describing detailed management. The OID (Object Identifier) in a certificate can reference the CPS."
+                },
+                {
+                    id: 42,
+                    text: "Yandelli is responsible for protecting data in transit. However, the scheme he is attempting to adopt will encapsulate encrypted information with unencrypted information. What is a potential consequence of this behavior?",
+                    options: [
+                        "You cannot transmit encrypted and unencrypted data simultaneously.",
+                        "Data will be transmitted securely.",
+                        "The scheme is okay but only if data is not transmitted through a public network.",
+                        "The security of the transmitted data will be compromised."
+                    ],
+                    correct: [1],
+                    explanation: "This process is called tunneling. By encapsulating encrypted data with an unencrypted header, the data can be directed to its destination while remaining protected."
+                },
+                {
+                    id: 43,
+                    text: "Which one of the following statements most accurately describes the role of an RA, a CA, or an intermediate CA?",
+                    options: [
+                        "An RA electronically signs private keys.",
+                        "The intermediate CA requires an in-person application.",
+                        "The intermediate CA performs functions on behalf of a CA.",
+                        "An RA performs functions on behalf of a CA."
+                    ],
+                    correct: [2],
+                    explanation: "Intermediate CAs are subordinate entities that perform functions (like processing requests and issuing certificates) on behalf of a CA."
+                },
+                {
+                    id: 44,
+                    text: "Three entities know and trust each other completely. In a public key infrastructure setting, which of the following could be used to describe this type of trust? Select two.",
+                    options: [
+                        "Distributed trust",
+                        "Web of trust",
+                        "Bridge trust",
+                        "Direct trust",
+                        "Third-party trust"
+                    ],
+                    correct: [1, 3],
+                    explanation: "The web of trust model is based on direct trust, where users know each other and sign each other's certificates."
+                },
+                {
+                    id: 45,
+                    text: "You want to open an account with an online bank that is paying five percent interest because other banks are only paying two percent. You open a browser and go to bankofutopi.com but get a little suspicious. What can you do to help determine if this is a trusted site?",
+                    options: [
+                        "Check the digital certificate.",
+                        "Check the digital signature.",
+                        "Contact the digital signature authority.",
+                        "Contact the certificate authority."
+                    ],
+                    correct: [0],
+                    explanation: "The web server provides a digital certificate to the browser. The user can check this certificate to verify that they are at the authentic site of the retailer/bank and not an imposter."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+
+            function renderQuiz() {
+                questions.forEach((q) => {
+                    const card = document.createElement('div');
+                    card.className = 'question-card';
+
+                    // Header
+                    const qNumber = document.createElement('span');
+                    qNumber.className = 'question-number';
+                    qNumber.textContent = `QUESTION ${q.id}`;
+
+                    const qText = document.createElement('div');
+                    qText.className = 'question-text';
+                    qText.textContent = q.text;
+
+                    card.appendChild(qNumber);
+                    card.appendChild(qText);
+
+                    // Options
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options-grid';
+
+                    // Explanation
+                    const explanationDiv = document.createElement('div');
+                    explanationDiv.className = 'explanation';
+                    if (q.explanation) {
+                        explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+                    }
+
+                    // Get options
+                    q.options.forEach((optText, index) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'option-btn';
+                        btn.textContent = optText;
+
+                        btn.onclick = function () {
+                            handleAnswer(btn, index, q.correct, optionsDiv, explanationDiv);
+                        };
+
+                        optionsDiv.appendChild(btn);
+                    });
+
+                    card.appendChild(optionsDiv);
+                    card.appendChild(explanationDiv);
+                    quizContainer.appendChild(card);
+                });
+            }
+
+            function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+                const allBtns = parentDiv.querySelectorAll('.option-btn');
+
+                // Disable all buttons
+                allBtns.forEach(b => b.classList.add('disabled'));
+
+                const isCorrect = correctIndices.includes(index);
+
+                if (isCorrect) {
+                    clickedBtn.classList.add('correct');
+                } else {
+                    clickedBtn.classList.add('incorrect');
+                }
+
+                // Always highlight the correct answer(s)
+                correctIndices.forEach(correctIndex => {
+                    allBtns[correctIndex].classList.add('correct');
+                });
+
+                explanationDiv.style.display = 'block';
+            }
+
+            // Render the quiz
+            renderQuiz();
+        });
+    </script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+</body>
+
+</html>

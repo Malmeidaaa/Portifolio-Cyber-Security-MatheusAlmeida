@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8: Infrastructure Threats and Security Monitoring</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.policy {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.standard {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .tag.procedure {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        .tag.guideline {
+            background: rgba(139, 148, 158, 0.15);
+            color: #8b949e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 8: Infrastructure Threats and Security Monitoring</h1>
+            <div class="subtitle" data-lang="en">Attacks on networks, security monitoring, and email defenses.</div>
+        </div>
+
+        <!-- Section I: Infrastructure Threats: Attacks on Networks -->
+        <section class="module-section">
+            <h2>I. Infrastructure Threats: Attacks on Networks</h2>
+            <p>Network attacks come in various forms, targeting different layers of communication or specific protocols.
+            </p>
+
+            <h3>A. On-Path Attacks</h3>
+            <p>An on-path attack occurs when a threat actor places themselves in the middle of communication between two
+                users or devices. A significant advantage of this type of attack is that it can proceed without the two
+                targets being aware of the attacker’s presence. The attacker gains flexibility, allowing them to either
+                eavesdrop to gather valuable information or modify the message before sending it to the recipient.</p>
+
+            <h4>1. Man-in-the-Middle (MITM) Attacks</h4>
+            <p>In a Man-in-the-Middle (MITM) attack, a threat actor positions themselves within a communication path
+                between two parties. The goal of an MITM attack is typically to eavesdrop on the conversation or
+                impersonate one of the legitimate parties. A typical MITM attack involves two phases: first,
+                intercepting the traffic, and second, decrypting the transmissions.</p>
+
+            <h4>2. Replay Attacks</h4>
+            <p>A replay attack involves making a copy of a legitimate transmission and then using that copy at a later
+                time. A specific type, the session replay attack, intercepts and subsequently uses a session ID to
+                impersonate a user. Threat actors utilize several techniques to steal an active session ID, including
+                network attacks (like MITM impersonation) and endpoint attacks (such as cross-site scripting, Trojans,
+                and malicious JavaScript coding).</p>
+
+            <h4>3. Man-in-the-Browser (MITB) Attacks</h4>
+            <p>A man-in-the-browser (MITB) attack intercepts communication, but specifically between a browser and the
+                underlying computer, often to steal or manipulate data. This type of attack usually starts with a Trojan
+                infecting the computer and installing an “extension” into the browser configuration. When the browser is
+                launched, the extension is activated and waits for a specific webpage (such as a financial institution
+                site) where a user enters sensitive information. When the user clicks “Submit,” the extension captures
+                all the data from the form fields.</p>
+
+            <h3>B. Domain Name System (DNS) Attacks</h3>
+            <p>The Domain Name System (DNS) is crucial as a hierarchical name system responsible for matching computer
+                names to corresponding IP addresses. A DNS-based attack replaces a legitimate DNS address, silently
+                redirecting the user's computer to a different device.</p>
+            <p>A successful DNS attack has two major consequences:</p>
+            <ol>
+                <li>URL redirection.</li>
+                <li>Domain reputation damage.</li>
+            </ol>
+            <table>
+                <thead>
+                    <tr>
+                        <th>DNS Attack Type</th>
+                        <th>Description</th>
+                        <th>Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>DNS Poisoning</strong></td>
+                        <td>Modifies a local host file on a device to point to a different domain, or adds an entry
+                            directing the computer to an attacker-controlled DNS server.</td>
+                        <td>Local device or the local DNS cache</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DNS Hijacking</strong></td>
+                        <td>Infects an external DNS server with IP addresses that point to malicious sites. This has the
+                            advantage of redirecting all users accessing that server. Attackers attempt to exploit a
+                            protocol flaw to convince the authentic DNS server to accept fraudulent entries.</td>
+                        <td>External DNS Server</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>C. Distributed Denial of Service (DDoS) Attacks</h3>
+            <p>A denial of service (DoS) attack is a deliberate attempt to prevent authorized users from accessing a
+                system by overwhelming it with requests. Most DoS attacks today are distributed denial of service (DDoS)
+                attacks, which utilize hundreds or thousands of devices to flood the target server with requests. The
+                endpoints participating in a DDoS attack are typically infected and controlled by threat actors, meaning
+                the legitimate users of those devices are completely unaware that their computers are part of the
+                attack.</p>
+            <p>Attackers use two main means to generate data sufficient to overwhelm a system:</p>
+            <ol>
+                <li>Using a large number of compromised devices, with each device sending bogus requests.</li>
+                <li>Using amplified attacks (reflection attacks), where threat actors target a misconfigured Internet
+                    device or service. This causes the misconfigured device/service to reflect and generate an even
+                    larger payload directed at the ultimate target.</li>
+            </ol>
+
+            <h3>D. Malicious Coding and Scripting Attacks</h3>
+            <p>Attacks on networks are frequently facilitated by malicious software code and scripts.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Scripting/Coding Environment</th>
+                        <th>Description and Attack Context</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PowerShell</strong></td>
+                        <td>A task automation and configuration management framework from Microsoft. Tasks are performed
+                            by specialized .NET classes called cmdlets. Attackers can inject code from the PowerShell
+                            environment into other processes without first storing any malicious code on the hard disk.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visual Basic for Applications (VBA)</strong></td>
+                        <td>An event-driven Microsoft programming language used to automate complex or repeated tasks.
+                            VBA is often used to create macros. Though dating back to the late 1990s, macros continue to
+                            be a key attack vector.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Python</strong></td>
+                        <td>A programming language runnable on several OS platforms. Best practices for security include
+                            using the latest version, staying current on vulnerabilities, being careful when formatting
+                            strings, and downloading only vetted libraries.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bash</strong></td>
+                        <td>The command language interpreter for the Linux/UNIX OS. Attackers utilize Bash scripting.
+                            Exploits have taken advantage of vulnerabilities, for example, one vulnerability allowed
+                            attackers to remotely attach a malicious executable file to a variable that is executed when
+                            Bash is invoked.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>E. Layer 2 Attacks</h3>
+            <p>The OSI reference model separates networking steps into seven layers, each performing specific tasks.
+                Layer 2, the Data Link Layer, is responsible for dividing data into packets. A compromise at Layer 2 can
+                potentially affect the entire communication.</p>
+
+            <h4>1. Address Resolution Protocol (ARP) Poisoning</h4>
+            <p>If the IP address for a device is known but the MAC address is not, the sending computer uses the Address
+                Resolution Protocol (ARP) packet to determine the corresponding MAC address. These MAC addresses are
+                stored in an ARP cache for future reference. ARP poisoning relies upon MAC spoofing, which is the
+                imitation of another computer achieved by changing the MAC address.</p>
+
+            <h4>2. MAC Spoofing Attacks</h4>
+            <p>Two common attacks involving the spoofing of MAC addresses are MAC cloning and MAC flooding.</p>
+            <ul>
+                <li><strong>MAC Cloning Attack:</strong> Threat actors discover a valid MAC address of a device
+                    connected to a switch and then spoof that MAC address on their own device. Consequently, the switch
+                    changes its MAC address table to link the cloned MAC address with the port to which the attacker’s
+                    device is connected.</li>
+                <li><strong>MAC Flooding Attack:</strong> A threat actor overflows the switch with spoofed Ethernet
+                    packets, with every packet containing a different source MAC address. This causes the switch to
+                    enter a failure mode, broadcasting all packets to all devices.</li>
+            </ul>
+
+            <h3>F. Credential Relay Attacks</h3>
+            <p>A credential relay attack attempts to steal authentication credentials and then use them to access a
+                system. Specifically, attackers intercept digests of user passwords as they are being transmitted and
+                then relay the clients’ credentials to impersonate the legitimate user.</p>
+        </section>
+
+        <!-- Section II: Security Monitoring and Alerting -->
+        <section class="module-section">
+            <h2>II. Security Monitoring and Alerting</h2>
+            <p>Monitoring involves examining network traffic, activity, transactions, or behavior to detect
+                security-related anomalies.</p>
+
+            <h3>A. Monitoring Methodologies</h3>
+            <p>There are four primary methodologies used for monitoring and threat detection:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Monitoring Methodology</th>
+                        <th>Definition and Mechanism</th>
+                        <th>Key Concept</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Anomaly Monitoring</strong></td>
+                        <td>Designed for detecting statistical anomalies. A secure baseline of normal activities is
+                            compiled, and an alarm is raised if there is a significant deviation from this reference set
+                            of data.</td>
+                        <td>Deviation from a Baseline</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Signature-based Monitoring</strong></td>
+                        <td>Examines network traffic, activity, transactions, or behavior to look for well-known
+                            patterns. These activities are compared against a predefined signature.</td>
+                        <td>Matching Predefined Patterns</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Behavior-based Monitoring</strong></td>
+                        <td>Uses the “normal” processes and actions as the standard. It continuously analyzes the
+                            behavior of processes and programs on a system and alerts the user if any abnormal actions
+                            are detected.</td>
+                        <td>Detecting Abnormal Actions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Heuristic Monitoring</strong></td>
+                        <td>Founded on experience-based techniques. It attempts to answer the question, “Will this do
+                            something harmful if it is allowed to execute?”.</td>
+                        <td>Experience-based Evaluation</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>B. Monitoring Activities</h3>
+            <p>Monitoring is composed of several continuous and discrete activities:</p>
+            <ul>
+                <li><strong>Scanning:</strong> A frequent and ongoing process, often automated, that continuously
+                    searches for evidence of an attack.</li>
+                <li><strong>Reporting:</strong> Generating documentation on the results of monitoring activities.</li>
+                <li><strong>Quarantine:</strong> Isolating systems that have been compromised.</li>
+                <li><strong>Alerting:</strong> Detecting and notifying operators about meaningful events that may denote
+                    an attack.</li>
+                <li><strong>Alert tuning:</strong> “Tweaking” the alerting function to weed out false positives.</li>
+                <li><strong>Archiving:</strong> Retaining historical documents and records of monitoring.</li>
+            </ul>
+
+            <h3>C. Tools for Monitoring and Alerting</h3>
+            <p>Organizations use specialized tools for collecting, analyzing, and acting upon security data.</p>
+
+            <h4>1. Packet and Flow Analysis</h4>
+            <p>Collecting and analyzing data packets that cross a network provides valuable security information, often
+                examining the entire contents of the packet.</p>
+            <ul>
+                <li><strong>Packet Analysis Tools:</strong>
+                    <ul>
+                        <li><strong>Wireshark:</strong> A popular GUI packet capture and analysis tool.</li>
+                        <li><strong>Tcpdump:</strong> A command-line packet analyzer.</li>
+                        <li><strong>Tcpreplay:</strong> A tool for editing packets and then replaying them back onto the
+                            network to observe their behavior.</li>
+                    </ul>
+                </li>
+                <li><strong>Flow Analysis (Network Traffic Analysis):</strong> This is the process of monitoring network
+                    devices and sounding an alert if traffic exceeds a predetermined baseline. Flow analysis for
+                    information security differs from traditional network traffic flow analysis because it eliminates
+                    monitoring agents, uses deep packet inspection, and provides richer information. NetFlow is a
+                    session sampling protocol that specifically collects IP network traffic.</li>
+            </ul>
+
+            <h4>2. Data Loss Prevention (DLP)</h4>
+            <p>Data loss prevention (DLP) is a system of security tools used to recognize, identify, and ensure
+                protection for data that is critical to the organization. Most DLP systems rely on content inspection,
+                which is a security analysis of the transaction within its approved context. Administrators create DLP
+                rules, which are uploaded to a DLP server. If a policy violation is detected by a DLP agent, it is
+                reported back to the DLP server.</p>
+
+            <h4>3. General Monitoring Tools</h4>
+            <ul>
+                <li><strong>Simple Network Management Protocol (SNMP):</strong> A protocol used to remotely monitor,
+                    manage, and configure devices on the network. An SNMP trap is a specific type of Protocol Data Unit
+                    (PDU) that sends an unsolicited message to the manager regarding critical events occurring in the
+                    managed device.</li>
+                <li><strong>Log Aggregation:</strong> This practice enables security personnel to gather events from
+                    disparate sources into a single entity, making it searchable and analyzable.</li>
+                <li><strong>Security Content Automation Protocols (SCAP):</strong> These protocols help automate
+                    vulnerability management and determine whether the enterprise is compliant with required security
+                    policies.</li>
+            </ul>
+
+            <h4>4. SIEM and SOAR Solutions</h4>
+            <p>Two advanced systems consolidate and automate security operations:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                        <th>Key Features</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Security Information and Event Management (SIEM)</strong></td>
+                        <td>Consolidates real-time security monitoring and the management of security information with
+                            the analysis and reporting of security events.</td>
+                        <td>Aggregation, Correlation, Automated alerting and triggers, Time synchronization, Event
+                            duplication and logs.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security Orchestration, Automation, and Response (SOAR)</strong></td>
+                        <td>Similar to a SIEM, designed to help security teams manage and respond to a high volume of
+                            warnings and alarms. However, SOAR takes it further by combining comprehensive data
+                            gathering and analytics to automate incident response.</td>
+                        <td>Comprehensive data gathering, Analytics, Automated incident response.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section III: Email Defenses -->
+        <section class="module-section">
+            <h2>III. Email Defenses</h2>
+            <p>Email security is vital given the common use of email as an attack vector.</p>
+
+            <h3>A. Email Components and Threats</h3>
+            <p>The basic components for sending and receiving email include the Mail User Agent (MUA) and the Mail
+                Transfer Agent (MTA). The MUA is the program used to read and send email from an endpoint. MTAs are
+                programs that accept email messages from senders and route them toward their recipients. As email is
+                transferred from one MTA to the next, information, including an analysis of the email by the MTA, is
+                added to the email header.</p>
+            <p>Threats related to email include:</p>
+            <ul>
+                <li>Malicious payload</li>
+                <li>Embedded links</li>
+                <li>Impersonation</li>
+                <li>Forwarding</li>
+            </ul>
+            <p>General defenses like spam and phishing filters can address phishing attacks, and anti-malware can
+                minimize malicious payloads. Specialized protocols and gateways provide more robust protection.</p>
+
+            <h3>B. Email Authentication and Security Mechanisms</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Defense Mechanism</th>
+                        <th>Function and Mechanism</th>
+                        <th>Key Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sender Policy Framework (SPF)</strong></td>
+                        <td>An email authentication method that identifies the MTA email servers authorized to send
+                            email for a domain.</td>
+                        <td>Protects a domain from spoofing and helps prevent valid domain messages from being marked as
+                            spam.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Domain Keys Identified Mail (DKIM)</strong></td>
+                        <td>An authentication technique that validates the content of the email message itself. This
+                            validation is accomplished through a digital signature.</td>
+                        <td>Validates message content integrity.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Domain-based Message Authentication, Reporting, and Conformance (DMARC)</strong>
+                        </td>
+                        <td>Allows the administrative owner of a domain to publish a policy in their DNS records. This
+                            policy specifies which mechanism (DKIM, SPF, or both) must be used when sending email from
+                            that domain.</td>
+                        <td>Enforces SPF and/or DKIM policies and enables reporting.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Secure Email Gateway (SEG)</strong></td>
+                        <td>Acts as a “proxy” for the organization’s email server. The SEG can filter and inspect emails
+                            for malicious content.</td>
+                        <td>Filters and inspects malicious content before reaching the internal server.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>A Secure Email Gateway (SEG) has limitations, including potentially providing only single-layer security,
+                exposing protections, and issues with multiple root domains.</p>
+        </section>
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide for Module 8</h2>
+            <h3>Quiz: Short-Answer Questions</h3>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. What is the primary goal of a Man-in-the-Middle (MITM) attack?</summary>
+                    <p>The primary goal is to eavesdrop on the conversation or impersonate one of the legitimate parties
+                        to steal information or manipulate data.</p>
+                </details>
+                <details>
+                    <summary>2. Explain the difference between a Replay attack and a Session Replay attack.</summary>
+                    <p>A standard Replay attack copies a legitimate transmission to use later. A Session Replay attack
+                        specifically intercepts and uses a valid session ID to impersonate a user and hijack their
+                        active
+                        session.</p>
+                </details>
+                <details>
+                    <summary>3. How does a DNS Poisoning attack differ from a DNS Hijacking attack?</summary>
+                    <p>DNS Poisoning targets the local device's host file or DNS cache. DNS Hijacking infects an
+                        external
+                        DNS server to redirect all users accessing that server to malicious sites.</p>
+                </details>
+                <details>
+                    <summary>4. What is the main characteristic of a Distributed Denial of Service (DDoS) attack?
+                    </summary>
+                    <p>It utilizes hundreds or thousands of compromised devices (botnet) to flood a target server with
+                        requests, overwhelming it and denying access to legitimate users.</p>
+                </details>
+                <details>
+                    <summary>5. Describe the "Amplified" or "Reflection" technique used in DDoS attacks.</summary>
+                    <p>Attackers send requests to a misconfigured device/service spoofing the target's IP. The device
+                        responds (reflects) with a much larger payload (amplification) directed at the target.</p>
+                </details>
+                <details>
+                    <summary>6. What is the purpose of Address Resolution Protocol (ARP) Poisoning?</summary>
+                    <p>To associate the attacker's MAC address with the IP address of a legitimate device (like the
+                        default gateway) in the victim's ARP cache, allowing the attacker to intercept traffic.</p>
+                </details>
+                <details>
+                    <summary>7. Define "MAC Spoofing" and name two common attacks that utilize it.</summary>
+                    <p>MAC Spoofing is imitating another computer by changing the MAC address. Two common attacks are
+                        MAC
+                        Cloning (copying a valid MAC) and MAC Flooding (overflowing the switch table).</p>
+                </details>
+                <details>
+                    <summary>8. What is the difference between Anomaly Monitoring and Signature-based Monitoring?
+                    </summary>
+                    <p>Anomaly Monitoring detects deviations from a baseline of normal activity. Signature-based
+                        Monitoring looks for known patterns or "signatures" of specific attacks.</p>
+                </details>
+                <details>
+                    <summary>9. Explain the function of a Security Information and Event Management (SIEM) system.
+                    </summary>
+                    <p>A SIEM consolidates real-time security monitoring and log management from disparate sources,
+                        providing aggregation, correlation, and automated alerting for security events.</p>
+                </details>
+                <details>
+                    <summary>10. What is the purpose of the Sender Policy Framework (SPF) in email security?</summary>
+                    <p>SPF is an email authentication method that identifies which mail servers are authorized to send
+                        email on behalf of a domain, preventing spoofing.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <ol>
+                <li><strong>Analyze the impact of Infrastructure Threats on modern network security.</strong> Discuss
+                    how
+                    attacks like MITM, DDoS, and DNS poisoning disrupt operations and what comprehensive strategies
+                    organizations should employ to mitigate these risks.</li>
+                <li><strong>Evaluate the effectiveness of different Security Monitoring Methodologies.</strong> Compare
+                    Anomaly, Signature, Behavior, and Heuristic monitoring. Which methodology (or combination) provides
+                    the most robust defense against zero-day threats vs. known vulnerabilities?</li>
+                <li><strong>Discuss the role of SIEM and SOAR in a Security Operations Center (SOC).</strong> How do
+                    these tools complement each other? Explain how automation in SOAR can reduce the "mean time to
+                    respond" (MTTR) to security incidents.</li>
+                <li><strong>Examine the vulnerabilities associated with Email as an attack vector.</strong> Why is email
+                    such a prevalent target? Discuss the importance of implementing SPF, DKIM, and DMARC in concert to
+                    secure organizational communication.</li>
+                <li><strong>Explain the significance of Layer 2 attacks and their mitigation.</strong> Why are attacks
+                    like ARP Poisoning and MAC Spoofing dangerous even if higher-layer security is in place? What
+                    specific controls can be implemented at the switch level to prevent them?</li>
+            </ol>
+
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td><strong>ARP Poisoning</strong></td>
+                    <td>An attack that corrupts the ARP cache, associating the attacker's MAC address with a legitimate
+                        IP.</td>
+                </tr>
+                <tr>
+                    <td><strong>DDoS (Distributed Denial of Service)</strong></td>
+                    <td>An attack using multiple computers (botnet) to overwhelm a target with traffic.</td>
+                </tr>
+                <tr>
+                    <td><strong>DKIM (Domain Keys Identified Mail)</strong></td>
+                    <td>Email authentication method that validates a message's domain name identity through
+                        cryptographic
+                        authentication.</td>
+                </tr>
+                <tr>
+                    <td><strong>DMARC</strong></td>
+                    <td>An email authentication protocol that gives domain owners the ability to protect their domain
+                        from unauthorized use (spoofing).</td>
+                </tr>
+                <tr>
+                    <td><strong>DNS Hijacking</strong></td>
+                    <td>An attack that infects an external DNS server with malicious IP addresses.</td>
+                </tr>
+                <tr>
+                    <td><strong>DNS Poisoning</strong></td>
+                    <td>An attack that modifies a local host file or DNS cache to redirect traffic.</td>
+                </tr>
+                <tr>
+                    <td><strong>MITM (Man-in-the-Middle)</strong></td>
+                    <td>An attack where the attacker secretly relays and possibly alters the communications between two
+                        parties.</td>
+                </tr>
+                <tr>
+                    <td><strong>SIEM (Security Information and Event Management)</strong></td>
+                    <td>A solution that provides real-time analysis of security alerts generated by applications and
+                        network hardware.</td>
+                </tr>
+                <tr>
+                    <td><strong>SOAR (Security Orchestration, Automation, and Response)</strong></td>
+                    <td>A solution stack of compatible software programs that allow an organization to collect data
+                        about
+                        security threats and respond to low-level security events without human assistance.</td>
+                </tr>
+                <tr>
+                    <td><strong>SPF (Sender Policy Framework)</strong></td>
+                    <td>An email authentication method that specifies the mail servers authorized to send email on
+                        behalf
+                        of your domain.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Full Practice Simulation -->
+        <div class="quiz-header">
+            <h2>Full Practice Simulation</h2>
+            <p>Test your knowledge with 45 practice questions. Select the best answer(s) for each question.</p>
+        </div>
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 M.A. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="module8_questions.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Back to Top functionality
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+
+
+            const quizContainer = document.getElementById('quiz-container');
+
+            function renderQuiz() {
+                quizContainer.innerHTML = '';
+                questions.forEach((q, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'question-card';
+
+                    const questionNumber = document.createElement('span');
+                    questionNumber.className = 'question-number';
+                    questionNumber.innerText = `Question ${q.id}`;
+
+                    const questionText = document.createElement('div');
+                    questionText.className = 'question-text';
+                    questionText.innerText = q.text;
+
+                    const optionsGrid = document.createElement('div');
+                    optionsGrid.className = 'options-grid';
+
+                    q.options.forEach((option, optIndex) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'option-btn';
+                        btn.innerText = option;
+                        btn.onclick = () => handleAnswer(btn, index, q.correct, card, explanation);
+                        optionsGrid.appendChild(btn);
+                    });
+
+                    const explanation = document.createElement('div');
+                    explanation.className = 'explanation';
+                    explanation.innerText = q.explanation;
+
+                    card.appendChild(questionNumber);
+                    card.appendChild(questionText);
+                    card.appendChild(optionsGrid);
+                    card.appendChild(explanation);
+                    quizContainer.appendChild(card);
+                });
+            }
+
+            function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+                const buttons = parentDiv.querySelectorAll('.option-btn');
+                buttons.forEach(btn => btn.classList.add('disabled')); // Disable all buttons
+
+                // Check if the clicked button index is in the correctIndices array
+                // We need to find the index of the clicked button among its siblings
+                const clickedIndex = Array.from(buttons).indexOf(clickedBtn);
+
+                if (correctIndices.includes(clickedIndex)) {
+                    clickedBtn.classList.add('correct');
+                } else {
+                    clickedBtn.classList.add('incorrect');
+                    // Highlight the correct answer(s)
+                    correctIndices.forEach(correctIndex => {
+                        buttons[correctIndex].classList.add('correct');
+                    });
+                }
+
+                explanationDiv.style.display = 'block';
+            }
+
+            renderQuiz();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5: Endpoint Vulnerabilities, Attacks, and Defenses</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.policy {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.standard {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .tag.procedure {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        .tag.guideline {
+            background: rgba(139, 148, 158, 0.15);
+            color: #8b949e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 5: Endpoint Vulnerabilities, Attacks, and Defenses</h1>
+            <div class="subtitle" data-lang="en">Comprehensive guide to endpoint security, malware types, and defensive
+                strategies.</div>
+        </div>
+
+        <section class="module-section">
+            <h2>I. Introduction and Endpoint Context</h2>
+            <h3>The Modern Concept of an Endpoint</h3>
+            <p>The term <strong>endpoint</strong> is the currently accepted word used to refer to network-connected
+                hardware devices. This shift reflects the evolution of technology, as computing devices today are far
+                more than just traditional desktop computers.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Historical Terminology for Network-Connected Devices</th>
+                        <th>Approximate Period of Use</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Host</strong></td>
+                        <td>Forty years ago (with the rise of the TCP/IP protocol)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Client</strong></td>
+                        <td>Thirty years ago (as servers became popular and clients made requests)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Workstation</strong></td>
+                        <td>Twenty years ago (specialized computers for scientific or highly technical applications)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Endpoint</strong></td>
+                        <td>Today (including smartphones, tablets, fitness trackers, ICS sensors, automotive telematics,
+                            and drones)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>The proliferation of endpoints has led to an exponential increase in risks, making them a prime target
+                for attackers. A vulnerability on a single endpoint can result in an attack that penetrates the network
+                and infects all other connected devices.</p>
+
+            <h3>The Ethical Dilemma: Bug Bounty vs. Attack and Cover-up</h3>
+            <p>A high-profile incident has raised serious concerns among security professionals regarding the definition
+                of an attack and how victims should react.</p>
+            <p>The case involved Joseph S., a former chief security officer at Uber, following an incident where threat
+                actors breached Uber's security and downloaded about 57 million records containing private data.</p>
+
+            <h4>The Attackers' Claim:</h4>
+            <p>The attackers claimed they had discovered a vulnerability on the company's website and demanded
+                <strong>"high compensation"</strong> for finding the flaw. They defined themselves as <strong>"white hat
+                    hackers"</strong>—ethical attackers who probe a system for weaknesses and privately provide
+                information back to the organization about uncovered vulnerabilities. In contrast, <strong>"black hat
+                    hackers"</strong> violate computer security for personal gain or to inflict malicious damage.
+            </p>
+
+            <h4>Uber's Decision:</h4>
+            <p>After much deliberation, an Uber attorney advised the team to treat the matter as a request for a
+                <strong>bug bounty</strong>. A bug bounty is a common practice where large corporations pay security
+                researchers who uncover and privately report bugs so they can be patched. Uber required the threat
+                actors to enroll in the bug bounty program, paid $100,000 in Bitcoin, and required them to sign both a
+                nondisclosure agreement (NDA) and a confidentiality agreement, attesting they had destroyed all stolen
+                data.
+            </p>
+
+            <h4>The Legal Consequences:</h4>
+            <p>Federal prosecutors, who were investigating Uber for a different incident, discovered what occurred and
+                charged Joseph S. with criminal obstruction, alleging he orchestrated a cover-up to avoid required
+                disclosures to the Federal Trade Commission (FTC) and various states (which all have mandatory breach
+                notification laws). Prosecutors characterized the case as "cover-up, about payoff, and about lies".
+                Joseph S. was later convicted of obstruction of justice in late 2022 and is appealing his case.</p>
+            <p>Many security professionals viewed this as a test case for potential criminal penalties they might face,
+                arguing that decisions on responding to cyber incidents are complex and usually made by consensus with
+                senior leadership, not unilaterally by the CSO.</p>
+        </section>
+
+        <section class="module-section">
+            <h2>II. Malware Attacks</h2>
+            <p><strong>Malware</strong> (malicious software) is a general term describing software designed to interfere
+                with a computer's normal functions and commit unwanted, harmful actions. Malware types can be classified
+                by examining the primary action they perform.</p>
+
+            <h3>Malware Actions for Classification</h3>
+            <p>The sources group malware actions into five categories: <strong>kidnap, eavesdrop, masquerade, launch,
+                    and sidestep</strong>.</p>
+
+            <h3>1. Kidnap - Ransomware</h3>
+            <p>Kidnapping, metaphorically, involves capturing a user's device and holding it "hostage" until a ransom is
+                paid. <strong>Ransomware</strong> is malicious software designed to extort money from victims in
+                exchange for restoring their endpoint device to its normal working state.</p>
+            <p>There are two general categories of ransomware:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ransomware Category</th>
+                        <th>Description and Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Blocking Ransomware</strong> (Legacy)</td>
+                        <td>The earliest form (widespread around 2010) that prevents or blocks the user from using their
+                            computer normally by manipulating the OS. Typically displays a message purporting to be from
+                            a reputable third party (like law enforcement) demanding a fine.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Locking Ransomware</strong> (Modern)</td>
+                        <td>A more malicious form that <strong>encrypts</strong> some or all files on the device so they
+                            cannot be opened. The device remains functional to facilitate easier ransom payment.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Locking ransomware has evolved to encrypt files not just on the local drive, but also on any network or
+                attached storage device connected to that endpoint, including USB drives, network servers, and
+                cloud-based data repositories.</p>
+            <p><strong>Extortion and Blended Ransomware Attacks:</strong> Attackers now use <strong>blended
+                    attacks</strong>: they first steal all accessible data before locking the files. If the victim
+                refuses to pay, threat actors threaten to publicly release the stolen information. Recently, attackers
+                have added extortion, threatening to sell the data to the highest bidder unless a large ransom is paid.
+            </p>
+
+            <h4>Ransomware: The Most Serious Threat:</h4>
+            <p>Ransomware is considered the most serious malware threat for several reasons:</p>
+            <ul>
+                <li><strong>Low barrier to entry:</strong> Launching an attack is relatively inexpensive (software
+                    rental is around $800/month) and does not require a high degree of skill.</li>
+                <li><strong>Pervasive attacks:</strong> Occur frequently (two out of every three organizations
+                    experienced a successful attack in 2021).</li>
+                <li><strong>High impact:</strong> Results are significant, forcing companies to lay off employees (37%),
+                    see senior-level managers resign (35%), or temporarily suspend business operations (33%).</li>
+            </ul>
+            <p><strong>FBI Stance on Paying Ransom:</strong> The FBI originally did not support paying ransoms, arguing
+                it encourages criminals, but later softened its stance, understanding that executives must evaluate all
+                options when faced with an inability to function.</p>
+
+            <h3>2. Eavesdrop - Keyloggers and Spyware</h3>
+            <p>This category of malware secretly listens to its targets.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Malware Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Keylogger</strong></td>
+                        <td>Silently captures and stores every keystroke a user types, allowing threat actors to search
+                            the captured text for sensitive information like passwords or credit card numbers.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spyware</strong></td>
+                        <td>Tracking software deployed without user consent or control. It secretly monitors users,
+                            collecting and distributing personal or sensitive information by utilizing the computer's
+                            resources and programs already installed.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Types of Keyloggers:</h4>
+            <ol>
+                <li><strong>Software Keyloggers:</strong> Programs installed remotely that capture sensitive
+                    information. They can also capture screen images and silently activate the computer’s web camera.
+                    Advantage: Does not require physical access; sends captured data back through the victim's internet
+                    connection.</li>
+                <li><strong>Hardware Keyloggers:</strong> Physical devices inserted between the keyboard connection and
+                    the USB port. They can easily go undetected as they resemble ordinary connectors and are beyond the
+                    reach of anti-malware scanning software. Disadvantage: The attacker must install and physically
+                    return later to remove the device and access stored information.</li>
+            </ol>
+
+            <h4>Technologies Used by Spyware:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Technology</th>
+                        <th>Description</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Automatic download software</strong></td>
+                        <td>Used to download and install software without the user’s interaction</td>
+                        <td>Could install unauthorized applications</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Passive tracking technologies</strong></td>
+                        <td>Used to gather information about user activities without installing any software</td>
+                        <td>Could collect private information such as websites a user has visited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>System-modifying software</strong></td>
+                        <td>Modifies or changes user configurations (web browser home page, default media player, system
+                            functions)</td>
+                        <td>Changes configurations to settings that the user did not approve</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tracking software</strong></td>
+                        <td>Used to monitor user behavior or gather sensitive information, sometimes including
+                            personally identifiable data</td>
+                        <td>Could collect personal information that can be widely shared or stolen, resulting in fraud
+                            or identity theft</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3. Masquerade - Trojans</h3>
+            <p>Malware in this category attempts to deceive the user and hide its true intentions by pretending to be
+                something else.</p>
+            <ul>
+                <li><strong>Trojan (Trojan Horse):</strong> An executable program that masquerades as performing a
+                    benign activity but also does something malicious. Example: A downloaded calendar program that
+                    secretly installs malware to scan for credit card numbers.</li>
+                <li><strong>Remote Access Trojan (RAT):</strong> A special type of Trojan that uses specially configured
+                    communication protocols to give the threat agent unauthorized, unrestricted remote access to the
+                    victim’s computer. This allows the attacker to monitor, change settings, copy files, and use the
+                    computer to access other networked devices.</li>
+            </ul>
+
+            <h3>4. Launch - Virus, Worm, Bloatware, Bot</h3>
+            <p>This category includes malware that infects a computer specifically to launch attacks on other computers.
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Malware Type</th>
+                        <th>Description</th>
+                        <th>Spread and Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>File-Based Virus</strong></td>
+                        <td>Malicious computer code that becomes part of a file, similar to a biological virus.</td>
+                        <td>Reproduces itself <strong>only on the host computer</strong>. It must rely on user actions
+                            (such as transferring the infected file via email or USB) to spread to other devices.
+                            Infection methods include <em>appender infection</em> or evasive techniques like <em>split
+                                infections</em> or <em>mutations</em>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fileless Virus</strong></td>
+                        <td>Does not attach to a file; instead, it uses native OS services and processes called
+                            <strong>Living-Off-the-Land Binaries (LOLBins)</strong> to avoid detection.
+                        </td>
+                        <td>The malicious code is loaded directly into the computer’s RAM (Random Access Memory).
+                            Advantages: does not require a specific file type, can launch automatically, and cannot be
+                            detected by anti-malware tools.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Worm</strong></td>
+                        <td>Malicious program that uses a computer network to replicate (sometimes called a "network
+                            virus").</td>
+                        <td>Designed to enter a computer through the network, exploit an OS or application
+                            vulnerability, and immediately search for other vulnerable computers. Today’s worms can
+                            carry payloads to delete files or allow remote control by an attacker.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bloatware</strong></td>
+                        <td>Software installed on a device without being requested by the user.</td>
+                        <td>Risks: may contain malware or may harbor a vulnerability that other malware can exploit. Can
+                            be preinstalled on new devices or installed unintentionally by overlooking default setup
+                            options (e.g., unwanted toolbars).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bot</strong> (or <strong>Zombie</strong>)</td>
+                        <td>An infected robot computer placed under the remote control of an attacker for launching
+                            attacks.</td>
+                        <td>Hundreds or millions of bots form a <strong>botnet</strong>, controlled by a <strong>bot
+                                herder</strong>. Bots receive instructions through a command and control (C&C)
+                            structure, often via bot-herding websites, coded posts on Twitter, or social media notes.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Windows File Types That Can Be Infected:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>File extension</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>.docx or .xlsx</td>
+                        <td>Microsoft Office user documents</td>
+                    </tr>
+                    <tr>
+                        <td>.exe</td>
+                        <td>Executable program file</td>
+                    </tr>
+                    <tr>
+                        <td>.msi</td>
+                        <td>Microsoft installer file</td>
+                    </tr>
+                    <tr>
+                        <td>.msp</td>
+                        <td>Windows installer patch file</td>
+                    </tr>
+                    <tr>
+                        <td>.scr</td>
+                        <td>Windows screen saver</td>
+                    </tr>
+                    <tr>
+                        <td>.cpl</td>
+                        <td>Windows Control Panel file</td>
+                    </tr>
+                    <tr>
+                        <td>.msc</td>
+                        <td>Microsoft Management Console file</td>
+                    </tr>
+                    <tr>
+                        <td>.wsf</td>
+                        <td>Windows script file</td>
+                    </tr>
+                    <tr>
+                        <td>.ps1</td>
+                        <td>Windows PowerShell script</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Microsoft Windows Common LOLBins:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PowerShell</strong></td>
+                        <td>A cross-platform and open source task automation and configuration management framework</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Windows Management Instrumentation (WMI)</strong></td>
+                        <td>A Microsoft standard for accessing management information about devices</td>
+                    </tr>
+                    <tr>
+                        <td><strong>.NET Framework</strong></td>
+                        <td>A free, cross-platform, open source developer platform for building different types of
+                            applications</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Macro</strong></td>
+                        <td>A series of instructions that can be grouped as a single command to automate tasks; stored
+                            within user documents (like .xlsx or .docx)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>5. Sidestep - Evasion of Detection</h3>
+            <p>This category attempts to help malware sidestep or evade detection.</p>
+            <ul>
+                <li><strong>Logic Bomb:</strong> Computer code added to a legitimate program that lies dormant until a
+                    specific logical event triggers it. Once started, it deletes data or performs other malicious
+                    activities. They are difficult to detect before triggering because they are often embedded in large
+                    programs.</li>
+                <li><strong>Rootkit:</strong> Malware that hides its presence (and the presence of other malware) by
+                    accessing lower layers of the OS or using undocumented functions to make alterations. This renders
+                    it undetectable by the OS or anti-malware scanning software.</li>
+                <li><strong>Backdoor:</strong> Provides access to a computer, program, or service by circumventing
+                    normal security protections. Backdoors allow an attacker to return later and bypass security
+                    settings. They are sometimes left installed unintentionally by developers.</li>
+            </ul>
+        </section>
+
+        <section class="module-section">
+            <h2>III. Application Vulnerabilities and Attacks</h2>
+            <p>Application attacks target vulnerabilities in installed software, frequently leading to <strong>privilege
+                    escalation</strong>. Escalation can be <em>horizontal</em> (gaining rights of an account with
+                similar privileges) or <em>vertical</em> (increasing elevation of rights).</p>
+
+            <h3>Common Application Vulnerabilities</h3>
+            <ol>
+                <li><strong>Buffer Overflow Attack:</strong> Occurs when a process attempts to store data in RAM
+                    exceeding the boundaries of a fixed-length storage buffer. The excess data overflows into adjacent
+                    memory locations. The attacker can substitute the program's <strong>"return address"</strong> in
+                    memory with an address pointing to their malicious code. These attacks are known as
+                    <strong>injections</strong> or <strong>memory injections</strong>.
+                </li>
+                <li><strong>Improper Exception and Error Handling:</strong> A vulnerability based on poor programming
+                    practices where an application fails to properly check for exceptions and errors during runtime. If
+                    software fails to "trap" an error condition (e.g., receiving an excessively long input string), it
+                    may crash and display an underlying OS prompt, giving the attacker system access.
+                    <ul>
+                        <li><strong>NULL Pointer/Object Dereference:</strong> A type of improper handling where the
+                            application dereferences a pointer (obtains the address of a data item) that is expected to
+                            be valid but holds a NULL value, typically causing a program crash or exit.</li>
+                    </ul>
+                </li>
+                <li><strong>Race Condition:</strong> Occurs when two concurrent threads of execution access a shared
+                    resource simultaneously, leading to unintended consequences. A key example is the <strong>Time of
+                        Check (TOC) to Time of Use (TOU)</strong> race condition: the resource's state changes between
+                    the time the software checks it and the time it uses it, invalidating the check's result.</li>
+            </ol>
+
+            <h3>Web-Based Attacks</h3>
+            <p>Web-based attacks are a common type of application attack directed at programs running on Internet web
+                servers.</p>
+            <p><strong>Web Application Infrastructure:</strong> The typical infrastructure involves a client (web
+                browser) making an HTTP request to a Web Server, which connects to App Servers that, in turn, connect to
+                Database Servers.</p>
+
+            <ol>
+                <li><strong>Directory Traversal:</strong> Exploits a vulnerability to allow a user to move from the
+                    restricted "root" directory on the web server's file system to other restricted directories,
+                    enabling the viewing of confidential files or execution of commands.</li>
+                <li><strong>Cross-Site Scripting (XSS):</strong> Exploits a website that accepts user input without
+                    <strong>sanitizing</strong> (validating) it and uses that input in a response. An attacker tricks a
+                    valid website into feeding a malicious script to another user's web browser, which then executes it.
+                    XSS refers to an attack originating on one site (the web server) to impact another (the user's
+                    computer).
+                </li>
+                <li><strong>SQL Injection (SQLi):</strong> One of the most common injection attacks, inserting
+                    <strong>Structured Query Language (SQL)</strong> statements to manipulate a database server. If user
+                    input is sent unfiltered to the database, malicious commands can be processed. For example, entering
+                    <code>whatever’ or ‘a’=‘a</code> can make the <code>WHERE</code> clause of a SQL query always true,
+                    resulting in the display of all user email addresses.
+                </li>
+            </ol>
+
+            <h4>SQLi Statements and Potential Results:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>SQL injection statement</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>whatever’ AND email IS NULL; --</code></td>
+                        <td>Determine the names of different fields in the database</td>
+                    </tr>
+                    <tr>
+                        <td><code>whatever’ AND 1=(SELECT COUNT(*) FROM tabname); —</code></td>
+                        <td>Discover the name of the table</td>
+                    </tr>
+                    <tr>
+                        <td><code>whatever’ OR full name LIKE ‘%Mia%’</code></td>
+                        <td>Find specific users</td>
+                    </tr>
+                    <tr>
+                        <td><code>whatever’; DROP TABLE members; --</code></td>
+                        <td>Erase the database table</td>
+                    </tr>
+                    <tr>
+                        <td><code>whatever’; UPDATE members SET email = ‘attacker-email@evil.net’ WHERE email = ‘Mia@good.com’;</code>
+                        </td>
+                        <td>Mail password to attacker’s email account</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ol start="4">
+                <li><strong>Request Forgery:</strong> A request that has been fabricated (a forgery).
+                    <ul>
+                        <li><strong>Cross-Site Request Forgery (CSRF):</strong> Takes advantage of an authentication
+                            "token" sent to the user's browser. If a user is authenticated and tricked into loading
+                            another webpage, the new page inherits the victim's identity and privileges, enabling the
+                            attacker to perform an undesired function on the victim's behalf.</li>
+                        <li><strong>Server-Side Request Forgery (SSRF):</strong> Exploits a trusting relationship
+                            between web servers (as opposed to client-to-server trust). By modifying a target URL, an
+                            attacker can potentially extract sensitive information or inject untrusted input.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>CSRF and SSRF Differences:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attack name</th>
+                        <th>Attack target</th>
+                        <th>Purpose of attack</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>CSRF</strong></td>
+                        <td>User</td>
+                        <td>Force target to take action for attacker while pretending to be authorized user</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SSRF</strong></td>
+                        <td>Web server</td>
+                        <td>Manipulate information or inject harmful data</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ol start="5">
+                <li><strong>Replay Attack:</strong> Copies data (often digital identities) sent between two parties and
+                    later retransmits selected and edited portions to impersonate the legitimate user. Many such attacks
+                    occur between a user and an authentication server.</li>
+            </ol>
+        </section>
+
+        <section class="module-section">
+            <h2>IV. Defending and Hardening Endpoint Devices</h2>
+            <p>Defenses are split into actively protecting endpoints from attacks and hardening them for greater
+                security.</p>
+
+            <h3>A. Protecting Endpoints (Software and Monitoring)</h3>
+            <p>Active protection is achieved through installed software, including antivirus, web browser protections,
+                and monitoring systems.</p>
+
+            <ol>
+                <li><strong>Antivirus (AV):</strong> Examines the computer for file-based virus infections, monitors
+                    activity, and scans new documents. If a virus is detected, options include cleaning, quarantining,
+                    or deleting the file.
+                    <ul>
+                        <li><strong>Signature-based monitoring (Static analysis):</strong> The original method that
+                            scans files by matching known virus patterns (signatures). Weakness: Requires constant
+                            updates of the signature database.</li>
+                        <li><strong>Heuristic monitoring (Dynamic analysis):</strong> A newer approach that uses
+                            techniques to spot the characteristics of a virus instead of exact pattern matches. This can
+                            involve code emulation in a virtual environment to safely execute questionable program code.
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Web Browser Protections:</strong>
+                    <ul>
+                        <li><strong>Secure Cookies:</strong> HTTP is a <em>stateless</em> protocol. A secure cookie is a
+                            protection mechanism that is only sent to the server with an encrypted request over the
+                            <strong>HTTPS</strong> protocol, preventing interception.
+                        </li>
+                        <li><strong>HTTP Response Headers:</strong> Instructions sent by the web server that tell the
+                            browser how to behave to enhance security.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>HTTP Response Headers:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>HTTP Response Header</th>
+                        <th>Description</th>
+                        <th>Protection</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>HTTP Strict Transport Security (HSTS)</strong></td>
+                        <td>Forces browser to communicate over more secure HTTPS instead of HTTP</td>
+                        <td>Encrypts transmissions to prevent unauthorized user from intercepting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Content Security Policy (CSP)</strong></td>
+                        <td>Restricts the resources a user is allowed to load within the website</td>
+                        <td>Protects against injection attacks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cross Site Scripting Protection (X-XSS)</strong></td>
+                        <td>Prohibits a page from loading if it detects a cross-site scripting attack</td>
+                        <td>Prevents XSS attacks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>X-Frame-Options</strong></td>
+                        <td>Prevents attackers from “overlaying” their content on the webpage</td>
+                        <td>Foils a threat actor’s attempt to trick a user into providing personal information</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ol start="3">
+                <li><strong>Monitoring and Response Systems:</strong>
+                    <ul>
+                        <li><strong>Host Intrusion Detection Systems (HIDS):</strong> Software application running on
+                            the endpoint that detects an attack has occurred (automated detection) by monitoring system
+                            calls, file system access, and host input/output.</li>
+                        <li><strong>Host Intrusion Prevention Systems (HIPS):</strong> Monitors endpoint activity and
+                            attempts to <strong>immediately block</strong> a malicious attack by following specific
+                            rules. Watches for events attempting to control or terminate programs, or install
+                            devices/drivers.</li>
+                        <li><strong>Endpoint Detection and Response (EDR):</strong> Considered more robust than HIDS and
+                            HIPS. It aggregates data from multiple endpoints to a centralized database for
+                            investigation. EDR tools perform sophisticated analytics to identify patterns and detect
+                            anomalies through baseline comparisons of normal behavior.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>B. Hardening Endpoints (OS Level Protections)</h3>
+            <p>Hardening involves patch management and operating system protections.</p>
+
+            <ol>
+                <li><strong>Patch Management:</strong> Installing software security updates (patching) is the single
+                    most important step in securing a device. Patches address vulnerabilities uncovered after software
+                    release.
+                    <ul>
+                        <li><strong>Patch Distribution:</strong> Organizations often use <strong>automated patch
+                                management tools</strong> (local servers) to test and manage patch distribution
+                            internally, rather than relying solely on the vendor's online update service. This saves
+                            bandwidth and allows administrators to approve, decline, or force updates.</li>
+                        <li><strong>Patch Reception:</strong> Modern OSs (e.g., Windows 11) limit user options to reject
+                            patches, though updates can be delayed for one to five weeks before they resume.</li>
+                    </ul>
+                </li>
+                <li><strong>Operating System Protections:</strong>
+                    <ul>
+                        <li><strong>Disabling Unnecessary Ports and Protocols:</strong> A primary OS security
+                            configuration involves closing unused ports and disabling unnecessary protocols and services
+                            (like Windows ASP.NET State Service).</li>
+                        <li><strong>Application Allow Listing:</strong> Approving only specific applications to run on
+                            the OS in advance; anything not approved will not function. This is a powerful anti-attack
+                            tool. Windows Defender uses this technique for ransomware protection via "controlled folder
+                            access".</li>
+                        <li><strong>Sandbox:</strong> A "container" where an application runs without impacting the
+                            underlying OS. Anything occurring within the sandbox is not visible to the OS outside, and
+                            the contents are not saved when closed. Used for safely running suspicious programs.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+
+        <section class="module-section">
+            <h2>V. Indicators of Attack (IoAs)</h2>
+            <p>Signs of an attack are categorized as follows:</p>
+            <ul>
+                <li><strong>Indicator of Attack (IoA):</strong> A sign an attack is currently <strong>underway</strong>.
+                </li>
+                <li><strong>Indicator of Compromise (IoC):</strong> Evidence that an attack <strong>has already taken
+                        place</strong>.</li>
+            </ul>
+
+            <h4>Indicators of Attack (IoAs):</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicator</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Account lockout</strong></td>
+                        <td>A user account is inaccessible through a normal login attempt, possibly indicating takeover
+                            by an attacker who is locking out the legitimate user</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Concurrent session usage</strong></td>
+                        <td>Both a legitimate user and an attacker are logged into the same account simultaneously</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Blocked content</strong></td>
+                        <td>Data that is no longer accessible can be an IoA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Impossible travel</strong></td>
+                        <td>Accessing a resource that is geographically impossible (e.g., checking email in New York and
+                            downloading a file in Los Angeles five minutes later)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resource consumption</strong></td>
+                        <td>System resources (memory or processing capabilities) are suddenly depleted</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resource inaccessibility</strong></td>
+                        <td>A large-scale attack can block access to system resources</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Out-of-cycle logging</strong></td>
+                        <td>Log records that do not correspond to actual events that have occurred</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Published/documented</strong></td>
+                        <td>Evidence from external sources indicating a current attack</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Missing logs</strong></td>
+                        <td>Log files that have mysteriously been deleted, indicating an ongoing attack</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="module-section">
+            <h2>VI. Overview of Hands-On Projects and Case Studies</h2>
+            <p>The sources detail several practical activities and research topics focused on endpoint security.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Activity Type</th>
+                        <th>Objective and Research/Practice Topics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Hands-On Projects</strong></td>
+                        <td>1. <strong>Microsoft Safety Scanner:</strong> Download and run the free tool to scan a
+                            computer for malware. <br> 2. <strong>Windows Security Configuration:</strong> Explore
+                            Windows 11 security settings, including the setup of <em>Controlled folder access</em> for
+                            ransomware protection. <br> 3. <strong>ConfigureDefender:</strong> Use a third-party tool to
+                            fine-tune Microsoft Defender settings. <br> 4. <strong>VirusTotal Analysis:</strong> Analyze
+                            files and URLs for potential malware using the combined results of 70 AV scanners and
+                            blacklisting services. <br> 5. <strong>Software Keylogger:</strong> Explore the features of
+                            a keylogger to understand how it captures data (keystrokes, screenshots, visited websites).
+                            <br> 6. <strong>Ransomware Sites:</strong> Research decryption tools and prevention advice
+                            on sites like nomoreransom.org.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Case Projects</strong></td>
+                        <td>1. <strong>Trending Cyber/Joseph S.:</strong> Analyze the ethical and legal implications of
+                            the Uber incident (cover-up vs. bug bounty). <br> 2. <strong>Biological and File-Based
+                                Viruses:</strong> Research similarities and methods for combating both types of viruses.
+                            <br> 3. <strong>LOLBins (Living-Off-the-Land Binaries):</strong> Research fileless viruses,
+                            comparing them to file-based viruses and detailing defense mechanisms. <br> 4.
+                            <strong>Infamous Logic Bombs:</strong> Research historical logic bombs, identifying
+                            responsible parties, damage caused, and prevention methods. <br> 5. <strong>Indicators of
+                                Compromise (IoCs):</strong> Research and identify IoCs (evidence of a post-attack
+                            scenario). <br> 6. <strong>External Software Components:</strong> Research attacks targeting
+                            Application Program Interfaces (APIs) and device drivers (e.g., <em>shimming</em> and
+                            <em>refactoring</em>). <br> 7. <strong>Paying Ransom:</strong> Analyze the pros and cons of
+                            paying a ransom (e.g., speed of recovery, regulatory fines, funding future attacks). <br> 8.
+                            <strong>Stopping Ransomware:</strong> Research proposals, such as regulating cryptocurrency
+                            exchanges, to combat ransomware crime. <br> 9. <strong>Application Attacks
+                                Presentation:</strong> Prepare a comparison presentation on XSS, SQLi, CSRF, and SSRF,
+                            and report on software <em>race conditions</em>.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide for Module 5</h2>
+
+            <h3>Quiz: Short-Answer Questions</h3>
+            <div class="interactive-quiz" id="short-answer-quiz">
+                <details>
+                    <summary>1. What is the term currently used to describe network-connected hardware devices?
+                    </summary>
+                    <p>Endpoint.</p>
+                </details>
+                <details>
+                    <summary>2. What are the five categories of malware actions?</summary>
+                    <p>Kidnap, eavesdrop, masquerade, launch, and sidestep.</p>
+                </details>
+                <details>
+                    <summary>3. What is the difference between a virus and a worm?</summary>
+                    <p>A virus requires a host file and user action to spread, whereas a worm is a standalone program
+                        that uses the network to replicate and spread automatically.</p>
+                </details>
+                <details>
+                    <summary>4. What is a logic bomb?</summary>
+                    <p>Malicious code added to a legitimate program that lies dormant until a specific logical event
+                        triggers it.</p>
+                </details>
+                <details>
+                    <summary>5. What is the difference between horizontal and vertical privilege escalation?</summary>
+                    <p>Horizontal escalation involves gaining access to an account with similar privileges, while
+                        vertical escalation involves gaining higher-level privileges.</p>
+                </details>
+                <details>
+                    <summary>6. What is Cross-Site Scripting (XSS)?</summary>
+                    <p>An attack where malicious scripts are injected into trusted websites and executed by the victim's
+                        browser.</p>
+                </details>
+                <details>
+                    <summary>7. What is the purpose of a bug bounty program?</summary>
+                    <p>To incentivize security researchers to find and report vulnerabilities so they can be patched
+                        before attackers exploit them.</p>
+                </details>
+                <details>
+                    <summary>8. What is a rootkit?</summary>
+                    <p>Malware that hides its presence by accessing lower layers of the OS or using undocumented
+                        functions.</p>
+                </details>
+                <details>
+                    <summary>9. What is the difference between an Indicator of Attack (IoA) and an Indicator of
+                        Compromise (IoC)?</summary>
+                    <p>An IoA indicates an attack is currently underway, while an IoC indicates an attack has already
+                        occurred.</p>
+                </details>
+                <details>
+                    <summary>10. What is application allow listing?</summary>
+                    <p>A security practice where only approved applications are allowed to run on a system.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <ol id="essay-questions">
+                <li>Discuss the ethical and legal implications of the Uber data breach cover-up. How should
+                    organizations handle vulnerability reports from "grey hat" or "black hat" hackers?</li>
+                <li>Compare and contrast signature-based monitoring and heuristic monitoring in antivirus software. What
+                    are the advantages and disadvantages of each?</li>
+                <li>Explain the mechanism of a SQL Injection attack and provide examples of how it can be used to
+                    manipulate a database. How can developers prevent SQLi?</li>
+                <li>Describe the concept of "Living-Off-the-Land Binaries" (LOLBins) and explain why they pose a
+                    significant challenge for traditional security defenses.</li>
+                <li>Analyze the rise of ransomware as a service (RaaS) and its impact on the threat landscape. What
+                    strategies can organizations implement to defend against ransomware?</li>
+            </ol>
+
+            <h3>Glossary</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                </thead>
+                <tbody id="glossary-body">
+                    <tr>
+                        <td><strong>Endpoint</strong></td>
+                        <td>A network-connected hardware device.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Malware</strong></td>
+                        <td>Malicious software designed to interfere with normal computer functions or commit harmful
+                            actions.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ransomware</strong></td>
+                        <td>Malware that restricts access to a computer system or data until a ransom is paid.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Keylogger</strong></td>
+                        <td>Software or hardware that records keystrokes to steal sensitive information.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trojan</strong></td>
+                        <td>Malware that disguises itself as legitimate software to deceive users.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rootkit</strong></td>
+                        <td>Malware designed to hide the existence of certain processes or programs from normal methods
+                            of detection.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Buffer Overflow</strong></td>
+                        <td>An anomaly where a program, while writing data to a buffer, overruns the buffer's boundary
+                            and overwrites adjacent memory locations.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SQL Injection (SQLi)</strong></td>
+                        <td>A code injection technique used to attack data-driven applications by inserting malicious
+                            SQL statements into entry fields.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cross-Site Scripting (XSS)</strong></td>
+                        <td>A vulnerability that allows attackers to inject malicious scripts into web pages viewed by
+                            other users.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Patch Management</strong></td>
+                        <td>The process of distributing and applying updates to software to correct vulnerabilities.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Full Practice Simulation -->
+        <div class="quiz-header">
+            <h2>Full Practice Simulation</h2>
+            <p>Test your knowledge with 45 practice questions. Select the best answer(s) for each question.</p>
+        </div>
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 M.A. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Back to Top functionality
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            const questions = [
+                {
+                    id: 1,
+                    text: "Which term is currently used to describe network-connected hardware devices?",
+                    options: ["Host", "Client", "Workstation", "Endpoint"],
+                    correct: [3],
+                    explanation: "The term 'endpoint' is the currently accepted word used to refer to network-connected hardware devices, reflecting the evolution of technology."
+                },
+                {
+                    id: 2,
+                    text: "Which term was used approximately 40 years ago to describe network-connected devices with the rise of TCP/IP?",
+                    options: ["Host", "Client", "Workstation", "Endpoint"],
+                    correct: [0],
+                    explanation: "Forty years ago, with the rise of the TCP/IP protocol, the term 'Host' was used."
+                },
+                {
+                    id: 3,
+                    text: "In the Uber incident involving Joseph S., what did the attackers demand in exchange for finding the vulnerability?",
+                    options: ["A job at Uber", "High compensation", "Public recognition", "Stock options"],
+                    correct: [1],
+                    explanation: "The attackers demanded 'high compensation' for finding the flaw."
+                },
+                {
+                    id: 4,
+                    text: "What is a 'bug bounty'?",
+                    options: ["A fine paid by attackers", "A reward for finding and reporting vulnerabilities", "A type of malware", "A government grant for security research"],
+                    correct: [1],
+                    explanation: "A bug bounty is a reward paid to security researchers who uncover and privately report bugs so they can be patched."
+                },
+                {
+                    id: 5,
+                    text: "Which category of malware action involves holding a user's device 'hostage'?",
+                    options: ["Eavesdrop", "Masquerade", "Kidnap", "Sidestep"],
+                    correct: [2],
+                    explanation: "Kidnapping involves capturing a user's device and holding it hostage, typically associated with ransomware."
+                },
+                {
+                    id: 6,
+                    text: "Which type of ransomware encrypts files so they cannot be opened?",
+                    options: ["Blocking Ransomware", "Locking Ransomware", "Scareware", "Adware"],
+                    correct: [1],
+                    explanation: "Locking ransomware encrypts some or all files on the device so they cannot be opened."
+                },
+                {
+                    id: 7,
+                    text: "What is a 'blended attack' in the context of ransomware?",
+                    options: ["Using multiple encryption algorithms", "Stealing data before locking files", "Attacking multiple companies at once", "Using both viruses and worms"],
+                    correct: [1],
+                    explanation: "Blended attacks involve stealing all accessible data before locking the files, often to threaten public release."
+                },
+                {
+                    id: 8,
+                    text: "Which malware category secretly listens to its targets?",
+                    options: ["Kidnap", "Eavesdrop", "Launch", "Masquerade"],
+                    correct: [1],
+                    explanation: "The 'Eavesdrop' category includes malware like keyloggers and spyware that secretly listens to targets."
+                },
+                {
+                    id: 9,
+                    text: "What is a keylogger?",
+                    options: ["Software that encrypts files", "Hardware that blocks ports", "Program that captures keystrokes", "Tool that scans for viruses"],
+                    correct: [2],
+                    explanation: "A keylogger silently captures and stores every keystroke a user types."
+                },
+                {
+                    id: 10,
+                    text: "Which type of keylogger is a physical device inserted between the keyboard and the computer?",
+                    options: ["Software Keylogger", "Hardware Keylogger", "Virtual Keylogger", "Cloud Keylogger"],
+                    correct: [1],
+                    explanation: "Hardware keyloggers are physical devices inserted between the keyboard connection and the USB port."
+                },
+                {
+                    id: 11,
+                    text: "What is the primary function of spyware?",
+                    options: ["To encrypt data", "To replicate across networks", "To track and collect user information without consent", "To launch DDoS attacks"],
+                    correct: [2],
+                    explanation: "Spyware is tracking software deployed without user consent to monitor users and collect information."
+                },
+                {
+                    id: 12,
+                    text: "Which malware category attempts to deceive the user by pretending to be something else?",
+                    options: ["Sidestep", "Launch", "Masquerade", "Kidnap"],
+                    correct: [2],
+                    explanation: "The 'Masquerade' category includes Trojans that pretend to be benign programs."
+                },
+                {
+                    id: 13,
+                    text: "What is a Remote Access Trojan (RAT)?",
+                    options: ["A virus that deletes files", "A tool for authorized remote support", "Malware giving unauthorized remote control to an attacker", "A type of ransomware"],
+                    correct: [2],
+                    explanation: "A RAT gives the threat agent unauthorized, unrestricted remote access to the victim's computer."
+                },
+                {
+                    id: 14,
+                    text: "Which type of malware reproduces itself ONLY on the host computer and relies on user action to spread?",
+                    options: ["Worm", "File-Based Virus", "Bot", "Rootkit"],
+                    correct: [1],
+                    explanation: "A file-based virus reproduces itself only on the host computer and relies on user actions to spread."
+                },
+                {
+                    id: 15,
+                    text: "What are Living-Off-the-Land Binaries (LOLBins) used for?",
+                    options: ["File-based virus propagation", "Fileless virus attacks", "Hardware keylogging", "Blocking ransomware"],
+                    correct: [1],
+                    explanation: "Fileless viruses use native OS services and processes called LOLBins to avoid detection."
+                },
+                {
+                    id: 16,
+                    text: "Which malware is designed to replicate across a network without user intervention?",
+                    options: ["Virus", "Trojan", "Worm", "Logic Bomb"],
+                    correct: [2],
+                    explanation: "A worm is designed to enter a computer through the network and immediately search for other vulnerable computers to replicate."
+                },
+                {
+                    id: 17,
+                    text: "What is a botnet?",
+                    options: ["A network of security robots", "A collection of infected computers controlled by an attacker", "A secure internal network", "A type of firewall"],
+                    correct: [1],
+                    explanation: "A botnet is a collection of hundreds or millions of 'bots' (infected computers) controlled by a bot herder."
+                },
+                {
+                    id: 18,
+                    text: "Which of the following is a common Windows LOLBin?",
+                    options: ["Notepad", "PowerShell", "Paint", "Calculator"],
+                    correct: [1],
+                    explanation: "PowerShell is a common LOLBin used for task automation and configuration management."
+                },
+                {
+                    id: 19,
+                    text: "What is a logic bomb?",
+                    options: ["Code that explodes physically", "Malware that triggers on a specific event", "A type of ransomware", "A virus that deletes the OS immediately"],
+                    correct: [1],
+                    explanation: "A logic bomb is code added to a legitimate program that lies dormant until a specific logical event triggers it."
+                },
+                {
+                    id: 20,
+                    text: "Which malware hides its presence by accessing lower layers of the OS?",
+                    options: ["Trojan", "Worm", "Rootkit", "Spyware"],
+                    correct: [2],
+                    explanation: "A rootkit hides its presence by accessing lower layers of the OS or using undocumented functions."
+                },
+                {
+                    id: 21,
+                    text: "What is a buffer overflow attack?",
+                    options: ["Flooding a network with traffic", "Writing data beyond the boundaries of a memory buffer", "Overfilling a hard drive", "Sending too many emails"],
+                    correct: [1],
+                    explanation: "A buffer overflow occurs when a process attempts to store data in RAM exceeding the boundaries of a fixed-length storage buffer."
+                },
+                {
+                    id: 22,
+                    text: "What is a NULL Pointer Dereference?",
+                    options: ["Pointing to a valid memory address", "Dereferencing a pointer with a NULL value", "A type of SQL injection", "A network protocol error"],
+                    correct: [1],
+                    explanation: "It is a type of improper handling where the application dereferences a pointer that holds a NULL value, typically causing a crash."
+                },
+                {
+                    id: 23,
+                    text: "What is a Race Condition?",
+                    options: ["A competition between hackers", "Two threads accessing a shared resource simultaneously", "A fast network connection", "A type of virus"],
+                    correct: [1],
+                    explanation: "A race condition occurs when two concurrent threads of execution access a shared resource simultaneously, leading to unintended consequences."
+                },
+                {
+                    id: 24,
+                    text: "What is Directory Traversal?",
+                    options: ["Moving files between folders", "Exploiting a vulnerability to access restricted directories", "Listing all files on a server", "Creating new directories"],
+                    correct: [1],
+                    explanation: "Directory traversal exploits a vulnerability to allow a user to move from the restricted root directory to other restricted directories."
+                },
+                {
+                    id: 25,
+                    text: "Which attack involves injecting malicious scripts into a trusted website?",
+                    options: ["SQL Injection", "Cross-Site Scripting (XSS)", "Buffer Overflow", "Replay Attack"],
+                    correct: [1],
+                    explanation: "XSS exploits a website that accepts user input without sanitizing it, allowing malicious scripts to be executed by the victim's browser."
+                },
+                {
+                    id: 26,
+                    text: "What is SQL Injection (SQLi) used for?",
+                    options: ["Injecting HTML into a webpage", "Manipulating a database server", "Overloading a network", "Stealing cookies"],
+                    correct: [1],
+                    explanation: "SQLi involves inserting SQL statements to manipulate a database server."
+                },
+                {
+                    id: 27,
+                    text: "Which SQL injection statement could erase a database table?",
+                    options: ["' OR '1'='1", "DROP TABLE members;", "SELECT * FROM users", "UPDATE users SET"],
+                    correct: [1],
+                    explanation: "'DROP TABLE members;' is a SQL command that deletes a table."
+                },
+                {
+                    id: 28,
+                    text: "What is Cross-Site Request Forgery (CSRF)?",
+                    options: ["Forging a digital signature", "Forcing a user to perform an unwanted action on a trusted site", "Stealing a user's password", "Injecting SQL commands"],
+                    correct: [1],
+                    explanation: "CSRF forces a target to take action for the attacker while pretending to be the authorized user."
+                },
+                {
+                    id: 29,
+                    text: "What is the difference between CSRF and SSRF?",
+                    options: ["CSRF targets the server, SSRF targets the user", "CSRF targets the user, SSRF targets the web server", "They are the same", "CSRF is for databases, SSRF is for files"],
+                    correct: [1],
+                    explanation: "CSRF targets the user, while Server-Side Request Forgery (SSRF) targets the web server."
+                },
+                {
+                    id: 30,
+                    text: "What is a Replay Attack?",
+                    options: ["Playing a video twice", "Retransmitting captured data to impersonate a user", "Restarting a server", "Re-encrypting a file"],
+                    correct: [1],
+                    explanation: "A replay attack copies data sent between two parties and later retransmits it to impersonate the legitimate user."
+                },
+                {
+                    id: 31,
+                    text: "Which antivirus monitoring method relies on a database of known virus patterns?",
+                    options: ["Heuristic monitoring", "Signature-based monitoring", "Behavioral monitoring", "Cloud monitoring"],
+                    correct: [1],
+                    explanation: "Signature-based monitoring (static analysis) scans files by matching known virus patterns (signatures)."
+                },
+                {
+                    id: 32,
+                    text: "What is Heuristic monitoring?",
+                    options: ["Scanning for signatures", "Dynamic analysis using code emulation", "Monitoring network traffic", "Checking file sizes"],
+                    correct: [1],
+                    explanation: "Heuristic monitoring (dynamic analysis) uses techniques to spot virus characteristics, often involving code emulation."
+                },
+                {
+                    id: 33,
+                    text: "What is HTTP Strict Transport Security (HSTS)?",
+                    options: ["A protocol for file transfer", "A header forcing browsers to use HTTPS", "A type of firewall", "A database security feature"],
+                    correct: [1],
+                    explanation: "HSTS is an HTTP response header that forces the browser to communicate over secure HTTPS."
+                },
+                {
+                    id: 34,
+                    text: "Which HTTP header protects against injection attacks by restricting resources?",
+                    options: ["HSTS", "Content Security Policy (CSP)", "X-Frame-Options", "X-XSS-Protection"],
+                    correct: [1],
+                    explanation: "Content Security Policy (CSP) restricts the resources a user is allowed to load within the website."
+                },
+                {
+                    id: 35,
+                    text: "What does Host Intrusion Prevention System (HIPS) do?",
+                    options: ["Only logs attacks", "Immediately blocks malicious attacks", "Scans for viruses daily", "Encrypts hard drives"],
+                    correct: [1],
+                    explanation: "HIPS monitors endpoint activity and attempts to immediately block a malicious attack."
+                },
+                {
+                    id: 36,
+                    text: "What is Endpoint Detection and Response (EDR)?",
+                    options: ["A basic antivirus", "A tool that aggregates data for investigation and analysis", "A firewall rule", "A patch management tool"],
+                    correct: [1],
+                    explanation: "EDR aggregates data from multiple endpoints to a centralized database for sophisticated analytics and investigation."
+                },
+                {
+                    id: 37,
+                    text: "What is the single most important step in securing a device?",
+                    options: ["Installing a firewall", "Patch management", "Using strong passwords", "Disabling USB ports"],
+                    correct: [1],
+                    explanation: "Installing software security updates (patching) is considered the single most important step."
+                },
+                {
+                    id: 38,
+                    text: "What is Application Allow Listing?",
+                    options: ["Listing all installed apps", "Approving only specific applications to run", "Blocking specific apps", "Updating apps automatically"],
+                    correct: [1],
+                    explanation: "Application Allow Listing involves approving only specific applications to run on the OS in advance."
+                },
+                {
+                    id: 39,
+                    text: "What is a Sandbox?",
+                    options: ["A playground for kids", "A container where apps run without impacting the OS", "A type of virus", "A network zone"],
+                    correct: [1],
+                    explanation: "A sandbox is a container where an application runs without impacting the underlying OS."
+                },
+                {
+                    id: 40,
+                    text: "What is an Indicator of Attack (IoA)?",
+                    options: ["Evidence an attack has happened", "A sign an attack is currently underway", "A report of a vulnerability", "A patch release"],
+                    correct: [1],
+                    explanation: "An IoA is a sign that an attack is currently underway."
+                },
+                {
+                    id: 41,
+                    text: "What is an Indicator of Compromise (IoC)?",
+                    options: ["Evidence an attack has already taken place", "A warning of a future attack", "A firewall log", "A system crash"],
+                    correct: [0],
+                    explanation: "An IoC is evidence that an attack has already taken place."
+                },
+                {
+                    id: 42,
+                    text: "Which of the following is an example of an IoA?",
+                    options: ["Missing logs", "Account lockout", "Published breach report", "Found malware file"],
+                    correct: [1],
+                    explanation: "Account lockout can indicate a takeover attempt currently happening (IoA)."
+                },
+                {
+                    id: 43,
+                    text: "What does 'Impossible Travel' indicate?",
+                    options: ["A user traveling very fast", "Accessing resources from geographically impossible locations", "A GPS error", "A VPN connection"],
+                    correct: [1],
+                    explanation: "Impossible travel refers to accessing a resource from geographically impossible locations within a short timeframe."
+                },
+                {
+                    id: 44,
+                    text: "What is 'Out-of-cycle logging'?",
+                    options: ["Logging during the day", "Log records that do not correspond to actual events", "Deleting logs", "Encrypting logs"],
+                    correct: [1],
+                    explanation: "Out-of-cycle logging refers to log records that do not correspond to actual events that have occurred."
+                },
+                {
+                    id: 45,
+                    text: "Which tool allows you to fine-tune Microsoft Defender settings?",
+                    options: ["ConfigureDefender", "Notepad", "Paint", "Calculator"],
+                    correct: [0],
+                    explanation: "ConfigureDefender is a third-party tool used to fine-tune Microsoft Defender settings."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+
+            function renderQuiz() {
+                if (questions.length === 0) return;
+
+                questions.forEach((q) => {
+                    const card = document.createElement('div');
+                    card.className = 'question-card';
+
+                    // Header
+                    const qNumber = document.createElement('span');
+                    qNumber.className = 'question-number';
+                    qNumber.textContent = `QUESTION ${q.id}`;
+
+                    const qText = document.createElement('div');
+                    qText.className = 'question-text';
+                    qText.textContent = q.text;
+
+                    card.appendChild(qNumber);
+                    card.appendChild(qText);
+
+                    // Options
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options-grid';
+
+                    // Explanation
+                    const explanationDiv = document.createElement('div');
+                    explanationDiv.className = 'explanation';
+                    if (q.explanation) {
+                        explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+                    }
+
+                    // Get options
+                    q.options.forEach((optText, index) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'option-btn';
+                        btn.textContent = optText;
+
+                        btn.onclick = function () {
+                            handleAnswer(btn, index, q.correct, optionsDiv, explanationDiv);
+                        };
+
+                        optionsDiv.appendChild(btn);
+                    });
+
+                    card.appendChild(optionsDiv);
+                    card.appendChild(explanationDiv);
+                    quizContainer.appendChild(card);
+                });
+            }
+
+            function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+                const allBtns = parentDiv.querySelectorAll('.option-btn');
+
+                // Disable all buttons
+                allBtns.forEach(b => b.classList.add('disabled'));
+
+                const isCorrect = correctIndices.includes(index);
+
+                if (isCorrect) {
+                    clickedBtn.classList.add('correct');
+                } else {
+                    clickedBtn.classList.add('incorrect');
+                }
+
+                // Always highlight the correct answer(s)
+                correctIndices.forEach(correctIndex => {
+                    allBtns[correctIndex].classList.add('correct');
+                });
+
+                explanationDiv.style.display = 'block';
+            }
+
+            // Render the quiz
+            renderQuiz();
+        });
+    </script>
+</body>
+
+</html>

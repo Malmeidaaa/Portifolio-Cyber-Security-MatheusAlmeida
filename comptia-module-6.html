@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6: Lightweight Cryptography, Mobile Security, and Embedded Systems</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.policy {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.standard {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .tag.procedure {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        .tag.guideline {
+            background: rgba(139, 148, 158, 0.15);
+            color: #8b949e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 6: Lightweight Cryptography, Mobile Security, and Embedded Systems</h1>
+            <div class="subtitle" data-lang="en">Exploring security in resource-constrained environments, mobile
+                devices, and embedded systems.</div>
+        </div>
+
+        <!-- Section I: Lightweight Cryptography -->
+        <section class="module-section">
+            <h2>Lightweight Cryptography for Tiny Devices</h2>
+            <p>Information security on small, low-power devices poses a unique challenge because the principle of
+                <strong>"one size fits all" does not apply to small device cryptography</strong>. Encryption and
+                decryption are resource-intensive tasks, requiring significant processing and storage capacities.
+            </p>
+            <p>Tiny sensors and actuators, such as implanted medical devices, stress detectors inside roads and bridges,
+                and keyless entry fobs for vehicles, lack the diminutive size and limited power (usually powered by
+                tiny, embedded batteries) required to use the same cryptographic software that a standard computer uses.
+                Therefore, lightweight electronics require <strong>lightweight cryptographic algorithms</strong>.</p>
+
+            <h3>The Ascon Standard and the NIST Competition</h3>
+            <p>In 2018, the <strong>National Institute of Standards and Technology (NIST)</strong> launched a
+                competitive program to crown a new cryptography standard for tiny devices. NIST began by working with a
+                wide range of industries to understand the needs of these devices and published strict criteria for
+                submissions.</p>
+            <p>The criteria required the specialized cryptography to provide, first and foremost, <strong>strong
+                    encryption for lightweight electronics</strong>. Additionally, NIST sought other important factors:
+                <strong>performance and flexibility</strong> in terms of speed, size, and energy consumption.
+            </p>
+            <p>A total of 57 submissions were initially received. NIST employed a multi-round public review process in
+                which cryptographers examined and attempted to find weaknesses in each candidate. Ten finalists were
+                identified and subjected to even greater scrutiny.</p>
+            <p>Finally, in early 2023, the winner was announced: <strong>Ascon</strong>.</p>
+
+            <h4>Details on Ascon</h4>
+            <p>The Ascon cryptographic algorithm was developed in 2014 by a team of cryptographers from institutions in
+                Austria, the Netherlands, and Germany. Ascon had the additional advantage of being selected in 2019 as
+                the primary choice for lightweight authenticated encryption in a separate competition organized by the
+                CAESAR group (Competition for Authenticated Encryption: Security, Applicability, and Robustness).</p>
+            <p>Ascon is a <strong>"family" of seven different technologies</strong>. This family offers a range of
+                functionality that gives designers different options for various tasks. Two tasks are among the most
+                important in lightweight cryptography:</p>
+            <ul>
+                <li><strong>Authenticated Encryption with Associated Data (AEAD)</strong>: AEAD protects the
+                    confidentiality of a message but also allows extra information to be included without being
+                    encrypted. This extra information may include the header of a message or a device’s IP address. AEAD
+                    can be used in applications such as vehicle-to-vehicle communications or in identification tags that
+                    track packages in warehouses.</li>
+                <li><strong>Hashing</strong>: Creates a digital fingerprint of a message, which can be used in
+                    lightweight cryptography to determine whether a software update is appropriate or has downloaded
+                    correctly.</li>
+            </ul>
+            <p>It is important to note that Ascon is not intended to replace standard cryptography on devices that do
+                not have resource constraints, nor is it primarily designed for post-quantum encryption. The final NIST
+                standard is expected to be formally released in late 2023.</p>
+        </section>
+
+        <!-- Section II: Mobile Device Security -->
+        <section class="module-section">
+            <h2>Mobile Device Security</h2>
+            <p>The current technological landscape is marked by a dizzying array of sensors, miniature devices, and
+                mobile technologies. Although users have flocked to these devices, attackers have also been drawn to
+                them, targeting valuable personal data or manipulating them to spy on occupants. Security on these
+                devices is usually scant or even nonexistent, making them easy targets.</p>
+            <p>Mobile devices (like smartphones and tablets) and endpoint devices (which include any device connected to
+                a network, from PCs to fitness trackers and automotive telematics units) have become a prime target for
+                attackers, and a vulnerability on a single endpoint can penetrate the entire network.</p>
+
+            <h3>1. Types of Mobile Devices</h3>
+            <p>There are a variety of mobile devices, with different shapes, sizes, and functionalities.</p>
+
+            <h4>Tablets</h4>
+            <p>Tablets are portable computing devices first introduced in 2010. They are designed for user convenience,
+                being thinner, lighter, and more intuitive to use than other computer types. They generally lack a
+                built-in keyboard or mouse, relying instead on a touch screen and touch gestures for input.</p>
+            <ul>
+                <li><strong>Characteristics:</strong> Classified by screen size (5–8.5 inches and 8.5–10 inches are
+                    common), generally weigh less than 1.5 pounds (0.68 kg), and are less than 1/2 inch thick.</li>
+                <li><strong>Capabilities:</strong> Modern tablets are powerful enough to be alternatives to standard
+                    laptops, with large storage capacities and powerful processors.</li>
+                <li><strong>Popular OSs:</strong> Apple iPadOS, Google Android, and Microsoft Windows.</li>
+            </ul>
+
+            <h4>Smartphones</h4>
+            <p>Smartphones evolved from "feature phones" (cellular phones that integrated only a single feature, like a
+                camera or MP3 player).</p>
+            <ul>
+                <li><strong>Characteristics:</strong> Have a touchscreen display, one or more powerful cameras, and
+                    external storage capabilities.</li>
+                <li><strong>Functionality:</strong> Unlike feature phones, smartphones have an Operating System (OS),
+                    which gives them a much broader range of functionality. Users can install apps for productivity,
+                    social networking, music, etc., and can access the Internet through different means.</li>
+            </ul>
+
+            <h4>Wearables</h4>
+            <p>These consist of devices that can be worn by the user instead of carried, offering greater flexibility
+                and mobility.</p>
+            <ul>
+                <li><strong>Smartwatches:</strong> Originally used to receive smartphone notifications. Today, they can
+                    manage media playback, serve as a contactless payment system, and even call emergency services.</li>
+                <li><strong>Fitness Trackers:</strong> Originally designed to monitor physical activity (like step
+                    counting), they have evolved into sophisticated health-monitoring devices. They can provide
+                    continual heart rate monitoring, GPS tracking, oxygen consumption, repetition counting, and sleep
+                    monitoring.</li>
+                <li><strong>Reading Technology:</strong> Many fitness trackers and smartwatches use <strong>two
+                        different colors of LED lights</strong> (green and red) on the underside to take readings on the
+                    human body (photoplethysmography or PPG).
+                    <ul>
+                        <li><strong>Green LEDs:</strong> Used during exercise, as human blood absorbs green light. They
+                            are more accurate for rapid heart rates.</li>
+                        <li><strong>Red LEDs:</strong> Used when the wearer is not exercising. Human blood reflects red
+                            light. They require less power, saving battery life.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>Portable Computers</h4>
+            <p>Devices that closely mirror the functionality of standard desktop computers, running the same OS
+                (Windows, macOS, Linux) and application software.</p>
+            <ul>
+                <li><strong>Laptop:</strong> Designed to replicate the abilities of a desktop computer, while being
+                    small enough for use on a lap.</li>
+                <li><strong>Notebook:</strong> A smaller, lightweight version of a laptop, easy to carry inside a
+                    briefcase.</li>
+                <li><strong>Convertible or 2-in-1:</strong> Can take on a variety of physical "poses" (laptop, tablet,
+                    stand, or tent) due to a flexible hinge.</li>
+                <li><strong>Web-based Computers:</strong> Internet-focused, containing a limited version of an OS and a
+                    web browser. Traditional software applications cannot be installed, and user storage is limited, as
+                    they access online web apps and save user files on the web. Common OSs include Google Chrome OS and
+                    Microsoft Windows in S Mode.</li>
+            </ul>
+
+            <h3>2. Mobile Device Connectivity Methods</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Connectivity Method</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cellular</strong></td>
+                        <td>The network is divided into hexagonal cells. Devices connect to a cell transmitter, which
+                            connects to a Mobile Telecommunication Switching Office (MTSO). The current technology is
+                            <strong>5G</strong>, which delivers higher speeds but has a smaller cell footprint.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wi-Fi</strong></td>
+                        <td>A Wireless Local Area Network (WLAN) designed to replace or supplement a wired LAN.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bluetooth</strong></td>
+                        <td>Wireless technology that uses short-range radio frequency transmissions to provide rapid
+                            device pairings.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>USB Connections</strong></td>
+                        <td>Used for data transfer. The standard connection type on mobile devices is <strong>USB
+                                Type-C</strong>. The European Union regulated that by the end of 2024, all mobile
+                            phones, tablets, and cameras sold in the EU must be equipped with a USB Type-C charging
+                            port.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3. Enterprise Deployment Models</h3>
+            <p>Due to the widespread use of mobile devices, many organizations have adopted enterprise deployment
+                models.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Bring Your Own Device (BYOD)</strong></td>
+                        <td>Allows users to use their own personal mobile devices for business purposes.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Corporate Owned, Personally Enabled (COPE)</strong></td>
+                        <td>The company purchases and owns the device, but the employee can use it for personal
+                            purposes.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Choose Your Own Device (CYOD)</strong></td>
+                        <td>The employee chooses from a limited list of approved devices, pays the upfront cost, but the
+                            company owns the contract, potentially providing a small monthly stipend.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Corporate-Owned (CO)</strong></td>
+                        <td>Devices purchased and owned by the enterprise.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Benefits for the Enterprise</strong> (BYOD, COPE, and CYOD): Management flexibility, less
+                oversight, cost savings (employees purchase or receive a stipend), simplified IT infrastructure, and
+                reduced strain on IT help desks.<br>
+                <strong>User Benefits</strong> (BYOD, COPE, and CYOD): Choice of device and carrier, and convenience of
+                carrying only a single device.
+            </p>
+
+            <h3>4. Mobile Device Risks and Vulnerabilities</h3>
+            <p>The increasing reliance on mobile devices for accessing sensitive data (customer lists, banking details,
+                etc.) has heightened the interest of threat actors. Almost half of organizations (45%) reported
+                suffering a compromise due to a mobile device.</p>
+
+            <h4>Mobile Device Vulnerabilities</h4>
+            <ul>
+                <li><strong>Physical Security:</strong> Portability is the greatest vulnerability. Devices are routinely
+                    lost or stolen (70 million smartphones lost annually). A stolen device can serve as an entry point
+                    to view corporate data or infiltrate the corporate network.</li>
+                <li><strong>Limited Updates:</strong>
+                    <ul>
+                        <li><strong>Apple iOS:</strong> Apple commits to providing <em>over-the-air</em> (OTA) updates
+                            for at least four years.</li>
+                        <li><strong>Google Android:</strong> OTA updates vary considerably. Google devices receive
+                            updates for three years; other OEMs (Original Equipment Manufacturers) are required to
+                            provide OTAs for at least two years. Many OEMs hesitate to distribute updates after two
+                            years to differentiate themselves or due to lack of financial incentive. This results in
+                            vulnerable devices if used for long periods.</li>
+                    </ul>
+                </li>
+                <li><strong>Location Tracking (Geolocation):</strong> While useful (navigation, reducing bank card
+                    fraud), geolocation increases the risk of targeted physical attacks. Attackers can determine the
+                    user's current location to steal the device or inflict harm.
+                    <ul>
+                        <li><strong>GPS Tagging (Geo-tagging):</strong> Adds geographical identification data to media
+                            (like digital photos), potentially inadvertently identifying a specific private location.
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Unauthorized Recording:</strong> Video cameras and microphones on mobile devices are
+                    frequent targets, allowing a threat actor to secretly spy and record using malware.</li>
+                <li><strong>Connection Vulnerabilities:</strong> Vulnerabilities in mobile device connections can also
+                    be exploited by threat actors.</li>
+            </ul>
+
+            <h4>Accessing Untrusted Content</h4>
+            <p>Accessing untrusted content can introduce malware into the device.</p>
+            <ul>
+                <li><strong>Unapproved Apps:</strong> Users are normally required to access official stores (Apple App
+                    Store or Google Play Store) to download apps.
+                    <ul>
+                        <li><strong>Jailbreaking and Rooting:</strong> Users can circumvent the built-in limitations on
+                            their smartphone (<strong>jailbreaking</strong> on iOS; <strong>rooting</strong> on
+                            Android). This grants access to the underlying OS and file system with full permissions,
+                            essentially bypassing all security protections.</li>
+                        <li><strong>Sideloading:</strong> Apps are downloaded from an unofficial and unapproved
+                            third-party source. These "rogue" apps have not been vetted and often contain malware.</li>
+                        <li><strong>Digital Markets Act (DMA):</strong> The EU passed the DMA in 2022 (applicable in
+                            2023), requiring Apple and similar providers to offer alternatives to their own app stores.
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Messaging:</strong> Threat actors can send SMS (Short Message Service), MMS (Multimedia
+                    Messaging Service), or RCS (Rich Communication Services) texts containing links to untrusted content
+                    or specially crafted videos that introduce malware.</li>
+                <li><strong>QR Codes (Quick Response Codes):</strong> Two-dimensional barcodes that can store website
+                    URLs, plaintext, phone numbers, etc.. An attacker can create a QR code with a malicious URL (e.g.,
+                    disguised as a bank website) that directs the device's web browser to the attacker's imposter site
+                    or a site that immediately downloads malware.</li>
+            </ul>
+
+            <h3>5. Protecting Mobile Devices</h3>
+            <p>Several steps can be taken to make mobile devices more resilient to attacks (called <strong>hardening
+                    mobile devices</strong>).</p>
+
+            <h4>Device Configuration</h4>
+            <p>Proper configuration includes strong authentication, containerization, and loss/theft services.</p>
+            <ol>
+                <li><strong>Strong Authentication:</strong>
+                    <ul>
+                        <li><strong>Passcode:</strong> The most secure option, but users often avoid it due to the time
+                            required and difficulty of entering a complex password on a small virtual keyboard.</li>
+                        <li><strong>PIN (Personal Identification Number):</strong> Composed only of numbers, ranging
+                            from 4 to 16 digits. Short PINs (four digits) provide limited security; 26.83% of all PINs
+                            could be guessed by attempting just the top 20 most frequent PINs (the most common being
+                            1234).</li>
+                        <li><strong>Screen Lock:</strong> The device is configured to automatically lock after a set
+                            time of inactivity (5 seconds to 50 minutes). Features like Android's Smart Lock can keep
+                            the device unlocked in a secure setting (in the user's pocket, connected to a trusted
+                            device, or located in a specific place).</li>
+                    </ul>
+                </li>
+                <li><strong>Containerization:</strong> Segments business apps and data from personal apps and data,
+                    useful in models like BYOD, COPE, and CYOD.
+                    <ul>
+                        <li><strong>Advantages:</strong> Helps companies avoid data ownership privacy issues and allows
+                            them to erase only corporate data when necessary, without touching personal data.</li>
+                    </ul>
+                </li>
+                <li><strong>Enabling Loss or Theft Services:</strong> Security features that can locate the device or
+                    limit the damage.</li>
+            </ol>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Loss/Theft Security Feature</th>
+                        <th>Function</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Alarm</strong></td>
+                        <td>Sounds a loud alarm on the device.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GPS Location</strong></td>
+                        <td>Locates the device on a map.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Remote Lockout</strong></td>
+                        <td>Locks the device with a strong passcode.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thief Picture</strong></td>
+                        <td>Takes a picture of the thief if the password is entered incorrectly.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Remote Wipe</strong></td>
+                        <td>Erases sensitive data stored on the mobile device, ensuring no sensitive data is
+                            compromised.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Mobile Management Tools</h4>
+            <p>Support tools facilitate the management of mobile devices in the enterprise.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Focus</th>
+                        <th>Description and Functionalities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Mobile Device Management (MDM)</strong></td>
+                        <td>Device</td>
+                        <td>Allows remote management of devices by an organization. Offers OTA updates, email/Wi-Fi
+                            configuration, approval/quarantine of new devices, detection of jailbroken/rooted devices,
+                            enforcement of geofencing (using GPS to define geographical boundaries for app use), and
+                            selective erasing of corporate data.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile Application Management (MAM)</strong></td>
+                        <td>Applications</td>
+                        <td>Covers application management, distributing and controlling access to apps. Provides a
+                            higher level of control over apps but less control over the device (MDM is the opposite).
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile Content Management (MCM)</strong></td>
+                        <td>Content</td>
+                        <td>A system tuned to provide content management (tracking editing history, version control,
+                            indexing) to hundreds or thousands of mobile devices.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unified Endpoint Management (UEM)</strong></td>
+                        <td>Devices, Applications, and Content</td>
+                        <td>A group of software tools with a <strong>single management interface</strong> that supports
+                            all capabilities of MDM, MAM, and MCM.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section III: Embedded and Specialized Systems -->
+        <section class="module-section">
+            <h2>Embedded and Specialized Systems</h2>
+            <p>Not all computing systems are desktops or mobile devices designed for direct human input. Embedded
+                systems integrate computing capabilities into larger systems for specific functions.</p>
+
+            <h3>1. Types of Embedded and Specialized Devices</h3>
+
+            <h4>Hardware and Software for Device Creation</h4>
+            <ul>
+                <li><strong>Raspberry Pi:</strong> A low-cost, credit-card-sized computer motherboard. It can perform
+                    almost any task of a standard computer and is used to control specialized devices.</li>
+                <li><strong>Arduino:</strong> Designed primarily as a <strong>controller</strong> for other devices. It
+                    has an 8-bit microcontroller (instead of a 64-bit microprocessor like the Raspberry Pi), limited
+                    RAM, and runs programs compiled for its platform (mostly in C++). It consumes very little power.
+                </li>
+                <li><strong>FPGA (Field-Programmable Gate Array):</strong> A hardware "chip" or integrated circuit (IC)
+                    that can be programmed by the user to carry out one or more logical operations. Used in aerospace,
+                    defense, medical electronics, and cybersecurity systems.</li>
+                <li><strong>SoC (System on a Chip):</strong> Combines all the required electronic circuits of the
+                    various computer components onto a single IC chip.</li>
+                <li><strong>RTOS (Real-Time Operating System):</strong> An OS specifically designed for an SoC in an
+                    embedded or specialized system. It is tuned to accommodate <strong>very high volumes of
+                        data</strong> that must be immediately processed for critical decision making (called
+                    <strong>high availability</strong>).
+                </li>
+            </ul>
+
+            <h4>Industrial Systems</h4>
+            <ul>
+                <li><strong>Industrial Control Systems (ICSs):</strong> Collect, monitor, and process real-time data so
+                    that machines can directly control devices (such as valves and motors) without human intervention.
+                </li>
+                <li><strong>Supervisory Control and Data Acquisition (SCADA):</strong> A larger system that manages
+                    multiple ICSs, crucial for industrial organizations to maintain efficiency and reduce downtime.
+                    (Note that multiple ICSs are managed by a SCADA system, not the reverse).</li>
+            </ul>
+
+            <h4>Specialized Systems</h4>
+            <p>These include digital smart meters (replacing analog meters by offering remote reading, bidirectional
+                measurement, and fraud prevention), medical systems (insulin pumps, MRI devices), aircraft, and
+                vehicles. The progression of embedded systems in automobiles is notable, controlling everything from
+                engine ignition timing (1970s) to active safety systems (ABS) and fully automated functions (such as
+                self-parking and collision warnings).</p>
+
+            <h4>Internet of Things (IoT)</h4>
+            <p>IoT is defined as a <strong>global infrastructure</strong> that enables advanced services by
+                interconnecting things (physical and virtual) based on information and communication technologies.
+                Simply put, it is connecting any device to the Internet for the purpose of sending and receiving data to
+                be acted upon.</p>
+            <ul>
+                <li><strong>Devices:</strong> Refers to devices not previously considered computing devices connected to
+                    a data network, such as thermostats, coffee makers, washing machines, electric toothbrushes, and
+                    light bulbs. It is estimated that the total number of IoT devices will reach 27 billion by 2025.
+                </li>
+            </ul>
+
+            <h3>2. Security Considerations for Embedded Systems</h3>
+            <p>These systems and devices generally have low <strong>resilience</strong> (toughness) to resist attacks.
+            </p>
+
+            <h4>Security Constraints</h4>
+            <p>Several limitations make security a challenge for embedded systems and specialized devices.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Constraint</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Resource vs. Security</strong></td>
+                        <td>Limitation in providing strong cryptography due to the scarcity of resources like time (low
+                            latency desired) and energy.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inability to Patch</strong></td>
+                        <td>Devices may be in inaccessible locations or too simple to support complex updates.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power</strong></td>
+                        <td>Energy is typically limited due to embedded batteries.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>Adding security features can significantly increase production costs.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compute</strong></td>
+                        <td>Limited processing and storage capacity.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Availability</strong></td>
+                        <td>Critical systems (like ICS/SCADA) require high availability, making security maintenance
+                            stops difficult.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Hardening ICS and SCADA Systems</h4>
+            <p>Steps to strengthen the security of ICS and SCADA systems include:</p>
+            <ul>
+                <li>Clearly define security roles and responsibilities.</li>
+                <li>Conduct physical security surveys at remote sites.</li>
+                <li>Disconnect unnecessary connections to the SCADA network.</li>
+                <li>Document network architecture and identify critical systems.</li>
+                <li>Implement clear policies and conduct training.</li>
+                <li>Test possible attack scenarios.</li>
+                <li>Evaluate and strengthen the security of all connections.</li>
+                <li>Remove or disable unnecessary services.</li>
+                <li>Implement intrusion detection systems and incident monitoring.</li>
+            </ul>
+
+            <h4>Legislation and Regulation</h4>
+            <p>Due to the importance of protecting IoT devices, laws and regulations are being enacted.</p>
+            <ul>
+                <li><strong>Federal (US):</strong> The <em>Internet of Things (IoT) Cybersecurity Improvement Act of
+                        2020</em> requires federal agencies to increase cybersecurity for IoT devices.</li>
+                <li><strong>European Union (EU):</strong> The <em>Cyber Resilience Act (CRA)</em> (2022) sets common
+                    security standards for connected devices and services.</li>
+                <li><strong>State (US):</strong> Laws in California and Oregon (effective 2020) require connected
+                    devices to be equipped with <strong>"reasonable security features"</strong> appropriate for the
+                    device's nature and the information it collects. A reasonable feature may be a preprogrammed
+                    password unique to each device or the requirement for the user to create a new authentication method
+                    on first access.</li>
+                <li><strong>Medical Regulation:</strong> The <em>U.S. Food and Drug Administration (FDA)</em> (late
+                    2022) gained new powers to set minimum security standards for medical-device manufacturers. This
+                    includes requiring new devices to include a <strong>software bill of materials</strong> and the
+                    ability to accept patches and updates.</li>
+            </ul>
+        </section>
+
+        <!-- Section IV: Endpoint Vulnerabilities, Attacks, and Defenses -->
+        <section class="module-section">
+            <h2>Endpoint Vulnerabilities, Attacks, and Defenses (Malware)</h2>
+            <p>The modern term commonly used for network-connected hardware is <strong>endpoints</strong>, reflecting
+                the vast range of devices, from PCs to fitness trackers and industrial sensors.</p>
+
+            <h3>1. Malware Attacks</h3>
+            <p><strong>Malware</strong> (malicious software) is software designed to interfere with a computer's normal
+                functions and commit unwanted actions. Estimates indicate that 560,000 new instances of malware are
+                detected daily.</p>
+            <p>Malware can be classified based on its primary action, using common vernacular terms: kidnap, eavesdrop,
+                masquerade, launch, and sidestep.</p>
+
+            <h4>A. Kidnap</h4>
+            <ul>
+                <li><strong>Ransomware:</strong> Malicious software designed to extort money from victims in exchange
+                    for their endpoint device being restored.
+                    <ul>
+                        <li><strong>Blocking Ransomware:</strong> The earliest form (around 2010), which prevents or
+                            blocks normal computer usage, often pretending to be from law enforcement or a software
+                            vendor.</li>
+                        <li><strong>Locking Ransomware:</strong> A more malicious form that <strong>encrypts</strong>
+                            some or all files on the device (including network drives) so they cannot be opened. The
+                            device remains functional so the ransom can be more easily paid.</li>
+                        <li><strong>Blended Attacks:</strong> Attackers first steal data and then encrypt it. If the
+                            ransom is not paid, they threaten to publicly release the stolen information (extortion).
+                        </li>
+                        <li><strong>Seriousness:</strong> Ransomware is the most serious malware threat due to the low
+                            barrier to entry (renting software for $800/month), high frequency (two out of three
+                            organizations in 2021), and high impact (33% of companies forced to temporarily suspend
+                            operations).</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>B. Eavesdrop</h4>
+            <p>Malware that secretly listens to its targets.</p>
+            <ul>
+                <li><strong>Keylogger:</strong> Silently captures and stores each keystroke a user types. It can be a
+                    software program (which can also take screen captures and turn on the webcam) or a small hardware
+                    device inserted between the keyboard and the USB port.</li>
+                <li><strong>Spyware:</strong> Secretly monitors users and collects personal or sensitive information
+                    without their approval, using the computer's resources.</li>
+            </ul>
+
+            <h4>C. Masquerade</h4>
+            <p>Malware that attempts to deceive the user by pretending to be something else.</p>
+            <ul>
+                <li><strong>Trojan:</strong> An executable program that masquerades as performing a benign activity
+                    (like a calendar program) but also does something malicious (like scanning the system for credit
+                    card numbers).</li>
+                <li><strong>Remote Access Trojan (RAT):</strong> A special type of Trojan that gives the threat agent
+                    <strong>unauthorized remote access</strong> to the victim's computer via configured communication
+                    protocols.
+                </li>
+            </ul>
+
+            <h4>D. Launch</h4>
+            <p>Malware that infects a computer to then launch attacks on others.</p>
+            <ul>
+                <li><strong>Virus:</strong>
+                    <ul>
+                        <li><strong>File-Based Virus:</strong> Malicious computer code that becomes part of a file. It
+                            attaches to the file (appender infection), inserts a "jump" instruction to its code,
+                            executes its malicious payload, and then reproduces itself by inserting its code into
+                            another file <strong>on the same computer</strong>. It relies on user action (like file
+                            transfer via email or USB) to spread to other devices.</li>
+                        <li><strong>Fileless Virus:</strong> Does not attach itself to a file. Instead, it takes
+                            advantage of <strong>native services and processes</strong> that are part of the OS to avoid
+                            detection. The exploited native services are called <strong>Living-Off-the-Land Binaries
+                                (LOLBins)</strong>. The malicious code is loaded directly into RAM. Advantages include:
+                            not requiring a specific file type, automatic launch, and inability to be detected by
+                            anti-malware tools.</li>
+                    </ul>
+                </li>
+                <li><strong>Worm:</strong> A malicious program that uses a <strong>computer network to
+                        replicate</strong> (sometimes called a "network virus"). It enters a computer via the network,
+                    exploits a vulnerability in an application or OS, and immediately searches for another computer on
+                    the network with the same vulnerability.</li>
+                <li><strong>Bloatware:</strong> Software installed on a device without the user requesting it. It may
+                    contain malware or become an exploitable platform due to vulnerabilities.</li>
+                <li><strong>Bot/Botnet:</strong> Software that allows an infected computer to be placed under the remote
+                    control of an attacker to launch attacks. The infected computer is a <strong>bot</strong> or
+                    <strong>zombie</strong>. When thousands of bots are gathered into a logical network, they create a
+                    <strong>botnet</strong> under the control of a <em>bot herder</em>.
+                </li>
+            </ul>
+
+            <h4>E. Sidestep</h4>
+            <p>Malware that helps evade detection.</p>
+            <ul>
+                <li><strong>Logic Bomb:</strong> Computer code added to a legitimate program that lies dormant and
+                    evades detection until a specific logical event triggers it.</li>
+                <li><strong>Rootkit:</strong> Malware that can hide its presence and the presence of other malware by
+                    accessing lower layers of the OS or using undocumented functions to make alterations.</li>
+                <li><strong>Backdoor:</strong> Provides access to a computer, program, or service that
+                    <strong>circumvents normal security protections</strong>.
+                </li>
+            </ul>
+
+            <h3>2. Indicators of Attack (IoAs)</h3>
+            <p>An <strong>Indicator of Attack (IoA)</strong> is a sign that an attack is currently underway. It differs
+                from an <strong>Indicator of Compromise (IoC)</strong>, which is evidence that an attack has already
+                occurred.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicator</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Account Lockout</strong></td>
+                        <td>An inaccessible account indicates an attacker may have taken it over, locking out the
+                            legitimate user.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Concurrent Session Usage</strong></td>
+                        <td>Legitimate user and attacker logged into the same account.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Blocked Content</strong></td>
+                        <td>Data that is no longer accessible (can be an IoA).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Impossible Travel</strong></td>
+                        <td>Accessing a resource from geographically impossible locations in a short time frame.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resource Consumption</strong></td>
+                        <td>System resources (memory, processing) suddenly depleted.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resource Inaccessibility</strong></td>
+                        <td>A large-scale attack can block access to system resources.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Out-of-cycle Logging</strong></td>
+                        <td>Log records that do not correspond to actual events.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Published/Documented</strong></td>
+                        <td>Evidence from external sources of a current attack.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Missing Logs</strong></td>
+                        <td>Log files mysteriously deleted, indicating an ongoing attack.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section V: Application Vulnerabilities and Attacks -->
+        <section class="module-section">
+            <h2>Application Vulnerabilities and Attacks</h2>
+            <p>This category of attacks targets software already installed, seeking vulnerabilities or manipulating it
+                for compromise.</p>
+
+            <h3>1. Application Vulnerabilities</h3>
+            <ul>
+                <li><strong>Buffer Overflow Attack:</strong> Occurs when a process attempts to store data in RAM beyond
+                    the boundaries of a fixed-length storage buffer. The extra data overflows into adjacent memory
+                    locations, allowing an attacker to substitute the "return address" with an address pointing to their
+                    malware code. These attacks are called <strong>injections</strong> or <strong>memory
+                        injections</strong>.</li>
+                <li><strong>Improper Exception and Error Handling:</strong> Based on poor programming practices where
+                    the software does not correctly check for exceptions. If the software fails to "trap" an error
+                    condition (e.g., after a very long input string), the program may crash and display an underlying OS
+                    prompt, giving the attacker system access.</li>
+                <li><strong>NULL Pointer/Object Dereference:</strong> Occurs when an application attempts to dereference
+                    a pointer expected to be valid but which has a NULL value, leading to a crash.</li>
+                <li><strong>Race Condition:</strong> Occurs when two concurrent threads of execution access a shared
+                    resource simultaneously, resulting in unintended consequences.
+                    <ul>
+                        <li><strong>TOC/TOU (Time of Check to Time of Use):</strong> The race condition where a
+                            resource's state can change between the moment of checking and the moment of use,
+                            invalidating the check's result.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>2. Web-Based Attacks</h3>
+            <p>Application attacks directed at programs running on Internet web servers. The typical web infrastructure
+                involves the client browser, web server, application servers, and database servers.</p>
+            <ul>
+                <li><strong>Directory Traversal:</strong> Takes advantage of a vulnerability so that a user can move
+                    from the restricted web server root directory to other restricted directories, viewing confidential
+                    files or executing commands.</li>
+                <li><strong>Scripting Attacks:</strong>
+                    <ul>
+                        <li><strong>Cross-Site Scripting (XSS):</strong> Exploits a website that accepts user input
+                            without <strong>validating it</strong> (sanitizing) and uses that input in a response. An
+                            attacker tricks a valid website into feeding a malicious script to another user's web
+                            browser, which then executes it.</li>
+                    </ul>
+                </li>
+                <li><strong>Injection Attacks:</strong>
+                    <ul>
+                        <li><strong>SQL Injection (SQLi):</strong> Inserts commands in Structured Query Language (SQL)
+                            to manipulate a database server. The attacker injects SQL statements (such as
+                            <code>whatever' OR 'a'='a</code>) as user input into a form (e.g., a username field) so that
+                            the database query is always true, allowing data extraction or manipulation.
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Request Forgery:</strong>
+                    <ul>
+                        <li><strong>Cross-Site Request Forgery (CSRF):</strong> Takes advantage of an authentication
+                            "token" a website sends to a user's web browser. If the authenticated user is tricked into
+                            loading another webpage, the new page inherits the victim's identity and privileges,
+                            allowing the attacker to perform an undesired function on the user's behalf.</li>
+                        <li><strong>Server-Site Request Forgery (SSRF):</strong> Exploits a trusting relationship
+                            between web servers.</li>
+                    </ul>
+                </li>
+                <li><strong>Replay Attack:</strong> Copies data and then uses it later for an attack.</li>
+            </ul>
+        </section>
+
+        <!-- Section VI: Endpoint Defenses and Hardening -->
+        <section class="module-section">
+            <h2>Endpoint Defenses and Hardening</h2>
+
+            <h3>1. Active Endpoint Protection</h3>
+
+            <h4>Antivirus (AV)</h4>
+            <p>AV software can examine a computer for infections and monitor activity.</p>
+            <ul>
+                <li><strong>Signature-Based Monitoring (Static Analysis):</strong> The original approach, which compares
+                    known virus patterns against potentially infected files (string scanning, wildcard scanning, and
+                    mismatch scanning). The weakness is that the signature database must be constantly updated.</li>
+                <li><strong>Heuristic Monitoring (Dynamic Analysis):</strong> A newer approach that uses a variety of
+                    techniques to spot the characteristics of a virus instead of looking for exact matches.</li>
+            </ul>
+
+            <h4>Web Browser Protections</h4>
+            <ul>
+                <li><strong>Secure Cookies:</strong> A cookie is only sent to the server with an encrypted request
+                    (HTTPS protocol). This prevents an unauthorized person from intercepting the cookie during
+                    transmission. Cookies (which store user-specific information on the local computer) are used to make
+                    the stateless HTTP protocol mimic a stateful protocol.</li>
+                <li><strong>HTTP Response Headers:</strong> Tell the browser how to behave when communicating with the
+                    website.</li>
+            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Header</th>
+                        <th>Description</th>
+                        <th>Protection</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>HTTP Strict Transport Security (HSTS)</strong></td>
+                        <td>Forces the browser to communicate over HTTPS instead of HTTP.</td>
+                        <td>Encrypts transmissions to prevent interception.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Content Security Policy (CSP)</strong></td>
+                        <td>Restricts the resources a user is allowed to load within the website.</td>
+                        <td>Protects against injection attacks.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cross Site Scripting Protection (X-XSS)</strong></td>
+                        <td>Prohibits a page from loading if it detects an XSS attack.</td>
+                        <td>Prevents XSS attacks.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>X-Frame-Options</strong></td>
+                        <td>Prevents attackers from "overlaying" their content on the webpage.</td>
+                        <td>Foils a threat actor's attempt to trick a user.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Monitoring and Response Systems</h4>
+            <ul>
+                <li><strong>Host Intrusion Detection System (HIDS):</strong> Software running on the endpoint that
+                    detects when an attack has occurred (automated detection). Monitors system calls, file system
+                    access, and host input/output.</li>
+                <li><strong>Host Intrusion Prevention System (HIPS):</strong> Not only monitors but also attempts to
+                    <strong>immediately block</strong> malicious attacks by following specific rules.
+                </li>
+                <li><strong>Endpoint Detection and Response (EDR):</strong> More robust than HIDS and HIPS. It
+                    aggregates data from multiple endpoints to a centralized database (allowing investigation of wider
+                    attacks) and performs sophisticated analytics to detect anomalies by comparing behavior against a
+                    baseline.</li>
+            </ul>
+
+            <h3>2. Endpoint Hardening</h3>
+            <p>Hardening involves patch management and OS protections.</p>
+            <ul>
+                <li><strong>Patch Management:</strong> Installing software security updates (<strong>patching</strong>)
+                    is one of the most important steps. Attackers often craft attacks around vulnerabilities fixed by
+                    patches, knowing that many users are slow to apply them.
+                    <ul>
+                        <li><strong>Patch Distribution:</strong> Automated patch management tools allow organizations to
+                            test patches before installation, save bandwidth by downloading from a local server, and
+                            approve/decline updates.</li>
+                        <li><strong>Patch Reception:</strong> Modern OSs (like Windows 11) are less lenient, forcing or
+                            delaying updates for a limited time (one to five weeks). Prompt installation of patches is
+                            advised.</li>
+                    </ul>
+                </li>
+                <li><strong>Operating System (OS) Protections:</strong>
+                    <ul>
+                        <li><strong>Disabling Unnecessary Ports and Protocols:</strong> A primary security configuration
+                            that closes unused ports and disables unnecessary services.</li>
+                        <li><strong>Application Allow Listing:</strong> Approves in advance only specific applications
+                            to run on the OS, ensuring that any unapproved item will not function. It is a powerful tool
+                            to combat attacks. Windows Defender offers an <em>allow listing</em> protection called
+                            "controlled folder access" against ransomware.</li>
+                        <li><strong>Sandbox:</strong> A "container" in which an application can be run so that it does
+                            not impact the underlying OS. Anything that occurs within the sandbox is not visible to
+                            other applications or the OS, and the contents are not saved upon closing.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section VII: Application Security -->
+        <section class="module-section">
+            <h2>Application Security</h2>
+            <p>Application security is critical because insecure software can negate strict protections imposed on
+                devices. Proactively preventing vulnerabilities begins during the application development and coding
+                process.</p>
+
+            <h3>1. Application Development Concepts</h3>
+            <p>Application development requires several stages:</p>
+            <ol>
+                <li><strong>Development:</strong> Establishing requirements and confirming that the application meets
+                    business needs before coding begins.</li>
+                <li><strong>Testing:</strong> Thoroughly testing the application for errors that could result in a
+                    security vulnerability.</li>
+                <li><strong>Staging:</strong> Testing to verify that the code functions as intended.</li>
+                <li><strong>Production:</strong> The application is released for use in its actual setting.</li>
+            </ol>
+
+            <h4>Application Development Lifecycle Models</h4>
+            <ul>
+                <li><strong>Waterfall Model:</strong> Uses a sequential and rigid design process. Once a stage is
+                    finished, developers cannot go back without starting over. Quality assurance (QA) occurs only at the
+                    end, making discovered issues difficult to address.</li>
+                <li><strong>Agile Model:</strong> Takes an incremental approach to overcome the waterfall model's
+                    disadvantages. Work is done in short "sprints" (weekly or monthly), allowing software issues to be
+                    discovered incrementally, and feedback and changes to be incorporated before the next sprint.</li>
+            </ul>
+
+            <h4>SecDevOps (DevSecOps)</h4>
+            <p>A specific software methodology that follows the Agile model and heavily incorporates secure coding
+                practices and techniques. It integrates secure development best practices into application development
+                and deployment processes.</p>
+            <ul>
+                <li><strong>Key Characteristics:</strong> Elasticity (flexibility), scalability, and, most importantly,
+                    <strong>automation</strong>.
+                </li>
+                <li><strong>Automation:</strong> Enables <strong>automated courses of action</strong> to develop code as
+                    quickly and securely as possible. This includes:
+                    <ul>
+                        <li>Continuous Monitoring (real-time examination).</li>
+                        <li>Continuous Validation (ongoing approvals of the code).</li>
+                        <li>Continuous Integration (ensuring security features are incorporated at each stage).</li>
+                        <li>Continuous Delivery and Continuous Deployment.</li>
+                    </ul>
+                </li>
+                <li><strong>Other Concepts:</strong> <strong>Immutable Systems</strong> (once a value is employed, it is
+                    not modified; a new system must be created for changes) and <strong>Infrastructure as Code</strong>
+                    (managing hardware/software infrastructure using coding principles).</li>
+            </ul>
+
+            <h3>2. Secure Coding Techniques</h3>
+            <p>Coding techniques aim to create secure applications and limit data exposure. Examples include:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Technique</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Input Validation</strong></td>
+                        <td>Checks user input to ensure only expected data is accepted, preventing injection attacks.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Error and Exception Handling</strong></td>
+                        <td>Robust implementation to prevent programming errors from granting access to the underlying
+                            system.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Obfuscation</strong></td>
+                        <td>Making code difficult to understand to hinder reverse engineering.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Normalization</strong></td>
+                        <td>Modifying code to a format the application can understand.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Code Signing</strong></td>
+                        <td>Digital verification of code integrity.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3. Code Testing</h3>
+            <p>Testing should be performed earlier, during the implementation and verification phases.</p>
+            <ul>
+                <li><strong>Static Code Analysis:</strong> Occurs <strong>before</strong> the source code is compiled.
+                    It examines the software from a security perspective. Can be supplemented by manual peer reviews.
+                </li>
+                <li><strong>Dynamic Code Analysis / Runtime Verification:</strong> Performed <strong>after</strong> the
+                    source code is compiled, when all components are integrated and running. Uses tools that monitor
+                    application behavior for memory corruption and privilege issues.</li>
+                <li><strong>Fuzzing:</strong> A common process in dynamic analysis that provides <strong>random
+                        input</strong> to a program in an attempt to trigger exceptions, such as memory corruption or
+                    crashes. The advantage is that it records the input that triggered the exception, allowing the
+                    problem to be tracked down.</li>
+            </ul>
+        </section>
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide for Module 6</h2>
+            <h3>Quiz: Short-Answer Questions</h3>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. Why can't standard cryptography be used on tiny devices?</summary>
+                    <p>Standard cryptography requires significant processing power and storage capacity, which tiny
+                        devices (like sensors and medical implants) lack due to their small size and limited power
+                        sources (often small batteries).</p>
+                </details>
+                <details>
+                    <summary>2. What is the NIST standard for lightweight cryptography selected in 2023?</summary>
+                    <p>Ascon.</p>
+                </details>
+                <details>
+                    <summary>3. What are the two primary tasks of the Ascon family of technologies?</summary>
+                    <p>Authenticated Encryption with Associated Data (AEAD) and Hashing.</p>
+                </details>
+                <details>
+                    <summary>4. What is the difference between a notebook and a convertible (2-in-1) computer?</summary>
+                    <p>A notebook is a smaller, lightweight version of a laptop, while a convertible (2-in-1) has a
+                        flexible hinge that allows it to take on different poses (laptop, tablet, stand, tent).</p>
+                </details>
+                <details>
+                    <summary>5. Which mobile connectivity method uses a network of hexagonal cells?</summary>
+                    <p>Cellular.</p>
+                </details>
+                <details>
+                    <summary>6. Explain the "Corporate Owned, Personally Enabled" (COPE) deployment model.</summary>
+                    <p>In the COPE model, the organization purchases and owns the device, but the employee is allowed to
+                        use it for personal activities as well.</p>
+                </details>
+                <details>
+                    <summary>7. What is "sideloading" in the context of mobile apps?</summary>
+                    <p>Sideloading is the practice of downloading and installing apps from an unofficial and unapproved
+                        third-party source, bypassing the official app store.</p>
+                </details>
+                <details>
+                    <summary>8. What is the difference between MDM and MAM?</summary>
+                    <p>Mobile Device Management (MDM) focuses on managing the device itself (updates, configuration,
+                        remote wipe), while Mobile Application Management (MAM) focuses on distributing and controlling
+                        access to specific applications on the device.</p>
+                </details>
+                <details>
+                    <summary>9. What is an "embedded system"?</summary>
+                    <p>A computer system integrated into a larger system to perform specific functions, often without
+                        direct human input (e.g., controllers in a car engine, industrial control systems).</p>
+                </details>
+                <details>
+                    <summary>10. What is a "Fileless Virus"?</summary>
+                    <p>A type of malware that does not attach itself to a file but instead loads its malicious code
+                        directly into RAM, exploiting native OS services (LOLBins) to avoid detection by file-based
+                        scanners.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <ol>
+                <li><strong>Discuss the security challenges specific to the Internet of Things (IoT).</strong> Consider
+                    the constraints of these devices (resource, power, cost) and the potential impact of vulnerabilities
+                    in a hyper-connected environment.</li>
+                <li><strong>Compare and contrast the BYOD and COPE enterprise deployment models.</strong> Analyze the
+                    benefits and risks of each model from both the organization's and the employee's perspective,
+                    particularly regarding data privacy and security control.</li>
+                <li><strong>Explain the concept of "Hardening" in the context of mobile devices and endpoints.</strong>
+                    Describe specific techniques and configurations used to harden a smartphone and a corporate
+                    workstation, and explain why these steps are necessary.</li>
+                <li><strong>Analyze the evolution of malware from simple viruses to modern ransomware and APTs.</strong>
+                    How have the motivations of attackers changed? How have defense mechanisms (like EDR) evolved in
+                    response?</li>
+                <li><strong>Describe the importance of "Secure Coding" practices in the application development
+                        lifecycle.</strong> Why is it more effective to address security during the development phase
+                    (SecDevOps) rather than relying solely on testing or patching after deployment?</li>
+            </ol>
+
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td><strong>Ascon</strong></td>
+                    <td>The NIST-selected standard for lightweight cryptography, designed for resource-constrained
+                        devices.</td>
+                </tr>
+                <tr>
+                    <td><strong>AEAD (Authenticated Encryption with Associated Data)</strong></td>
+                    <td>A cryptographic process that provides both confidentiality (encryption) and authenticity,
+                        allowing unencrypted data (associated data) to be attached to the message.</td>
+                </tr>
+                <tr>
+                    <td><strong>BYOD (Bring Your Own Device)</strong></td>
+                    <td>An enterprise policy allowing employees to use their personal devices for work purposes.</td>
+                </tr>
+                <tr>
+                    <td><strong>Containerization</strong></td>
+                    <td>A technology that isolates business apps and data from personal content on a mobile device.</td>
+                </tr>
+                <tr>
+                    <td><strong>Embedded System</strong></td>
+                    <td>A computer system with a dedicated function within a larger mechanical or electrical system.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Geofencing</strong></td>
+                    <td>Using GPS or RFID technology to create a virtual geographic boundary, enabling software to
+                        trigger a response when a mobile device enters or leaves a particular area.</td>
+                </tr>
+                <tr>
+                    <td><strong>Jailbreaking/Rooting</strong></td>
+                    <td>The process of removing software restrictions imposed by the manufacturer on iOS (jailbreaking)
+                        or Android (rooting) devices to gain full administrative access.</td>
+                </tr>
+                <tr>
+                    <td><strong>Malware</strong></td>
+                    <td>Software intentionally designed to cause damage to a computer, server, client, or computer
+                        network.</td>
+                </tr>
+                <tr>
+                    <td><strong>Ransomware</strong></td>
+                    <td>A type of malware that threatens to publish the victim's data or perpetually block access to it
+                        unless a ransom is paid.</td>
+                </tr>
+                <tr>
+                    <td><strong>SecDevOps</strong></td>
+                    <td>A software development philosophy that integrates security practices into the DevOps process
+                        (development and operations).</td>
+                </tr>
+                <tr>
+                    <td><strong>Side-loading</strong></td>
+                    <td>Installing an application package on a mobile device from a source other than the official app
+                        store.</td>
+                </tr>
+                <tr>
+                    <td><strong>SoC (System on a Chip)</strong></td>
+                    <td>An integrated circuit that integrates all or most components of a computer or other electronic
+                        system.</td>
+                </tr>
+                <tr>
+                    <td><strong>Zero-Day Vulnerability</strong></td>
+                    <td>A software vulnerability that is unknown to the vendor and for which no patch exists.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Full Practice Simulation -->
+        <div class="quiz-header">
+            <h2>Full Practice Simulation</h2>
+            <p>Test your knowledge with 45 practice questions. Select the best answer(s) for each question.</p>
+        </div>
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 M.A. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Back to Top functionality
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Quiz Logic
+            const questions = [
+                {
+                    id: 1,
+                    text: "Which of the following is NOT a reason why standard cryptography is unsuitable for lightweight devices?",
+                    options: [
+                        "It requires significant processing power.",
+                        "It demands large storage capacity.",
+                        "It consumes too much energy.",
+                        "It is inherently less secure than lightweight cryptography."
+                    ],
+                    correct: [3],
+                    explanation: "Standard cryptography is highly secure; the issue is that it is too resource-intensive (power, storage, processing) for constrained devices. It is not 'less secure' inherently."
+                },
+                {
+                    id: 2,
+                    text: "What was the primary goal of the NIST lightweight cryptography competition launched in 2018?",
+                    options: [
+                        "To find a replacement for AES on desktop computers.",
+                        "To develop a new standard for quantum computing.",
+                        "To select a standard providing strong encryption for resource-constrained devices.",
+                        "To create a universal operating system for IoT."
+                    ],
+                    correct: [2],
+                    explanation: "The competition aimed to find a cryptographic standard specifically designed for small, resource-constrained devices (lightweight electronics)."
+                },
+                {
+                    id: 3,
+                    text: "Which algorithm was selected by NIST as the winner of the lightweight cryptography competition in 2023?",
+                    options: [
+                        "AES-256",
+                        "Ascon",
+                        "RSA",
+                        "ChaCha20"
+                    ],
+                    correct: [1],
+                    explanation: "Ascon was announced as the winner in early 2023."
+                },
+                {
+                    id: 4,
+                    text: "Ascon is best described as:",
+                    options: [
+                        "A single block cipher algorithm.",
+                        "A family of seven different technologies offering various functionalities.",
+                        "A hardware-only encryption module.",
+                        "A deprecated standard replaced by AES."
+                    ],
+                    correct: [1],
+                    explanation: "Ascon is a 'family' of seven technologies providing options for different tasks like AEAD and hashing."
+                },
+                {
+                    id: 5,
+                    text: "What does AEAD stand for?",
+                    options: [
+                        "Advanced Encryption and Decryption",
+                        "Authenticated Encryption with Associated Data",
+                        "Asymmetric Encryption Algorithm Design",
+                        "Automated Electronic Authentication Device"
+                    ],
+                    correct: [1],
+                    explanation: "AEAD stands for Authenticated Encryption with Associated Data."
+                },
+                {
+                    id: 6,
+                    text: "In AEAD, what is the purpose of 'Associated Data'?",
+                    options: [
+                        "It is the data that is encrypted.",
+                        "It is the secret key used for encryption.",
+                        "It is extra information (like a header) included for authenticity but not encrypted.",
+                        "It is the digital signature of the sender."
+                    ],
+                    correct: [2],
+                    explanation: "Associated data is included in the integrity check (authentication) but is left in plaintext (not encrypted), such as headers or IP addresses."
+                },
+                {
+                    id: 7,
+                    text: "Which of the following is a primary use case for lightweight hashing in Ascon?",
+                    options: [
+                        "Encrypting large video files.",
+                        "Creating a digital fingerprint to verify software updates.",
+                        "Establishing a VPN connection.",
+                        "Generating Bitcoin wallets."
+                    ],
+                    correct: [1],
+                    explanation: "Hashing creates a digital fingerprint, useful for verifying the integrity of software updates on lightweight devices."
+                },
+                {
+                    id: 8,
+                    text: "Which type of mobile device is characterized by having a screen size between 5 and 10 inches and lacking a built-in keyboard?",
+                    options: [
+                        "Smartphone",
+                        "Tablet",
+                        "Laptop",
+                        "Smartwatch"
+                    ],
+                    correct: [1],
+                    explanation: "Tablets are defined by these characteristics, relying on touchscreens for input."
+                },
+                {
+                    id: 9,
+                    text: "What technology do fitness trackers use to monitor heart rate via green and red LEDs?",
+                    options: [
+                        "Electrocardiogram (ECG)",
+                        "Photoplethysmography (PPG)",
+                        "Radio Frequency Identification (RFID)",
+                        "Near Field Communication (NFC)"
+                    ],
+                    correct: [1],
+                    explanation: "PPG uses light sensors to measure blood flow; green light is used during exercise, and red light is used at rest."
+                },
+                {
+                    id: 10,
+                    text: "Which mobile device form factor can take on various 'poses' such as laptop, tablet, stand, or tent?",
+                    options: [
+                        "Notebook",
+                        "Convertible (2-in-1)",
+                        "Subnotebook",
+                        "Phablet"
+                    ],
+                    correct: [1],
+                    explanation: "Convertible or 2-in-1 computers feature a flexible hinge allowing multiple physical configurations."
+                },
+                {
+                    id: 11,
+                    text: "Which OS is designed primarily for web-based applications and stores user files in the cloud?",
+                    options: [
+                        "macOS",
+                        "Windows 11 Pro",
+                        "Google Chrome OS",
+                        "Linux Ubuntu"
+                    ],
+                    correct: [2],
+                    explanation: "Chrome OS is a web-focused OS where traditional software cannot be installed, and reliance is on web apps and cloud storage."
+                },
+                {
+                    id: 12,
+                    text: "What is the standard connection type mandated by the EU for mobile devices by the end of 2024?",
+                    options: [
+                        "Micro-USB",
+                        "Lightning",
+                        "USB Type-C",
+                        "Thunderbolt"
+                    ],
+                    correct: [2],
+                    explanation: "The EU mandated USB Type-C as the common charging port standard."
+                },
+                {
+                    id: 13,
+                    text: "In which enterprise deployment model does the employee choose a device from a limited approved list and pay for it, while the company owns the contract?",
+                    options: [
+                        "BYOD",
+                        "COPE",
+                        "CYOD",
+                        "CO"
+                    ],
+                    correct: [2],
+                    explanation: "CYOD (Choose Your Own Device) allows employee choice from a list, with the employee paying upfront but the company managing the contract."
+                },
+                {
+                    id: 14,
+                    text: "What is a primary security risk associated with 'Jailbreaking' or 'Rooting' a mobile device?",
+                    options: [
+                        "It voids the hardware warranty only.",
+                        "It prevents the device from connecting to Wi-Fi.",
+                        "It bypasses built-in security protections, granting full system access.",
+                        "It automatically encrypts all data, making it inaccessible."
+                    ],
+                    correct: [2],
+                    explanation: "Jailbreaking/rooting removes OS restrictions, bypassing security sandboxes and protections, making the device more vulnerable."
+                },
+                {
+                    id: 15,
+                    text: "What is 'Sideloading'?",
+                    options: [
+                        "Transferring data from a PC to a mobile device via USB.",
+                        "Installing apps from an unofficial source, bypassing the official app store.",
+                        "Charging a device wirelessly.",
+                        "Backing up data to the cloud."
+                    ],
+                    correct: [1],
+                    explanation: "Sideloading refers to installing applications from sources other than the official vendor app stores (like Google Play or Apple App Store)."
+                },
+                {
+                    id: 16,
+                    text: "Which attack involves an attacker using a malicious QR code to direct a user to a fraudulent website?",
+                    options: [
+                        "Bluejacking",
+                        "Quishing (QR Phishing)",
+                        "Juice Jacking",
+                        "Smishing"
+                    ],
+                    correct: [1],
+                    explanation: "While the text describes the attack, the industry term is often 'Quishing'. The text describes using QR codes to direct browsers to imposter sites."
+                },
+                {
+                    id: 17,
+                    text: "What is 'Containerization' in mobile security?",
+                    options: [
+                        "Putting the phone in a Faraday bag.",
+                        "Isolating business apps and data from personal data on the same device.",
+                        "Running the OS in a virtual machine.",
+                        "Encrypting the entire storage drive."
+                    ],
+                    correct: [1],
+                    explanation: "Containerization separates corporate data/apps from personal ones, allowing selective wipe and privacy."
+                },
+                {
+                    id: 18,
+                    text: "Which mobile management tool focuses specifically on distributing and controlling access to applications rather than the entire device?",
+                    options: [
+                        "MDM",
+                        "MAM",
+                        "MCM",
+                        "UEM"
+                    ],
+                    correct: [1],
+                    explanation: "Mobile Application Management (MAM) focuses on the applications."
+                },
+                {
+                    id: 19,
+                    text: "What is a 'Raspberry Pi'?",
+                    options: [
+                        "A microcontroller with limited RAM.",
+                        "A low-cost, credit-card-sized computer motherboard.",
+                        "A type of FPGA.",
+                        "A specialized RTOS."
+                    ],
+                    correct: [1],
+                    explanation: "Raspberry Pi is a small, fully functional computer motherboard."
+                },
+                {
+                    id: 20,
+                    text: "Which device is a microcontroller designed primarily to control other hardware, running C++ programs?",
+                    options: [
+                        "Raspberry Pi",
+                        "Arduino",
+                        "FPGA",
+                        "SoC"
+                    ],
+                    correct: [1],
+                    explanation: "Arduino is a microcontroller platform used for controlling hardware."
+                },
+                {
+                    id: 21,
+                    text: "What is an RTOS?",
+                    options: [
+                        "Real-Time Operating System",
+                        "Remote Terminal Operation System",
+                        "Rapid Transmission of Signals",
+                        "Robotic Task Optimization System"
+                    ],
+                    correct: [0],
+                    explanation: "RTOS stands for Real-Time Operating System, designed for high availability and immediate processing."
+                },
+                {
+                    id: 22,
+                    text: "What is the relationship between SCADA and ICS?",
+                    options: [
+                        "ICS manages multiple SCADA systems.",
+                        "SCADA is a larger system that manages multiple ICSs.",
+                        "They are identical terms for the same thing.",
+                        "SCADA is software, ICS is hardware."
+                    ],
+                    correct: [1],
+                    explanation: "SCADA (Supervisory Control and Data Acquisition) is the broader system that manages and monitors multiple Industrial Control Systems (ICSs)."
+                },
+                {
+                    id: 23,
+                    text: "Which of the following is NOT a common constraint of embedded systems regarding security?",
+                    options: [
+                        "Limited power (battery life).",
+                        "Low processing power.",
+                        "High cost of adding security features.",
+                        "Unlimited storage capacity."
+                    ],
+                    correct: [3],
+                    explanation: "Embedded systems typically have very limited storage, not unlimited."
+                },
+                {
+                    id: 24,
+                    text: "What is 'Ransomware'?",
+                    options: [
+                        "Software that logs keystrokes.",
+                        "Malware that encrypts files and demands payment for the decryption key.",
+                        "A program that creates a backdoor.",
+                        "Adware that displays pop-ups."
+                    ],
+                    correct: [1],
+                    explanation: "Ransomware kidnaps data by encrypting it and demanding a ransom."
+                },
+                {
+                    id: 25,
+                    text: "What is a 'Keylogger'?",
+                    options: [
+                        "A tool to generate secure passwords.",
+                        "Malware that records every keystroke a user makes.",
+                        "A physical lock for a laptop.",
+                        "Software that manages encryption keys."
+                    ],
+                    correct: [1],
+                    explanation: "A keylogger silently captures all keystrokes to steal sensitive information."
+                },
+                {
+                    id: 26,
+                    text: "What distinguishes a 'Trojan' from a 'Virus'?",
+                    options: [
+                        "A Trojan replicates itself; a Virus does not.",
+                        "A Trojan masquerades as a benign program; a Virus attaches to files to replicate.",
+                        "A Trojan is always hardware-based.",
+                        "There is no difference."
+                    ],
+                    correct: [1],
+                    explanation: "Trojans hide their malicious intent behind a useful guise (masquerade) and typically do not self-replicate like viruses."
+                },
+                {
+                    id: 27,
+                    text: "What is a 'Fileless Virus'?",
+                    options: [
+                        "A virus that deletes all files.",
+                        "Malware that resides only in RAM and uses native OS tools (LOLBins).",
+                        "A virus transmitted via paper.",
+                        "A macro virus."
+                    ],
+                    correct: [1],
+                    explanation: "Fileless viruses avoid detection by not writing files to disk, living in memory and using system tools."
+                },
+                {
+                    id: 28,
+                    text: "What is a 'Botnet'?",
+                    options: [
+                        "A network of robots in a factory.",
+                        "A logical network of infected computers (zombies) controlled by a bot herder.",
+                        "A secure internal network.",
+                        "A type of firewall."
+                    ],
+                    correct: [1],
+                    explanation: "A botnet is a collection of compromised computers under the control of an attacker."
+                },
+                {
+                    id: 29,
+                    text: "What is a 'Logic Bomb'?",
+                    options: [
+                        "Malware that explodes the hardware.",
+                        "Code that lies dormant until triggered by a specific event.",
+                        "A rapid-fire network attack.",
+                        "A tool to test logic gates."
+                    ],
+                    correct: [1],
+                    explanation: "A logic bomb executes its malicious payload only when specific conditions (logical events) are met."
+                },
+                {
+                    id: 30,
+                    text: "What is the difference between an IoA and an IoC?",
+                    options: [
+                        "IoA is evidence of a past attack; IoC is a sign of a current attack.",
+                        "IoA is a sign of an active attack; IoC is evidence that an attack has already occurred.",
+                        "IoA applies to hardware; IoC applies to software.",
+                        "They are synonyms."
+                    ],
+                    correct: [1],
+                    explanation: "Indicator of Attack (IoA) = currently happening. Indicator of Compromise (IoC) = already happened."
+                },
+                {
+                    id: 31,
+                    text: "Which attack involves overflowing a memory buffer to overwrite the return address?",
+                    options: [
+                        "SQL Injection",
+                        "Buffer Overflow",
+                        "Cross-Site Scripting",
+                        "Directory Traversal"
+                    ],
+                    correct: [1],
+                    explanation: "Buffer Overflow attacks exploit fixed-length buffers to inject malicious code into memory."
+                },
+                {
+                    id: 32,
+                    text: "What is a 'Race Condition'?",
+                    options: [
+                        "A competition between hackers.",
+                        "When two concurrent threads access a shared resource simultaneously, causing unintended results.",
+                        "Overclocking a CPU.",
+                        "A fast network connection."
+                    ],
+                    correct: [1],
+                    explanation: "Race conditions occur when the timing of events affects the outcome, often leading to vulnerabilities like TOC/TOU."
+                },
+                {
+                    id: 33,
+                    text: "Which web attack involves injecting malicious scripts into a trusted website to be executed by other users' browsers?",
+                    options: [
+                        "SQL Injection",
+                        "Cross-Site Scripting (XSS)",
+                        "CSRF",
+                        "SSRF"
+                    ],
+                    correct: [1],
+                    explanation: "XSS (Cross-Site Scripting) targets users by injecting scripts that run in their browsers."
+                },
+                {
+                    id: 34,
+                    text: "What is 'SQL Injection'?",
+                    options: [
+                        "Injecting code into a database query to manipulate data.",
+                        "Injecting HTML into a webpage.",
+                        "Injecting a virus into a file.",
+                        "Injecting power into a circuit."
+                    ],
+                    correct: [0],
+                    explanation: "SQL Injection targets database servers by manipulating SQL queries via user input."
+                },
+                {
+                    id: 35,
+                    text: "What does 'HSTS' do?",
+                    options: [
+                        "Blocks all traffic.",
+                        "Forces the browser to communicate over HTTPS.",
+                        "Scans for viruses.",
+                        "Deletes cookies."
+                    ],
+                    correct: [1],
+                    explanation: "HTTP Strict Transport Security (HSTS) mandates the use of encrypted HTTPS connections."
+                },
+                {
+                    id: 36,
+                    text: "What is 'EDR'?",
+                    options: [
+                        "Enhanced Data Recovery",
+                        "Endpoint Detection and Response",
+                        "Electronic Digital Rights",
+                        "Encrypted Data Repository"
+                    ],
+                    correct: [1],
+                    explanation: "EDR stands for Endpoint Detection and Response, a robust security solution for monitoring and responding to threats on endpoints."
+                },
+                {
+                    id: 37,
+                    text: "What is 'Application Allow Listing'?",
+                    options: [
+                        "Allowing all apps to run.",
+                        "Approving only specific applications to run, blocking all others.",
+                        "Listing all installed apps.",
+                        "Allowing apps to access the internet."
+                    ],
+                    correct: [1],
+                    explanation: "Allow listing (whitelisting) ensures only approved software can execute, preventing unauthorized code/malware."
+                },
+                {
+                    id: 38,
+                    text: "What is the 'Waterfall Model' of software development?",
+                    options: [
+                        "A flexible, iterative approach.",
+                        "A sequential, rigid process where one phase must complete before the next begins.",
+                        "A method using water cooling.",
+                        "A model for developing fluid dynamics software."
+                    ],
+                    correct: [1],
+                    explanation: "Waterfall is linear and rigid; Agile is iterative."
+                },
+                {
+                    id: 39,
+                    text: "What is 'SecDevOps'?",
+                    options: [
+                        "A security team separate from development.",
+                        "Integrating security practices into the DevOps process (development and operations).",
+                        "Developing security software.",
+                        "Operating security devices."
+                    ],
+                    correct: [1],
+                    explanation: "SecDevOps (or DevSecOps) integrates security throughout the entire software development lifecycle."
+                },
+                {
+                    id: 40,
+                    text: "What is 'Input Validation'?",
+                    options: [
+                        "Checking user credentials.",
+                        "Ensuring user input meets expected criteria (format, length, type) before processing.",
+                        "Validating hardware inputs.",
+                        "Checking internet connection."
+                    ],
+                    correct: [1],
+                    explanation: "Input validation sanitizes data to prevent attacks like SQL injection and XSS."
+                },
+                {
+                    id: 41,
+                    text: "What is 'Fuzzing'?",
+                    options: [
+                        "Cleaning a screen.",
+                        "Providing random input to a program to trigger crashes or exceptions.",
+                        "Blurring an image.",
+                        "Optimizing code speed."
+                    ],
+                    correct: [1],
+                    explanation: "Fuzzing is a dynamic testing technique that sends random data to an application to find vulnerabilities."
+                },
+                {
+                    id: 42,
+                    text: "What is a 'Zero-Day Vulnerability'?",
+                    options: [
+                        "A vulnerability that is 0 days old.",
+                        "A vulnerability known to the vendor but not fixed.",
+                        "A vulnerability unknown to the vendor, for which no patch exists.",
+                        "A vulnerability that causes zero damage."
+                    ],
+                    correct: [2],
+                    explanation: "Zero-day vulnerabilities are exploited before the vendor is aware or has a fix available."
+                },
+                {
+                    id: 43,
+                    text: "Which header prevents attackers from 'overlaying' their content on a webpage (Clickjacking)?",
+                    options: [
+                        "HSTS",
+                        "CSP",
+                        "X-XSS-Protection",
+                        "X-Frame-Options"
+                    ],
+                    correct: [3],
+                    explanation: "X-Frame-Options controls whether a browser can render a page in a frame/iframe, preventing clickjacking."
+                },
+                {
+                    id: 44,
+                    text: "What is the main advantage of 'Heuristic Monitoring' in antivirus software?",
+                    options: [
+                        "It is faster than signature scanning.",
+                        "It can detect new, unknown malware based on behavior/characteristics.",
+                        "It requires no updates.",
+                        "It uses less memory."
+                    ],
+                    correct: [1],
+                    explanation: "Heuristics look for suspicious patterns/behaviors, allowing detection of previously unknown (zero-day) malware."
+                },
+                {
+                    id: 45,
+                    text: "What is 'Obfuscation' in secure coding?",
+                    options: [
+                        "Making code clear and readable.",
+                        "Making code difficult for humans/decompilers to understand to hinder reverse engineering.",
+                        "Deleting code comments.",
+                        "Encrypting the source code file."
+                    ],
+                    correct: [1],
+                    explanation: "Obfuscation intentionally makes code obscure to protect intellectual property and prevent tampering."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+
+            function renderQuiz() {
+                quizContainer.innerHTML = '';
+                questions.forEach((q, index) => {
+                    const questionCard = document.createElement('div');
+                    questionCard.classList.add('question-card');
+
+                    const questionNumber = document.createElement('span');
+                    questionNumber.classList.add('question-number');
+                    questionNumber.innerText = `QUESTION ${q.id}`;
+
+                    const questionText = document.createElement('div');
+                    questionText.classList.add('question-text');
+                    questionText.innerText = q.text;
+
+                    const optionsGrid = document.createElement('div');
+                    optionsGrid.classList.add('options-grid');
+
+                    q.options.forEach((option, optIndex) => {
+                        const btn = document.createElement('button');
+                        btn.classList.add('option-btn');
+                        btn.innerText = option;
+                        btn.onclick = () => handleAnswer(btn, optIndex, q.correct, optionsGrid, explanation);
+                        optionsGrid.appendChild(btn);
+                    });
+
+                    const explanation = document.createElement('div');
+                    explanation.classList.add('explanation');
+                    explanation.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+
+                    questionCard.appendChild(questionNumber);
+                    questionCard.appendChild(questionText);
+                    questionCard.appendChild(optionsGrid);
+                    questionCard.appendChild(explanation);
+
+                    quizContainer.appendChild(questionCard);
+                });
+            }
+
+            function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+                const buttons = parentDiv.querySelectorAll('.option-btn');
+                buttons.forEach(btn => btn.classList.add('disabled')); // Disable all buttons
+
+                if (correctIndices.includes(index)) {
+                    clickedBtn.classList.add('correct');
+                } else {
+                    clickedBtn.classList.add('incorrect');
+                    // Highlight correct answer(s)
+                    correctIndices.forEach(correctIndex => {
+                        buttons[correctIndex].classList.add('correct');
+                    });
+                }
+                explanationDiv.style.display = 'block';
+            }
+
+            renderQuiz();
+        });
+    </script>
+</body>
+
+</html>

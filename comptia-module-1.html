@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1: Introduction to Information Security - Matheus Almeida</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+            --success: #3fb950;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .module-section h4 {
+            margin-top: 1.5rem;
+            color: var(--accent);
+        }
+
+        .module-section h5 {
+            margin-top: 1rem;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: var(--text-main);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #161b22;
+        }
+
+        caption {
+            caption-side: top;
+            padding: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        /* Lists */
+        ul,
+        ol {
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Paragraphs */
+        p {
+            line-height: 1.8;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        /* Strong/Bold */
+        strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Em/Italic */
+        em {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert.info {
+            background-color: rgba(88, 166, 255, 0.1);
+            border-color: var(--highlight);
+            color: var(--text-main);
+        }
+
+        .alert.warning {
+            background-color: rgba(210, 153, 34, 0.1);
+            border-color: var(--warning);
+            color: var(--text-main);
+        }
+
+        .alert.note {
+            background-color: rgba(35, 134, 54, 0.1);
+            border-color: var(--accent);
+            color: var(--text-main);
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(88, 166, 255, 0.4);
+        }
+
+        /* Code blocks */
+        code {
+            background-color: #0d1117;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-size: 0.9em;
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.2) !important;
+            border-color: var(--danger) !important;
+            color: #f85149 !important;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✗";
+            position: absolute;
+            right: 15px;
+            color: #f85149;
+        }
+
+        .option-btn.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            color: var(--text-main);
+            display: none;
+            /* Hidden by default */
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 1: Introduction to Information Security and Cybersecurity</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
+
+        <!-- Introduction -->
+        <section class="module-section">
+            <h2>Introduction</h2>
+            <p>The study of security begins with understanding its definition, basic principles, and the distinction
+                between information security and cybersecurity.</p>
+        </section>
+
+        <!-- Understanding Security -->
+        <section class="module-section">
+            <h2>Understanding Security</h2>
+            <p>The word "security" comes from the Latin, meaning <strong>"free from care"</strong>.</p>
+
+            <ol>
+                <li><strong>Goal of Security:</strong> The "state of being free from danger".</li>
+                <li><strong>Process of Security:</strong> Defined as the "measures taken to ensure safety", or the
+                    <strong>"necessary steps to protect from harm"</strong>.
+                </li>
+            </ol>
+
+            <p>Since complete security can never be fully achieved, the focus is often placed on the
+                <strong>process</strong> rather than the goal.
+            </p>
+
+            <h3>Relationship Between Security and Convenience</h3>
+            <p>It is crucial to understand that the relationship between security and convenience is <strong>inversely
+                    proportional</strong>. This means that <strong>as security is increased, convenience is
+                    decreased</strong>. Security is often described as <strong>sacrificing convenience for
+                    safety</strong>.</p>
+
+            <p>For example, a user who changes the screen timeout setting on their phone to 30 seconds to minimize risk
+                (increased security) decreases convenience because they must now log in after 30 seconds of inactivity.
+            </p>
+
+            <h4>Figure 1-1 Relationship of Security to Convenience</h4>
+            <table>
+                <tr>
+                    <th>X-Axis (Security)</th>
+                    <th>Y-Axis (Convenience)</th>
+                    <th>Type of Proportion</th>
+                </tr>
+                <tr>
+                    <td>Low → High</td>
+                    <td>High → Low</td>
+                    <td>Inversely Proportional</td>
+                </tr>
+            </table>
+
+            <p><em>(As illustrated in the sources, the inverse proportionality means that when security increases (from
+                    low to high on the horizontal x-axis), convenience decreases (from high to low on the vertical
+                    y-axis))</em>.</p>
+        </section>
+
+        <!-- Fundamental Security Principles -->
+        <section class="module-section">
+            <h2>Fundamental Security Principles</h2>
+            <p>There are two fundamental security concepts underpinning security practices:</p>
+
+            <h3>1. Confidentiality, Integrity, and Availability (CIA)</h3>
+            <p>Modern security focuses on protecting information that provides value to people and enterprises. Three
+                basic security protections must be extended over this information:</p>
+
+            <table>
+                <tr>
+                    <th>Concept</th>
+                    <th>Definition</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>Confidentiality</strong></td>
+                    <td>Ensures that <strong>only approved individuals</strong> (authorized parties) can view or access
+                        sensitive information.</td>
+                    <td>Using software to encrypt a credit card number stored on a web server or using door locks to
+                        prevent access to physical servers.</td>
+                </tr>
+                <tr>
+                    <td><strong>Integrity</strong></td>
+                    <td>Ensures that the information is <strong>correct</strong> and that no unauthorized person or
+                        malicious software has <strong>altered the data</strong>.</td>
+                    <td>Preventing an attacker from changing a purchase amount from $10,000.00 to $1.00.</td>
+                </tr>
+                <tr>
+                    <td><strong>Availability</strong></td>
+                    <td>Ensures that the data is <strong>accessible to only authorized users</strong> when needed.</td>
+                    <td>Ensuring the total number of items ordered in an online purchase is available to a warehouse
+                        employee so the correct items can be shipped.</td>
+                </tr>
+            </table>
+
+            <h3>2. Authentication, Authorization, and Accounting (AAA)</h3>
+            <p>The AAA principle (sometimes called "triple-A") involves <strong>controlling access to computer
+                    resources</strong>. This control process typically involves the following steps:</p>
+
+            <table>
+                <tr>
+                    <th>Action</th>
+                    <th>Description</th>
+                    <th>Computer Process</th>
+                </tr>
+                <tr>
+                    <td><strong>Identification</strong></td>
+                    <td>The process of <strong>recognizing and distinguishing</strong> the user by reviewing
+                        credentials.</td>
+                    <td>User enters <strong>username</strong>.</td>
+                </tr>
+                <tr>
+                    <td><strong>Authentication</strong></td>
+                    <td>The act of <strong>validating credentials as genuine</strong>.</td>
+                    <td>User provides <strong>password</strong> (allowing login).</td>
+                </tr>
+                <tr>
+                    <td><strong>Authorization</strong></td>
+                    <td><strong>Granting permission</strong> to perform a specific action or access specific data.</td>
+                    <td>User is granted access only to the specific services, devices, applications, and files needed
+                        for their job duties.</td>
+                </tr>
+                <tr>
+                    <td><strong>Accounting</strong></td>
+                    <td>Creates a <strong>preserved record</strong> of who accessed the network, what resources they
+                        accessed, and when they disconnected.</td>
+                    <td>Information is recorded in a <strong>log file</strong>.</td>
+                </tr>
+            </table>
+
+            <div class="alert note">
+                <strong>📚 Didactic Note:</strong> Accounting data can be used to provide an audit trail, for billing,
+                for determining trends, for identifying resource usage, and for future capacity planning.
+            </div>
+        </section>
+
+        <!-- Security Controls -->
+        <section class="module-section">
+            <h2>Security Controls</h2>
+            <p>A <strong>security control</strong> is a safeguard (sometimes called a countermeasure) employed within an
+                enterprise to <strong>protect the CIA of information</strong>. A control attempts to limit the exposure
+                of an asset to a danger.</p>
+
+            <p>Controls are divided into four broad categories:</p>
+
+            <h4>Table 1-2 Categories of Controls</h4>
+            <table>
+                <tr>
+                    <th>Control Category</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>Managerial</strong></td>
+                    <td>Controls that use <strong>administrative methods</strong>.</td>
+                    <td>An acceptable use policy specifying that users should not visit malicious websites.</td>
+                </tr>
+                <tr>
+                    <td><strong>Operational</strong></td>
+                    <td>Controls implemented and <strong>executed by people</strong>.</td>
+                    <td>Conducting workshops to train users to identify and delete suspicious messages (security
+                        awareness training).</td>
+                </tr>
+                <tr>
+                    <td><strong>Technical</strong></td>
+                    <td>Controls incorporated as part of <strong>hardware, software, or firmware</strong>.</td>
+                    <td>Hardware that blocks malicious content from entering the network.</td>
+                </tr>
+                <tr>
+                    <td><strong>Physical</strong></td>
+                    <td>Controls that implement security in a <strong>defined structure and location</strong>.</td>
+                    <td>Installing a fence to prevent an unauthorized person from entering a building.</td>
+                </tr>
+            </table>
+
+            <p>Additionally, there are six specific types of controls:</p>
+
+            <h4>Table 1-3 Specific Control Types</h4>
+            <table>
+                <tr>
+                    <th>Control Type</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>Deterrent</strong></td>
+                    <td>Attempts to <strong>discourage</strong> security violations <strong>before</strong> they occur.
+                    </td>
+                    <td>Signs indicating that the area is under video surveillance.</td>
+                </tr>
+                <tr>
+                    <td><strong>Preventive</strong></td>
+                    <td>Works to <strong>prevent</strong> the threat from contacting the vulnerability
+                        <strong>before</strong> the attack.
+                    </td>
+                    <td>Security awareness training for all users.</td>
+                </tr>
+                <tr>
+                    <td><strong>Directive</strong></td>
+                    <td>Ensures a <strong>particular outcome is achieved</strong>, often through incentives.</td>
+                    <td>An incentive to employees who pass a training course.</td>
+                </tr>
+                <tr>
+                    <td><strong>Detective</strong></td>
+                    <td><strong>Identifies</strong> any threat that has reached the system <strong>during</strong> the
+                        attack.</td>
+                    <td>Installing motion detection sensors.</td>
+                </tr>
+                <tr>
+                    <td><strong>Compensating</strong></td>
+                    <td>Provides an <strong>alternative to normal controls</strong> for some reason cannot be used
+                        <strong>during</strong> the attack.
+                    </td>
+                    <td>An infected computer is isolated on a different network.</td>
+                </tr>
+                <tr>
+                    <td><strong>Corrective</strong></td>
+                    <td><strong>Mitigates or lessens the damage</strong> caused <strong>after</strong> the incident.
+                    </td>
+                    <td>A virus is cleaned from an infected server.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Cybersecurity Versus Information Security -->
+        <section class="module-section">
+            <h2>Cybersecurity Versus Information Security</h2>
+            <p>While the terms <strong>cybersecurity</strong> and <strong>information security</strong> are often used
+                synonymously, they are technically different in scope.</p>
+
+            <ul>
+                <li><strong>Cybersecurity:</strong> Typically involves practices, processes, and technologies intended
+                    to protect <strong>devices, networks, and programs</strong> that process and store data in an
+                    <strong>electronic form</strong>.
+                </li>
+                <li><strong>Information Security:</strong> Protects "processed data" (information) that is essential in
+                    an enterprise business environment. This information may be in <strong>virtually any
+                        format</strong>, ranging from electronic files to <strong>paper documents</strong>.</li>
+            </ul>
+
+            <p>Because business enterprises deal with information in a variety of formats, <strong>information security
+                    is often considered the most appropriate term</strong> in this setting.</p>
+
+            <h3>Defining Information Security</h3>
+            <p>Information security is formally defined as that which <strong>protects the integrity, confidentiality,
+                    and availability of information through products, people, and procedures</strong> on the devices
+                that store, manipulate, and transmit the information.</p>
+
+            <p>The protection of information (which is processed, stored, and transmitted) is achieved through three
+                layers:</p>
+
+            <h4>Figure 1-2 Information Security Layers</h4>
+            <ol>
+                <li><strong>Policies and procedures</strong></li>
+                <li><strong>People</strong></li>
+                <li><strong>Products</strong></li>
+            </ol>
+
+            <p><em>(Policies and procedures enable people to understand how to use products to protect
+                    information)</em>.
+                The goal of information security is to ensure protective measures are implemented, prevent system
+                collapse during an attack, and allow for quick recovery.</p>
+        </section>
+
+        <!-- Threat Actors and Their Motivations -->
+        <section class="module-section">
+            <h2>Threat Actors and Their Motivations</h2>
+            <p>A <strong>threat actor</strong> (or attacker) is an individual or entity responsible for attacks.
+                Financial cybercrime often targets three categories: individual users, enterprises, and governments.</p>
+
+            <h3>Attributes of Actors</h3>
+            <p>The attributes of threat actors vary widely, including their <strong>level of
+                    sophistication/capability</strong>, <strong>resources/funding</strong>, and whether they are
+                <strong>internal/external</strong> to the organization.
+            </p>
+
+            <h3>Categories and Motivations</h3>
+            <p>Threat actors are classified into distinct categories, each with varying motivations:</p>
+
+            <table>
+                <tr>
+                    <th>Threat Actor</th>
+                    <th>Description and Skill Level</th>
+                    <th>Primary Motivation(s)</th>
+                </tr>
+                <tr>
+                    <td><strong>Unskilled Attackers</strong></td>
+                    <td>Individuals who lack technical knowledge but use freely available automated attack software
+                        (scripts).</td>
+                    <td><strong>Data exfiltration</strong> (unauthorized copying of data) or <strong>service
+                            disruption</strong> (obstructing business processes).</td>
+                </tr>
+                <tr>
+                    <td><strong>Shadow IT</strong></td>
+                    <td>Employees who bypass corporate approval for technology purchases.</td>
+                    <td>Often <strong>ethical</strong> (sound moral principles, seeking efficiency), but it weakens
+                        security.</td>
+                </tr>
+                <tr>
+                    <td><strong>Organized Crime</strong></td>
+                    <td>Highly centralized criminal enterprises that have moved into cyberattacks, which they consider
+                        less risky and more rewarding.</td>
+                    <td><strong>Financial gain</strong> (earning revenue).</td>
+                </tr>
+                <tr>
+                    <td><strong>Insiders</strong></td>
+                    <td>Employees, contractors, or business partners who pose a threat from a position of trust.
+                        Difficult to recognize as threats.</td>
+                    <td><strong>Revenge</strong> or <strong>blackmail</strong> (coercion using threats).</td>
+                </tr>
+                <tr>
+                    <td><strong>Hacktivists</strong></td>
+                    <td>Groups motivated by strong <strong>philosophical/political beliefs</strong> (ideology).</td>
+                    <td><strong>Disruption/chaos</strong> (to make a political statement).</td>
+                </tr>
+                <tr>
+                    <td><strong>Nation-State Actors</strong></td>
+                    <td>State-sponsored attackers employed by governments.</td>
+                    <td><strong>Espionage</strong> (spying) or <strong>war</strong> (armed hostile combat).</td>
+                </tr>
+                <tr>
+                    <td><strong>Advanced Persistent Threat (APT)</strong></td>
+                    <td>A new class of attack often associated with nation-state actors, using innovative tools to
+                        silently extract data over an <strong>extended period of time</strong> (persistent).</td>
+                    <td>Extraction of highly sensitive economic, proprietary, or national security information.</td>
+                </tr>
+                <tr>
+                    <td><strong>Competitors</strong></td>
+                    <td>Launch attacks to steal classified information.</td>
+                    <td>Gain competitive advantage (e.g., stealing new product research or customer lists).</td>
+                </tr>
+                <tr>
+                    <td><strong>Brokers</strong></td>
+                    <td>Individuals who discover weaknesses and sell this knowledge to the highest bidder (other
+                        attackers or governments) instead of reporting to the vendor.</td>
+                    <td>High-price financial gain for unknown weaknesses.</td>
+                </tr>
+                <tr>
+                    <td><strong>Cyberterrorists</strong></td>
+                    <td>Attack a nation's network and computer infrastructure.</td>
+                    <td>Cause disruption and panic among citizens (e.g., attacking the electrical power grid).</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- How Attacks Occur -->
+        <section class="module-section">
+            <h2>How Attacks Occur: Vectors and Vulnerabilities</h2>
+            <p>Threat actors target different digital platforms to exploit weaknesses; these platforms are called
+                <strong>threat vectors</strong> or <strong>attack surfaces</strong>.
+            </p>
+
+            <h3>Threat Vectors and Attack Surfaces</h3>
+            <p>Attack surfaces are categorized as mainstream (found in all technology settings) and specialized.</p>
+
+            <h4>Mainstream Attack Surfaces (Software, Hardware, and Network)</h4>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Attack Surface</th>
+                    <th>Explanation</th>
+                </tr>
+                <tr>
+                    <td><strong>Software</strong></td>
+                    <td><strong>Vulnerable software</strong></td>
+                    <td>Software containing security vulnerabilities; can be <em>client-based</em> or
+                        <em>agentless</em>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Software</strong></td>
+                    <td><strong>File-based</strong></td>
+                    <td>Attacks focusing on infecting individual files on a computer.</td>
+                </tr>
+                <tr>
+                    <td><strong>Software</strong></td>
+                    <td><strong>Image-based</strong></td>
+                    <td>An image is a copy of all computer contents; a vulnerability permits an attack on the image.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Hardware</strong></td>
+                    <td><strong>Unsupported systems/applications</strong></td>
+                    <td>Computer systems and applications that are no longer supported and do not receive security
+                        updates.</td>
+                </tr>
+                <tr>
+                    <td><strong>Hardware</strong></td>
+                    <td><strong>Removable devices</strong></td>
+                    <td>Removable media (like a USB flash drive) can be infected on an unsecure computer and then
+                        infect a "clean" device.</td>
+                </tr>
+                <tr>
+                    <td><strong>Network</strong></td>
+                    <td><strong>Unsecure networks</strong></td>
+                    <td>Unsecured wired and wireless networks that an attacker can breach, granting access to hundreds
+                        of connected devices.</td>
+                </tr>
+                <tr>
+                    <td><strong>Network</strong></td>
+                    <td><strong>Open service ports</strong></td>
+                    <td>Unnecessary ports that are not disabled, allowing attackers access to devices and networks.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Network</strong></td>
+                    <td><strong>Default credentials</strong></td>
+                    <td>Networks may have default administrator accounts with well-known passwords that attackers can
+                        target.</td>
+                </tr>
+            </table>
+
+            <h4>Specialized Threat Vectors (Communications and Supply Chain)</h4>
+
+            <h5>1. Communications (Message-based)</h5>
+            <p>Tools where the identity of the other person may not always be validated, making them popular targets.
+            </p>
+
+            <ul>
+                <li><strong>Email:</strong> Almost 94% of malware is delivered through email, tricking users into
+                    opening attachments or clicking malicious links.</li>
+                <li><strong>Texts (SMS):</strong> Short Message Service (SMS) is used to send texts containing a link
+                    that installs malware.</li>
+                <li><strong>Instant Messages (IM):</strong> Real-time messages (e.g., Facebook Messenger, WhatsApp)
+                    where threat actors pretend to be a reliable source.</li>
+                <li><strong>Voice Calls:</strong> Often directed at older users who tend to trust a helpful voice, where
+                    attackers may pretend to be a bank to steal passwords.</li>
+            </ul>
+
+            <h5>2. Supply Chain</h5>
+            <p>A network that moves a product from its creation to the end-user, including suppliers, manufacturers,
+                vendors, and service providers. Each link can be a potential threat vector.</p>
+
+            <ul>
+                <li><strong>Supply Chain Infections:</strong> Malware can be injected into the product during
+                    manufacturing, storage, and distribution.</li>
+                <li><strong>Hardware Infections:</strong> Considered especially dangerous when users receive brand-new
+                    infected devices.</li>
+                <li><strong>Software Infections:</strong> Threat actors insert malicious code into the development
+                    pipeline, distributed as a <strong>malicious update</strong>.</li>
+                <li><strong>Managed Service Providers (MSPs):</strong> Attackers target MSPs (who manage networks for
+                    small-to-medium enterprises, SMEs) to distribute malware to many clients downstream.</li>
+                <li><strong>Open-Source Software:</strong> An alarming target where source code is freely available,
+                    allowing threat actors to add malicious code to a project downloaded by unsuspecting victims.</li>
+            </ul>
+
+            <h3>Categories of Vulnerabilities</h3>
+            <p>A <strong>vulnerability</strong> (from the Latin meaning "wound") is the state of being exposed to the
+                possibility of being attacked or harmed. Vulnerabilities are categorized as software, hardware,
+                misconfigurations, and zero-day.</p>
+
+            <h4>1. Software Vulnerabilities</h4>
+            <p>Vulnerabilities are predominately found in software, with <strong>Operating System (OS) software</strong>
+                being the chief culprit (OS-based vulnerabilities). Applications can also have vulnerabilities.</p>
+
+            <h4>2. Hardware Vulnerabilities</h4>
+            <table>
+                <tr>
+                    <th>Vulnerability</th>
+                    <th>Explanation</th>
+                    <th>Consequences/Risks</th>
+                </tr>
+                <tr>
+                    <td><strong>Difficulty Patching Firmware</strong></td>
+                    <td>Firmware (software embedded in hardware) can be difficult to update to address code
+                        vulnerabilities, requiring specialized steps.</td>
+                    <td>Unpatched vulnerabilities become a target for attackers.</td>
+                </tr>
+                <tr>
+                    <td><strong>Legacy Platforms</strong></td>
+                    <td>Older hardware platforms for which a more modern version is available but have not been
+                        updated, lacking recent security fixes.</td>
+                    <td>Prime targets for attacks.</td>
+                </tr>
+                <tr>
+                    <td><strong>End-of-Life (EOL) Hardware</strong></td>
+                    <td>The end of the manufacturing lifespan, where vendor support ceases (including tech support and
+                        firmware updates).</td>
+                    <td>The primary risk is that vulnerabilities will not be patched. High cost of maintenance, loss of
+                        comprehensive security, and legal consequences (failure to comply with regulatory standards).
+                        EOL does <strong>not</strong> mean the device will no longer function.</td>
+                </tr>
+            </table>
+
+            <h4>3. Misconfigurations</h4>
+            <p>Configuration settings that are not properly implemented result in <strong>misconfigurations</strong> and
+                subsequent vulnerabilities.</p>
+
+            <table>
+                <tr>
+                    <th>Misconfiguration</th>
+                    <th>Explanation</th>
+                </tr>
+                <tr>
+                    <td>Default settings</td>
+                    <td>Settings predetermined by the vendor for usability, not security.</td>
+                </tr>
+                <tr>
+                    <td>Open ports and services</td>
+                    <td>Services configured to provide maximum access, allowing attackers to close those specific to
+                        the organization.</td>
+                </tr>
+                <tr>
+                    <td>Unsecured root accounts</td>
+                    <td>A root account grants unfettered access to all resources.</td>
+                </tr>
+                <tr>
+                    <td>Open permissions</td>
+                    <td>Excessive user permissions over restricted files (e.g., granting Write/Execute when only Read
+                        is needed).</td>
+                </tr>
+                <tr>
+                    <td>Unsecure protocols</td>
+                    <td>Telecommunications protocols that do not provide adequate security (e.g., Telnet or SNMPv1).
+                    </td>
+                </tr>
+                <tr>
+                    <td>Weak encryption</td>
+                    <td>Choosing a known vulnerable encryption mechanism or a key value that is too short.</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>Human mistakes in selecting settings without considering security implications.</td>
+                </tr>
+            </table>
+
+            <h4>4. Zero-Day Vulnerabilities</h4>
+            <p>A <strong>zero-day vulnerability</strong> is one for which there is <strong>no advanced warning</strong>
+                (zero days of warning) because there was no prior knowledge of its existence. Attackers exploit it
+                before the developer knows about it, meaning no security fixes are available. These are considered
+                extremely serious.</p>
+        </section>
+
+        <!-- Impacts of Successful Attacks -->
+        <section class="module-section">
+            <h2>Impacts of Successful Attacks</h2>
+            <p>A successful attack always results in several negative impacts, primarily focusing on data.</p>
+
+            <h3>Data Impacts</h3>
+            <p>The consequences of a successful attack on data include:</p>
+
+            <h4>Table 1-8 Consequences of Data Attack</h4>
+            <table>
+                <tr>
+                    <th>Impact</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>Data Loss</strong></td>
+                    <td>The destruction of data so that it cannot be recovered.</td>
+                    <td>Maliciously erasing patient data used for cancer research.</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Exfiltration</strong></td>
+                    <td>Stealing data to distribute it to other parties.</td>
+                    <td>Taking a list of current customers and selling it to a competitor.</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Breach</strong></td>
+                    <td>Stealing data to disclose it in an unauthorized fashion.</td>
+                    <td>Theft of credit card numbers to sell to other threat actors.</td>
+                </tr>
+                <tr>
+                    <td><strong>Identity Theft</strong></td>
+                    <td>Taking personally identifiable information (PII) to impersonate someone.</td>
+                    <td>Stealing a Social Security number to secure a bank loan in the victim's name.</td>
+                </tr>
+            </table>
+
+            <h3>Overall Enterprise Effects</h3>
+            <p>A successful attack can also have grave consequences for the organization:</p>
+
+            <ul>
+                <li><strong>Financial Loss (Availability Loss):</strong> Systems may become inaccessible, resulting in
+                    lost productivity and impacting normal tasks for generating income.</li>
+                <li><strong>Reputation:</strong> The public perception of the enterprise is impacted. An organization
+                    that suffers a customer data theft faces a serious negative impression in the eyes of the public.
+                </li>
+            </ul>
+        </section>
+
+        <!-- Information Security Resources -->
+        <section class="module-section">
+            <h2>Information Security Resources</h2>
+            <p>Defenders utilize a variety of external cybersecurity resources to help ward off attacks. These resources
+                include frameworks, regulations, legislation, standards, benchmarks/secure configuration guides, and
+                information sources.</p>
+
+            <h3>1. Frameworks</h3>
+            <p>An information security <strong>framework</strong> is a series of documented processes used to define
+                policies and procedures for the implementation and management of security controls.</p>
+
+            <p>The frameworks from the <strong>National Institute of Standards and Technology (NIST)</strong> are among
+                the most popular. NIST frameworks are divided into three basic parts:</p>
+
+            <ol>
+                <li><strong>Framework Core:</strong> Defines the activities needed to attain different security results.
+                </li>
+                <li><strong>Implementation Tiers:</strong> Help organizations identify their level of compliance.</li>
+                <li><strong>Profiles:</strong> Relate the status of the organization's cybersecurity measures to
+                    compliance roadmaps.</li>
+            </ol>
+
+            <p>The <strong>NIST Cybersecurity Framework (CSF) Version 1.1</strong> is used to measure cybersecurity
+                practices. It is composed of five functions:</p>
+
+            <h4>Figure 1-5 NIST Cybersecurity Framework (CSF) Functions</h4>
+            <ol>
+                <li><strong>Identify</strong></li>
+                <li><strong>Protect</strong></li>
+                <li><strong>Detect</strong></li>
+                <li><strong>Respond</strong></li>
+                <li><strong>Recover</strong></li>
+            </ol>
+
+            <p>The Framework Core is further subdivided into four elements:</p>
+
+            <h4>Table 1-9 NIST Framework Core Elements</h4>
+            <table>
+                <tr>
+                    <th>Element Name</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>Functions</td>
+                    <td>The most basic information security tasks.</td>
+                    <td>Identify, protect, detect, respond, and recover.</td>
+                </tr>
+                <tr>
+                    <td>Categories</td>
+                    <td>Tasks to be carried out for each of the five functions.</td>
+                    <td>To protect (a function), organizations must implement software updates, install antivirus, and
+                        have access control policies.</td>
+                </tr>
+                <tr>
+                    <td>Subcategories</td>
+                    <td>Tasks or challenges associated with each category.</td>
+                    <td>To implement software updates (a category), organizations must be sure that Windows computers
+                        have auto-updates turned on.</td>
+                </tr>
+                <tr>
+                    <td>Information sources</td>
+                    <td>Documents or manuals that detail specific tasks for users and explain how to accomplish the
+                        tasks.</td>
+                    <td>A document detailing how auto-updates are enabled on Windows computers.</td>
+                </tr>
+            </table>
+
+            <h3>2. Regulations and Legislation</h3>
+            <ul>
+                <li><strong>Regulations:</strong> Rules developed by professional organizations or government agencies.
+                    The process of adhering to them is called <strong>regulatory compliance</strong>. Organizations must
+                    follow multiple regulations: broadly applicable, industry-specific, U.S. state, and international.
+                </li>
+                <li><strong>Legislation:</strong> Specific national, territorial, and state laws enacted by governing
+                    bodies. The large number of entities passing multiple (and sometimes contradictory) laws often leads
+                    to a "hodge-podge" of legislation, which is not always a good cybersecurity resource.</li>
+            </ul>
+
+            <h3>3. Standards</h3>
+            <p>A <strong>standard</strong> is a document approved through consensus by a recognized standardization
+                body.
+                It provides frameworks, rules, or guidelines for products or processes. Strictly speaking, compliance is
+                not mandatory, but there may be restrictions for organizations that do not comply. An example is the
+                <strong>Payment Card Industry Data Security Standard (PCI DSS)</strong>, which provides a minimum degree
+                of security for handling customer card information.
+            </p>
+
+            <h3>4. Benchmarks/Secure Configuration Guides</h3>
+            <p>These are guidelines usually distributed by hardware manufacturers and software developers. They serve as
+                instructions for <strong>configuring a device or software so that it is resilient to attacks</strong>.
+                They are usually platform-/vendor-specific guides.</p>
+
+            <h3>5. Information Sources</h3>
+            <p>A variety of sources provide specialized in-depth information.</p>
+            <ul>
+                <li><strong>Requests for Comments (RFCs):</strong> Document "white papers" authored by technology
+                    specialists, engineers, and scientists.</li>
+                <li><strong>Data Feeds:</strong> Continually maintained databases of the latest cybersecurity incidents.
+                    Common feeds include vulnerability feeds (latest vulnerabilities) and threat feeds (current threats
+                    and attacks).</li>
+                <li><strong>Adversary Tactics, Techniques, and Procedures (TTP):</strong> A database that records the
+                    behavior of threat actors and how they manage attacks.</li>
+            </ul>
+        </section>
+
+        <!-- CompTIA Security+ Certification -->
+        <section class="module-section">
+            <h2>The CompTIA Security+ Certification</h2>
+            <p>The <strong>CompTIA Security+</strong> is a <strong>vendor-neutral credential</strong>. It requires
+                passing the current certification exam <strong>SY0-701</strong>. A successful candidate must demonstrate
+                the knowledge and skills necessary to:</p>
+
+            <ul>
+                <li>Identify attacks, threats, and vulnerabilities.</li>
+                <li>Design a strong security architecture.</li>
+                <li>Implement security controls.</li>
+                <li>Be knowledgeable of security operations and incident response.</li>
+                <li>Be well versed in <strong>Governance, Risk, and Compliance (GRC)</strong> requirements.</li>
+            </ul>
+        </section>
+
+        <!-- Study Guide Section (EN) -->
+        <section class="module-section">
+            <h2>Information Security Fundamentals Study Guide</h2>
+
+            <h3>Quiz: Short-Answer Questions</h3>
+            <p><em>Instructions: Click on a question to reveal the answer (2-3 complete sentences based on the provided
+                    source material).</em></p>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. Explain the relationship between security and convenience as described in the text.
+                    </summary>
+                    <p>The relationship between security and convenience is inversely proportional. This means that as
+                        security measures are increased, the convenience of using a system or device typically
+                        decreases. For example, setting a shorter screen timeout on a phone increases security but
+                        requires the user to log in more frequently, which is less convenient.</p>
+                </details>
+
+                <details>
+                    <summary>2. What are the three core components of the CIA triad, and what does each component
+                        protect against?</summary>
+                    <p>The three components are Confidentiality, Integrity, and Availability. Confidentiality ensures
+                        that only authorized parties can view sensitive information. Integrity ensures that information
+                        is correct and has not been altered by unauthorized persons or software. Availability ensures
+                        that data is accessible to authorized users when needed.</p>
+                </details>
+
+                <details>
+                    <summary>3. Describe the AAA framework for controlling access to computer resources.</summary>
+                    <p>The AAA framework stands for Authentication, Authorization, and Accounting. Authentication
+                        validates a user's credentials as genuine. Authorization grants the authenticated user
+                        permission to take specific actions or access certain resources. Accounting creates a preserved
+                        record of user actions, such as what resources were accessed and when.</p>
+                </details>
+
+                <details>
+                    <summary>4. What is a security control, and what are the four broad categories of controls?
+                    </summary>
+                    <p>A security control is a safeguard or countermeasure employed within an enterprise to protect the
+                        confidentiality, integrity, and availability (CIA) of information. The four broad categories are
+                        Managerial (using administrative methods), Operational (implemented by people), Technical
+                        (incorporated into hardware/software), and Physical (implementing security in a defined
+                        location).</p>
+                </details>
+
+                <details>
+                    <summary>5. Compare and contrast Information Security with Cybersecurity.</summary>
+                    <p>Cybersecurity primarily involves practices and technologies intended to protect devices,
+                        networks, and programs that handle data in electronic form. Information security is a broader
+                        term that protects "processed data" or information essential to a business, which can exist in
+                        any format, from electronic files to paper documents.</p>
+                </details>
+
+                <details>
+                    <summary>6. Who are nation-state actors, and what is an Advanced Persistent Threat (APT)?</summary>
+                    <p>Nation-state actors are state-sponsored attackers employed by governments to launch cyberattacks
+                        against their foes, which may be foreign governments or their own citizens. An Advanced
+                        Persistent Threat (APT) is a class of attack commonly associated with nation-state actors, which
+                        uses innovative tools to silently extract highly sensitive data over an extended period.</p>
+                </details>
+
+                <details>
+                    <summary>7. Define "shadow IT" and explain the primary motivation behind it.</summary>
+                    <p>Shadow IT is the process of employees bypassing the official corporate approval process to
+                        purchase and use technology, such as unapproved software or hardware. The motivation is often
+                        ethical, stemming from frustration with slow internal processes, but it can create security
+                        vulnerabilities by introducing unvetted technology to the corporate network.</p>
+                </details>
+
+                <details>
+                    <summary>8. What is a supply chain attack surface, and why are these infections considered
+                        especially dangerous?</summary>
+                    <p>A supply chain attack surface is a network that moves a product from creation to the end-user,
+                        where each link in the chain presents a potential threat vector. These infections are dangerous
+                        because malware can be injected into a product during manufacturing, storage, or distribution,
+                        meaning users can receive brand-new devices that are already compromised without their
+                        knowledge.</p>
+                </details>
+
+                <details>
+                    <summary>9. Explain what a zero-day vulnerability is and why it is considered extremely serious.
+                    </summary>
+                    <p>A zero-day vulnerability is a flaw that is discovered and exploited by attackers before the
+                        software developer is aware of it and can create a patch. It is considered extremely serious
+                        because there are zero days of warning, leaving systems open to attack with no security fixes
+                        available.</p>
+                </details>
+
+                <details>
+                    <summary>10. Describe at least three potential negative impacts of a successful data attack on an
+                        enterprise.</summary>
+                    <p>A successful attack can result in data loss, the destruction of data so it cannot be recovered.
+                        It can also lead to data exfiltration, which is the theft of data to distribute to other
+                        parties, such as selling a customer list to a competitor. Furthermore, an attack can damage an
+                        enterprise's reputation, leading to a loss of customer trust and business.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <p><em>Instructions: Prepare a detailed response for each of the following prompts, synthesizing information
+                    from across the study materials.</em></p>
+            <ol>
+                <li>Discuss the six specific types of security controls (Deterrent, Preventive, Detective, Compensating,
+                    Corrective, and Directive). For each type, provide its primary purpose, when it is implemented
+                    relative to an attack (before, during, or after), and a clear example.</li>
+                <li>Analyze the attributes, motivations, and capabilities of three distinct categories of threat actors
+                    from the following list: Unskilled Attackers, Organized Crime, Insiders, Hacktivists, and
+                    Nation-State Actors. Compare their levels of sophistication and the typical targets they pursue.
+                </li>
+                <li>Explain the concept of an attack surface, also known as a threat vector. Detail three mainstream
+                    attack surfaces (related to software, hardware, or networks) and two specialized threat vectors
+                    (communications and supply chain), providing specific examples for each.</li>
+                <li>Describe the four main categories of cybersecurity vulnerabilities discussed in the text: software,
+                    hardware, misconfigurations, and zero-day vulnerabilities. Provide at least one specific example for
+                    each category and explain how it could be exploited.</li>
+                <li>An enterprise has several resources at its disposal to help ward off attacks. Describe the roles of
+                    Frameworks, Regulations, Standards, and Benchmarks/Secure Configuration Guides in building a
+                    comprehensive information security program.</li>
+            </ol>
+
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td>Accounting</td>
+                    <td>The process of creating a preserved record of who accessed an enterprise network, what resources
+                        they accessed, and when they disconnected. It is the third component of the AAA framework.</td>
+                </tr>
+                <tr>
+                    <td>Advanced Persistent Threat (APT)</td>
+                    <td>A class of attacks, commonly associated with nation-state actors, that uses innovative attack
+                        tools to silently extract data over an extended period of time.</td>
+                </tr>
+                <tr>
+                    <td>Attack surface (threat vector)</td>
+                    <td>A digital platform that threat actors target for their exploits. Examples include vulnerable
+                        software, unsecure networks, and supply chains.</td>
+                </tr>
+                <tr>
+                    <td>Authentication</td>
+                    <td>The act of ensuring a user's credentials are authentic. It is the second step in the access
+                        control process, after identification.</td>
+                </tr>
+                <tr>
+                    <td>Authorization</td>
+                    <td>The act of granting permission for a user to take a particular action or access specific
+                        resources, devices, applications, or files.</td>
+                </tr>
+                <tr>
+                    <td>Availability</td>
+                    <td>A core security principle ensuring that data is accessible to authorized users. It is the 'A' in
+                        the CIA triad.</td>
+                </tr>
+                <tr>
+                    <td>Compensating control</td>
+                    <td>A type of security control that provides an alternative to normal controls that cannot be used
+                        for some reason. It is typically implemented during an attack.</td>
+                </tr>
+                <tr>
+                    <td>Confidentiality</td>
+                    <td>A core security principle ensuring that only authorized parties can view sensitive information.
+                        It is the 'C' in the CIA triad.</td>
+                </tr>
+                <tr>
+                    <td>Control</td>
+                    <td>A safeguard (or countermeasure) employed within an enterprise to protect the CIA of information
+                        by attempting to limit the exposure of an asset to a danger.</td>
+                </tr>
+                <tr>
+                    <td>Corrective control</td>
+                    <td>A type of security control that mitigates or lessens the damage caused by an incident. It is
+                        implemented after an attack.</td>
+                </tr>
+                <tr>
+                    <td>Cybersecurity</td>
+                    <td>A range of practices, processes, and technologies intended to protect devices, networks, and
+                        programs that process and store data in an electronic form.</td>
+                </tr>
+                <tr>
+                    <td>Data breach</td>
+                    <td>The consequence of an attack where data is stolen to be disclosed in an unauthorized fashion,
+                        such as the theft of credit card numbers.</td>
+                </tr>
+                <tr>
+                    <td>Data exfiltration</td>
+                    <td>The consequence of an attack involving the unauthorized copying or stealing of data with the
+                        intent to distribute it to other parties.</td>
+                </tr>
+                <tr>
+                    <td>Detective control</td>
+                    <td>A type of security control that identifies any threat that has reached the system. It is
+                        implemented during an attack.</td>
+                </tr>
+                <tr>
+                    <td>Deterrent control</td>
+                    <td>A type of security control that attempts to discourage security violations before they occur,
+                        such as a sign indicating video surveillance.</td>
+                </tr>
+                <tr>
+                    <td>Directive control</td>
+                    <td>A type of security control that ensures a particular outcome is achieved, often by providing
+                        incentives.</td>
+                </tr>
+                <tr>
+                    <td>End-of-Life (EOL)</td>
+                    <td>The point at which a hardware device reaches the end of its manufacturing lifespan and is no
+                        longer manufactured or supported by the vendor. EOL hardware can become a vulnerability due to a
+                        lack of security updates.</td>
+                </tr>
+                <tr>
+                    <td>Firmware</td>
+                    <td>Software that is embedded into hardware, providing low-level controls and instructions. Patching
+                        firmware vulnerabilities can be difficult.</td>
+                </tr>
+                <tr>
+                    <td>Hacktivists</td>
+                    <td>A group or individual strongly motivated by philosophical or political beliefs (ideology) to
+                        carry out attacks, often to "make a statement" or cause disruption and chaos.</td>
+                </tr>
+                <tr>
+                    <td>Information security</td>
+                    <td>The protection of the integrity, confidentiality, and availability of information through
+                        products, people, and procedures on devices that store, manipulate, and transmit it. It applies
+                        to information in any format, including paper documents.</td>
+                </tr>
+                <tr>
+                    <td>Insider threat</td>
+                    <td>A threat to an enterprise that comes from its own employees, contractors, or business partners
+                        who hold a position of trust.</td>
+                </tr>
+                <tr>
+                    <td>Integrity</td>
+                    <td>A core security principle ensuring that information is correct and has not been altered by an
+                        unauthorized person or malicious software. It is the 'I' in the CIA triad.</td>
+                </tr>
+                <tr>
+                    <td>Legacy platform</td>
+                    <td>An older hardware platform for which a more modern version is available but has not been updated
+                        or replaced, often leaving it without recent security fixes.</td>
+                </tr>
+                <tr>
+                    <td>Managed Service Providers (MSPs)</td>
+                    <td>IT service providers who manage networks, computers, and cloud resources for other enterprises,
+                        typically small-to-medium businesses. They can be a target in supply chain attacks.</td>
+                </tr>
+                <tr>
+                    <td>Managerial controls</td>
+                    <td>A broad category of security controls that use administrative methods, such as creating an
+                        acceptable use policy.</td>
+                </tr>
+                <tr>
+                    <td>Misconfigurations</td>
+                    <td>Improper implementation of configuration settings on hardware or software platforms, which can
+                        result in vulnerabilities.</td>
+                </tr>
+                <tr>
+                    <td>Nation-state actors</td>
+                    <td>State-sponsored attackers employed by governments to launch cyberattacks against their foes.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Operational controls</td>
+                    <td>A broad category of security controls implemented and executed by people, such as conducting
+                        security awareness workshops.</td>
+                </tr>
+                <tr>
+                    <td>Organized crime</td>
+                    <td>A close-knit group of highly centralized enterprises set up for illegal activities. In recent
+                        years, they have moved into cyberattacks, motivated by financial gain.</td>
+                </tr>
+                <tr>
+                    <td>Physical controls</td>
+                    <td>A broad category of security controls that implement security in a defined structure and
+                        location, such as installing a fence or door locks.</td>
+                </tr>
+                <tr>
+                    <td>Preventive control</td>
+                    <td>A type of security control that works to prevent a threat from coming in contact with a
+                        vulnerability. It is implemented before an attack.</td>
+                </tr>
+                <tr>
+                    <td>Security</td>
+                    <td>The necessary steps to protect from harm; often defined as the process of taking measures to
+                        ensure safety.</td>
+                </tr>
+                <tr>
+                    <td>Shadow IT</td>
+                    <td>The process of bypassing corporate approval for technology purchases, often done by
+                        well-intentioned employees, which can weaken an enterprise's security.</td>
+                </tr>
+                <tr>
+                    <td>Supply chain</td>
+                    <td>A network that moves a product from its creation to the end-user. Each link in the chain can be
+                        a potential threat vector.</td>
+                </tr>
+                <tr>
+                    <td>Technical controls</td>
+                    <td>A broad category of security controls incorporated as part of hardware, software, or firmware,
+                        such as a hardware firewall.</td>
+                </tr>
+                <tr>
+                    <td>Threat actor</td>
+                    <td>An individual or entity responsible for attacks (also called a malicious actor or attacker).
+                    </td>
+                </tr>
+                <tr>
+                    <td>Unskilled attackers</td>
+                    <td>Individuals who perform attacks despite lacking technical knowledge, typically by using
+                        easy-to-use automated attack software downloaded from the internet.</td>
+                </tr>
+                <tr>
+                    <td>Vulnerability</td>
+                    <td>The state of being exposed to the possibility of being attacked or harmed.</td>
+                </tr>
+                <tr>
+                    <td>Zero-day vulnerability</td>
+                    <td>A vulnerability that is exploited by attackers before the software developer has been able to
+                        release a patch, providing zero days of warning.</td>
+                </tr>
+            </table>
+            <div class="quiz-header">
+                <h2 style="margin:0; color:var(--accent)">⚡ Full Practice Simulation</h2>
+                <p>45 Review Questions</p>
+            </div>
+            <div id="quiz-container"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 M.A. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // --- QUIZ DATABASE ---
+        const questions = [
+            {
+                id: 1,
+                text: "Vittoria is working on her computer information systems degree at a local college and has started researching information security positions. Because she has no prior experience, which of the following positions would Vittoria most likely be offered?",
+                options: ["Security administrator", "Security technician", "Security officer", "Security manager"],
+                correct: [1],
+                explanation: "While the text discusses managerial vs. technical personnel generally, in the information security industry (and the context of the CompTIA Security+ certification mentioned in the text), a 'technician' role is typically the entry-level position suitable for someone with foundational skills but no prior experience, whereas administrators and managers require experience."
+            },
+            {
+                id: 2,
+                text: "Which of the following is false about the CompTIA Security+ certification?",
+                options: ["Security+ is one of the most widely acclaimed security certifications.", "Security+ is internationally recognized as validating a foundation level of security skills and knowledge.", "The Security+ certification is a vendor-neutral credential.", "Professionals who hold the Security+ certification earn about the same or slightly less than security professionals who have not achieved this certification."],
+                correct: [3],
+                explanation: "The text describes Security+ as a 'vendor-neutral credential' that is internationally recognized for validating 'foundation level' skills. It does not suggest that certified professionals earn less; typically, certifications are associated with higher earning potential and professional advancement in the industry."
+            },
+            {
+                id: 3,
+                text: "Ginevra is explaining to her roommate the relationship between security and convenience. Which statement most accurately indicates this relationship?",
+                options: ["Security and convenience are directly proportional.", "Security and convenience have no relationship.", "Any proportions between security and convenience depends on the type of attack.", "Security and convenience are inversely proportional."],
+                correct: [3],
+                explanation: "The text states, 'The relationship between these two is not directly proportional... but, instead, it is completely the opposite, known as inversely proportional (as security is increased, convenience is decreased)'."
+            },
+            {
+                id: 4,
+                text: "Serafina is studying to take the Security+ certification exam. Which of the following of the CIA elements ensures that only authorized parties can view protected information?",
+                options: ["Confidentiality", "Integrity", "Availability", "Credentiality"],
+                correct: [0],
+                explanation: "The text defines Confidentiality as: 'Confidentiality ensures that only authorized parties can view the information'."
+            },
+            {
+                id: 5,
+                text: "Which of the following AAA elements is applied immediately after a user has logged into a computer with their username and password?",
+                options: ["Authentication", "Authorization", "Identification", "Recording"],
+                correct: [1],
+                explanation: "Identification (username) and Authentication (password) happen during login. The text states that 'Authorization, granting permission to take an action, is the next step' and 'once users have presented their identification and been authenticated... they can log in... But what can they do... Authorization'."
+            },
+            {
+                id: 6,
+                text: "Gia has been asked to enhance the security awareness training workshop for new hires. Which category of security control would Gia be using?",
+                options: ["Managerial", "Technical", "Operational", "Physical"],
+                correct: [2],
+                explanation: "Table 1-2 lists 'Operational' controls as those 'implemented and executed by people,' with the specific example of 'Conducting workshops to help train users'."
+            },
+            {
+                id: 7,
+                text: "Which specific type of control is intended to mitigate (lessen) damage caused by an attack?",
+                options: ["Corrective control", "Compensating control", "Preventive control", "Restrictive control"],
+                correct: [0],
+                explanation: "The text defines a corrective control as one that 'mitigates or lessens the damage caused by the incident'."
+            },
+            {
+                id: 8,
+                text: "Which control is designed to ensure that a particular outcome is achieved by providing incentives?",
+                options: ["Deterrent control", "Incentive control", "Detective control", "Directive control"],
+                correct: [3],
+                explanation: "The text states, 'A directive control ensures that a particular outcome is achieved' and notes that 'One type of directive control is incentive'."
+            },
+            {
+                id: 9,
+                text: "Which of the following controls is NOT implemented before an attack occurs?",
+                options: ["Detective control", "Deterrent control", "Preventive control", "Directive control"],
+                correct: [0],
+                explanation: "According to Table 1-3, Deterrent, Preventive, and Directive controls occur 'Before attack,' while a Detective control occurs 'During attack'."
+            },
+            {
+                id: 10,
+                text: "Complete this definition of information security: That which protects the integrity, confidentiality, and availability of information _______.",
+                options: ["on electronic digital devices and limited analog devices that can connect via the Internet or through a local area network", "through a long-term process that results in ultimate security", "using both open-sourced as well as supplier-sourced hardware and software that interacts appropriately with limited resources", "through products, people, and procedures on the devices that store, manipulate, and transmit the information"],
+                correct: [3],
+                explanation: "The text explicitly defines information security as 'that which protects the integrity, confidentiality, and availability of information through products, people, and procedures on the devices that store, manipulate, and transmit the information'."
+            },
+            {
+                id: 11,
+                text: "Which of the following groups have the lowest level of technical knowledge for carrying out cyberattacks?",
+                options: ["Unskilled attackers", "Hacktivists", "Nation-state actors", "Organized crime"],
+                correct: [0],
+                explanation: "The text states that the listing of threat actors is in 'ascending sequence of least sophisticated to most sophisticated,' beginning with 'Unskilled Attackers', who lack technical knowledge and use automated tools."
+            },
+            {
+                id: 12,
+                text: "Ilaria is explaining to her parents why information security is the preferred term when talking about security in the enterprise. Which of the following would Ilaria NOT say?",
+                options: ["Cybersecurity usually involves a range of practices, processes, and technologies intended to protect devices, networks, and programs that process and store data in an electronic form.", "In a business, information may be in any format, from electronic files to paper documents.", "Cybersecurity is a subset of information security.", "Information security protects “processed data” or information."],
+                correct: [2],
+                explanation: "The text states in Note 6 that 'generally speaking, cybersecurity is considered an overall umbrella term under which information security is found'. Therefore, stating that cybersecurity is a subset of information security would be factually incorrect according to the text."
+            },
+            {
+                id: 13,
+                text: "Which of the following is NOT considered an attribute of threat actors?",
+                options: ["Level of sophistication/capability", "Educated/uneducated", "Resources/funding", "Internal/external"],
+                correct: [1],
+                explanation: "The text lists the attributes of actors as: 'level of sophistication/capability', 'resources/funding', and 'internal/external'. 'Educated/uneducated' is not listed as a specific attribute."
+            },
+            {
+                id: 14,
+                text: "What is considered the motivation of an employee who practices shadow IT?",
+                options: ["Deception", "Ignorance", "Ethical", "Malicious"],
+                correct: [2],
+                explanation: "The text states, 'The employee's motivation is often ethical (it has sound moral principles) but nevertheless weakens security'."
+            },
+            {
+                id: 15,
+                text: "Which tool is most commonly associated with nation-state actors?",
+                options: ["Closed-Source Resistant and Recurrent Malware (CSRRM)", "Advanced Persistent Threat (APT)", "Unlimited Harvest and Secure Attack (UHSA)", "Network Spider and Worm Threat (NSAWT)"],
+                correct: [1],
+                explanation: "The text states, 'APTs are most commonly associated with nation-state actors'."
+            },
+            {
+                id: 16,
+                text: "Flavia is reading about insider threats. Which of the following is NOT true about insider threats?",
+                options: ["Attacks from an insider threat are hard to recognize.", "Insider threats are usually dismissed as not being a serious risk.", "Insider threats often occur because the enterprise is watching for outsiders.", "Government insiders have stolen large volumes of sensitive information."],
+                correct: [1],
+                explanation: "The text introduces insider threats as 'Another serious threat to an enterprise'. It also notes they are hard to recognize, occur because focus is on outsiders, and that government insiders have stolen large volumes of data."
+            },
+            {
+                id: 17,
+                text: "What is the primary motivation of hacktivists?",
+                options: ["Disruption/chaos", "Financial gain", "Data exfiltration", "War"],
+                correct: [0],
+                explanation: "While hacktivists are motivated by ideology, the text explicitly states: 'Today many hacktivists work... making their motivation disruption/chaos'."
+            },
+            {
+                id: 18,
+                text: "What is another name for “attack surface”?",
+                options: ["Vulnerability exposure", "Threat vector", "Legacy platform", "Attack floor"],
+                correct: [1],
+                explanation: "The text states, 'An attack surface, also called a threat vector, is a digital platform that threat actors target for their exploits'."
+            },
+            {
+                id: 19,
+                text: "Which of the following is NOT a message-based attack surface?",
+                options: ["Voice calls", "Instant messages", "Texts", "Network protocols"],
+                correct: [0],
+                explanation: "The text explicitly lists 'message-based' communication tools as: 'Email,' 'Texts,' and 'Instant messages'. 'Voice calls' are listed separately as a distinct bullet point under communication tools."
+            },
+            {
+                id: 20,
+                text: "Which of the following is NOT true about supply chains?",
+                options: ["A supply chain is a network that moves a product from its creation to the end-user.", "Vendors are the first step in a supply chain.", "Each link in a supply chain can be a potential attack surface.", "Hardware providers and software providers are types of supply chains."],
+                correct: [1],
+                explanation: "The text states, 'This chain is typically made up of suppliers (the first step in the chain)...'. Vendors are listed later in the chain ('vendors who purchase the products to resell them')."
+            },
+            {
+                id: 21,
+                text: "As a consultant, you are asked by a company to help them work on a security-related project that falls under the operational control scope. Which of the following will you help implement?",
+                options: ["Implement security awareness training", "Install hardware to block malicious content", "Define an acceptable use policy", "Install a card reader to access the data center"],
+                correct: [0],
+                explanation: "Operational controls are those 'implemented and executed by people'. Conducting workshops for security awareness training is explicitly listed as an example of an operational control in Table 1-2."
+            },
+            {
+                id: 22,
+                text: "An attacker hacks into a cell phone with the intent of stealing credit card information. The attacker also tries to extend the nefarious activity to contacts in the victim's phone, and their contacts as well. What entity was the attacker targeting?",
+                options: ["A government agency", "An individual", "An enterprise", "A competitor"],
+                correct: [1],
+                explanation: "The category of 'Individual users' focuses on individuals as the victims. Threat actors steal and use stolen data, credit card numbers, or online financial account information to profit from their victims."
+            },
+            {
+                id: 23,
+                text: "A group of threat actors has a strong aversion to certain political ideologies. They launch a cyberattack against the organization to which its perceived adversarial counterpart belongs. This type of threat actor could most appropriately be classified under what category?",
+                options: ["Brokers", "Hacktivist", "Nation-state actors", "Competitors"],
+                correct: [1],
+                explanation: "A group that is strongly motivated by philosophical/political beliefs (ideology for the sake of principles) is classified as hacktivists. Attacks by hacktivists are often used to 'make a statement'."
+            },
+            {
+                id: 24,
+                text: "Company A wants to be first to market with a product forecasted to be very profitable. A few bad actors in Company A launch an attack against Company B to steal intellectual property that will help them. What type of threat actor would do something like this?",
+                options: ["Script kiddie", "Revengeful", "Competitors", "Hacker in a hoodie"],
+                correct: [2],
+                explanation: "Competitors may launch attacks against an opponent's system to steal classified information or new product research to gain a competitive advantage."
+            },
+            {
+                id: 25,
+                text: "A work-study student works at the registrar's office and is given limited access to a student database. The student is very technologically savvy and figures out a way of gaining additional privileges. The student is not pleased with one of their grades and changes it. Which of the following best describes the type of scenario this activity characterizes?",
+                options: ["Cyberterrorism", "Shadow IT", "Revenge", "Insider threat"],
+                correct: [3],
+                explanation: "A serious threat to an enterprise comes from its own employees, contractors, and business partners, called insiders. They pose an insider threat because the threat comes from an entity in a position of trust."
+            },
+            {
+                id: 26,
+                text: "A new piece of hardware has a specific IP address and supports Telnet and FTP connections so that it could be configured through a network connection. Leaving the device in this state could lead to a breach due to what type of vulnerability? (Select three)",
+                options: ["Open ports and services", "Unsecure protocols", "Firmware", "Zero-day", "Default settings"],
+                correct: [0, 1, 4],
+                explanation: "Misconfigurations include 'Default settings' (like preselected options/passwords), 'Open ports and services' (like FTP ports left open), and 'Unsecure protocols' (like Telnet, which does not provide adequate protection)."
+            },
+            {
+                id: 27,
+                text: "Which of the following best describes what Della could do to prevent unauthorized parties from viewing sensitive customer information at her retail store?",
+                options: ["Verify the ID of the party requesting access to the data.", "Ensure the data cannot be manipulated or changed.", "Use software to encrypt data in a secure database.", "Limit access to certain areas once access is granted."],
+                correct: [2],
+                explanation: "Confidentiality ensures that only authorized parties can view information. Providing confidentiality involves tools ranging from 'software to encrypt the credit card number stored on the web server to door locks'."
+            },
+            {
+                id: 28,
+                text: "Which of the following accurately describes the differences or similarities between mainstream attack surfaces and specialized threat vectors? (Select three)",
+                options: ["An MSP is a typical example of a mainstream attack surface.", "A network is an example of a mainstream attack surface.", "Both are targeted with the same degree of frequency.", "An imposter calling the elderly is exploiting a specialized threat vector.", "One targets client-based software, the other targets supply chain components."],
+                correct: [1, 3, 4],
+                explanation: "Mainstream attack surfaces include 'software, hardware, and networks'. Specialized threat vectors include 'communications' (like voice calls) and 'supply chain'. Client-based software is a mainstream surface."
+            },
+            {
+                id: 29,
+                text: "An entity is determined and decides to commit to a multiyear intrusion campaign with the goal of obtaining national security information. Which of the following describes the type of attack the entity is most likely to engage in? (Select two)",
+                options: ["Data breach", "Data exfiltration", "Espionage", "Service disruption", "APT"],
+                correct: [1, 4],
+                explanation: "Nation-state actors are involved in 'multiyear intrusion campaigns' known as 'Advanced Persistent Threats (APTs)'. Once infected, an APT 'silently extracts data [exfiltration] over an extended period of time'."
+            },
+            {
+                id: 30,
+                text: "A malicious actor lacking technical knowledge uses an attack tool to perform a sophisticated attack. If the attacker is successful penetrating the defenses of the targeted organization, what type of activity are they most likely to perform? (Select two)",
+                options: ["Copy data", "Corrupt data", "Blackmail", "Manipulate data", "Disrupt service"],
+                correct: [0, 4],
+                explanation: "The motivation for unskilled attackers is usually 'data exfiltration (unauthorized copying of data) or service disruption (obstructing normal business electronic processes)'."
+            },
+            {
+                id: 31,
+                text: "As a security professional Anvi works for an organization authoring documents that define policies and procedures outlining security controls. What type of resource does the organization provide?",
+                options: ["Framework", "Regulation", "Standard", "Benchmark"],
+                correct: [0],
+                explanation: "An information security framework is defined as 'a series of documented processes used to define policies and procedures for implementation and management of security controls'."
+            },
+            {
+                id: 32,
+                text: "Duante needs to research the behavior of attackers as well as how they coordinate their attacks. Where is Duante most likely to look for this type of information?",
+                options: ["Vulnerability feeds", "Threat feeds", "Data feeds", "TTP database"],
+                correct: [3],
+                explanation: "The 'adversary tactics, techniques, and procedures (TTP)' is a database of 'the behavior of threat actors and how they orchestrate and manage attacks'."
+            },
+            {
+                id: 33,
+                text: "A friend gets a virus and asks if you can help them fix the problem. You boot the computer with a bootable flash drive containing security-related tools and remove the virus. What type of control did you employ?",
+                options: ["Directive", "Corrective", "Compensating", "Deterrent"],
+                correct: [1],
+                explanation: "A corrective control 'mitigates or lessens the damage caused by the incident'. An example provided in Table 1-3 is: 'A virus is cleaned from an infected server'."
+            },
+            {
+                id: 34,
+                text: "You have excellent technical acumen. Part of your responsibilities where you work include overlooking daily operations as well as analyzing and designing security solutions in a specific area. You encounter a situation that needs to be escalated. Which of the following are you most likely to approach with the situation?",
+                options: ["Security manager", "CISO", "CIO", "Security administrator"],
+                correct: [0],
+                explanation: "Information security managerial personnel administer and manage plans, policies, and people. Technical personnel often report to managers who oversee the department."
+            },
+            {
+                id: 35,
+                text: "What are some of the challenges an organization may face when trying to be in regulatory compliance as it relates to information security?",
+                options: ["No two states share the same set of regulations.", "A requirement in one regulation may negate one in another.", "Virtually every industry has its own set of regulations.", "All of these choices."],
+                correct: [3],
+                explanation: "The text details that 'virtually all organizations must follow multiple regulations', 'no two state laws are the same', and requirements in one regulation can 'negate a requirement in another'."
+            },
+            {
+                id: 36,
+                text: "What would motivate organized crime actors to add cyberattacks to their portfolio of malicious activities?",
+                options: ["Espionage", "Increased financial gain", "Create chaos", "Philosophical beliefs"],
+                correct: [1],
+                explanation: "Organized crime considers cyberattacks to be more rewarding than traditional crimes. Their motivation is generally 'financial gain (earning revenue)'."
+            },
+            {
+                id: 37,
+                text: "Which of the following best describes the possible impact of an attack where credit card data is stolen from a company and the breach is eventually reported in the news? (Select two)",
+                options: ["Income generating loss", "Possible prison time for IT personnel", "Availability loss", "Loss of reputation"],
+                correct: [1, 3],
+                explanation: "A victim of customer data theft faces a 'serious negative impression in the eyes of the public' (reputation). Additionally, IT officials can face 'prison sentence' for failing to protect systems, as seen in the Albania example."
+            },
+            {
+                id: 38,
+                text: "Evin thinks one of the computer systems where he works may have been compromised. He does not currently have a good way of determining if an unauthorized user logged in successfully. Which of the following can Evin implement that will, going forward, help him identify who logs in?",
+                options: ["Authorization", "Accounting", "Availability", "Authentication"],
+                correct: [1],
+                explanation: "Accounting 'creates a record that is preserved of who accessed the enterprise network'."
+            },
+            {
+                id: 39,
+                text: "A visitor is trying to access a military base. The visitor needs to supply their license and enter other personal information via a kiosk. The visitor is eventually allowed to enter the base but is limited to certain areas only. What security principles are being employed? (Select two)",
+                options: ["Authorization", "Availability", "Accounting", "Confidentiality", "Authentication"],
+                correct: [0, 4],
+                explanation: "Authentication is checking credentials to be sure they are authentic. Authorization is 'granting permission to take an action' (like entering specific areas)."
+            },
+            {
+                id: 40,
+                text: "When analyzing a security breach, Acer determines the attacker was able to change the price of an item from $200 to $20. What security protection was compromised?",
+                options: ["Confidentiality", "Authorization", "Authentication", "Integrity"],
+                correct: [3],
+                explanation: "Integrity ensures that 'no unauthorized person or malicious software has altered the data,' such as changing the amount of a purchase."
+            },
+            {
+                id: 41,
+                text: "A criminal organization has decided to leave their traditional ways and pursue cyberattacks as their new mode of operation. Why would they do this?",
+                options: ["Generate disruption", "Easier to hide their tracks", "Less competition", "Political beliefs"],
+                correct: [1],
+                explanation: "Organized crime considers cyberattacks to be 'less risky'."
+            },
+            {
+                id: 42,
+                text: "What type of entity would a threat actor most likely attack to steal design documents for a relatively recently announced government-issued contract to design and build a missile defense system?",
+                options: ["Government", "For-profit organization", "Individual", "Enterprise"],
+                correct: [3],
+                explanation: "Threat actors target enterprises to 'steal research on a new product... so that they can sell it'."
+            },
+            {
+                id: 43,
+                text: "You receive a text message indicating your online bank account is locked until you supply the needed credentials via a link included in the message. What type of threat vector is the attacker trying to exploit? (Select three)",
+                options: ["SMS", "Mainstream", "IM", "MMS", "Specialized", "Communications"],
+                correct: [0, 4, 5],
+                explanation: "Texts use 'Short Message Service (SMS)'. Texts are listed under 'Specialized Threat Vectors' in the category of 'Communications'."
+            },
+            {
+                id: 44,
+                text: "Which of the following best describes what a nation-state actor is most likely to do if their attacks against a target are not successful?",
+                options: ["Move on to a different target.", "Use different attack tools.", "Continue trying until successful.", "Hire more malicious actors."],
+                correct: [2],
+                explanation: "With nation-state actors, 'the target is very specific, and the attackers keep working until they are successful'."
+            },
+            {
+                id: 45,
+                text: "Which of the following best describes the differences or similarities between cybersecurity and information security? (Select three)",
+                options: ["Cybersecurity primarily protects devices.", "Cybersecurity induces a lot more inconvenience than information security.", "Cybersecurity guarantees more safety than information security.", "Information security protects using products, people, and procedures.", "Information security falls under the cybersecurity umbrella."],
+                correct: [0, 3, 4],
+                explanation: "Cybersecurity protects 'devices, networks, and programs'. Information security protects through 'products, people, and procedures'. Cybersecurity is considered 'an overall umbrella term under which information security is found'."
+            }
+        ];
+
+        // --- QUIZ RENDERING LOGIC ---
+        const quizContainer = document.getElementById('quiz-container');
+
+        function renderQuiz() {
+            quizContainer.innerHTML = ''; // Clear existing
+
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+
+                // Header
+                const qNumber = document.createElement('span');
+                qNumber.className = 'question-number';
+                qNumber.textContent = `QUESTION ${q.id}`;
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = q.text;
+
+                card.appendChild(qNumber);
+                card.appendChild(qText);
+
+                // Options
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options-grid';
+
+                // Explanation
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation';
+                if (q.explanation) {
+                    explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+                }
+
+                // Get options
+                q.options.forEach((optText, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = optText;
+
+                    btn.onclick = function () {
+                        handleAnswer(btn, index, q.correct, optionsDiv, explanationDiv);
+                    };
+
+                    optionsDiv.appendChild(btn);
+                });
+
+                card.appendChild(optionsDiv);
+                card.appendChild(explanationDiv);
+                quizContainer.appendChild(card);
+            });
+        }
+
+        function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+            const allBtns = parentDiv.querySelectorAll('.option-btn');
+
+            // If it's a multi-select question (more than 1 correct answer), logic might need adjustment.
+            // But for now, we'll treat it as: click -> reveal all correct answers.
+            // Disable all buttons after one click? Or allow multiple clicks?
+            // The module14 logic disabled all buttons after one click.
+
+            allBtns.forEach(b => b.classList.add('disabled'));
+
+            const isCorrect = correctIndices.includes(index);
+
+            if (isCorrect) {
+                clickedBtn.classList.add('correct');
+            } else {
+                clickedBtn.classList.add('incorrect');
+            }
+
+            // Always show all correct answers
+            correctIndices.forEach(correctIndex => {
+                if (allBtns[correctIndex]) {
+                    allBtns[correctIndex].classList.add('correct');
+                }
+            });
+
+            explanationDiv.style.display = 'block';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Back to Top functionality
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Render the quiz
+            renderQuiz();
+        });
+    </script>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+</body>
+
+</html>

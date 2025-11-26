@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 14: Oversight & Operations - Matheus Almeida</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.policy {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.standard {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .tag.procedure {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        .tag.guideline {
+            background: rgba(139, 148, 158, 0.15);
+            color: #8b949e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 14: Oversight and Operations</h1>
+            <div class="subtitle" data-lang="en">Study Portfolio | Matheus Almeida e Silva</div>
+            <div class="subtitle" data-lang="pt">Portfólio de Estudos | Matheus Almeida e Silva</div>
+        </div>
+
+        <!-- ENGLISH CONTENT -->
+        <div id="content-en" data-lang="en">
+            <section class="module-section">
+                <h2>1. The Context of Technology and Sports (#TrendingCyber)</h2>
+                <p>Technology and sports have a long history, but their integration has deepened drastically.
+                    Originally, technology was introduced clandestinely to gain a competitive advantage, such as the use
+                    of a radio receiver by the NFL's Cleveland Browns in 1956, which was subsequently banned by the
+                    league commissioner until 1994.</p>
+                <p>Currently, sports leagues collect huge volumes of real-time data:</p>
+                <ul>
+                    <li><strong>NFL:</strong> Uses up to 30 ultra-wideband (UWB) receivers and radio frequency
+                        identification (RFID) tags on players, referees, and even the ball, collecting over 200 new data
+                        points on every play.</li>
+                    <li><strong>FIFA (2022 World Cup):</strong> Used 12 cameras with four-dimensional optical tracking,
+                        monitoring 29 points on players' bodies, assisting referees with offside calls and revealing
+                        valuable performance analytics.</li>
+                </ul>
+                <p>Data analytics is changing the game itself (e.g., in baseball, home runs are prioritized over bunts,
+                    and in football, the shotgun formation is preferred over plays under center).</p>
+                <p><strong>Privacy:</strong> This raises serious questions about athlete data privacy, including the use
+                    of data analytics to predict injuries in contract negotiations and whether nutrition and sleep data
+                    should be shared with bettors.</p>
+            </section>
+
+            <section class="module-section">
+                <h2>2. Oversight and Administration</h2>
+                <p>Information security is divided into <strong>Oversight</strong> and <strong>Operations</strong>.</p>
+                <ul>
+                    <li><strong>Oversight:</strong> The review and monitoring of processes, policies, plans, programs,
+                        or projects, watching them "from above" ("over"). The goal is to ensure actions achieve expected
+                        results, comply with policies, laws, and ethical standards, and represent good value for money.
+                    </li>
+                    <li><strong>Operations:</strong> The opposite of oversight, being the daily work "in the trenches"
+                        of configuring equipment, applying controls, and reacting to cyber incidents.</li>
+                </ul>
+
+                <h3>2.1. Governance</h3>
+                <p>Governance refers to the structures, systems, and practices an organization implements to assign,
+                    oversee, and report.</p>
+                <p>The three key activities are:</p>
+                <ol>
+                    <li><strong>Assign:</strong> Decision-making responsibilities and setting strategic direction.</li>
+                    <li><strong>Oversee:</strong> Monitoring service delivery, policy/plan implementation, and risk
+                        mitigation.</li>
+                    <li><strong>Report:</strong> Reporting performance to drive continuous improvement and corrective
+                        actions (monitoring and review).</li>
+                </ol>
+
+                <h4>Governance Roles over Data and Systems</h4>
+                <table>
+                    <tr>
+                        <th>Role</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Owner</strong></td>
+                        <td>Person responsible for the information; determines security level and delegates duties.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Controller</strong></td>
+                        <td>Principal party responsible for data collection (obtains consent, stores).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Processor</strong></td>
+                        <td>Proxy acting on behalf of the controller; holds and processes data but makes no decisions on
+                            use.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Custodian</strong></td>
+                        <td>Person assigned day-to-day tasks by the owner (periodically reviews security settings).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DPO</strong></td>
+                        <td>Data Protection Officer. Manager who oversees data privacy compliance and manages risks.
+                        </td>
+                    </tr>
+                </table>
+
+                <h4>Governance Mechanisms</h4>
+                <table>
+                    <tr>
+                        <th>Mechanism</th>
+                        <th>Definition</th>
+                        <th>Nature</th>
+                    </tr>
+                    <tr>
+                        <td><span class="tag policy">Policy</span></td>
+                        <td>Formal statement of rules and requirements (e.g., AUP, SDLC).</td>
+                        <td><strong>Mandatory</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag procedure">Procedure</span></td>
+                        <td>Detailed step-by-step instructions to comply with a policy.</td>
+                        <td><strong>Mandatory</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag standard">Standard</span></td>
+                        <td>Uniform use of technologies or configurations (e.g., PCI DSS).</td>
+                        <td><strong>Mandatory</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag guideline">Guideline</span></td>
+                        <td>General guidance and advice.</td>
+                        <td><strong style="color:var(--highlight)">Voluntary</strong></td>
+                    </tr>
+                </table>
+
+                <h3>2.2. Compliance</h3>
+                <p>Compliance is the process of ensuring an organization adheres to laws and regulations related to
+                    information security and user data privacy.</p>
+                <ul>
+                    <li><strong>Key Regulations:</strong> GDPR (EU), PCI DSS (Payments), HIPAA (US Health).</li>
+                    <li><strong>Importance ("Carrot and Stick"):</strong> Provides "best practices" but imposes severe
+                        penalties (fines, sanctions, loss of license).</li>
+                </ul>
+
+                <h4>Compliance Monitoring</h4>
+                <ul>
+                    <li><strong>Internal Monitoring:</strong> Performed by the organization itself (dedicated team +
+                        automation). Generates internal reports.</li>
+                    <li><strong>External Monitoring:</strong> Performed by third parties (audit). Generates official
+                        attestation.</li>
+                </ul>
+
+                <h4>Data Privacy</h4>
+                <ul>
+                    <li><strong>Explicit Collection:</strong> User provides data for valid need.</li>
+                    <li><strong>Hidden Collection:</strong> Secret tracking (trackers in apps and IoT).</li>
+                </ul>
+                <p><strong>Legal Protections:</strong></p>
+                <ul>
+                    <li><strong>EU (GDPR):</strong> Right to be forgotten (erase data in ~30 days).</li>
+                    <li><strong>USA:</strong> No federal right to be forgotten; sector-specific regulations (HIPAA).
+                    </li>
+                </ul>
+            </section>
+
+            <section class="module-section">
+                <h2>3. Security Operations</h2>
+                <p>Security work is performed in the <strong>SOC (Security Operations Center)</strong>. The modern SOC
+                    uses automation, orchestration, threat hunting, and AI.</p>
+
+                <h3>3.1. Automation</h3>
+                <p>Necessary due to data volume. Generates faster and scalable protection.</p>
+                <ul>
+                    <li><strong>Benefits:</strong> Efficiency, baseline enforcement, scalability, staff retention (less
+                        burnout).</li>
+                    <li><strong>Risks:</strong> Complexity, cost, technical debt, single point of failure.</li>
+                    <li><strong>Use Cases:</strong> CI/CD, API Integration (iPaaS), Scripting, Guardrails (cloud),
+                        Automated Provisioning.</li>
+                </ul>
+
+                <h3>3.2. Orchestration (SOAR)</h3>
+                <p>Unlike automation (single task), orchestration automates a complete <strong>workflow</strong>,
+                    connecting multiple tools.</p>
+                <p><strong>SOAR:</strong> Security Orchestration, Automation, and Response.</p>
+
+                <h3>3.3. Threat Hunting</h3>
+                <p><strong>Proactive</strong>, iterative, and human activity.</p>
+                <ul>
+                    <li><strong>Premise:</strong> Assumes the network is <em>already infected</em>.</li>
+                    <li><strong>Process:</strong> Hypothesis -> Investigation -> Action.</li>
+                    <li><strong>Maturity:</strong> Level 1 (Initial) to Level 5 (Optimized/Continuous).</li>
+                </ul>
+
+                <h3>3.4. Artificial Intelligence (AI)</h3>
+                <p>Gained popularity with ChatGPT (2022).</p>
+                <ul>
+                    <li><strong>Data Analytics:</strong> Fixed process, relies on humans.</li>
+                    <li><strong>AI:</strong> Autonomous, iterative, dynamic.</li>
+                    <li><strong>Machine Learning (ML):</strong> Subset of AI. Learns from data (statistics) without
+                        explicit programming.</li>
+                </ul>
+                <p><strong>Riscos (Adversarial AI):</strong></p>
+                <ul>
+                    <li>Compromise algorithms.</li>
+                    <li>Taint Training Data.</li>
+                    <li>Malicious use (Mutating malware).</li>
+                </ul>
+            </section>
+
+            <!-- Study Guide Section (EN) -->
+            <section class="module-section">
+                <h2>Study Guide: Information Security Oversight and Operations</h2>
+
+                <h3>Quiz: Short-Answer Questions</h3>
+                <p><em>Instructions: Click on a question to reveal the answer.</em></p>
+                <div class="interactive-quiz">
+                    <details>
+                        <summary>1. What is information security governance and what are its three primary activities?
+                        </summary>
+                        <p>Governance refers to the structures, systems, and practices an organization uses for
+                            oversight and administration. Its three core activities are assigning decision-making
+                            responsibilities and strategic direction; overseeing the implementation of policies, plans,
+                            and risk mitigation; and reporting on performance to drive improvements.</p>
+                    </details>
+
+                    <details>
+                        <summary>2. Differentiate between a security policy and a security procedure.</summary>
+                        <p>A policy is a formal statement from a governing body that outlines specific requirements or
+                            rules that must be met to achieve the organization's strategic objectives. A procedure
+                            provides the detailed, mandatory, step-by-step instructions that an employee must follow to
+                            implement and comply with a given policy.</p>
+                    </details>
+
+                    <details>
+                        <summary>3. What is compliance monitoring, and what are the two main ways it can be performed?
+                        </summary>
+                        <p>Compliance monitoring refers to the quality assurance tests organizations use to determine
+                            how well their operations adhere to security laws, regulations, and standards. It can be
+                            performed internally by a dedicated compliance team, often using automation tools to
+                            generate reports. It can also be performed externally by a professional third party, which
+                            examines the organization's protections and creates an official report or attestation.</p>
+                    </details>
+
+                    <details>
+                        <summary>4. Explain the concept of threat hunting and its core assumption regarding the
+                            network's security status.</summary>
+                        <p>Threat hunting is a proactive and predominantly human-led activity to identify a cyber
+                            invasion that has evaded existing security controls. Its core assumption is that the network
+                            is already infected, meaning attackers are currently operating inside the network rather
+                            than trying to enter from the outside.</p>
+                    </details>
+
+                    <details>
+                        <summary>5. How does security orchestration differ from security automation?</summary>
+                        <p>Security automation involves setting a single security-related task to run on its own without
+                            human intervention. Security orchestration is a broader concept that automates an entire
+                            process or workflow by combining and coordinating multiple individual automated tasks across
+                            different platforms, including hardware, software, and services.</p>
+                    </details>
+
+                    <details>
+                        <summary>6. Describe the relationship between data analytics, artificial intelligence (AI), and
+                            machine learning (ML).</summary>
+                        <p>Data analytics is the process of examining large data sets to draw conclusions, where
+                            researchers manually create algorithms to find patterns. AI is a subset of data analytics
+                            that is autonomous, using the algorithms to create its own predictive models. ML is a
+                            further subset of AI that uses statistical techniques to "learn" from data and progressively
+                            improve its performance without being explicitly reprogrammed.</p>
+                    </details>
+
+                    <details>
+                        <summary>7. What is an acceptable-use policy (AUP), and who does it typically cover?</summary>
+                        <p>An acceptable-use policy is a formal written statement that defines the actions users are
+                            permitted to perform while accessing an organization's systems and networking equipment. The
+                            policy's audience is not limited to employees but also includes vendors, contractors, and
+                            visitors, each of whom may have different privileges.</p>
+                    </details>
+
+                    <details>
+                        <summary>8. Identify two potential risks or negative considerations when implementing advanced
+                            security automation.</summary>
+                        <p>Implementing security automation introduces several risks, including increased complexity in
+                            managing interconnected appliances and higher initial and ongoing support costs. Other risks
+                            include creating technical debt if problems are not addressed immediately and the potential
+                            for a single point of failure if there is an over-reliance on the automated system.</p>
+                    </details>
+
+                    <details>
+                        <summary>9. Explain the "right to be forgotten" principle as it relates to data protection in
+                            the European Union.</summary>
+                        <p>The "right to be forgotten" is a fundamental principle of EU data protection that gives data
+                            subjects (any living individual whose data is collected) the legal right to have their
+                            private data erased by a data controller without undue delay, which is typically interpreted
+                            to be about 30 days.</p>
+                    </details>
+
+                    <details>
+                        <summary>10. What is adversarial artificial intelligence, and provide one example of how it can
+                            be used?</summary>
+                        <p>Adversarial artificial intelligence refers to threat actors attacking AI systems or using AI
+                            for malicious purposes. One example is when attackers taint the training data used by a
+                            machine learning system, causing it to produce false negatives and effectively cloak the
+                            attackers' malicious activities from detection. Another example is using AI to develop
+                            mutating malware that can change its structure to evade signature-based defenses.</p>
+                    </details>
+                </div>
+
+                <h3>Essay Questions</h3>
+                <p><em>Instructions: Formulate a detailed response to the following prompts, drawing upon the concepts
+                        and information presented in the source material.</em></p>
+                <ol>
+                    <li>Discuss the evolution of technology in sports as an analogy for the introduction of technology
+                        in security operations. Analyze the privacy concerns raised in both domains and how governance
+                        and compliance principles could be applied to address them.</li>
+                    <li>Compare and contrast the roles of an Incident Responder, a Penetration Tester, and a Threat
+                        Hunter. Discuss their respective goals, tasks, timeframes, and whether their approach is
+                        reactive or proactive.</li>
+                    <li>An organization is moving towards a more automated security posture. Explain the benefits they
+                        can expect to see, such as improved time efficiency and staff retention. Also, detail the
+                        potential risks they must consider, including complexity, cost, and the creation of a single
+                        point of failure.</li>
+                    <li>You are tasked with establishing a governance framework for a new company. Describe the four key
+                        mechanisms for applying governance (policies, procedures, standards, guidelines), explaining the
+                        purpose of each and how they relate to one another. Provide a specific security-related example
+                        for each mechanism.</li>
+                    <li>Analyze the role of Artificial Intelligence (AI) in modern information security. Describe how AI
+                        can assist organizations before, during, and after a cyber attack. Conversely, discuss the risks
+                        of using AI in security and the threat of adversarial AI.</li>
+                </ol>
+
+                <h3>Glossary of Key Terms</h3>
+                <table>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td>Acceptable-Use Policy (AUP)</td>
+                        <td>A policy that defines the actions users may perform while accessing systems and networking
+                            equipment, covering employees, vendors, contractors, and visitors.</td>
+                    </tr>
+                    <tr>
+                        <td>Accountability</td>
+                        <td>A principle of good governance; the obligation of an individual, group, or organization to
+                            answer for a responsibility that has been conferred.</td>
+                    </tr>
+                    <tr>
+                        <td>Adversarial Artificial Intelligence</td>
+                        <td>The practice of threat actors attacking AI systems or taking advantage of AI for malicious
+                            purposes, such as tainting training data or using AI to create mutating malware.</td>
+                    </tr>
+                    <tr>
+                        <td>Application Programming Interface (API)</td>
+                        <td>A link provided by an OS, web browser, or other platform that allows a developer access to
+                            resources at a high level, enabling faster code creation.</td>
+                    </tr>
+                    <tr>
+                        <td>Artificial Intelligence (AI)</td>
+                        <td>A subset of data analytics where technologies can understand and act by themselves based on
+                            acquired information. AI systems are autonomous, iterative, and dynamic.</td>
+                    </tr>
+                    <tr>
+                        <td>Attestation</td>
+                        <td>The verification of a statement's truth or authenticity, such as an external compliance
+                            report serving as an official attestation of compliance monitoring.</td>
+                    </tr>
+                    <tr>
+                        <td>Automation</td>
+                        <td>The use of technology to perform a task or process with minimal human assistance. In
+                            security, it streamlines and speeds up processes to provide timely insights and faster
+                            protection.</td>
+                    </tr>
+                    <tr>
+                        <td>Board</td>
+                        <td>An internal governance body composed of directors who approve strategic organizational goals
+                            and policies.</td>
+                    </tr>
+                    <tr>
+                        <td>Compliance</td>
+                        <td>The process of ensuring that an organization adheres to laws and regulations related to
+                            information security and user data privacy.</td>
+                    </tr>
+                    <tr>
+                        <td>Compliance Monitoring</td>
+                        <td>Quality assurance tests performed by organizations to determine how well their business
+                            operations meet security regulations and standards. It can be internal or external.</td>
+                    </tr>
+                    <tr>
+                        <td>Controller</td>
+                        <td>A data governance role; the principal party responsible for collecting data, acquiring user
+                            consent, and managing access.</td>
+                    </tr>
+                    <tr>
+                        <td>Custodian/Steward</td>
+                        <td>A data governance role; an individual to whom day-to-day actions have been assigned by the
+                            owner, such as reviewing security settings and maintaining access records.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Analytics</td>
+                        <td>A fixed process that examines large data sets to draw conclusions, where researchers
+                            manually create algorithms to learn patterns and correlations from historical data.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Privacy Officer (DPO)</td>
+                        <td>A data governance role; a manager who oversees data privacy compliance and manages data
+                            risk, ensuring the enterprise complies with privacy laws and policies.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Subjects</td>
+                        <td>In the context of the EU, any living individual whose personal data is collected, processed,
+                            and stored by an organization.</td>
+                    </tr>
+                    <tr>
+                        <td>Due Care</td>
+                        <td>The act of taking reasonable steps to secure and protect an organization's assets,
+                            reputation, and finances.</td>
+                    </tr>
+                    <tr>
+                        <td>Due Diligence</td>
+                        <td>The act of identifying and mitigating risks brought on by third parties.</td>
+                    </tr>
+                    <tr>
+                        <td>Employee Offboarding</td>
+                        <td>The procedure entailing actions to be taken when an employee leaves an enterprise, such as
+                            disabling accounts and backing up files.</td>
+                    </tr>
+                    <tr>
+                        <td>Employee Onboarding</td>
+                        <td>The procedure encompassing the tasks associated with hiring a new employee, such as signing
+                            an NDA and configuring accounts.</td>
+                    </tr>
+                    <tr>
+                        <td>Governance</td>
+                        <td>The structures, systems, and practices an organization has in place to assign
+                            decision-making responsibilities, oversee implementation, and report on performance.</td>
+                    </tr>
+                    <tr>
+                        <td>Guardrails (Security)</td>
+                        <td>Automations that constantly watch cloud deployments, find deviations from desired baselines,
+                            and can automatically remediate issues without slowing development.</td>
+                    </tr>
+                    <tr>
+                        <td>Guideline</td>
+                        <td>A governance mechanism that provides general, voluntary guidance and support for policies,
+                            standards, or procedures.</td>
+                    </tr>
+                    <tr>
+                        <td>Incident Response Playbook</td>
+                        <td>A type of procedure that lists specific, mandatory actions to take in response to different
+                            threats.</td>
+                    </tr>
+                    <tr>
+                        <td>Integrity</td>
+                        <td>A principle of good governance; acting in a way that is impartial and ethical, reflected
+                            through compliance with laws and high standards of professionalism.</td>
+                    </tr>
+                    <tr>
+                        <td>Leadership</td>
+                        <td>A principle of good governance; "setting the tone" to encourage personnel to embrace good
+                            governance practices.</td>
+                    </tr>
+                    <tr>
+                        <td>Machine Learning (ML)</td>
+                        <td>A subset of AI that uses statistical techniques to give computer systems the ability to
+                            “learn” or progressively improve performance using data, rather than being explicitly
+                            programmed.</td>
+                    </tr>
+                    <tr>
+                        <td>Noncompliance</td>
+                        <td>The failure to adhere to compliance standards, which can result in penalties such as fines,
+                            sanctions, reputational damage, or loss of license.</td>
+                    </tr>
+                    <tr>
+                        <td>Orchestration (Security)</td>
+                        <td>The automation and combination of many different individual tasks into a single, functional,
+                            automated process or workflow, crossing multiple platforms.</td>
+                    </tr>
+                    <tr>
+                        <td>Oversight</td>
+                        <td>The act of reviewing and monitoring processes, policies, or projects from above to ensure
+                            they achieve expected results and comply with standards, without direct involvement in
+                            operations.</td>
+                    </tr>
+                    <tr>
+                        <td>Owner</td>
+                        <td>A data governance role; the person responsible for the information who determines the level
+                            of security needed and delegates duties.</td>
+                    </tr>
+                    <tr>
+                        <td>Policy</td>
+                        <td>A formal statement from a governing body that outlines specific requirements or rules that
+                            must be met to achieve an organization's strategic objectives.</td>
+                    </tr>
+                    <tr>
+                        <td>Procedure</td>
+                        <td>A governance mechanism that provides detailed, mandatory steps a user must follow to comply
+                            with a policy.</td>
+                    </tr>
+                    <tr>
+                        <td>Processor</td>
+                        <td>A data governance role; a proxy (person or agency) who acts on behalf of the data controller
+                            to hold and process data but does not make decisions about its use.</td>
+                    </tr>
+                    <tr>
+                        <td>Provisioning</td>
+                        <td>The process of creating and setting up an IT infrastructure, including managing user and
+                            system access to resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Right to be Forgotten</td>
+                        <td>A fundamental EU data protection principle giving data subjects the legal right to have
+                            their private data erased by a data controller without undue delay.</td>
+                    </tr>
+                    <tr>
+                        <td>Security Operations Center (SOC)</td>
+                        <td>A function or team within an organization responsible for proactive monitoring, incident
+                            response and recovery, remediation, and other security tasks.</td>
+                    </tr>
+                    <tr>
+                        <td>SOAR Platform</td>
+                        <td>A Security Orchestration, Automation, and Response platform that combines tools to
+                            synthesize and automate security operations, threat intelligence, and incident response.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Standard</td>
+                        <td>A governance mechanism that specifies the uniform use of specific technologies or settings
+                            for secure configurations; can be internal or from a third party like PCI DSS.</td>
+                    </tr>
+                    <tr>
+                        <td>Stewardship</td>
+                        <td>A principle of good governance; the act of responsibly looking after resources on behalf of
+                            the organization.</td>
+                    </tr>
+                    <tr>
+                        <td>Threat Hunting</td>
+                        <td>A proactive, iterative, and predominantly human-led activity to identify a cyber invasion
+                            that has evaded existing security controls, assuming the network is already compromised.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Transparency</td>
+                        <td>A principle of good governance; achieved when decisions and actions are open, allowing
+                            stakeholders access to full, accurate, and clear information.</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+
+        <div class="quiz-header">
+            <h2 style="margin:0; color:var(--accent)">⚡ Full Practice Simulation</h2>
+            <p>45 Review Questions</p>
+        </div>
+
+        <div id="quiz-container">
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 M.A. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // --- QUIZ DATABASE ---
+        const questions = [
+            {
+                id: 1,
+                text: { en: "Which of the following is correct regarding security automation?", pt: "Qual das seguintes alternativas está correta sobre a automação de segurança?" },
+                options: {
+                    en: ["Security operations have been more manual than automated for many years.", "Security automation requires both AI and ML.", "Security automation has been used since the beginning of cybersecurity.", "Threat hunting relies heavily on cybersecurity automation."],
+                    pt: ["As operações de segurança têm sido mais manuais do que automatizadas por muitos anos.", "A automação de segurança requer tanto IA quanto ML.", "A automação de segurança tem sido usada desde o início da cibersegurança.", "O Threat Hunting depende fortemente da automação de cibersegurança."]
+                },
+                correct: [0],
+                explanation: { en: "Historically, SecOps relied heavily on human manual processes.", pt: "Historicamente, SecOps dependia muito de processos manuais humanos." }
+            },
+            {
+                id: 2,
+                text: { en: "Alois is explaining to his parents his new position in a SOC. Which of the following would he NOT say about a SOC?", pt: "Alois está explicando aos pais sua nova posição em um SOC. Qual das alternativas ele NÃO diria sobre um SOC?" },
+                options: {
+                    en: ["It houses the IT security team.", "It is responsible for detecting and analyzing cybersecurity incidents.", "It uses strictly automated processes.", "A SOC responds to cybersecurity incidents."],
+                    pt: ["Ele abriga a equipe de segurança de TI.", "É responsável por detectar e analisar incidentes de cibersegurança.", "Ele utiliza processos estritamente automáticos.", "Um SOC responde a incidentes de cibersegurança."]
+                },
+                correct: [2],
+                explanation: { en: "SOCs rely on human analysts, they are not strictly automated.", pt: "SOCs dependem de analistas humanos, não são estritamente automáticos." }
+            },
+            {
+                id: 3,
+                text: { en: "Matheo is explaining security automation to a new intern. What would he NOT say?", pt: "Matheo está explicando a um novo estagiário sobre a automação de segurança. O que ele NÃO diria?" },
+                options: {
+                    en: ["Using manual processes in a SOC tips the scales in favor of attackers.", "Modern attacks are highly automated, so defenses need to be automated.", "Cybersecurity automation is now required by most certification bodies.", "Time spent on manual processes allows threat actors to spread malware."],
+                    pt: ["Usar processos manuais em um SOC inclina a balança a favor dos atacantes.", "Ataques modernos são altamente automatizados, então as defesas precisam ser automatizadas.", "A automação de cibersegurança agora é exigida pela maioria dos órgãos de certificação.", "O tempo gasto em processos manuais permite que os agentes de ameaça espalhem malware."]
+                },
+                correct: [2],
+                explanation: { en: "Automation is recommended, but not a universal requirement of certifiers.", pt: "Automação é recomendada, mas não é uma exigência universal de certificadoras." }
+            },
+            {
+                id: 4,
+                text: { en: "What is Data Correlation?", pt: "O que é correlação de dados (Data Correlation)?" },
+                options: {
+                    en: ["Finding linkages from multiple data sources.", "A requirement for using Machine Learning.", "A dated technology that is no longer used.", "Using at least three external and internal sources."],
+                    pt: ["Encontrar conexões (linkages) de múltiplas fontes de dados.", "Um requisito para usar Machine Learning.", "Uma tecnologia datada que não é mais usada.", "Usar no mínimo três fontes externas e internas."]
+                },
+                correct: [0]
+            },
+            {
+                id: 5,
+                text: { en: "Which of the following is NOT correct regarding governance?", pt: "Qual das alternativas NÃO está correta sobre governança?" },
+                options: {
+                    en: ["Refers to structures and systems to assign and oversee.", "Involves assigning decision-making responsibilities.", "Governance is not concerned with overseeing service delivery or risk mitigation.", "Involves reporting performance to achieve intended outcomes."],
+                    pt: ["Refere-se a estruturas e sistemas para atribuir e supervisionar.", "Envolve atribuir responsabilidades de tomada de decisão.", "A governança não se preocupa em supervisionar a entrega de serviços ou mitigação de riscos.", "Envolve relatar o desempenho para alcançar resultados pretendidos."]
+                },
+                correct: [2],
+                explanation: { en: "Governance IS concerned with oversight and risks.", pt: "A governança preocupa-se SIM com supervisão e riscos." }
+            },
+            {
+                id: 6,
+                text: { en: "Which of the following is composed of internal directors who approve strategic goals?", pt: "Qual dos seguintes é composto por diretores internos que aprovam metas estratégicas?" },
+                options: {
+                    en: ["Panel", "Committee", "Board", "Council"],
+                    pt: ["Painel", "Comitê", "Conselho (Board)", "Council"]
+                },
+                correct: [2]
+            },
+            {
+                id: 7,
+                text: { en: "Who is the principal party responsible for data collection?", pt: "Quem é a parte principal responsável pela coleta de dados?" },
+                options: {
+                    en: ["Custodian/Steward", "Owner", "Controller", "Processor"],
+                    pt: ["Zelador/Steward", "Proprietário (Owner)", "Controlador (Controller)", "Processador"]
+                },
+                correct: [2]
+            },
+            {
+                id: 8,
+                text: { en: "Which policy defines actions users can perform when accessing systems?", pt: "Qual política define as ações que usuários podem realizar ao acessar sistemas?" },
+                options: {
+                    en: ["ACXT", "RSRS", "BAC", "AUP (Acceptable Use Policy)"],
+                    pt: ["ACXT", "RSRS", "BAC", "AUP (Acceptable Use Policy)"]
+                },
+                correct: [3]
+            },
+            {
+                id: 9,
+                text: { en: "Which policy describes how applications should be developed?", pt: "Qual política descreve como os aplicativos devem ser desenvolvidos?" },
+                options: {
+                    en: ["SORA", "SCAP", "SDLC (Software Development Lifecycle)", "SARC"],
+                    pt: ["SORA", "SCAP", "SDLC (Software Development Lifecycle)", "SARC"]
+                },
+                correct: [2]
+            },
+            {
+                id: 10,
+                text: { en: "Which of the following is voluntary and not mandatory?", pt: "Qual dos seguintes é voluntário e não obrigatório?" },
+                options: {
+                    en: ["Guideline", "Policy", "Standard", "Procedure"],
+                    pt: ["Diretriz (Guideline)", "Política", "Padrão", "Procedimento"]
+                },
+                correct: [0]
+            },
+            {
+                id: 11,
+                text: { en: "Lyam is researching scripting. Which of the following is NOT correct?", pt: "Lyam está pesquisando sobre scripts. Qual das alternativas NÃO está correta?" },
+                options: {
+                    en: ["JavaScript, PHP, Python, and Ruby are common scripting languages.", "A scripting language runtime is often installed with the OS.", "Scripting has features not found in formal languages.", "Scripting should not be used for automation."],
+                    pt: ["JavaScript, PHP, Python e Ruby são linguagens de script comuns.", "O runtime de uma linguagem de script geralmente já vem na instalação do OS.", "Scripting tem recursos não encontrados em linguagens formais.", "Scripting não deve ser usado para automação."]
+                },
+                correct: [3],
+                explanation: { en: "On the contrary, scripts are fundamental for automation.", pt: "Pelo contrário, scripts são fundamentais para automação." }
+            },
+            {
+                id: 12,
+                text: { en: "Which of the following is NOT correct regarding Guardrails?", pt: "Qual das alternativas NÃO está correta sobre Guardrails?" },
+                options: {
+                    en: ["Guardrails can automatically remediate issues.", "Guardrails add friction to slow down the development process.", "Guardrails constantly monitor cloud deployments.", "Guardrails leverage cloud APIs and automation."],
+                    pt: ["Guardrails podem remediar problemas automaticamente.", "Guardrails adicionam atrito para retardar o processo de desenvolvimento.", "Guardrails monitoram constantemente deployments na nuvem.", "Guardrails aproveitam APIs de nuvem e automação."]
+                },
+                correct: [1],
+                explanation: { en: "Guardrails aim for security WITHOUT adding friction.", pt: "Guardrails visam segurança SEM adicionar atrito (friction)." }
+            },
+            {
+                id: 13,
+                text: { en: "What is another name for integrations and application programming interfaces?", pt: "Qual é outro nome para integrações e interfaces de programação de aplicativos?" },
+                options: {
+                    en: ["APIaaS", "PaaS", "SaaS", "iPaaS"],
+                    pt: ["APIaaS", "PaaS", "SaaS", "iPaaS"]
+                },
+                correct: [3]
+            },
+            {
+                id: 14,
+                text: { en: "Which of the following involves automating and combining many different tasks and processes?", pt: "Qual dos seguintes envolve a automação e combinação de muitas tarefas e processos diferentes?" },
+                options: {
+                    en: ["Multitask combination (MTC)", "Cybersecurity automation", "Orchestration", "Autoflow"],
+                    pt: ["Multitask combination (MTC)", "Cybersecurity automation", "Orchestration", "Autoflow"]
+                },
+                correct: [2]
+            },
+            {
+                id: 15,
+                text: { en: "Which platform can take immediate action when it detects a malicious action?", pt: "Qual das seguintes plataformas pode tomar ação imediata quando detecta uma ação maliciosa?" },
+                options: {
+                    en: ["SIEM", "SOAR", "RSOC", "SAII"],
+                    pt: ["SIEM", "SOAR", "RSOC", "SAII"]
+                },
+                correct: [1]
+            },
+            {
+                id: 16,
+                text: { en: "Which Threat Hunting level hunts continuously and shares data with the community?", pt: "Qual nível de Threat Hunting caça continuamente e compartilha dados com a comunidade de segurança?" },
+                options: {
+                    en: ["Managed", "Defined", "Quantitatively Managed", "Optimized"],
+                    pt: ["Managed", "Defined", "Quantitatively Managed", "Optimized"]
+                },
+                correct: [3],
+                explanation: { en: "Level 5 (Optimized) involves continuous hunting and sharing.", pt: "Nível 5 (Otimizado) envolve caça contínua e compartilhamento." }
+            },
+            {
+                id: 17,
+                text: { en: "Which of the following is NOT a risk associated with using AI in cybersecurity?", pt: "Qual dos seguintes NÃO é um risco associado ao uso de IA em cibersegurança?" },
+                options: {
+                    en: ["Attackers can try to taint training data (ML) to produce false negatives.", "The time required for AI to provide indicators of attack (IoA) is considered too slow today.", "Threat actors can use AI to bypass defenses.", "AI security applications have vulnerabilities that can be attacked."],
+                    pt: ["Atacantes podem tentar alterar dados de treinamento (ML) para produzir falsos negativos.", "O tempo necessário para IA fornecer indicadores de ataque (IoA) é considerado muito lento hoje.", "Agentes de ameaça podem usar IA para contornar defesas.", "Aplicações de segurança com IA têm vulnerabilidades que podem ser atacadas."]
+                },
+                correct: [1],
+                explanation: { en: "AI is fast, not slow. The others are real risks.", pt: "A IA é rápida, não lenta. Os outros itens são riscos reais." }
+            },
+            {
+                id: 18,
+                text: { en: "Which of the following is NOT a characteristic of Threat Hunting?", pt: "Qual das seguintes NÃO é uma característica de Threat Hunting?" },
+                options: {
+                    en: ["Recursive", "Predominantly human", "Iterative", "Proactive"],
+                    pt: ["Recursivo", "Predominantemente humano", "Iterative", "Proativo"]
+                },
+                correct: [0],
+                explanation: { en: "Threat Hunting is Proactive. 'Reactive' or 'Recursive' is incorrect.", pt: "A opção 'Reativo' ou 'Recursivo' (dependendo da tradução) é a incorreta. Threat Hunting é Proativo." }
+            },
+            {
+                id: 19,
+                text: { en: "AI is a subset of which domain?", pt: "IA é um subconjunto de qual domínio?" },
+                options: {
+                    en: ["ML", "Data analytics", "SOC", "Threat hunting"],
+                    pt: ["ML", "Data analytics", "SOC", "Threat hunting"]
+                },
+                correct: [1],
+                explanation: { en: "AI is presented as a subset of Data Analytics.", pt: "No material, AI é apresentada dentro do escopo de Data Analytics." }
+            },
+            {
+                id: 20,
+                text: { en: "Which of the following is NOT an information security task that AI can perform?", pt: "Qual das seguintes NÃO é uma tarefa de segurança da informação que a IA pode realizar?" },
+                options: {
+                    en: ["Perform breach risk prediction", "Conduct asset inventory", "Reduce threat exposure", "Configure controls"],
+                    pt: ["Perform breach risk prediction", "Conduct asset inventory", "Reduce threat exposure", "Configure controls"]
+                },
+                correct: [3],
+                explanation: { en: "AI analyzes controls, but final configuration usually requires human validation.", pt: "A IA analisa controles, mas a configuração final geralmente requer validação humana." }
+            },
+            {
+                id: 21,
+                text: { en: "A network of a clinic is breached, and patient data is stolen. Upon investigation, authorities determined poor security practices and levied a fine. Which best describes how the clinic was in violation?", pt: "A rede de uma clínica é violada e dados de pacientes são roubados. As autoridades determinaram más práticas de segurança e aplicaram uma multa. O que melhor descreve a violação?" },
+                options: {
+                    en: ["They did not follow the guidelines.", "They did not follow the proper procedures.", "They did not meet the requirements.", "They did not meet the compliance standards."],
+                    pt: ["Eles não seguiram as diretrizes.", "Eles não seguiram os procedimentos adequados.", "Eles não cumpriram os requisitos.", "Eles não cumpriram os padrões de conformidade."]
+                },
+                correct: [3],
+                explanation: { en: "Compliance involves laws, regulations, and penalties (fines).", pt: "Compliance envolve leis, regulamentos e penalidades (multas)." }
+            },
+            {
+                id: 22,
+                text: { en: "Which of the following governance roles determines the level of security needed for the data and delegates security duties?", pt: "Qual dos seguintes papéis de governança determina o nível de segurança necessário para os dados e delega deveres de segurança?" },
+                options: {
+                    en: ["Custodian", "Owner", "Processor", "Controller"],
+                    pt: ["Zelador (Custodian)", "Proprietário (Owner)", "Processador", "Controlador"]
+                },
+                correct: [1],
+                explanation: { en: "The Owner defines the security level and delegates.", pt: "O Owner (Proprietário) define o nível de segurança e delega." }
+            },
+            {
+                id: 23,
+                text: { en: "Which of the following statements are true when defining artificial intelligence (AI)? (Select correct ones)", pt: "Quais das seguintes afirmações são verdadeiras ao definir inteligência artificial (IA)? (Selecione as corretas)" },
+                options: {
+                    en: ["Data analytics is a subset of ML.", "AI is a subset of ML.", "ML is a subset of AI and can create refined algorithms.", "Data analytics relies on human interaction to query data."],
+                    pt: ["Data analytics é um subconjunto de ML.", "IA é um subconjunto de ML.", "ML é um subconjunto de IA e pode criar algoritmos refinados.", "Data analytics depende da interação humana para consultar dados."]
+                },
+                correct: [2, 3],
+                explanation: { en: "ML is a subset of AI. Data Analytics relies on human interaction.", pt: "ML é subconjunto de IA. Data Analytics depende de interação humana." }
+            },
+            {
+                id: 24,
+                text: { en: "Zipporah develops a hypothesis for threat hunting, but it is found to be false. What should you tell her?", pt: "Zipporah desenvolve uma hipótese para threat hunting, mas descobre-se que é falsa. O que você deve dizer a ela?" },
+                options: {
+                    en: ["She should look for evidence of the threat elsewhere.", "There is no indication of an infiltration based on the specifics of the hypothesis.", "The threat for which she was hunting is not present.", "The threat has already been contained by the SOC."],
+                    pt: ["Ela deve procurar evidências da ameaça em outro lugar.", "Não há indicação de infiltração com base nos detalhes da hipótese.", "A ameaça que ela estava caçando não está presente.", "A ameaça já foi contida pelo SOC."]
+                },
+                correct: [0, 1],
+                explanation: { en: "A false hypothesis isn't a failure, it just means *that* specific threat wasn't found there.", pt: "Uma hipótese falsa não é falha, apenas indica que *aquela* ameaça específica não foi achada ali." }
+            },
+            {
+                id: 25,
+                text: { en: "Which of the following is true regarding internal compliance monitoring?", pt: "Qual das alternativas é verdadeira sobre o monitoramento de conformidade interna?" },
+                options: {
+                    en: ["Automation compliance tools can generate an internal compliance report for auditors.", "Automation compliance tools collect data but do not generate alerts.", "Automation tools should only be used as a supplemental aid.", "It includes random manual spot checks."],
+                    pt: ["Ferramentas de automação podem gerar um relatório de conformidade interno para auditores.", "Ferramentas de automação coletam dados, mas não geram alertas.", "Ferramentas de automação devem ser usadas apenas como auxílio suplementar.", "Inclui verificações manuais aleatórias."]
+                },
+                correct: [0],
+                explanation: { en: "Automation tools avoid random manual checks and generate reports.", pt: "Ferramentas de automação evitam checagens manuais aleatórias e geram relatórios." }
+            },
+            {
+                id: 26,
+                text: { en: "Parisa is deploying security automation to reduce false positives. How will automation help?", pt: "Parisa está implantando automação de segurança para reduzir falsos positivos. Como a automação ajudará?" },
+                options: {
+                    en: ["It will be able to find correlations from external and internal data sources.", "It will generate more test data.", "It will analyze internal data faster.", "It will analyze external data faster."],
+                    pt: ["Ela será capaz de encontrar correlações de fontes de dados externas e internas.", "Ela gerará mais dados de teste.", "Ela analisará dados internos mais rapidamente.", "Ela analisará dados externos mais rapidamente."]
+                },
+                correct: [0],
+                explanation: { en: "Correlating multiple sources reduces false positives.", pt: "A correlação de múltiplas fontes reduz falsos positivos." }
+            },
+            {
+                id: 27,
+                text: { en: "Which of the following is likely to have the least severe consequences if not complied with?", pt: "Qual dos seguintes provavelmente terá as consequências menos graves se não for cumprido?" },
+                options: {
+                    en: ["Guidelines", "Requirements", "Standards", "Procedures"],
+                    pt: ["Diretrizes (Guidelines)", "Requisitos", "Padrões", "Procedimentos"]
+                },
+                correct: [0],
+                explanation: { en: "Guidelines are voluntary.", pt: "Guidelines (Diretrizes) são voluntárias." }
+            },
+            {
+                id: 28,
+                text: { en: "Idalia works at a government agency responsible for issuing and enforcing security directives. Where does she work?", pt: "Idalia trabalha em uma agência governamental responsável por emitir e aplicar diretrizes de segurança. Onde ela trabalha?" },
+                options: {
+                    en: ["Board", "Regulatory", "Enforcement", "Compliance"],
+                    pt: ["Conselho", "Regulatória", "Aplicação", "Conformidade"]
+                },
+                correct: [1],
+                explanation: { en: "Regulatory agencies issue and enforce directives.", pt: "Agências regulatórias emitem e fiscalizam diretrizes." }
+            },
+            {
+                id: 29,
+                text: { en: "Omar works in a SOC. Which tasks might he perform? (Select correct options)", pt: "Omar trabalha em um SOC. Quais tarefas ele pode realizar? (Selecione as opções corretas)" },
+                options: {
+                    en: ["Passive monitoring", "Coordination", "Compliance", "Proactive monitoring"],
+                    pt: ["Monitoramento passivo", "Coordenação", "Conformidade", "Monitoramento proativo"]
+                },
+                correct: [1, 2, 3],
+                explanation: { en: "SOC performs proactive monitoring, coordination, and compliance.", pt: "SOC faz monitoramento proativo, coordenação e compliance." }
+            },
+            {
+                id: 30,
+                text: { en: "Two cousins use an app that tracks location via trackers noted in the EULA. What type of data collection is this?", pt: "Dois primos usam um aplicativo que rastreia a localização por meio de rastreadores observados no EULA. Que tipo de coleta de dados é essa?" },
+                options: {
+                    en: ["Public", "Private", "Overt", "Questionable"],
+                    pt: ["Pública", "Privada", "Aberta", "Questionável"]
+                },
+                correct: [3],
+                explanation: { en: "Questionable collection is often hidden or without clear business justification.", pt: "Coleta questionável geralmente é oculta ou sem justificativa clara de negócio." }
+            },
+            {
+                id: 31,
+                text: { en: "A graduate reads a document stating vulnerability scans must be performed after network changes. What document is this?", pt: "Um graduado lê um documento informando que varreduras de vulnerabilidade devem ser realizadas após alterações na rede. Que documento é esse?" },
+                options: {
+                    en: ["Policies", "Requirements", "Regulation", "Standards"],
+                    pt: ["Políticas", "Requisitos", "Regulamento", "Padrões"]
+                },
+                correct: [3],
+                explanation: { en: "Standards define specific technical configurations.", pt: "Padrões (Standards) como PCI DSS definem configurações técnicas específicas." }
+            },
+            {
+                id: 32,
+                text: { en: "You are hired by a company to examine protections and write a verification report. What activity is this?", pt: "Você é contratado por uma empresa para examinar proteções e escrever um relatório de verificação. Que atividade é essa?" },
+                options: {
+                    en: ["Verification of truth.", "Auditing internal monitoring.", "Internal compliance monitoring.", "External compliance monitoring."],
+                    pt: ["Verificação da verdade.", "Auditoria de monitoramento interno.", "Monitoramento de conformidade interna.", "Monitoramento de conformidade externa."]
+                },
+                correct: [3],
+                explanation: { en: "External monitoring is done by third parties and generates attestation.", pt: "Monitoramento externo é feito por terceiros e gera atestação." }
+            },
+            {
+                id: 33,
+                text: { en: "A technician (subject) pings (operation) a printer (object). Which statement is NOT true?", pt: "Um técnico (sujeito) pinga (operação) uma impressora (objeto). Qual afirmação NÃO é verdadeira?" },
+                options: {
+                    en: ["The printer is the subject.", "The ping command is the operation.", "The technician is the subject.", "The printer is the object."],
+                    pt: ["A impressora é o sujeito.", "O comando ping é a operação.", "O técnico é o sujeito.", "A impressora é o objeto."]
+                },
+                correct: [0],
+                explanation: { en: "The printer is the object, not the subject.", pt: "A impressora é o objeto, não o sujeito." }
+            },
+            {
+                id: 34,
+                text: { en: "A firm researches AI to mitigate security challenges. Which challenges are they addressing?", pt: "Uma empresa pesquisa IA para mitigar desafios de segurança. Quais desafios eles estão abordando?" },
+                options: {
+                    en: ["Amount of security-related data produced daily", "Reduction of end-devices", "Shortage of trained security professionals", "Elimination of zero-day vulnerabilities"],
+                    pt: ["Quantidade de dados relacionados à segurança produzidos diariamente", "Redução de dispositivos finais", "Escassez de profissionais de segurança treinados", "Eliminação de vulnerabilidades de dia zero"]
+                },
+                correct: [0, 2],
+                explanation: { en: "AI helps with massive data volume and staff shortage (force multiplier).", pt: "IA ajuda com o volume massivo de dados e a falta de pessoal (force multiplier)." }
+            },
+            {
+                id: 35,
+                text: { en: "Quisha wants to temper reliance on automation to prevent what?", pt: "Quisha quer moderar a dependência da automação para evitar o quê?" },
+                options: {
+                    en: ["Too much passive monitoring", "A single point of failure", "Too many false positives", "Generation of too much data"],
+                    pt: ["Muito monitoramento passivo", "Um ponto único de falha", "Muitos falsos positivos", "Geração de muitos dados"]
+                },
+                correct: [1],
+                explanation: { en: "Poorly planned automation creates a single point of failure.", pt: "Automação mal planejada cria um ponto único de falha." }
+            },
+            {
+                id: 36,
+                text: { en: "Which statement is true regarding current data protections in the U.S.?", pt: "Qual afirmação é verdadeira sobre as proteções de dados atuais nos EUA?" },
+                options: {
+                    en: ["Different states have different privacy laws (local/regional protections).", "All states must comply with national privacy laws.", "The 'right to be forgotten' is federal law.", "Retention is arbitrary."],
+                    pt: ["Diferentes estados têm leis de privacidade diferentes (proteções locais/regionais).", "Todos os estados devem cumprir as leis nacionais de privacidade.", "O 'direito ao esquecimento' é lei federal.", "A retenção é arbitrária."]
+                },
+                correct: [0],
+                explanation: { en: "In the US, protection is fragmented by state laws (like in California).", pt: "Nos EUA, a proteção é fragmentada por leis estaduais (como na Califórnia)." }
+            },
+            {
+                id: 37,
+                text: { en: "Westin needs to control inbound/outbound traffic at the network interface level in the cloud. What should he configure?", pt: "Westin precisa controlar o tráfego de entrada/saída no nível da interface de rede na nuvem. O que ele deve configurar?" },
+                options: {
+                    en: ["Network interface control", "Access control list", "Network access control", "Security group"],
+                    pt: ["Controle de interface de rede", "Lista de controle de acesso", "Controle de acesso à rede", "Grupo de segurança (Security group)"]
+                },
+                correct: [3],
+                explanation: { en: "Security Groups act as virtual firewalls on cloud network interfaces.", pt: "Security Groups atuam como firewalls virtuais nas interfaces de rede da nuvem." }
+            },
+            {
+                id: 38,
+                text: { en: "Which statement best describes governance?", pt: "Qual afirmação melhor descreve a governança?" },
+                options: {
+                    en: ["It specifies uniform uses of technologies.", "It provides detailed mandatory steps.", "It is the structures, systems, and practices to assign, oversee, and report.", "It relates to setting the tone."],
+                    pt: ["Especifica usos uniformes de tecnologias.", "Fornece etapas obrigatórias detalhadas.", "São as estruturas, sistemas e práticas para atribuir, supervisionar e relatar.", "Relaciona-se a dar o tom."]
+                },
+                correct: [2]
+            },
+            {
+                id: 39,
+                text: { en: "An employee is promoted and automatically receives new privileges. What mechanism facilitates this?", pt: "Um funcionário é promovido e recebe automaticamente novos privilégios. Qual mecanismo facilita isso?" },
+                options: {
+                    en: ["User automation provisioning", "Managed privilege escalation", "Resource automation provisioning", "Access control automation"],
+                    pt: ["Provisionamento automatizado de usuários", "Escalonamento de privilégios gerenciado", "Provisionamento automatizado de recursos", "Automação de controle de acesso"]
+                },
+                correct: [0],
+                explanation: { en: "Automated user provisioning manages role-based access.", pt: "Provisionamento automatizado de usuários gerencia acessos baseados em cargo." }
+            },
+            {
+                id: 40,
+                text: { en: "Ukya's team develops automations to find deviations from baselines and fix issues in the cloud. What system is this?", pt: "A equipe de Ukya desenvolve automações para encontrar desvios de linhas de base e corrigir problemas na nuvem. Que sistema é esse?" },
+                options: {
+                    en: ["Cloud monitors", "Guardrails", "Cloud safety shields", "Cloud watch"],
+                    pt: ["Monitores de nuvem", "Guardrails", "Escudos de segurança na nuvem", "Cloud watch"]
+                },
+                correct: [1],
+                explanation: { en: "Guardrails monitor drift and automatically fix issues.", pt: "Guardrails monitoram drift e corrigem problemas automaticamente." }
+            },
+            {
+                id: 41,
+                text: { en: "A company automatically detects and responds to a DDoS attack. What platform allows this?", pt: "Uma empresa detecta e responde automaticamente a um ataque DDoS. Qual plataforma permite isso?" },
+                options: {
+                    en: ["Network access control", "IDS", "SOAR", "Active firewall"],
+                    pt: ["Controle de acesso à rede", "IDS", "SOAR", "Firewall ativo"]
+                },
+                correct: [2],
+                explanation: { en: "SOAR (Orchestration) allows automatic response to complex incidents.", pt: "SOAR (Orquestração) permite resposta automática a incidentes complexos." }
+            },
+            {
+                id: 42,
+                text: { en: "Publilius is hiring for a Governance role. Which words will he likely include in the job posting?", pt: "Publilius está contratando para um cargo de Governança. Quais palavras ele provavelmente incluirá no anúncio de emprego?" },
+                options: {
+                    en: ["Controller", "Confidentiality", "Transparency", "Integrity"],
+                    pt: ["Controlador", "Confidencialidade", "Transparência", "Integridade"]
+                },
+                correct: [2, 3],
+                explanation: { en: "Transparency and Integrity are governance principles.", pt: "Transparência e Integridade são princípios de governança." }
+            },
+            {
+                id: 43,
+                text: { en: "A senior official writes documents defining the organization's philosophy on safeguarding information. What are they producing?", pt: "Um funcionário sênior escreve documentos definindo a filosofia da organização sobre proteção de informações. O que eles estão produzindo?" },
+                options: {
+                    en: ["Procedures", "Policies", "Guidelines", "Requirements"],
+                    pt: ["Procedimentos", "Políticas", "Diretrizes", "Requisitos"]
+                },
+                correct: [1],
+                explanation: { en: "Policies define the organization's philosophy and general rules.", pt: "Políticas definem a filosofia e regras gerais da organização." }
+            },
+            {
+                id: 44,
+                text: { en: "A security professional assumes the network is breached and searches for evidence. What are they doing?", pt: "Um profissional de segurança assume que a rede foi violada e procura por evidências. O que eles estão fazendo?" },
+                options: {
+                    en: ["Penetration testing", "Responding to a known incident", "Developing a use case", "Threat hunting"],
+                    pt: ["Teste de penetração", "Respondendo a um incidente conhecido", "Desenvolvendo um caso de uso", "Threat hunting"]
+                },
+                correct: [3],
+                explanation: { en: "Threat Hunting assumes breach and hunts proactively.", pt: "Threat Hunting assume violação e busca proativamente." }
+            },
+            {
+                id: 45,
+                text: { en: "A law firm encourages using AI to improve research efficiency (helping humans). What type of AI is this?", pt: "Um escritório de advocacia incentiva o uso de IA para melhorar a eficiência da pesquisa (ajudando humanos). Que tipo de IA é essa?" },
+                options: {
+                    en: ["Assisted intelligence", "Augmented intelligence", "Autonomous intelligence", "Automated intelligence"],
+                    pt: ["Inteligência assistida", "Inteligência aumentada", "Inteligência autônoma", "Inteligência automatizada"]
+                },
+                correct: [0],
+                explanation: { en: "Assisted Intelligence improves what people already do.", pt: "Inteligência Assistida melhora o que as pessoas já fazem." }
+            }
+        ];
+
+        // Helper to fill the rest of the questions with PT content for now to ensure the code runs, then I can update them.
+        // Ideally I would have all 45. I will put the logic to render.
+
+        // --- LÓGICA DE RENDERIZAÇÃO DO QUIZ ---
+        const quizContainer = document.getElementById('quiz-container');
+
+        function renderQuiz() {
+            quizContainer.innerHTML = ''; // Clear existing
+
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+
+                // Header
+                const qNumber = document.createElement('span');
+                qNumber.className = 'question-number';
+                qNumber.textContent = `QUESTION ${q.id}`;
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = q.text.en || q.text;
+
+                card.appendChild(qNumber);
+                card.appendChild(qText);
+
+                // Options
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options-grid';
+
+                // Explanation
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation';
+                const explText = q.explanation ? (q.explanation.en || q.explanation) : '';
+                if (explText) {
+                    explanationDiv.innerHTML = `<strong>Explanation:</strong> ${explText}`;
+                }
+
+                // Get options
+                const opts = q.options.en || q.options;
+
+                opts.forEach((optText, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = optText;
+
+                    btn.onclick = function () {
+                        handleAnswer(btn, index, q.correct, optionsDiv, explanationDiv);
+                    };
+
+                    optionsDiv.appendChild(btn);
+                });
+
+                card.appendChild(optionsDiv);
+                card.appendChild(explanationDiv);
+                quizContainer.appendChild(card);
+            });
+        }
+
+        function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+            const allBtns = parentDiv.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.classList.add('disabled'));
+
+            const isCorrect = correctIndices.includes(index);
+
+            if (isCorrect) {
+                clickedBtn.classList.add('correct');
+            } else {
+                clickedBtn.classList.add('incorrect');
+                correctIndices.forEach(correctIndex => {
+                    allBtns[correctIndex].classList.add('correct');
+                });
+            }
+            explanationDiv.style.display = 'block';
+        }
+
+        // Initialize
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Back to Top functionality
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            renderQuiz();
+        });
+
+    </script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+</body>
+
+</html>

@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 12: Vulnerability Management - Matheus Almeida</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            color: var(--highlight);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option-btn {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: left;
+            color: var(--text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background: #1f2428;
+            color: var(--text-main);
+        }
+
+        .option-btn.correct {
+            background: rgba(35, 134, 54, 0.2);
+            border-color: var(--accent);
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background: rgba(218, 54, 51, 0.2);
+            border-color: var(--danger);
+            color: #f85149;
+        }
+
+        .option-btn.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .explanation {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(88, 166, 255, 0.1);
+            border-left: 4px solid var(--highlight);
+            border-radius: 4px;
+            display: none;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 12: Vulnerability Management</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
+
+        <!-- Section 1 -->
+        <section class="module-section">
+            <h2>I. Vulnerability Scanning</h2>
+            <p>In today's digital landscape, organizations are under continuous threat, often facing millions of
+                attempted cyberattacks monthly. <strong>Vulnerability Management</strong>, also known as "infrastructure
+                risk visibility and assurance," is the ongoing examination of an organization’s security to identify,
+                prioritize, and reduce exposure.</p>
+
+            <h3>Vulnerability Scanning Basics</h3>
+            <p><strong>Vulnerability scanning</strong> is a core component of vulnerability management. It is a
+                high-level, <strong>ongoing automated process</strong> designed to uncover weaknesses and reduce the
+                attack surface. It functions as a system/process audit covering both devices and protective processes.
+            </p>
+
+            <h4>Application Package Monitoring</h4>
+            <p>A specialized type of scan focuses on applications, especially cloud-native apps using
+                <strong>open-source libraries</strong>. Since these libraries are not owned by any single entity, they
+                are frequent targets for malware. <strong>Package monitoring tools</strong> continuously analyze these
+                applications for vulnerabilities.
+            </p>
+
+            <h4>Challenges</h4>
+            <ul>
+                <li><strong>Volume of scan data:</strong> Scans produce large amounts of data requiring analysis.</li>
+                <li><strong>Identification:</strong> Scanners must correctly correlate system information with known
+                    vulnerabilities.</li>
+                <li><strong>Technical limitations:</strong> Intrusive scans can impact system performance or bandwidth.
+                </li>
+                <li><strong>Remediations:</strong> Not all vulnerabilities can be addressed due to cost or low risk.
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="module-section">
+            <h2>II. Cybersecurity Threat Intelligence</h2>
+            <p><strong>Threat intelligence</strong> is data collected, processed, and analyzed to understand a threat
+                actor’s motives, targets, and behaviors. It allows organizations to shift from a reactive to a
+                <strong>proactive</strong> security posture.
+            </p>
+
+            <h3>Sources of Threat Intelligence Data</h3>
+            <table>
+                <tr>
+                    <th>Source Type</th>
+                    <th>Description</th>
+                    <th>Examples</th>
+                </tr>
+                <tr>
+                    <td><strong>Proprietary Sources</strong></td>
+                    <td>Owned by an entity (enterprise or third party) and not available to outsiders.</td>
+                    <td>Enterprise internal data, Bug Bounty Programs, Dark Web research, Third-Party paid feeds.</td>
+                </tr>
+                <tr>
+                    <td><strong>Information Sharing Organizations</strong></td>
+                    <td>Gather and distribute intelligence within a "sharing community" (crowd-sourced).</td>
+                    <td>ISACs, ISAOs, DHS CISCP.</td>
+                </tr>
+                <tr>
+                    <td><strong>Open-Source Intelligence (OSINT)</strong></td>
+                    <td>Legally gathered from free and public sources.</td>
+                    <td>Public internet data, threat maps.</td>
+                </tr>
+            </table>
+
+            <h4>Automated Indicator Sharing (AIS)</h4>
+            <p>To address the need for speed, <strong>AIS</strong> facilitates the exchange of cyber threat indicators
+                via computer-to-computer communication using standards like:</p>
+            <ul>
+                <li><strong>STIX (Structured Threat Information Expression):</strong> Language/format for exchanging
+                    threat intelligence.</li>
+                <li><strong>TAXII (Trusted Automated Exchange of Intelligence Information):</strong> Application
+                    protocol for exchanging intelligence over HTTPS.</li>
+            </ul>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="module-section">
+            <h2>III. Vulnerability Scanning Decisions</h2>
+            <p>Effective scanning requires decisions on what, how, and when to scan.</p>
+
+            <h3>What Should Be Scanned?</h3>
+            <p>Data value determines priority. Data should be classified (e.g., Confidential, Private, Public). An
+                <strong>asset inventory</strong> identifies where high-value data resides.
+            </p>
+            <table>
+                <tr>
+                    <th>Asset</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Network</strong></td>
+                    <td>Identifies network security attacks and vulnerable systems.</td>
+                </tr>
+                <tr>
+                    <td><strong>Endpoint</strong></td>
+                    <td>Locates vulnerabilities in servers and workstations; checks patch history.</td>
+                </tr>
+                <tr>
+                    <td><strong>Wireless network</strong></td>
+                    <td>Identifies rogue access points and validates security.</td>
+                </tr>
+                <tr>
+                    <td><strong>Database</strong></td>
+                    <td>Identifies weak points in databases.</td>
+                </tr>
+                <tr>
+                    <td><strong>Applications</strong></td>
+                    <td>Detects known software vulnerabilities and erroneous configurations.</td>
+                </tr>
+            </table>
+
+            <h3>How Should It Be Scanned?</h3>
+            <ul>
+                <li><strong>Active vs. Passive:</strong> Active scanning sends test traffic (faster but more intrusive);
+                    Passive scanning listens to traffic (less intrusive but slower).</li>
+                <li><strong>Internal vs. External:</strong> Internal scans identify at-risk systems from inside the
+                    network; External scans target IP addresses from outside to find open ports and protocols.</li>
+            </ul>
+
+            <h3>When Should It Be Scanned?</h3>
+            <p>Ideally <strong>continual</strong>, but constraints (technical limits, workflow interruptions,
+                regulations, risk appetite) often dictate a routine schedule.</p>
+        </section>
+
+        <!-- Section 4 -->
+        <section class="module-section">
+            <h2>IV. Running a Vulnerability Scan</h2>
+
+            <h3>Vulnerability Scanning Tools</h3>
+            <p>Popular tools include <strong>OpenVAS</strong> (open-source), <strong>Invicti</strong> (web apps),
+                <strong>Nexpose</strong> (Rapid7), and <strong>Nessus</strong> (Tenable). Tools require <strong>plug-in
+                    updates</strong> and <strong>vulnerability feeds</strong> (e.g., NIST NVD, MITRE CVE) to stay
+                current.
+            </p>
+
+            <h3>Configuration and Execution</h3>
+            <ul>
+                <li><strong>Scope:</strong> Target devices/subnets.</li>
+                <li><strong>Sensitivity Level:</strong> Depth of the scan.</li>
+                <li><strong>Server-Based (Pull):</strong> Central manager probes systems.</li>
+                <li><strong>Agent-Based (Push):</strong> Agents on systems send data to manager (less network impact).
+                </li>
+                <li><strong>Credentialed Scan:</strong> Uses valid credentials for deep analysis (insider view).</li>
+                <li><strong>Noncredentialed Scan:</strong> No credentials, mimics external threat actor (outsider view).
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section class="module-section">
+            <h2>V. Analyzing Vulnerability Scans</h2>
+
+            <h3>Validation</h3>
+            <p>Results must be validated to distinguish between:</p>
+            <ul>
+                <li><strong>True Positive:</strong> Real vulnerability correctly identified.</li>
+                <li><strong>False Positive:</strong> Alarm raised when no problem exists (nuisance).</li>
+                <li><strong>False Negative:</strong> No alarm raised when a problem exists (dangerous).</li>
+            </ul>
+
+            <h3>Reporting</h3>
+            <p>Reports are tailored to the audience:</p>
+            <table>
+                <tr>
+                    <th>Audience</th>
+                    <th>Report Content</th>
+                </tr>
+                <tr>
+                    <td><strong>Management</strong></td>
+                    <td>General impact, comparison to previous scans, remediation time.</td>
+                </tr>
+                <tr>
+                    <td><strong>System/Network Engineers</strong></td>
+                    <td>Technical listing of vulnerable devices and fix details.</td>
+                </tr>
+                <tr>
+                    <td><strong>Application Developers</strong></td>
+                    <td>Vulnerable applications and code locations.</td>
+                </tr>
+                <tr>
+                    <td><strong>Security Teams</strong></td>
+                    <td>Specific technical details on exploitability and remediation.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Section 6 -->
+        <section class="module-section">
+            <h2>VI. Addressing Vulnerabilities</h2>
+
+            <h3>Prioritizing</h3>
+            <p>Not all vulnerabilities can be fixed. Prioritization uses criteria like:</p>
+            <ul>
+                <li><strong>CVSS (Common Vulnerability Scoring System):</strong> Numeric score based on severity.</li>
+                <li><strong>CWE (Common Weakness Enumeration):</strong> Categorical system of weaknesses.</li>
+            </ul>
+
+            <h3>Action Steps</h3>
+            <ol>
+                <li><strong>Patch and harden:</strong> Apply updates and secure configurations.</li>
+                <li><strong>Compensating Controls:</strong> Alternative measures if patching isn't possible (e.g.,
+                    network isolation).</li>
+                <li><strong>Exceptions/Exemptions:</strong> Accepting risk for low-impact vulnerabilities.</li>
+                <li><strong>Network Segmentation:</strong> Isolating high-risk segments.</li>
+                <li><strong>Verify Mitigation:</strong> Rescan and audit to confirm the fix.</li>
+            </ol>
+        </section>
+
+        <!-- Section 7 -->
+        <section class="module-section">
+            <h2>VII. Audits and Assessments</h2>
+            <ul>
+                <li><strong>Audit:</strong> Examination of results to verify accuracy (by an independent party).</li>
+                <li><strong>Assessment:</strong> Judgment of results including necessary actions for conformity.</li>
+            </ul>
+            <p><strong>Internal Audits</strong> are self-assessments by employees. <strong>External Assessments</strong>
+                are independent third-party audits, often for regulatory compliance.</p>
+        </section>
+
+        <!-- Section 8 -->
+        <section class="module-section">
+            <h2>VIII. Penetration Testing</h2>
+            <p><strong>Penetration Testing (Pen Test)</strong> is an <strong>offensive assessment</strong> where testers
+                actively try to exploit vulnerabilities, unlike defensive scanning.</p>
+
+            <h3>Types of Testers</h3>
+            <table>
+                <tr>
+                    <th>Tester Type</th>
+                    <th>Pros/Cons</th>
+                </tr>
+                <tr>
+                    <td><strong>Internal Security Personnel</strong></td>
+                    <td>Low cost, fast. But may lack objectivity or deep expertise.</td>
+                </tr>
+                <tr>
+                    <td><strong>External Consultants</strong></td>
+                    <td>High expertise and focus. Requires NDA due to sensitive access.</td>
+                </tr>
+            </table>
+
+            <h3>Test Classifications</h3>
+            <ul>
+                <li><strong>Unknown Environment (Black Box):</strong> No prior knowledge. Simulates real attacker.</li>
+                <li><strong>Partially Known Environment (Gray Box):</strong> Limited knowledge/privileges. Efficient.
+                </li>
+                <li><strong>Known Environment (White Box):</strong> Full knowledge (source code, network maps). Deep
+                    analysis.</li>
+            </ul>
+
+            <h3>Vulnerability Scan vs. Penetration Test</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Vulnerability Scan</th>
+                    <th>Penetration Test</th>
+                </tr>
+                <tr>
+                    <td><strong>Purpose</strong></td>
+                    <td>Reduce attack surface (Defensive).</td>
+                    <td>Identify deep vulnerabilities (Offensive).</td>
+                </tr>
+                <tr>
+                    <td><strong>Process</strong></td>
+                    <td>Automated, continuous.</td>
+                    <td>Manual, periodic.</td>
+                </tr>
+                <tr>
+                    <td><strong>Goal</strong></td>
+                    <td>Identify risks.</td>
+                    <td>Exploit vulnerabilities.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide: Vulnerability Management</h2>
+
+            <h3>Quiz: Short-Answer Questions</h3>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. What is threat intelligence, and why is it important for organizations?</summary>
+                    <p>Threat intelligence is data collected and analyzed to understand a threat actor's motives,
+                        targets, and behaviors. It is crucial because it allows organizations to shift from a reactive
+                        to a proactive security posture by making faster, more informed, data-based decisions to protect
+                        their assets.</p>
+                </details>
+                <details>
+                    <summary>2. Explain the key findings from recent research on paid threat intelligence feeds
+                        regarding overlap and timeliness.</summary>
+                    <p>Research found that paid threat intelligence feeds have very low overlap, meaning a threat
+                        identified by one source is often missed by another. Furthermore, paid sources were only faster
+                        than open-source alternatives in about half of the cases analyzed, indicating their timeliness
+                        is variable.</p>
+                </details>
+                <details>
+                    <summary>3. Describe the difference between active and passive vulnerability scanning.</summary>
+                    <p>Active scanning involves sending test traffic into a network and monitoring the responses to
+                        gather data quickly. Passive scanning does not send any transmissions; instead, it listens to
+                        normal network traffic to learn information, making it less intrusive but slower.</p>
+                </details>
+                <details>
+                    <summary>4. What are the four main constraints that influence the frequency of vulnerability scans?
+                    </summary>
+                    <p>The four constraints are: Technical constraints (network size, bandwidth limitations), workflow
+                        interruptions (impact on business processes), regulatory requirements (mandated scan
+                        frequencies), and risk appetite (the organization's tolerance for exposure).</p>
+                </details>
+                <details>
+                    <summary>5. Differentiate between a credentialed and a non-credentialed vulnerability scan.
+                    </summary>
+                    <p>A credentialed scan uses valid authentication credentials to perform a deep analysis of a
+                        system's software and configuration from an insider's perspective. A non-credentialed scan does
+                        not use credentials, mimicking an external attacker by looking for vulnerabilities like open
+                        ports that are visible from outside.</p>
+                </details>
+                <details>
+                    <summary>6. What is a "false negative" in the context of a vulnerability scan, and why is it more
+                        serious than a "false positive"?</summary>
+                    <p>A "false negative" is the failure of a scan to raise an alarm when a real vulnerability or issue
+                        exists. It is more serious than a "false positive" (a mistaken alarm) because it leaves the
+                        organization unaware of a real weakness that a threat actor could find and exploit.</p>
+                </details>
+                <details>
+                    <summary>7. What is the purpose of the Common Vulnerability Scoring System (CVSS) and the Common
+                        Weakness Enumeration (CWE) in the remediation process?</summary>
+                    <p>CVSS provides a numeric score to prioritize vulnerabilities based on factors like attack
+                        complexity and data confidentiality, helping teams focus on the highest-risk issues first. CWE
+                        is a categorical system that ranks vulnerabilities based on type (e.g., buffer overflow), which
+                        also aids in prioritization and understanding systemic weaknesses.</p>
+                </details>
+                <details>
+                    <summary>8. Define the difference between an audit and an assessment.</summary>
+                    <p>An audit is an examination of results to verify their accuracy, typically performed by an
+                        independent party. An assessment is a judgment made about those results that also includes
+                        defining the actions needed to bring the assessed item back into conformity with standards.</p>
+                </details>
+                <details>
+                    <summary>9. Explain the three levels of knowledge a penetration tester might have in an external
+                        test (unknown, partially known, and known environments).</summary>
+                    <p>In an unknown environment, testers have no prior knowledge, simulating a real external attacker.
+                        In a partially known environment, testers are given limited information to focus their efforts
+                        more efficiently. In a known environment, testers have full knowledge and source code access to
+                        conduct a deep analysis of specific systems.</p>
+                </details>
+                <details>
+                    <summary>10. What is the primary difference in goals between a vulnerability scan and a penetration
+                        test?</summary>
+                    <p>The goal of a vulnerability scan is to identify and list as many risks and weaknesses as possible
+                        across systems and networks to reduce the attack surface. The goal of a penetration test is more
+                        focused: to actively exploit vulnerabilities to gain unauthorized access, simulating a real
+                        attack to find deep, exploitable flaws.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <ol>
+                <li>Discuss the pros and cons of an organization relying solely on its own internal threat intelligence
+                    versus subscribing to multiple external paid feeds. Based on the findings presented in the source
+                    context, what would be an ideal, balanced approach to threat intelligence gathering?</li>
+                <li>An organization is planning its vulnerability management strategy. Explain the critical decisions it
+                    must make regarding what, how, and when to scan, detailing the key factors and trade-offs for each
+                    decision.</li>
+                <li>Compare and contrast the roles, advantages, and disadvantages of using an internal security team
+                    versus an external third-party consultant to conduct a penetration test. Under what circumstances
+                    might an internal test be preferable?</li>
+                <li>Describe the complete vulnerability management lifecycle, starting from the initial scan
+                    configuration through to the final verification of remediation. Detail each step, including
+                    analysis, reporting, prioritization, and the various action steps for addressing vulnerabilities.
+                </li>
+                <li>Evaluate the challenges associated with vulnerability scanning, including data volume,
+                    identification accuracy, technical limitations, and remediation decisions. Propose strategies or
+                    best practices an organization could implement to mitigate each of these challenges.</li>
+            </ol>
+
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td>Active Reconnaissance</td>
+                    <td>Directly probing for vulnerabilities and useful information, which may alert defenders.</td>
+                </tr>
+                <tr>
+                    <td>Active Scanning</td>
+                    <td>A method of vulnerability scanning that sends test traffic transmissions into the network and
+                        monitors the responses of the endpoints.</td>
+                </tr>
+                <tr>
+                    <td>Agent-Based (Push) Scanner Technology</td>
+                    <td>A scanning method where software agents residing on a system send (push) their information back
+                        to a central manager.</td>
+                </tr>
+                <tr>
+                    <td>Assessment</td>
+                    <td>A judgment made about audit results, which involves the actions necessary to make what was
+                        assessed conform to required standards.</td>
+                </tr>
+                <tr>
+                    <td>Audit</td>
+                    <td>An examination of results to verify their accuracy, performed by someone other than the person
+                        responsible for producing the results.</td>
+                </tr>
+                <tr>
+                    <td>Audit Committee</td>
+                    <td>A major operating committee of a company’s board of directors that oversees financial statements
+                        and reporting to provide proof (attestation) of compliance.</td>
+                </tr>
+                <tr>
+                    <td>Automated Indicator Sharing (AIS)</td>
+                    <td>A system that enables the exchange of cyber threat indicators between parties through
+                        computer-to-computer communication.</td>
+                </tr>
+                <tr>
+                    <td>Bug Bounty Program</td>
+                    <td>A program where organizations pay security researchers who uncover and privately report security
+                        bugs in their products.</td>
+                </tr>
+                <tr>
+                    <td>Common Vulnerability Scoring System (CVSS)</td>
+                    <td>A system that generates numeric scores for vulnerabilities based on a complex formula
+                        considering variables like access vector, attack complexity, and data confidentiality.</td>
+                </tr>
+                <tr>
+                    <td>Common Weakness Enumeration (CWE)</td>
+                    <td>A categorical system for hardware and software weaknesses and vulnerabilities, with over 600
+                        categories.</td>
+                </tr>
+                <tr>
+                    <td>Credentialed Scan</td>
+                    <td>A vulnerability scan where valid authentication credentials are supplied to the scanner to
+                        perform a deep analysis of a system.</td>
+                </tr>
+                <tr>
+                    <td>Dark Web</td>
+                    <td>A level of the web beyond the reach of normal search engines, used by threat actors and
+                        requiring special software like Tor to access.</td>
+                </tr>
+                <tr>
+                    <td>External Vulnerability Scan</td>
+                    <td>A scan performed from a vantage point outside the network, targeting specific IP addresses
+                        within the network.</td>
+                </tr>
+                <tr>
+                    <td>False Negative</td>
+                    <td>The failure to raise an alarm when there is a real issue or vulnerability.</td>
+                </tr>
+                <tr>
+                    <td>False Positive</td>
+                    <td>An alarm that is raised when there is no actual problem or vulnerability.</td>
+                </tr>
+                <tr>
+                    <td>Footprinting</td>
+                    <td>The preliminary information gathering performed by penetration testers from outside the
+                        organization.</td>
+                </tr>
+                <tr>
+                    <td>Information Sharing Organizations</td>
+                    <td>Organizations that gather, collate, analyze, and distribute threat intelligence, often among
+                        members of a specific industry or community.</td>
+                </tr>
+                <tr>
+                    <td>Internal Audits</td>
+                    <td>Audits performed by a company's own employees, also known as self-assessments.</td>
+                </tr>
+                <tr>
+                    <td>Internal Vulnerability Scan</td>
+                    <td>A scan performed from a vantage point inside the internal network.</td>
+                </tr>
+                <tr>
+                    <td>Known Environment</td>
+                    <td>A penetration testing scenario where testers are given full knowledge of the network and source
+                        code.</td>
+                </tr>
+                <tr>
+                    <td>Non-Credentialed Scan</td>
+                    <td>A vulnerability scan that provides no authentication information, simulating an external
+                        attacker.</td>
+                </tr>
+                <tr>
+                    <td>Open-Source Intelligence (OSINT)</td>
+                    <td>Threat intelligence data that has been legally gathered from free and public sources.</td>
+                </tr>
+                <tr>
+                    <td>Package Monitoring Tools</td>
+                    <td>Tools that continuously analyze applications, especially those using open-source libraries, for
+                        vulnerabilities.</td>
+                </tr>
+                <tr>
+                    <td>Partially Known Environment</td>
+                    <td>A penetration testing scenario where testers are given limited knowledge of the network and some
+                        elevated privileges.</td>
+                </tr>
+                <tr>
+                    <td>Passive Reconnaissance</td>
+                    <td>The use of tools and public sources to gather information without directly probing the target,
+                        thus not raising alarms.</td>
+                </tr>
+                <tr>
+                    <td>Passive Scanning</td>
+                    <td>A method of vulnerability scanning that listens for normal traffic to learn information without
+                        sending any test transmissions.</td>
+                </tr>
+                <tr>
+                    <td>Penetration Testing (Pen Test)</td>
+                    <td>An offensive assessment that attempts to uncover and exploit vulnerabilities in a system, just
+                        as a threat actor would.</td>
+                </tr>
+                <tr>
+                    <td>Prioritize</td>
+                    <td>To treat one item as more important than another, used to decide which vulnerabilities to
+                        address first.</td>
+                </tr>
+                <tr>
+                    <td>Proprietary Threat Intelligence</td>
+                    <td>Threat intelligence data that is owned by an entity (either the enterprise itself or a third
+                        party) and is not available to outsiders.</td>
+                </tr>
+                <tr>
+                    <td>Reporting</td>
+                    <td>The process of distributing the results of a scan to the appropriate parties and audiences.</td>
+                </tr>
+                <tr>
+                    <td>Risk Appetite</td>
+                    <td>An organization’s tolerance for exposure to a vulnerability.</td>
+                </tr>
+                <tr>
+                    <td>Scope (of a scan)</td>
+                    <td>The target devices to be scanned, typically including a range of hosts or subnets.</td>
+                </tr>
+                <tr>
+                    <td>Server-Based (Pull) Scanner Technology</td>
+                    <td>A scanning method where a scanner manager connects to a scanner engine that probes systems and
+                        pulls information back for analysis.</td>
+                </tr>
+                <tr>
+                    <td>Structured Threat Information Expression (STIX)</td>
+                    <td>A language and format used to exchange cyber threat intelligence, representing threats with
+                        objects and descriptive relationships.</td>
+                </tr>
+                <tr>
+                    <td>Threat Intelligence</td>
+                    <td>Data that is collected, processed, and analyzed to understand a threat actor’s motives, targets,
+                        and attack behaviors.</td>
+                </tr>
+                <tr>
+                    <td>Trusted Automated Exchange of Intelligence Information (TAXII)</td>
+                    <td>An application protocol for exchanging cyber threat intelligence over HTTPS.</td>
+                </tr>
+                <tr>
+                    <td>Unknown Environment</td>
+                    <td>A penetration testing scenario where testers have no knowledge of the network and no special
+                        privileges.</td>
+                </tr>
+                <tr>
+                    <td>Vulnerability Scan</td>
+                    <td>An ongoing automated process used to identify weaknesses and monitor information security
+                        progress.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Quiz Section -->
+        <div class="quiz-header">
+            <h2 style="margin:0; color:var(--accent)">⚡ Full Practice Simulation</h2>
+            <p>Review Questions (Coming Soon)</p>
+        </div>
+
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+            <p style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                <em>The practice simulation questions for this module are currently being updated. Please check back
+                    later.</em>
+            </p>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p>&copy; 2024 Matheus Almeida. All rights reserved.</p>
+    </footer>
+
+    <button id="back-to-top" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        // Back to Top Button Logic
+        const backToTopButton = document.getElementById("back-to-top");
+
+        window.onscroll = function () {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                backToTopButton.style.display = "flex";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+
+        backToTopButton.onclick = function () {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        };
+
+        // Quiz Data
+        const quizQuestions = [
+            {
+                text: "Which of the following is NOT true regarding a vulnerability scan?",
+                options: [
+                    "It is an ongoing automated process used to identify weaknesses and monitor information security progress.",
+                    "Its purpose is to find weaknesses and address them in order to reduce the attack surface.",
+                    "It is an assessment that is designed to be a cyclical and continual scanning and monitoring process.",
+                    "It audits only the devices that are used but not the processes to protect devices."
+                ],
+                correct: 3,
+                explanation: "The text states that a vulnerability scan \"serves as a system/process audit on both the devices that are used and the processes to protect those devices\". Therefore, the claim that it audits devices but not processes is incorrect. The other options are true: it is an automated process, its purpose is to find weaknesses to reduce the attack surface, and it is a cyclical, continual process."
+            },
+            {
+                text: "Why are open-source libraries vulnerable?",
+                options: [
+                    "These libraries are not owned and controlled by any single entity.",
+                    "They use coding tools that are considered inferior to standardized tools.",
+                    "They are “stubs” that cannot be properly verified for malware.",
+                    "Their platforms are known to be owned and managed by threat actors."
+                ],
+                correct: 0,
+                explanation: "The text explains that because \"libraries are not owned and controlled by any single entity, attackers frequently infect open-source libraries with their malware\"."
+            },
+            {
+                text: "Isai needs to continuously analyze apps for vulnerabilities and wants a dashboard that the security team can use to monitor the applications’ current security features. What tool would Isai select?",
+                options: [
+                    "App evaluator",
+                    "Cloud native control (CNC)",
+                    "Program tester",
+                    "Package monitoring"
+                ],
+                correct: 3,
+                explanation: "Analyzing applications can be done using \"package monitoring tools, which continuously analyze apps for vulnerabilities\". Furthermore, some of these tools feature a dashboard providing an \"at-a-glance view of the applications’ current security features\"."
+            },
+            {
+                text: "Which of the following is NOT a challenge of running a vulnerability scan?",
+                options: [
+                    "Remediations",
+                    "Technical limitations",
+                    "Identification of vulnerabilities",
+                    "Low volume of scan data"
+                ],
+                correct: 3,
+                explanation: "The text lists the \"Volume of scan data\" as a challenge, specifically noting that scans \"produce large amounts of data that must be analyzed\". Therefore, \"Low volume\" is not a challenge. The other options are explicitly listed as challenges: Identification of vulnerabilities, Technical limitations, and Remediations."
+            },
+            {
+                text: "Which of the following is NOT true about threat intelligence?",
+                options: [
+                    "Threat intelligence is data that is collected, processed, and analyzed to understand a threat actor’s motives, targets, and attack behaviors.",
+                    "Threat intelligence enables organizations to make faster, more informed data-based security decisions.",
+                    "Threat intelligence is especially vital to penetration testing.",
+                    "Threat intelligence changes behavior from being reactive to proactive."
+                ],
+                correct: 2,
+                explanation: "The text explicitly states, \"Threat intelligence is especially vital to vulnerability scanning\". While threat intelligence is useful in many areas, the provided text specifically links its vital nature to vulnerability scanning, not penetration testing. The other options are direct quotes or paraphrases from the text."
+            },
+            {
+                text: "Kostyantyn has been asked to explore part of the web that is the domain of threat actors to look for information about the latest types of attacks. What area of the web will he explore?",
+                options: [
+                    "Dark web",
+                    "Deep web",
+                    "Black web",
+                    "Restricted web"
+                ],
+                correct: 0,
+                explanation: "The text describes the dark web as \"the domain of threat actors\". Professionals sometimes use it to \"look for information about the latest types of attacks\"."
+            },
+            {
+                text: "Where do third-party sources get their threat intelligence data?",
+                options: [
+                    "From government contractors",
+                    "From the information they collect from their own customers",
+                    "From free and public sources",
+                    "From paid informants"
+                ],
+                correct: 1,
+                explanation: "Proprietary third-party sources base their data on \"the information they collect from their own customers and the work of their threat research teams\"."
+            },
+            {
+                text: "Which of the following is NOT an advantage of an organization sharing threat intelligence information?",
+                options: [
+                    "Organizations can enrich their own existing information and make it more actionable.",
+                    "Organizations can independently confirm their own observations with other sharing members and improve the overall quality of the threat information through the reduction of ambiguity and errors.",
+                    "Organizations can leverage the collective knowledge, experience, and capabilities of other organizations in their sharing community to gain a more complete understanding of the threats they face.",
+                    "Organizations can identify third-party OSINT providers more quickly to purchase their threat feeds."
+                ],
+                correct: 3,
+                explanation: "The text lists leveraging collective knowledge, enriching existing information to make it actionable, and confirming observations to reduce ambiguity as advantages. Identifying OSINT providers for purchase is not listed as an advantage of sharing information."
+            },
+            {
+                text: "Artem has been asked to identify an application protocol for exchanging cyber threat intelligence over HTTPS. Which protocol would he choose?",
+                options: [
+                    "STIX",
+                    "CybOX",
+                    "TAXII",
+                    "IODEF"
+                ],
+                correct: 2,
+                explanation: "\"Trusted Automated Exchange of Intelligence Information (TAXII) is an application protocol for exchanging cyber threat intelligence over Hypertext Transfer Protocol Secure (HTTPS)\"."
+            },
+            {
+                text: "Which of the following is used to create cybersecurity threat maps?",
+                options: [
+                    "Information sharing organizations",
+                    "Proprietary enterprises",
+                    "OSINT",
+                    "Third-party data sharing organizations (3DSO)"
+                ],
+                correct: 2,
+                explanation: "The text states, \"OSINT is often used to create cybersecurity threat maps that illustrate cyber threats\"."
+            },
+            {
+                text: "Which of the following does NOT apply to a vulnerability scan?",
+                options: [
+                    "Identify vulnerabilities by scanning systems and networks.",
+                    "Scan to find weaknesses and then mitigate.",
+                    "Are usually automated with a handful of manual processes.",
+                    "Act like a threat actor to find vulnerabilities to exploit."
+                ],
+                correct: 3,
+                explanation: "A vulnerability scan is defined as an automated process to \"identify weaknesses\" and address them. While credentialed scans can \"mimic the work of a threat actor\" regarding access, the specific action of finding vulnerabilities to exploit is the definition of Penetration Testing, which is distinguished from vulnerability scanning in the text. Vulnerability scanning focuses on identification and remediation, not exploitation."
+            },
+            {
+                text: "Which of the following is NOT a type of vulnerability scan over an asset?",
+                options: [
+                    "Operating system",
+                    "Wireless network",
+                    "Endpoint",
+                    "Network"
+                ],
+                correct: 0,
+                explanation: "Table 12-3 lists the \"Types of Vulnerability Scans over Assets.\" The assets listed are Network, Endpoint, Wireless network, Database, and Applications. \"Operating system\" is mentioned as a detail identified within an endpoint scan, but it is not listed as a distinct asset category in the table."
+            },
+            {
+                text: "Bohdan is explaining to an intern some of the disadvantages to active scanning. Which of the following would Bohdan NOT give as a disadvantage?",
+                options: [
+                    "IoT devices may react differently to test traffic.",
+                    "Sending test traffic increases the risk of the endpoints malfunctioning if incompatible queries are sent.",
+                    "Smaller networks can become overloaded with high volumes of test traffic.",
+                    "Active scanning can accelerate the collection of data."
+                ],
+                correct: 3,
+                explanation: "Accelerating the collection of data is listed as a \"primary advantage of conducting active scanning\". The other options are explicitly listed as disadvantages."
+            },
+            {
+                text: "Which type of vulnerability scan is performed from the vantage point outside the network?",
+                options: [
+                    "Remote vulnerability scan",
+                    "External vulnerability scan",
+                    "Network vulnerability scan",
+                    "Internal vulnerability scan"
+                ],
+                correct: 1,
+                explanation: "\"An external vulnerability scan is performed from the vantage point outside the network\"."
+            },
+            {
+                text: "Arkady has been asked to explain to a manager why the SOC is not performing vulnerability scans continuously over all systems. Which of the following would NOT be a reason Arkady would give?",
+                options: [
+                    "Expense",
+                    "Workflow interruptions",
+                    "Risk appetite",
+                    "Technical constraints"
+                ],
+                correct: 0,
+                explanation: "The text lists specific constraints that call for routine rather than continuous scanning: \"Technical constraints\", \"Workflow interruptions\", \"Regulatory requirements\", and \"Risk appetite\". Expense is not listed as a constraint in this specific section."
+            },
+            {
+                text: "Which of the following do plug-ins NOT contain?",
+                options: [
+                    "Advanced vulnerability information",
+                    "Listing of vulnerable local IP addresses",
+                    "Remediation actions",
+                    "Updated algorithms"
+                ],
+                correct: 1,
+                explanation: "Plug-ins are described as containing \"advanced vulnerability information, a set of remediation actions, and updated algorithms to test for the presence of the security issue\". They do not contain a listing of the organization's local IP addresses; those are defined by the \"Scope\" of the scan."
+            },
+            {
+                text: "Borysko needs to specify which devices need to be included in the next vulnerability scan. What parameter must he set?",
+                options: [
+                    "Sensitivity level",
+                    "Region",
+                    "Scope",
+                    "NET-SCAN"
+                ],
+                correct: 2,
+                explanation: "\"The scope of a vulnerability scan is the target devices to be scanned\"."
+            },
+            {
+                text: "Danylo is examining the results of a vulnerability scan and is prioritizing the list of vulnerabilities. He wants to use a system that will assign a numeric score to each vulnerability. Which system will Danylo use?",
+                options: [
+                    "CRV",
+                    "VDSS",
+                    "RDV",
+                    "CVSS"
+                ],
+                correct: 3,
+                explanation: "While the specific acronym CVSS is not explicitly defined in the provided text snippet, the text mentions the \"NIST National Vulnerability Database (NVD)\" and \"MITRE Common Vulnerabilities and Exposures (CVE)\" as primary vulnerability feeds. The Common Vulnerability Scoring System (CVSS) is the industry standard associated with these databases for assigning numeric scores to vulnerabilities. The other options (CRV, VDSS, RDV) are not standard industry terms."
+            },
+            {
+                text: "Which of the following is considered the best-known and most widely used vulnerability scanner?",
+                options: [
+                    "Nessus",
+                    "VAX",
+                    "RCAP",
+                    "Invicti"
+                ],
+                correct: 0,
+                explanation: "The text states, \"Perhaps the best-known and most widely used vulnerability scanner is Nessus\"."
+            },
+            {
+                text: "What is the first step that should be taken after deciding which vulnerability scanning tool to use?",
+                options: [
+                    "Set the scope.",
+                    "Determine the sensitivity level.",
+                    "Update the plug-ins.",
+                    "Execute the scan."
+                ],
+                correct: 2,
+                explanation: "\"After selecting a vulnerability scanning tool, the software plug-ins need to be updated and the vulnerability and threat feeds need to be accessed\". Configuring the software (setting scope/sensitivity) occurs after these updates."
+            },
+            {
+                text: "Mathina is responsible for identifying data that needs to be scanned more frequently, so she sets off to assign a value to the various kinds of data. Which of the following statements regarding how data should be classified are true? Select two.",
+                options: [
+                    "Data types include regulated, intellectual property, and trade secrets.",
+                    "When scanning data, confidentiality and integrity are more important than availability.",
+                    "Data categories include customer data, financial data, critical data, and restricted.",
+                    "Data classifications include confidential, private, and public.",
+                    "It is better to scan all the data first and then assign a value to prioritize its analysis."
+                ],
+                correct: [0, 3],
+                explanation: "It is more beneficial to use data classifications to group like data that needs similar protections. These classifications include confidential, private, sensitive, critical, public, and restricted. The different data types include regulated, intellectual property, trade secret, and enterprise information. Once data has been properly identified, then its value can be determined, and the type and frequency of a vulnerability scan can be calculated."
+            },
+            {
+                text: "Bogy, the chief security officer at a company, is adamant about running vulnerability scans that examine cloud-native apps the company develops and uses. Which of the following can be used to justify Bogy's position? Select two.",
+                options: [
+                    "Developers are sometimes careless.",
+                    "The apps used open-source libraries.",
+                    "The apps are a gateway to networks.",
+                    "They are using an IaaS cloud model."
+                ],
+                correct: [1, 2],
+                explanation: "One specialized type of vulnerability scan examines applications. Because applications, especially cloud-native apps, are a gateway to servers and networks, they present an ideal attack vector for threat actors to exploit. This is particularly true since many applications use open-source libraries."
+            },
+            {
+                text: "Which of the following statements accurately describes characteristics of active and passive scanning?",
+                options: [
+                    "Active scanning may increase the risk of endpoint malfunction.",
+                    "Passive scanning is less intrusive to parts of a network that may not always be available.",
+                    "Active scanning uses enumeration whereas passive scanning uses mapping.",
+                    "Passive scanning sends out less transmissions than active scanning."
+                ],
+                correct: 0,
+                explanation: "Active scanning sends test traffic transmissions into the network and monitors the responses of the endpoints. Sending test traffic increases the risk of the endpoints malfunctioning if incompatible queries are sent. Passive scanning does not send any transmissions; it only listens for normal traffic to learn the needed information."
+            },
+            {
+                text: "In the process of validating a scan that was completed two days ago, Vashon discovers a particular true positive of interest was logged. He investigates the system from where the vulnerability was reported but does not find any problems. What is Vashon most likely to do next?",
+                options: [
+                    "Isolate the system reporting the vulnerability from the rest of the network.",
+                    "Modify the values used to configure the scanner and run the scan again.",
+                    "Update the modules in the vulnerability scanner and run the scan again.",
+                    "Examine the logs on the system where the vulnerability was reported.",
+                    "Run the vulnerability scan again to verify the results reported were correct."
+                ],
+                correct: 3,
+                explanation: "Analyzing the log files on the system could indicate whether that system's configuration had been changed, patched for example, between the time of the scan and the follow-up analysis in which case no vulnerability would be found."
+            },
+            {
+                text: "A company recently joined an information-sharing center, but they are concerned about the possibility of sharing private information with other member organizations. Which of the following best represents protections to help mitigate the risk? Select two.",
+                options: [
+                    "CISPC",
+                    "DHS",
+                    "PCI",
+                    "FOIA",
+                    "CISA"
+                ],
+                correct: [3, 4],
+                explanation: "The Cybersecurity Information Sharing Act (CISA) requires a nonfederal entity to remove any information from a cyber threat indicator that it knows at the time of sharing to be personal information. One of the nine exemptions of the Freedom of Information Act (FOIA) protects interests such as personal privacy."
+            },
+            {
+                text: "An organization wants to start running periodic vulnerability scans. However, they are experiencing a reduction in force across all departments due to the cyclical nature of their business. Which of the following could be a valid concern the company has relative to the vulnerability scans?",
+                options: [
+                    "The scan could potentially produce more data than they could analyze.",
+                    "They do not have the personnel needed to address all the issues discovered.",
+                    "They do not have the technical expertise to successfully interpret the data.",
+                    "The scan will not produce enough data to help them make an informed decision."
+                ],
+                correct: 0,
+                explanation: "Several challenges are associated with vulnerability scanning. Some of these can even be considered as risks and include the volume of scan data. Vulnerability scans can produce large amounts of data that must be analyzed; with the reduction in force, this may not be possible."
+            },
+            {
+                text: "Ginni works for a company that hosts many online stores for a large variety of clients. She has been tasked with researching vulnerability scanning tools to monitor the applications that make their business model possible. Which of the following tools is Ginni most likely to recommend?",
+                options: [
+                    "Nextpose",
+                    "Invicti",
+                    "Nessus",
+                    "OpenVAS"
+                ],
+                correct: 1,
+                explanation: "Invicti is a tool for scanning website applications for vulnerabilities and is a type of application package monitoring tool. It provides a detailed directory structure breakdown and remediation guidance for discovered vulnerabilities."
+            },
+            {
+                text: "A company is growing and starting to get serious about securing their digital assets. They hire a recent IT security college graduate as their security manager. The company wants to see if they have any deep vulnerabilities, so the newly hired security manager suggests running a vulnerability scan. Which of the following statements are most likely to be true? Select two.",
+                options: [
+                    "They will successfully achieve their goal provided the vulnerability scanner is properly configured.",
+                    "It would be more beneficial to run a penetration test first followed by a vulnerability scan.",
+                    "They will not achieve their goal because a vulnerability scan may only find surface problems.",
+                    "It would be more beneficial to run a vulnerability scan first followed by a penetration test."
+                ],
+                correct: [2, 3],
+                explanation: "A vulnerability scan may find only surface problems to be addressed. This is because many scans are automated and provide a limited verification of any discovered vulnerabilities. A penetration test can go further to find and exploit deep vulnerabilities using manual techniques."
+            },
+            {
+                text: "A group of students submits an initial outline of their security project for approval. The project indicates they will use information garnered from cybersecurity threat maps. What initial feedback is the professor most likely to offer?",
+                options: [
+                    "Information displayed on threat maps is a replay of vulnerability scans.",
+                    "Information displayed on threat maps offers limited context.",
+                    "Information displayed on threat maps has a lot of integrity.",
+                    "Information displayed on threat maps represents real-time data.",
+                    "Information displayed on threat maps was not legally gathered."
+                ],
+                correct: 1,
+                explanation: "Cybersecurity threat maps illustrate cyber threats overlaid on a diagrammatic representation of a geographical area. Threat maps help in visualizing attacks and provide a limited amount of context of the source and the target countries, the attack types, and historical and near real-time data about threats."
+            },
+            {
+                text: "Using threat intelligence requires what type of approach as it relates to monitoring?",
+                options: [
+                    "Cognitive",
+                    "Behavioral based",
+                    "Dynamic",
+                    "Heuristic",
+                    "Signature based"
+                ],
+                correct: 4,
+                explanation: "Threat intelligence is vital to vulnerability scanning. Vulnerability scanning involves looking for the presence of a threat by comparing what is scanned against a set of known threats. This approach is signature based because it compares a vulnerability scan against a set of known threat signatures."
+            },
+            {
+                text: "A company in financial duress needs to perform a penetration test. The chief information officer wants to hire an outside entity, but internal forces do not want to spend the money. Thus, they agree to have the security team perform the penetration test. What will be the most probable outcome of this decision?",
+                options: [
+                    "Since the team has access to internal devices, they will be able to perform a comprehensive test.",
+                    "The full depth of results may not be revealed to help protect fellow members of the team.",
+                    "Having internal knowledge of the network enables them to simulate a threat actor more closely.",
+                    "They will use a series of highly configurable and automated tools to discover vulnerabilities."
+                ],
+                correct: 1,
+                explanation: "Employees may be reluctant to reveal a vulnerability discovered in a network or system that they or a fellow employee have been charged with protecting. As such, the full scope of results may not be revealed."
+            },
+            {
+                text: "A security research team is in the business of collecting a great deal of network data. Their plan is to analyze the data and map out different types of attacks, suspicious behaviors, exploits, and vulnerabilities. Which of the following most likely describes their goal?",
+                options: [
+                    "To join an information sharing organization",
+                    "To create a protected critical infrastructure",
+                    "To generate threat intelligence",
+                    "To create anti-malware software"
+                ],
+                correct: 2,
+                explanation: "Teams that are tasked with mapping different types of attacks and the latest threats, suspicious behaviors, vulnerabilities, and exploits are typically members of proprietary third-party sources. The results of their efforts are then regularly published and distributed to their customers as direct threat feeds that serve as input into the scanning software."
+            },
+            {
+                text: "A company is considering running a full vulnerability scan of all devices on the entire network. If they follow through on this decision, what possible conclusions can you arrive at? Select three.",
+                options: [
+                    "It can take a significant amount of time.",
+                    "It should not take longer than a few short hours.",
+                    "They want to monitor end devices more than the network itself.",
+                    "This is the way they've always done it.",
+                    "They have not prioritized what should be scanned.",
+                    "They do not have an up-to-date asset inventory."
+                ],
+                correct: [0, 4, 5],
+                explanation: "Knowing the location of data to be scanned ensures that specific devices containing high-value data can be scanned more frequently. To create a list of assets to scan, an asset inventory or listing of all significant assets needs to be consulted. For organizations with an up-to-date asset inventory through regular asset management, the asset inventory can be reviewed to identify the systems that should be scanned. It is possible to use a vulnerability scanning tool to run a full vulnerability scan of all devices on the entire network, but this can take a significant amount of time to both find assets and assess their vulnerabilities."
+            },
+            {
+                text: "A company wants to implement a mechanism that will serve as a security audit on devices as well as on the processes used to protect those devices. Which of the following is most likely to be true? Select three.",
+                options: [
+                    "They will need to hire a third party for an independent analysis.",
+                    "They need to understand application package monitoring.",
+                    "They will need to analyze reports.",
+                    "They will need to create automated scripts for various scenarios.",
+                    "They need to determine the sources of data needed."
+                ],
+                correct: [1, 2, 4],
+                explanation: "The company needs to adopt vulnerability scanning. This involves understanding the basics of a vulnerability scan, understanding application package monitoring, the sources of data needed for a scan, analyzing scan reports, and addressing the reported vulnerabilities."
+            },
+            {
+                text: "Gretel works at a company that is about to implement a vulnerability scanning rotation program. They would like to run the scans themselves, but they do not have the expertise to research threats and produce rules to detect those threats. How are they most likely to proceed?",
+                options: [
+                    "Join a community-based bug bounty program.",
+                    "Hire a contractor to run the scans on their behalf.",
+                    "Use the threat intelligence data they already own.",
+                    "Use proprietary third-party sources."
+                ],
+                correct: 3,
+                explanation: "Proprietary vulnerability scanners typically offer their own threat intelligence as a paid subscription service. These are known as proprietary third-party sources. The threat intelligence data from these sources are based on the information they collect from their own customers and the work of their threat research teams."
+            },
+            {
+                text: "Delancy is setting up to run a vulnerability scan. Which of the following best describes what Delancy needs to make well-informed security decisions that are data-driven?",
+                options: [
+                    "Responsible disclosure",
+                    "Threat intelligence",
+                    "Digital malware analysis",
+                    "Information sharing"
+                ],
+                correct: 1,
+                explanation: "Threat intelligence is data that is collected, processed, and analyzed to understand a threat actor's motives, targets, and attack behaviors. Threat intelligence enables organizations to make faster, more informed data-based security decisions."
+            },
+            {
+                text: "A company recently completed a vulnerability scan as well as other tasks directly associated with the scan. They would now like an examination of the results to verify the accuracy of their findings. What type of activity will help them realize this plan?",
+                options: [
+                    "An assessment",
+                    "A pen test",
+                    "An attestation",
+                    "An audit"
+                ],
+                correct: 3,
+                explanation: "An audit is an examination of results to verify their accuracy. Someone performs this other than the person responsible for producing the results."
+            },
+            {
+                text: "A gaming company is doing very well, and growth projections continue to rise. However, they have made the decision, at least for the time being, to run vulnerability scans on a periodic basis instead of continually. Which of the following most likely represents the reason why?",
+                options: [
+                    "They believe the regulatory requirements are excessive and unjustified.",
+                    "They have a low-risk appetite, so the possibility of infection is not significant.",
+                    "Limitations on network bandwidth prevent them from scanning continuously.",
+                    "Even though continual scanning will not impact their systems, they are not risk averse."
+                ],
+                correct: 2,
+                explanation: "Limitations based on technology can dictate how frequently a scan may be performed. For an organization with a very large network with many devices, it may not be possible to scan the entire network within the desired time. Other technical constraints include limitations on network bandwidth and vulnerability scan software license limitations. When dealing with technical constraints, spreading out the scans to run at specific times may be a necessary alternative."
+            },
+            {
+                text: "A large company has collected threat intelligence information from monitoring their network and performed some level of analysis. They would like to confirm some of their observations with other organizations and possibly analyze the data at a deeper level. How can they accomplish this?",
+                options: [
+                    "Contact other organizations to see if they have experienced similar symptoms.",
+                    "Share all the data they collected with other information-sharing organizations.",
+                    "Establish an account with the National Center for Defense and Homeland Security.",
+                    "Become a member of the CISCP so they can have access to their resources."
+                ],
+                correct: 3,
+                explanation: "An organization can independently confirm their own observations with other sharing members and improve the overall quality of the threat information. A typical threat intelligence information-sharing center is the U.S. Department of Homeland Security (DHS) Cyber Information Sharing and Collaboration Program (CISCP). The CISCP \"enables actionable, relevant, and timely unclassified information exchange through trusted public-private partnerships across all critical infrastructure sectors.\" With the DHS serving as the coordinator, the CISCP enables its members to share threat and vulnerability information as well as take advantage of the DHS's cyber resources."
+            },
+            {
+                text: "After running a vulnerability scan, a company is sorting out the results and in the process of determining the order in which vulnerabilities will be addressed. How is the company most likely to make this determination?",
+                options: [
+                    "Use the established best practices and normalized approach advocated by the Common Weakness Enumeration.",
+                    "Quickly address the easy-to-fix vulnerabilities first and then the critical vulnerabilities.",
+                    "Address the high vulnerabilities reported by the scanner first and work down the list.",
+                    "Address vulnerabilities with the highest numeric CVSS scores and work down the list."
+                ],
+                correct: 3,
+                explanation: "The Common Vulnerability Scoring System (CVSS) contains numeric scores generated using a complex formula that considers various factors. The vulnerabilities with the highest numeric CVSS scores are generally considered to require early attention. Prioritizing vulnerabilities is an inexact and sometimes difficult process. However, attention should first be directed toward those that are determined to be critical to the specific organization."
+            },
+            {
+                text: "A company hires a security firm to perform a penetration test, but no information is given to the security firm about the network. What type of preliminary research are the penetration testers most likely to perform while maintaining a low profile?",
+                options: [
+                    "Drive around the perimeter of the building searching for wireless signals that could be exploited.",
+                    "Quietly tap into the network and passively capture network traffic.",
+                    "Pose as an employee to enter the building and read wireless data.",
+                    "Search online for publicly accessible information that can reveal valuable insight."
+                ],
+                correct: 3,
+                explanation: "With passive reconnaissance, the penetration tester uses tools that do not raise any alarms. This may include searching online for publicly accessible information like Open-Source Intelligence that can reveal valuable insight about the system."
+            },
+            {
+                text: "You are responsible for sharing threat intelligence information using a mechanism that employs HTTPS. Which of the following are you most likely to use?",
+                options: [
+                    "TAXII",
+                    "IDMEF",
+                    "TBD",
+                    "STIX"
+                ],
+                correct: 0,
+                explanation: "Trusted Automated Exchange of Intelligence Information (TAXII) is an application protocol for exchanging cyber threat intelligence over Hypertext Transfer Protocol Secure (HTTPS). TAXII defines an application protocol interface and a set of requirements for TAXII clients and servers."
+            },
+            {
+                text: "You are responsible for overseeing the plug-ins process for the vulnerability scan software your company uses. Which of the following is NOT a reason why you would apply a given update upon its release?",
+                options: [
+                    "To install advanced vulnerability information",
+                    "To update a set of remediation actions",
+                    "To update algorithms in the vulnerability scan software",
+                    "To patch the vulnerability scan software itself"
+                ],
+                correct: 3,
+                explanation: "Module updates, known as a plug-in, can be downloaded and installed as needed. However, plug-ins generally go beyond basic updates. Many plug-ins contain advanced vulnerability information, a set of remediation actions, and updated algorithms to test for the presence of the security issue."
+            },
+            {
+                text: "A rogue information technology (IT) employee works at a company as a spy for a foreign country. Unfortunately, the spy is responsible for running vulnerability scans. What type of scan is the spy most likely to run?",
+                options: [
+                    "Noncredentialed because it will allow the spy to hide their tracks.",
+                    "Noncredentialed as it will provide a deeper level of insight without disturbing end devices.",
+                    "Credentialed because the spy has access to the information needed.",
+                    "Credentialed as it will run faster because it will primarily perform fundamental actions."
+                ],
+                correct: 2,
+                explanation: "A credentialed scan is a scan for which valid authentication credentials are supplied to the vulnerability scanner. Thus, this is the type of scan the spy will perform. Noncredentialed scans run faster because they are performing fundamental actions such as looking for open ports. Credentialed scans are slower but can provide a deeper insight into the system by being able to access a fuller range of resources."
+            },
+            {
+                text: "A high-tech company collects data gathered from their bug bounty initiative. The company then uses the data as input into a vulnerability scanner. Why would they do this? Select two.",
+                options: [
+                    "To ensure the vulnerability scanner itself does not have vulnerabilities.",
+                    "To test the effectiveness of the vulnerability scanner.",
+                    "To search for weaknesses in the company's defenses.",
+                    "Because the company has a responsible disclosure program."
+                ],
+                correct: [2, 3],
+                explanation: "Large enterprises often pay security researchers who uncover security bugs in their products and then privately report the bugs so they can be patched before threat actors find them. This is called a bug bounty program or a responsible disclosure program. Organizations can use the data gathered from their bug bounty program as input into the vulnerability scanner to search for these weaknesses in the organization's defenses."
+            },
+            {
+                text: "Which of the following are true statements regarding vulnerability scans and penetration testing?",
+                options: [
+                    "A vulnerability scan is an offensive assessment that probes the system for weaknesses.",
+                    "Ultimately both a vulnerability scan and a penetration test will provide similar results.",
+                    "Pen tests can be of the physical and integrated variety and not just of the IT variety.",
+                    "It is best if the person running a vulnerability scan has the mindset of a threat actor."
+                ],
+                correct: 2,
+                explanation: "Many penetration tests are not technical but examine the physical environment (physical penetration testing), probing for weaknesses in physical security controls such as fencing and lighting to determine if the testers can enter restricted areas. Penetration tests that probe both technical and physical weaknesses are integrated penetration tests."
+            },
+            {
+                text: "Karlos uses AIS to share cyber threat indicators based on the scans they perform on the network at his company. Which of the following best defines a benefit AIS offers?",
+                options: [
+                    "Availability",
+                    "Integrity",
+                    "Intelligence",
+                    "Speed",
+                    "Accountability",
+                    "Security",
+                    "Confidentiality"
+                ],
+                correct: 3,
+                explanation: "Threat intelligence information must be distributed as quickly as possible to others. To rely on email alerts that require a human to read them and then react takes far too much time. As an alternative, Automated Indicator Sharing (AIS) can be used instead. AIS enables the exchange of cyber threat indicators between parties through computer-to-computer communication, not email communication."
+            }
+        ];
+
+        // Quiz Logic
+        const quizContainer = document.getElementById('quiz-container');
+
+        function renderQuiz() {
+            if (quizQuestions.length === 0) return; // Don't render if empty
+
+            quizContainer.innerHTML = ''; // Clear placeholder
+
+            quizQuestions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.classList.add('question-card');
+
+                let optionsHtml = '';
+                q.options.forEach((option, i) => {
+                    optionsHtml += `<button class="option-btn" onclick="handleAnswer(${index}, ${i}, this)">${option}</button>`;
+                });
+
+                questionCard.innerHTML = `
+                    <span class="question-number">Question ${index + 1}</span>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options-grid">
+                        ${optionsHtml}
+                    </div>
+                    <div class="explanation" id="explanation-${index}">
+                        ${q.explanation}
+                    </div>
+                `;
+
+                quizContainer.appendChild(questionCard);
+            });
+        }
+
+        function handleAnswer(questionIndex, optionIndex, btnElement) {
+            const question = quizQuestions[questionIndex];
+            const explanationElement = document.getElementById(`explanation-${questionIndex}`);
+            const allOptions = btnElement.parentElement.children;
+
+            // Disable all options
+            for (let btn of allOptions) {
+                btn.classList.add('disabled');
+            }
+
+            // Check if multiple correct answers (array) or single (number)
+            let isCorrect = false;
+            if (Array.isArray(question.correct)) {
+                if (question.correct.includes(optionIndex)) {
+                    btnElement.classList.add('correct');
+                    isCorrect = true;
+                } else {
+                    btnElement.classList.add('incorrect');
+                    // Highlight all correct answers
+                    question.correct.forEach(correctIndex => {
+                        allOptions[correctIndex].classList.add('correct');
+                    });
+                }
+            } else {
+                // Single choice
+                if (optionIndex === question.correct) {
+                    btnElement.classList.add('correct');
+                    isCorrect = true;
+                } else {
+                    btnElement.classList.add('incorrect');
+                    allOptions[question.correct].classList.add('correct');
+                }
+            }
+
+            // Show explanation
+            explanationElement.style.display = 'block';
+        }
+
+        // Initialize Quiz
+        renderQuiz();
+    </script>
+</body>
+
+</html>

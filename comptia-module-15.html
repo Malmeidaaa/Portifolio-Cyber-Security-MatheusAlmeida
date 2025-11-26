@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 15: Information Security Management - Matheus Almeida</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .module-section h4 {
+            margin-top: 1.5rem;
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.asset {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.risk {
+            background: rgba(218, 54, 51, 0.15);
+            color: #ff7b72;
+        }
+
+        .tag.management {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert.info {
+            background-color: rgba(88, 166, 255, 0.1);
+            border-color: var(--highlight);
+            color: var(--text-main);
+        }
+
+        .alert.warning {
+            background-color: rgba(210, 153, 34, 0.1);
+            border-color: var(--warning);
+            color: var(--text-main);
+        }
+
+        .alert.danger {
+            background-color: rgba(218, 54, 51, 0.1);
+            border-color: var(--danger);
+            color: var(--text-main);
+        }
+
+        /* Formula Box */
+        .formula {
+            background-color: #0d1117;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+        }
+
+        .formula strong {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Lists */
+        ul,
+        ol {
+            line-height: 1.8;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Code/Emphasis */
+        code {
+            background-color: #0d1117;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+        }
+
+        strong {
+            color: #ffffff;
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 15: Information Security Management</h1>
+            <div class="subtitle">Study Portfolio | Matheus Almeida e Silva</div>
+        </div>
+
+        <!-- Introduction -->
+        <section class="module-section">
+            <h2>Introduction</h2>
+            <p>Management can be defined as using a degree of skill to direct a workflow or operation. Information
+                security has a high requirement for good management because it touches every employee at every level at
+                all times.</p>
+            <p>This module explores five key information security management processes, grouped into two major
+                categories:</p>
+            <ul>
+                <li><span class="tag asset">Asset Protection</span> Involves Asset Management and Change Management.
+                </li>
+                <li><span class="tag risk">Risk Management</span> Involves Risk Management, Third-Party Risk Management,
+                    and Awareness Management.</li>
+            </ul>
+        </section>
+
+        <!-- Current Challenges -->
+        <section class="module-section">
+            <h2>I. Current Challenges in Security Awareness</h2>
+            <p>Teaching security awareness to users who have little background in technology, little understanding of
+                cyber risks, and often little interest in protecting themselves or the organization is an ongoing
+                challenge. This challenge is intensified when users hear misleading warnings from uninformed
+                journalists, read erroneous warnings from misinformed bloggers, or see unsubstantiated advice
+                distributed by federal authorities.</p>
+
+            <h3>The Case of "Juice Jacking"</h3>
+            <p><strong>"Juice jacking"</strong> is the name given to a proof-of-concept attack (a demonstration to
+                determine if an idea can be turned into reality). This proposed attack involves exploiting public
+                recharging stations that allow users to recharge their mobile phones.</p>
+
+            <h4>Proposed Attack Scenario</h4>
+            <p>A threat actor infects a public charging station (at airports, shopping malls, hotels, etc.) or sets up
+                their own identical fake equipment. When the user's mobile device is connected, the station silently
+                sends commands over the charging cord's cable back to the device to install malware or siphon data.</p>
+
+            <h4>History and Recent Warnings</h4>
+            <ul>
+                <li>The proof of concept (along with the name "juice jacking") first surfaced over 20 years ago in 2011
+                    at Defcon. Its demonstration was intended to bring awareness to a potential threat.</li>
+                <li>Fears reached a new high in 2023 when both the Federal Bureau of Investigation (FBI) and the Federal
+                    Communications Commission (FCC) issued new warnings.</li>
+                <li>The FBI alerted that "Bad actors have figured out ways to use public USB ports to introduce malware
+                    and monitoring software onto devices".</li>
+                <li>The FCC added a similar warning, stating that "criminals may have intentionally left cables plugged
+                    in at charging stations" or distributed "infected cables being given away as promotional gifts".
+                </li>
+                <li>These warnings generated ominous news reports, describing juice jacking as a "significant privacy
+                    hazard".</li>
+            </ul>
+
+            <h4>Is Juice Jacking a Viable Threat?</h4>
+            <p>Information security experts assert that, contrary to reports, juice jacking is not a viable threat in
+                the real world (unless the target is a deep-pocket nation-state attacker carrying top-secret government
+                documents).</p>
+
+            <table>
+                <tr>
+                    <th>Reason Why Juice Jacking Is Not a Viable Threat</th>
+                    <th>Explanation</th>
+                </tr>
+                <tr>
+                    <td>Lack of Documented Cases</td>
+                    <td>There are no documented cases of juice jacking ever taking place "in the wild." No users have
+                        claimed to be victims, and security experts or Apple representatives are unaware of such attacks
+                        occurring.</td>
+                </tr>
+                <tr>
+                    <td>Port Difference</td>
+                    <td>Public charging stations use USB charging ports, not data ports. A charging port can only send
+                        power, but not data. Connecting only sends power to the device.</td>
+                </tr>
+                <tr>
+                    <td>Operating System Hardening</td>
+                    <td>Modern operating systems (Apple iOS and Google Android) require explicit user approval (clicking
+                        a warning) before files can be exchanged via cable. iPhones also require a password or facial
+                        scan to install applications.</td>
+                </tr>
+                <tr>
+                    <td>High Effort, Low Return</td>
+                    <td>There is no single universal script for juice jacking that works on hundreds of different mobile
+                        devices; customized scripts are required for each type. The high investment of time required
+                        makes it generally unlikely for most attackers.</td>
+                </tr>
+            </table>
+
+            <div class="alert warning">
+                <strong>⚠️ The "Echo Chamber" Problem:</strong> Security experts criticize these warnings for creating a
+                needless "echo chamber". They divert necessary attention away from bigger security threats, such as weak
+                passwords and the failure to install security updates. These false warnings create unnecessary anxiety
+                and inconvenience, running the risk that users will simply give up trying to be secure. Security
+                professionals contend that government officials claiming such attacks are occurring must substantiate
+                their claims with specific examples and corroborating expert explanations.
+            </div>
+        </section>
+
+        <!-- Asset Protection -->
+        <section class="module-section">
+            <h2>II. Asset Protection</h2>
+            <p>Protecting assets is at the core of information security. Asset protection involves asset management and
+                change management.</p>
+
+            <h3>A. Asset Management (AM)</h3>
+            <p>An <strong>asset</strong> is any item that has a positive economic value. Assets provide value to the
+                enterprise, cannot easily be replaced without significant investment, and may form part of the corporate
+                identity. IT assets primarily include hardware, software, and data. Not all assets have the same value.
+            </p>
+
+            <table>
+                <caption><strong>Table 15-1: Typical IT Assets</strong></caption>
+                <tr>
+                    <th>Asset Description</th>
+                    <th>Example</th>
+                    <th>High Value?</th>
+                </tr>
+                <tr>
+                    <td>Data (Collected, classified, organized, stored)</td>
+                    <td>Customer, personnel, production, sales, marketing, and finance databases</td>
+                    <td><strong style="color: var(--accent)">Yes:</strong> Extremely difficult to replace</td>
+                </tr>
+                <tr>
+                    <td>Customized business software (Supports business processes)</td>
+                    <td>Customized order transaction application</td>
+                    <td><strong style="color: var(--accent)">Yes:</strong> Unique and customized for the enterprise</td>
+                </tr>
+                <tr>
+                    <td>System software (Foundation for application software)</td>
+                    <td>Operating system</td>
+                    <td><strong style="color: var(--text-muted)">No:</strong> Can be easily replaced</td>
+                </tr>
+                <tr>
+                    <td>Physical items (Equipment, media, furniture)</td>
+                    <td>Servers, routers, and power supplies</td>
+                    <td><strong style="color: var(--text-muted)">No:</strong> Can be easily replaced</td>
+                </tr>
+                <tr>
+                    <td>Services (Outsourced computing services)</td>
+                    <td>Voice and data communications</td>
+                    <td><strong style="color: var(--text-muted)">No:</strong> Can be easily replaced</td>
+                </tr>
+            </table>
+
+            <p><strong>Asset Management (AM)</strong> is the coordinated activity of an organization to realize value
+                from its assets. This requires a systematic approach to asset governance and proper, cost-effective
+                utilization to optimize the value assets produce. The foundational document for asset management is ISO
+                55000:2014.</p>
+
+            <h4>Cybersecurity Asset Management (CAM)</h4>
+            <p><strong>Cybersecurity Asset Management (CAM)</strong> is a relatively new process that combines asset
+                management with information security. Traditional asset counting is often a "point-in-time" monthly or
+                quarterly event, creating significant gaps that can be "deadly" to security, as new or uncounted assets
+                may be unprotected.</p>
+
+            <p>CAM addresses these gaps because it can:</p>
+            <ul>
+                <li>Identify assets (endpoints, servers, IoT devices, cloud resources) on a continuous and real-time
+                    basis.</li>
+                <li>Identify potential security risks or gaps affecting each asset through vulnerability scanners.</li>
+                <li>Provide an up-to-date listing of assets immediately referenceable in the event of an attack.</li>
+                <li>Introduced the metric <strong>Mean Time to Inventory (MTTI)</strong>, which helps determine when
+                    incident response is lagging due to missing inventory information.</li>
+            </ul>
+
+            <h4>Asset Management Lifecycle</h4>
+            <p>Assets follow a lifecycle that begins when a need is identified and concludes with disposal or
+                replacement. Costs associated with an asset accumulate throughout its lifecycle, varying depending on
+                the current phase.</p>
+
+            <p>The typical asset lifecycle phases are:</p>
+            <ol>
+                <li>Requirements Definition</li>
+                <li>Asset Planning</li>
+                <li>Asset Creation/Acquisition</li>
+                <li>Operations and Maintenance</li>
+                <li>Asset Monitoring</li>
+                <li>Renewal/Rehab</li>
+                <li>Disposal</li>
+            </ol>
+
+            <h4>Selected Asset Management Tasks</h4>
+            <p>Specific tasks include acquisition, assignment/accounting, tracking, and disposal.</p>
+
+            <h5>Acquisition (Asset Procurement)</h5>
+            <p>The process of identifying and securing an asset to support a business goal. Most businesses use a
+                bidding process to obtain the lowest price.</p>
+            <ul>
+                <li><strong>Standard bidding process:</strong> Soliciting detailed proposals from qualified vendors.
+                </li>
+                <li><strong>E-bidding process:</strong> Using electronic platforms to quickly find vendors, often
+                    submitting only pricing information.</li>
+            </ul>
+
+            <h5>Assignment/Accounting</h5>
+            <p>Determining and recording ownership and classification. Assets are classified by three factors:</p>
+            <ul>
+                <li><strong>Liquidity:</strong> Convertibility to cash (e.g., current asset vs. fixed asset).</li>
+                <li><strong>Usage:</strong> How the asset is used (e.g., operating asset vs. nonoperating asset).</li>
+                <li><strong>Physical Existence:</strong> Tangible asset (can be touched, e.g., hardware, cash) vs.
+                    Intangible asset (monetary value but no physical form, e.g., software, data, IP).</li>
+            </ul>
+
+            <h5>Tracking</h5>
+            <p>Tracing the location of tangible assets. Methods include barcode labels, RFID tags, or GPS tracking
+                sensors.</p>
+            <ul>
+                <li><strong>Inventory</strong> consists of raw materials, works in progress, and finished goods
+                    available for sale.</li>
+                <li><strong>Asset Enumeration</strong> is a listing of assets by a seller of those assets. (This is
+                    distinct from information security enumeration, which actively uncovers attack vectors).</li>
+            </ul>
+
+            <h5>Disposal</h5>
+            <p>Occurs when an asset is no longer useful. Involves two steps: <strong>Asset Decommissioning</strong>
+                (withdrawn from service) and <strong>Asset Disposal</strong> (physical removal).</p>
+
+            <p><strong>Data Retention:</strong> Data should be transferred to a different device before sanitization.
+            </p>
+
+            <h5>Sanitization (Media Destruction)</h5>
+
+            <p><strong>Paper Media:</strong> Usually destroyed by shredding. Methods include:</p>
+            <ul>
+                <li><strong>Strip-cut:</strong> Least secure, reconstructible</li>
+                <li><strong>Cross-cut:</strong> More secure, adds horizontal cuts</li>
+                <li><strong>Micro-cut:</strong> Shreds into tiny pieces</li>
+                <li>Other options: burning, pulping (breaking paper into wood cellulose fibers after ink removal), or
+                    pulverizing (hammering into dust)</li>
+            </ul>
+
+            <p><strong>Electronic Media:</strong> Never use the OS "delete" command (purging), as data can be retrieved
+                by forensic tools. Techniques include:</p>
+            <ul>
+                <li><strong>Wiping:</strong> Overwriting disk space with zeros or random data</li>
+                <li><strong>Degaussing:</strong> For magnetic hard drives, permanently destroys the drive by reducing
+                    the magnetic field</li>
+                <li><strong>Verification (certification):</strong> May require wiping before degaussing to ensure
+                    regulatory compliance</li>
+            </ul>
+
+            <h3>B. Change Management</h3>
+            <p><strong>Change Management</strong> is a systematic approach to dealing with transformations (adjustments,
+                replacements) within an organization, typically applying to work processes or technologies. It seeks to
+                effect, control, and adapt to change. Change management watches for any adjustments or variations to
+                assets that could impact security, such as configuration changes to a router.</p>
+
+            <h4>Need for Change Management</h4>
+            <p>Many standard operating procedures (SOPs) can impact information security.</p>
+
+            <table>
+                <caption><strong>Table 15-2: Business Processes and Impact</strong></caption>
+                <tr>
+                    <th>Business Process</th>
+                    <th>Impact</th>
+                </tr>
+                <tr>
+                    <td>Navigate multilayer approval process</td>
+                    <td>Can dramatically slow the acquisition of needed security appliances or software.</td>
+                </tr>
+                <tr>
+                    <td>Change in ownership or stakeholders</td>
+                    <td>Can affect how the asset is used or impact the perception and usability of the asset.</td>
+                </tr>
+                <tr>
+                    <td>Implement impact analysis or test results</td>
+                    <td>Can dramatically change how devices are used or configured.</td>
+                </tr>
+                <tr>
+                    <td>Execute backout plan or maintenance window</td>
+                    <td>Both can significantly impact security; a backout plan involves procedures needed if a
+                        "rollback"
+                        is required; a maintenance window is a designated time for routine system maintenance.</td>
+                </tr>
+            </table>
+
+            <table>
+                <caption><strong>Table 15-3: Technology Processes and Impact</strong></caption>
+                <tr>
+                    <th>Technology Process</th>
+                    <th>Impact</th>
+                </tr>
+                <tr>
+                    <td>Changing allow lists/deny lists</td>
+                    <td>Modifying permissions can significantly impact security.</td>
+                </tr>
+                <tr>
+                    <td>Modifying restricted activities</td>
+                    <td>Changing a restricted activity to permitted can have unforeseen consequences.</td>
+                </tr>
+                <tr>
+                    <td>Experiencing downtime</td>
+                    <td>Can result in device restarts that are out-of-sync with others.</td>
+                </tr>
+                <tr>
+                    <td>Implementing service or application restarts</td>
+                    <td>Can result in gaps in security coverage.</td>
+                </tr>
+                <tr>
+                    <td>Using legacy applications</td>
+                    <td>Often have unpatched vulnerabilities.</td>
+                </tr>
+                <tr>
+                    <td>Adjusting dependencies</td>
+                    <td>Changing reliance between services can result in a security issue.</td>
+                </tr>
+            </table>
+
+            <p>Change management requires verified procedures for planning, testing, communicating, scheduling, and
+                implementing change. Documentation is critical for maintaining an audit trail (for rollbacks) and
+                ensuring regulatory compliance. Formal change management policies (rules) and change management
+                procedures (mandatory steps) should be in place.</p>
+
+            <h4>Change Management Tools</h4>
+            <p>Tools vary by organization size:</p>
+            <ul>
+                <li><strong>Small organizations:</strong> Spreadsheets, flowcharts, and Gantt charts (horizontal lines
+                    show work completed vs. planned).</li>
+                <li><strong>Larger organizations:</strong> Specialized software suites maintain digital change logs,
+                    providing stakeholders with a holistic view. They can automatically update diagrams and indicate
+                    necessary updating policies/procedures.</li>
+                <li><strong>Software Development:</strong> Version control software assists with documentation, prevents
+                    multiple simultaneous code changes, tracks changes, and allows backing out of changes.</li>
+            </ul>
+        </section>
+
+        <!-- Risk Management -->
+        <section class="module-section">
+            <h2>III. Risk Management</h2>
+
+            <h3>A. Defining Risk</h3>
+            <p>An asset is continually under <strong>threat</strong>, which is a type of action that has the potential
+                to cause harm. <strong>Risk</strong> is fundamentally defined as a situation that involves exposure to
+                some type of danger. More complexly, risk is a function of threats, the consequences of those threats,
+                and the resulting vulnerabilities. Organizations must determine the likelihood of occurrence that a
+                threat will compromise an asset.</p>
+
+            <table>
+                <caption><strong>Table 15-4: Threat Classifications</strong></caption>
+                <tr>
+                    <th>Threat Category</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>Strategic</td>
+                    <td>Action affecting long-term organizational goals</td>
+                    <td>Theft of intellectual property, loss of a major account, competitor entering the market</td>
+                </tr>
+                <tr>
+                    <td>Compliance</td>
+                    <td>Following (or not following) a regulation or standard</td>
+                    <td>Breach of contract, not responding to new laws</td>
+                </tr>
+                <tr>
+                    <td>Financial</td>
+                    <td>Impact of financial decisions or market factors</td>
+                    <td>Increase in interest rates, global financial crisis</td>
+                </tr>
+                <tr>
+                    <td>Operational</td>
+                    <td>Events impacting daily business</td>
+                    <td>Fire, hazardous chemical spill, power blackout</td>
+                </tr>
+                <tr>
+                    <td>Technical</td>
+                    <td>Events affecting IT systems</td>
+                    <td>Denial of service attack, SQL injection attack, virus</td>
+                </tr>
+                <tr>
+                    <td>Managerial</td>
+                    <td>Actions related to organization management</td>
+                    <td>Long-term illness of company president, key employee resigning</td>
+                </tr>
+            </table>
+
+            <h4>Sources of Risk</h4>
+            <p>Risk can originate from various sources:</p>
+            <ul>
+                <li><strong>Internal and External:</strong> Internal risks come from within (e.g., employee theft);
+                    external risks come from outside (e.g., actions of a hacktivist).</li>
+                <li><strong>Legacy Systems:</strong> Often risks result from legacy software (OS or program) with
+                    unpatched vulnerabilities.</li>
+                <li><strong>Multiparty Risks:</strong> The impact that vulnerabilities of one organization have on
+                    connected "downstream" organizations.</li>
+                <li><strong>Software Compliance and Licensing:</strong> Risks associated with violating licensing
+                    restrictions to protect the rights of the developer. Most organizations unknowingly violate
+                    licensing agreements.</li>
+            </ul>
+
+            <table>
+                <caption><strong>Table 15-5: Reasons for Software Noncompliance</strong></caption>
+                <tr>
+                    <th>Reason</th>
+                    <th>Explanation</th>
+                </tr>
+                <tr>
+                    <td>Software licensed for one reason but used for another</td>
+                    <td>E.g., Limited-use license bought for nonproduction environment used in production.</td>
+                </tr>
+                <tr>
+                    <td>Product use rights changed</td>
+                    <td>E.g., Developers change rules requiring new licenses for indirect access by third parties.</td>
+                </tr>
+                <tr>
+                    <td>Software installed on a virtual machine</td>
+                    <td>E.g., Software migrated to a VM and moved to multiple machines in license violation.</td>
+                </tr>
+            </table>
+
+            <h3>B. Analyzing Risks</h3>
+            <p><strong>Risk Analysis</strong> (or Risk Identification) is the process of identifying and assessing
+                factors that may jeopardize a project or goal.</p>
+
+            <h4>Methodology and Biases</h4>
+            <p>Identifying risks is difficult due to their elusive nature and unconscious human biases. These biases
+                influence decision-making.</p>
+
+            <table>
+                <caption><strong>Table 15-6: Decision-Making Biases and Effects</strong></caption>
+                <tr>
+                    <th>Bias</th>
+                    <th>Explanation</th>
+                </tr>
+                <tr>
+                    <td>Aggregate bias</td>
+                    <td>Inferring about an individual using data describing trends for the broader population.</td>
+                </tr>
+                <tr>
+                    <td>Anchoring bias</td>
+                    <td>Focusing on a specific feature early in the decision process, marginalizing others.</td>
+                </tr>
+                <tr>
+                    <td>Availability bias</td>
+                    <td>Perceiving event likelihood based on how frequently it is heard of.</td>
+                </tr>
+                <tr>
+                    <td>Confirmation bias</td>
+                    <td>Making a decision first and then only looking for supporting data.</td>
+                </tr>
+                <tr>
+                    <td>Present bias</td>
+                    <td>Tending to discount future risks in favor of immediate gratification.</td>
+                </tr>
+                <tr>
+                    <td>Framing effect</td>
+                    <td>Deciding based on how choices are worded.</td>
+                </tr>
+                <tr>
+                    <td>Fundamental attribution error</td>
+                    <td>Viewing others' failures as identity flaws rather than contextual influences.</td>
+                </tr>
+            </table>
+
+            <div class="alert info">
+                <strong>💡 Best Practice:</strong> To minimize biases, involving a large number of individuals in the
+                risk analysis process is the most effective approach. <strong>Risk Control Self-Assessment
+                    (RCSA)</strong>
+                is an "empowering" methodology where management and staff collectively identify and evaluate risks. The
+                goal is to integrate risk management into the organizational culture.
+            </div>
+
+            <h4>Risk Assessment Approaches</h4>
+            <p>Risk assessment frequency can be a one-time assessment, ad hoc assessment (whenever necessary), recurring
+                assessment (periodic), or continuous assessment (year-round).</p>
+
+            <ul>
+                <li><strong>Qualitative Risk Analysis:</strong> Uses an "educated guess" based on observation. Typically
+                    assigns a numeric value (1–10) or a label (High, Medium, or Low) to represent the risk.</li>
+                <li><strong>Quantitative Risk Analysis:</strong> Considered more formal and systematic. Uses historical
+                    data to create "hard" numbers associated with the risk. It is divided into risk likelihood and risk
+                    impact.</li>
+            </ul>
+
+            <h4>Quantitative Risk Calculation</h4>
+
+            <h5>Risk Likelihood (Probability)</h5>
+            <p>Historical data informs the probability (likelihood) that a risk will become a reality.</p>
+
+            <table>
+                <caption><strong>Quantitative Likelihood Tools</strong></caption>
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Mean Time Between Failure (MTBF)</td>
+                    <td>Average time until a component fails, cannot be repaired, and must be replaced (measures
+                        reliability).</td>
+                </tr>
+                <tr>
+                    <td>Mean Time to Recovery (MTTR)</td>
+                    <td>Average time for a device to recover from a non-terminal failure.</td>
+                </tr>
+                <tr>
+                    <td>Mean Time to Failure (MTTF)</td>
+                    <td>Average time expected until the first failure for systems that cannot be repaired.</td>
+                </tr>
+                <tr>
+                    <td>Failure in Time (FIT)</td>
+                    <td>Number of expected failures per one billion hours of operation (used by the semiconductor
+                        industry).</td>
+                </tr>
+                <tr>
+                    <td>Annualized Rate of Occurrence (ARO)</td>
+                    <td>The probability of a risk occurring within one year.</td>
+                </tr>
+            </table>
+
+            <p>Historical data sources include law enforcement agencies, insurance companies, and computer incident
+                monitoring organizations.</p>
+
+            <h5>Risk Impact</h5>
+            <p>Determined by comparing the risk to the associated monetary loss. All costs must be considered.</p>
+
+            <p>Three formulas calculate expected losses:</p>
+
+            <div class="formula">
+                <p><strong>Single Loss Expectancy (SLE)</strong></p>
+                <p>The expected monetary loss every time a risk occurs.</p>
+                <p><strong>SLE = AV × EF</strong></p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">(AV = Asset Value; EF = Exposure Factor
+                    (proportion of asset destroyed))</p>
+                <p style="font-size: 0.9rem;">Example: AV = $10,000,000; EF = 0.75. <strong>SLE =
+                        $7,500,000</strong></p>
+            </div>
+
+            <div class="formula">
+                <p><strong>Annualized Loss Expectancy (ALE)</strong></p>
+                <p>The anticipated monetary loss expected for an asset due to a risk over a one-year period.</p>
+                <p><strong>ALE = SLE × ARO</strong></p>
+                <p style="font-size: 0.9rem;">Example: SLE = $7,500,000; ARO = 0.01. <strong>ALE = $75,000</strong></p>
+            </div>
+
+            <div class="formula">
+                <p><strong>Risk Exposure Factor</strong></p>
+                <p>The probability of the risk occurring multiplied by the total loss upon its occurrence (the potential
+                    for financial loss).</p>
+            </div>
+
+            <h4>Risk Reporting</h4>
+            <p>Different tools are used for representing identified risks, known as risk reporting.</p>
+
+            <ul>
+                <li><strong>Risk Register:</strong> A list of potential threats and associated risks, often shown as a
+                    table, providing a clear snapshot of vulnerabilities. It may include: key risk indicators (primary
+                    risk factors), risk owners (those responsible for the asset), and the risk threshold (maximum
+                    tolerable risk).</li>
+                <li><strong>Risk Matrix/Heatmap:</strong> A visual color-coded tool that lists the impact and likelihood
+                    of risks.</li>
+            </ul>
+
+            <h3>C. Managing Risks</h3>
+            <p>The objective of risk management is to create a level of protection that mitigates vulnerabilities and
+                reduces potential consequences, determined by what the organization feels comfortable accepting.</p>
+
+            <ul>
+                <li><strong>Risk Tolerance:</strong> The level of risk an organization can accept per individual risk.
+                    Related to accepting consequences and having resources to absorb them.</li>
+                <li><strong>Risk Appetite:</strong> The total risk the organization can bear in a given risk profile.
+                    Related to long-term strategy. Risk appetite can be conservative (little tolerance), expansionary
+                    (high tolerance), or neutral.</li>
+            </ul>
+
+            <h4>Strategies for Dealing with Risks</h4>
+            <p>There are four primary strategies for managing risks:</p>
+
+            <ol>
+                <li><strong>Accept:</strong> Acknowledging the risk but taking no steps to address it. This may involve
+                    an exception (security requirement cannot be fully implemented) or an exemption (from a regulating
+                    body).</li>
+                <li><strong>Transfer:</strong> Shifting the risk to a third party, often by purchasing cybersecurity
+                    insurance.</li>
+                <li><strong>Avoid:</strong> Identifying the risk and choosing not to engage in the activity (e.g., not
+                    building in an earthquake zone).</li>
+                <li><strong>Mitigate:</strong> Attempting to make the risk less severe by implementing defenses.</li>
+            </ol>
+
+            <h4>Third-Party Risk Management</h4>
+            <p><strong>Third-Party Risk Management</strong> involves reducing risks associated with external entities,
+                such as vendors, business partners, and the supply chain. The SolarWinds incident illustrated a massive
+                supply chain infection risk.</p>
+
+            <h5>Risks of Third-Party Integration</h5>
+            <p>Access to the organization's network introduces the principle of the weakest link. Specific risks
+                include:</p>
+            <ul>
+                <li><strong>On-boarding and Off-boarding:</strong> Ensuring security defenses are not compromised during
+                    the start or termination of the relationship.</li>
+                <li><strong>Application and Social Media Network Sharing:</strong> Determining who is responsible for
+                    support, vulnerability assessments, and sharing social media information.</li>
+                <li><strong>Privacy and Risk Awareness:</strong> Dealing with differences in privacy policies and how
+                    risk assessment is performed on combined systems.</li>
+                <li><strong>Data Considerations:</strong> Clear understanding of data ownership, backup methods, and
+                    restrictions on unauthorized sharing.</li>
+            </ul>
+
+            <h5>Assessing and Selecting Third Parties (Vendor Monitoring)</h5>
+            <p>Risk reduction is achieved through close oversight by requiring:</p>
+            <ul>
+                <li>Annual questionnaires about supply-chain security protections.</li>
+                <li>Regular penetration testing and a right-to-audit clause.</li>
+                <li>Evidence of internal audits and an independent assessment of those audits.</li>
+                <li>Regular supply-chain analysis.</li>
+                <li>Creation of rules of engagement defining interaction expectations.</li>
+                <li>Adherence to due diligence and absence of conflict of interests.</li>
+            </ul>
+
+            <h5>Vendor Agreement Instruments (Formal Contractual Relationships)</h5>
+            <p>Agreements should be regularly reviewed to verify compliance.</p>
+
+            <table>
+                <caption><strong>Vendor Agreement Instruments</strong></caption>
+                <tr>
+                    <th>Instrument</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Service-Level Agreement (SLA)</td>
+                    <td>Service contract specifying services, responsibilities, and service guarantees.</td>
+                </tr>
+                <tr>
+                    <td>Business Partnership Agreement (BPA)</td>
+                    <td>Contract establishing rules, responsibilities, capital contributions, and financial reporting
+                        between partners.</td>
+                </tr>
+                <tr>
+                    <td>Memorandum of Understanding (MOU)</td>
+                    <td>Describes "convergence of will"; generally not legally enforceable, but more formal than an
+                        unwritten agreement.</td>
+                </tr>
+                <tr>
+                    <td>Nondisclosure Agreement (NDA)</td>
+                    <td>Legal contract specifying how confidential material will be shared and restricted.</td>
+                </tr>
+                <tr>
+                    <td>Measurement System Analysis (MSA)</td>
+                    <td>Uses scientific tools to determine the amount of variation added to a process by a measurement
+                        system.</td>
+                </tr>
+                <tr>
+                    <td>Memorandum of Agreement (MOA)</td>
+                    <td>Establishes common legal terms for a "conditional agreement" anticipating fund transfer for
+                        services.</td>
+                </tr>
+                <tr>
+                    <td>Work Order (WO)/Statement of Work (SOW)</td>
+                    <td>Document describing work requirements, performance expectations, and defining
+                        liabilities/responsibilities.</td>
+                </tr>
+            </table>
+
+            <h4>Security Awareness Management</h4>
+            <p><strong>Security Awareness Management</strong> (or Risk Awareness) is the process of raising the
+                understanding among all employees of existing risks, their potential impacts, and how they are managed.
+                Training helps users become a "human firewall".</p>
+
+            <h5>Goal</h5>
+            <p>To help users achieve <strong>anomalous behavior recognition</strong>—the ability to distinguish between
+                what is normal and what is not. This aids in identifying what is unexpected and unintentional, and
+                therefore risky. This is also known as <strong>situation awareness</strong>.</p>
+
+            <h5>Training Approaches</h5>
+            <p>While most people are taught using a <strong>pedagogical approach</strong> ("to lead a child"), the
+                <strong>andragogical approach</strong> (the art of helping an adult learn) is often preferred for adult
+                learners. Andragogy is motivated by internal factors (e.g., self-esteem, better quality of life) and
+                focuses on self-directed learning organized around life or work situations.
+            </p>
+
+            <p>Trainers should incorporate the three learning styles to aid retention:</p>
+            <ul>
+                <li><strong>Visual learners</strong> (notes, presentations)</li>
+                <li><strong>Auditory learners</strong> (lectures, discussions)</li>
+                <li><strong>Kinesthetic learners</strong> (hands-on, lab environments)</li>
+            </ul>
+
+            <h5>User Training Techniques</h5>
+            <ul>
+                <li><strong>Computer-Based Training (CBT):</strong> Uses a computer to deliver instruction; flexible and
+                    provides feedback on progress.</li>
+                <li><strong>Role-Based Awareness Training:</strong> Specialized training customized to the employee's
+                    specific function (e.g., administrative assistant vs. upper-level manager).</li>
+                <li><strong>Gamification:</strong> Use of game-based scenarios for instruction to heighten interest and
+                    retention.</li>
+                <li><strong>Phishing Simulations:</strong> Used because phishing is the primary means by which threat
+                    actors launch initial attacks. They help employees recognize phishing attempts. Metrics should be
+                    developed to track increases from initial training to recurring training via adequate reporting and
+                    monitoring. Phishing simulators can be part of a full phishing campaign.</li>
+            </ul>
+
+            <h5>Content of Awareness Program</h5>
+            <p>Training must emphasize the shared responsibility of all computer users to protect assets. The program
+                should include:</p>
+            <ul>
+                <li>Recognition of insider threats</li>
+                <li>Understanding of operational security</li>
+                <li>Attacks through social engineering</li>
+                <li>Instruction on password management</li>
+                <li>Risks associated with removable media and cables</li>
+                <li>Security differences between office work and hybrid/remote work environments</li>
+                <li>Security material found in policies and handbooks</li>
+                <li>Environmental physical attacks</li>
+            </ul>
+
+            <div class="alert info">
+                <strong>📚 Important:</strong> User awareness and training must be ongoing because new attacks and
+                vulnerabilities regularly emerge.
+            </div>
+        </section>
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide: Information Security Management</h2>
+
+            <h3>Quiz: Short-Answer Questions</h3>
+            <p><em>Instructions: Click on a question to reveal the answer.</em></p>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. What is "juice jacking," and where did the concept first emerge?</summary>
+                    <p>"Juice jacking" is a proof-of-concept attack that involves a threat actor infecting or setting up
+                        a fake public charging station to install malware or steal data from a connected mobile device.
+                        The concept and name first appeared in 2011 at the Defcon conference in Las Vegas as a way to
+                        raise awareness of a potential threat.</p>
+                </details>
+
+                <details>
+                    <summary>2. According to information security experts, why is juice jacking not considered a viable
+                        threat for the average user?</summary>
+                    <p>Security experts state juice jacking is not a viable threat for several reasons. There are no
+                        documented cases of it occurring in the wild, public stations use USB charging ports (power
+                        only) not data ports, and modern mobile operating systems from Apple and Google require explicit
+                        user approval for data exchange or app installation. Furthermore, the diversity of mobile OSs
+                        makes creating universal attack scripts impractical for most attackers.</p>
+                </details>
+
+                <details>
+                    <summary>3. Define a business asset and list the three qualities it possesses within an enterprise.
+                    </summary>
+                    <p>An asset is any item that has a positive economic value. In an enterprise, an asset provides
+                        value, cannot be easily replaced without significant investment, and can form part of the
+                        enterprise's corporate identity.</p>
+                </details>
+
+                <details>
+                    <summary>4. Explain the purpose of Cybersecurity Asset Management (CAM) and the security gaps it
+                        aims to close.</summary>
+                    <p>Cybersecurity Asset Management (CAM) is a process that combines asset management with information
+                        security to identify assets and their potential security risks on a continuous, real-time basis.
+                        It closes security gaps that occur between traditional, periodic asset counts, ensuring new
+                        assets are known and protected immediately and can be identified during an attack.</p>
+                </details>
+
+                <details>
+                    <summary>5. What are the four primary tasks associated with an asset as it moves through its
+                        lifecycle?</summary>
+                    <p>The four primary tasks in the asset management lifecycle are acquisition (identifying and
+                        securing an asset), assignment/accounting (determining ownership and classification), tracking
+                        (tracing the location of tangible assets), and disposal (withdrawing the asset from service and
+                        physically removing it).</p>
+                </details>
+
+                <details>
+                    <summary>6. What is the purpose of change management, and why is documentation a critical step in
+                        the process?</summary>
+                    <p>Change management is a systematic approach for dealing with transformations, such as adjustments
+                        or replacements of work processes or technologies, within an organization. Documentation is
+                        critical to maintain an audit trail for potential rollbacks and to ensure compliance with both
+                        internal and external controls, especially regulatory requirements.</p>
+                </details>
+
+                <details>
+                    <summary>7. Describe the difference between qualitative and quantitative risk analysis.</summary>
+                    <p>Qualitative risk analysis uses an "educated guess" based on observation to assign a risk value,
+                        often a numeric score (1-10) or a label like High, Medium, or Low. Quantitative risk analysis is
+                        more formal and systematic, attempting to create "hard" numbers associated with risk by using
+                        historical data to calculate likelihood and impact.</p>
+                </details>
+
+                <details>
+                    <summary>8. What are the four primary strategies for dealing with identified risks?</summary>
+                    <p>The four strategies for dealing with risk are: Accept, where the risk is acknowledged but no
+                        action is taken; Transfer, where the risk is moved to a third party, such as through insurance;
+                        Avoid, which involves deciding not to engage in the activity that creates the risk; and
+                        Mitigate, which is the attempt to make the risk less serious.</p>
+                </details>
+
+                <details>
+                    <summary>9. Explain what third-party risk management is and identify two integration risks
+                        associated with it.</summary>
+                    <p>Third-party risk management is the process of identifying and reducing risks associated with
+                        using external entities like vendors and partners. Two integration risks include
+                        on-boarding/off-boarding, where security gaps can be created when combining or separating IT
+                        systems, and data considerations, which involve a lack of clarity on data ownership and sharing
+                        restrictions.</p>
+                </details>
+
+                <details>
+                    <summary>10. What is the goal of security awareness training, and what are two techniques used to
+                        deliver it?</summary>
+                    <p>The goal of security awareness training is to help users achieve anomalous behavior recognition,
+                        enabling them to distinguish between normal and abnormal activity. Two common training
+                        techniques are computer-based training (CBT), which offers flexibility and feedback, and
+                        phishing simulations, which help employees recognize and report suspicious messages.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <p><em>Answer the following questions in a long-form essay format. No answer key is provided.</em></p>
+            <ol>
+                <li>Analyze the case of the "juice jacking" warnings issued by the FBI and FCC. Discuss the role of
+                    media outlets, the response from security experts, and the potential negative consequences of
+                    creating a "needless echo chamber" around unsubstantiated threats.</li>
+                <li>Describe the complete lifecycle of a high-value IT asset, such as a custom business software
+                    application, from initial acquisition to final disposal. Detail the specific management tasks, cost
+                    considerations, and security protocols that must be applied at each stage.</li>
+                <li>Explain the challenges of accurately identifying organizational risks, referencing the concepts of
+                    unconscious human biases (such as anchoring and confirmation bias) and general human tendencies in
+                    risk perception. How does the Risk Control Self-Assessment (RCSA) methodology attempt to overcome
+                    these challenges?</li>
+                <li>An organization is evaluating the risk of a critical server failure. Explain how it would use
+                    quantitative risk analysis formulas—specifically SLE, ARO, and ALE—to determine the financial
+                    impact. Create a hypothetical scenario with specific values for the server (AV), potential damage
+                    (EF), and likelihood of failure (ARO) to demonstrate the calculations.</li>
+                <li>Discuss the complexities and risks associated with third-party integration in a modern business
+                    environment, using the SolarWinds incident as a case study. Detail the specific risk reduction
+                    measures an organization should implement, including vendor monitoring practices and the various
+                    types of interoperability agreements (SLA, NDA, SOW, etc.).</li>
+            </ol>
+
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td>Accept (Risk Strategy)</td>
+                    <td>A strategy where a risk is acknowledged, but no steps are taken to address it.</td>
+                </tr>
+                <tr>
+                    <td>Andragogical Approach</td>
+                    <td>The art of helping an adult learn, often preferred for adult learners as it is self-directed and
+                        organized around life/work situations.</td>
+                </tr>
+                <tr>
+                    <td>Annualized Loss Expectancy (ALE)</td>
+                    <td>The anticipated monetary loss that can be expected for an asset due to a risk over a one-year
+                        period. Calculated as SLE × ARO.</td>
+                </tr>
+                <tr>
+                    <td>Annualized Rate of Occurrence (ARO)</td>
+                    <td>The probability that a risk will occur in a particular year, used in quantitative risk analysis.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Asset</td>
+                    <td>Any item that has a positive economic value. It provides value to the enterprise, cannot be
+                        easily replaced, and can be part of the corporate identity.</td>
+                </tr>
+                <tr>
+                    <td>Asset Acquisition</td>
+                    <td>The process of identifying and then securing an asset to support a business goal. Also called
+                        asset procurement.</td>
+                </tr>
+                <tr>
+                    <td>Asset Assignment/Accounting</td>
+                    <td>The process of determining and recording ownership (who owns the asset) and classification (the
+                        category the asset belongs to).</td>
+                </tr>
+                <tr>
+                    <td>Asset Disposal</td>
+                    <td>The physical removal of an asset after it has reached the end of its life and been withdrawn
+                        from service.</td>
+                </tr>
+                <tr>
+                    <td>Asset Enumeration</td>
+                    <td>A listing of assets by a seller of those assets. Not to be confused with information security
+                        enumeration.</td>
+                </tr>
+                <tr>
+                    <td>Asset Lifecycle</td>
+                    <td>The stages an asset moves through, from initial identification of need to ultimate disposal.
+                        Stages include: Requirements Definition, Asset Planning, Asset Creation/Acquisition, Operations
+                        and Maintenance, Asset Monitoring, Renewal/Rehab, and Disposal.</td>
+                </tr>
+                <tr>
+                    <td>Asset Management</td>
+                    <td>The coordinated activity of an organization to realize value from its assets through a
+                        systematic approach to governance and cost-effective utilization.</td>
+                </tr>
+                <tr>
+                    <td>Asset Tracking</td>
+                    <td>The process of tracing the location of tangible assets.</td>
+                </tr>
+                <tr>
+                    <td>Avoid (Risk Strategy)</td>
+                    <td>A strategy that involves identifying a risk but making the decision not to engage in the
+                        activity that creates it.</td>
+                </tr>
+                <tr>
+                    <td>Business Partnership Agreement (BPA)</td>
+                    <td>A contract between business partners that establishes rules and responsibilities, including
+                        withdrawals, capital contributions, and financial reporting.</td>
+                </tr>
+                <tr>
+                    <td>Change Management</td>
+                    <td>A systematic approach to dealing with transformations (adjustments, replacements, etc.) within
+                        an organization, particularly concerning work processes or technologies.</td>
+                </tr>
+                <tr>
+                    <td>Cybersecurity Asset Management (CAM)</td>
+                    <td>A process that combines asset management with information security to identify assets and
+                        potential security risks on a continuous, real-time basis.</td>
+                </tr>
+                <tr>
+                    <td>Degaussing</td>
+                    <td>A data destruction technique for magnetic-based hard drives that permanently destroys the drive
+                        by reducing or eliminating its magnetic field.</td>
+                </tr>
+                <tr>
+                    <td>Inventory</td>
+                    <td>The raw materials, works in progress, and finished goods that are available for sale that a
+                        business owns.</td>
+                </tr>
+                <tr>
+                    <td>Juice Jacking</td>
+                    <td>A proof-of-concept attack where a threat actor uses a public USB charging station to install
+                        malware or siphon data from a mobile device.</td>
+                </tr>
+                <tr>
+                    <td>Memorandum of Understanding (MOU)</td>
+                    <td>An agreement between two or more parties that demonstrates a "convergence of will" for simple
+                        common causes. It is generally not legally enforceable.</td>
+                </tr>
+                <tr>
+                    <td>Mitigate (Risk Strategy)</td>
+                    <td>The attempt to address a risk by making it less serious.</td>
+                </tr>
+                <tr>
+                    <td>Nondisclosure Agreement (NDA)</td>
+                    <td>A legal contract that specifies how confidential material will be shared between parties but
+                        restricted from others, creating a confidential relationship.</td>
+                </tr>
+                <tr>
+                    <td>Pedagogical Approach</td>
+                    <td>A teaching approach based on the Greek meaning "to lead a child," where the student is dependent
+                        on the teacher for all learning.</td>
+                </tr>
+                <tr>
+                    <td>Qualitative Risk Analysis</td>
+                    <td>An approach to risk calculation that uses an "educated guess" based on observation, often
+                        assigning a numeric value (1–10) or a label (High, Medium, or Low).</td>
+                </tr>
+                <tr>
+                    <td>Quantitative Risk Analysis</td>
+                    <td>A formal and systematic approach to risk calculation that attempts to create "hard" numbers
+                        associated with risk by using historical data.</td>
+                </tr>
+                <tr>
+                    <td>Risk</td>
+                    <td>A situation that involves exposure to some type of danger. It can be described as a function of
+                        threats, consequences, and resulting vulnerabilities.</td>
+                </tr>
+                <tr>
+                    <td>Risk Appetite</td>
+                    <td>The total risk that an organization can bear in a given risk profile. Can be conservative,
+                        expansionary, or neutral.</td>
+                </tr>
+                <tr>
+                    <td>Risk Control Self-Assessment (RCSA)</td>
+                    <td>A methodology where management and staff at all levels collectively work to identify and
+                        evaluate risks to minimize biases and integrate risk management into the organizational culture.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Risk Matrix/Heatmap</td>
+                    <td>A visual, color-coded tool that lists the impact and likelihood of identified risks.</td>
+                </tr>
+                <tr>
+                    <td>Risk Register</td>
+                    <td>A list of potential threats and associated risks, often in a table format, that includes key
+                        risk indicators, risk owners, and risk thresholds.</td>
+                </tr>
+                <tr>
+                    <td>Risk Tolerance</td>
+                    <td>The level of risk that an organization can accept for each individual risk.</td>
+                </tr>
+                <tr>
+                    <td>Role-Based Awareness Training</td>
+                    <td>Specialized security training that is customized to the specific role an employee holds in the
+                        organization.</td>
+                </tr>
+                <tr>
+                    <td>Sanitization</td>
+                    <td>The process of securely removing data from media. This involves wiping or destroying the media
+                        itself.</td>
+                </tr>
+                <tr>
+                    <td>Service-Level Agreement (SLA)</td>
+                    <td>A service contract between a vendor and a client that specifies what services will be provided,
+                        the responsibilities of each party, and any service guarantees.</td>
+                </tr>
+                <tr>
+                    <td>Single Loss Expectancy (SLE)</td>
+                    <td>The expected monetary loss every time a risk occurs. Calculated as Asset Value (AV) × Exposure
+                        Factor (EF).</td>
+                </tr>
+                <tr>
+                    <td>Statement of Work (SOW)</td>
+                    <td>A document within a contract that describes the work requirements, performance, and design
+                        expectations for a specific project.</td>
+                </tr>
+                <tr>
+                    <td>Third-Party Risk Management</td>
+                    <td>The process of identifying, assessing, and reducing risks associated with using external
+                        entities such as vendors, business partners, and suppliers.</td>
+                </tr>
+                <tr>
+                    <td>Threat</td>
+                    <td>A type of action that has the potential to cause harm to an asset.</td>
+                </tr>
+                <tr>
+                    <td>Transfer (Risk Strategy)</td>
+                    <td>A strategy where a risk is transferred to a third party, for example, by purchasing
+                        cybersecurity insurance.</td>
+                </tr>
+                <tr>
+                    <td>Version Control</td>
+                    <td>Software tools, often used in software development, that assist with documentation and prevent
+                        multiple people from making changes to code simultaneously.</td>
+                </tr>
+                <tr>
+                    <td>Wiping</td>
+                    <td>A data sanitization technique that involves overwriting disk space with zeros or random data to
+                        securely remove the original data.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Full Practice Simulation Quiz -->
+        <div class="quiz-header">
+            <h2 style="margin:0; color:var(--accent)">⚡ Full Practice Simulation</h2>
+            <p>20 Review Questions</p>
+        </div>
+
+        <div id="quiz-container">
+        </div>
+
+    </main>
+
+    <script>
+        // --- QUIZ DATABASE ---
+        const questions = [
+            {
+                id: 1,
+                text: "Which of the following threats would be classified as the actions of a hacktivist?",
+                options: ["External threat", "Internal threat", "Environmental threat", "Compliance threat"],
+                correct: [0],
+                explanation: "An internal risk comes from within an organization, whereas an external risk is from the outside (like the actions of a hacktivist)."
+            },
+            {
+                id: 2,
+                text: "Which of these is NOT a response to risk?",
+                options: ["Mitigate", "Accept", "Resist", "Avoid"],
+                correct: [2],
+                explanation: "The options for dealing with risk are Accept, Transfer, Avoid, and Mitigate. 'Resist' is not listed as a strategy."
+            },
+            {
+                id: 3,
+                text: "Which of the following is NOT a threat classification category?",
+                options: ["Compliance", "Financial", "Tactical", "Strategic"],
+                correct: [2],
+                explanation: "Threat classifications include Strategic, Compliance, Financial, Operational, Technical, and Managerial. 'Tactical' is not included in this list."
+            },
+            {
+                id: 4,
+                text: "In which of the following threat classifications would a power blackout be classified?",
+                options: ["Operational", "Managerial", "Technical", "Strategic"],
+                correct: [0],
+                explanation: "Operational threats are events that impact the daily business of the organization, with examples including fire, hazardous chemical spill, and power blackout."
+            },
+            {
+                id: 5,
+                text: "Which of the following approaches to risk calculation typically assigns a numeric value (1–10) or label (High, Medium, or Low) to represent a risk?",
+                options: ["Quantitative", "Qualitative", "Rule based", "Policy based"],
+                correct: [1],
+                explanation: "Qualitative risk typically assigns a numeric value (1-10) or label (High, Medium, or Low) that represents the risk."
+            },
+            {
+                id: 6,
+                text: "What is a list of potential threats and associated risks called?",
+                options: ["Risk assessment", "Risk matrix", "Risk register", "Risk portfolio"],
+                correct: [2],
+                explanation: "A risk register is a list of potential threats and associated risks."
+            },
+            {
+                id: 7,
+                text: "Giovanni is completing a report on risks. To which risk option would he classify the action that the organization has decided not to construct a new data center because it would be located in an earthquake zone?",
+                options: ["Transfer", "Avoid", "Reject", "Prevent"],
+                correct: [1],
+                explanation: "To avoid a risk involves identifying the risk but making the decision not to engage in the activity."
+            },
+            {
+                id: 8,
+                text: "Aristide is explaining to a coworker the new cybersecurity asset management (CAM) system. Which of the following would he NOT say about a CAM?",
+                options: ["It is a relatively new process that combines asset management with information security.", "It can identify assets on a continuous and real-time basis.", "It can use vulnerability scanners.", "It is designed to replace asset management."],
+                correct: [3],
+                explanation: "CAM combines asset management with information security, identifies assets on a continuous and real-time basis, and uses vulnerability scanners. It does not replace asset management."
+            },
+            {
+                id: 9,
+                text: "Emiliano needs to determine the expected monetary loss every time a risk occurs. Which formula will he use?",
+                options: ["AV", "SLE", "ARO", "ALE"],
+                correct: [1],
+                explanation: "The Single Loss Expectancy (SLE) is the expected monetary loss every time a risk occurs."
+            },
+            {
+                id: 10,
+                text: "Enzo is reviewing asset tracking for a certification exam. Which of the following is NOT true about asset tracking?",
+                options: ["Asset tracking can be used to determine when assets should be upgraded, replaced, or disposed.", "Asset tracking can help determine what assets add value.", "Asset tracking is part of an asset management system.", "Asset tracking traces the location of intangible assets."],
+                correct: [3],
+                explanation: "Asset tracking traces the location of tangible assets. Intangible assets (like software or data) do not have a physical location to trace."
+            },
+            {
+                id: 11,
+                text: "Which of the following is a listing of assets by a seller of those assets?",
+                options: ["Asset enumeration", "Asset inventory", "Asset counting", "Asset verification"],
+                correct: [0],
+                explanation: "Asset enumeration is a listing of the assets by a seller of those assets."
+            },
+            {
+                id: 12,
+                text: "Which of the following is NOT a legally enforceable agreement but is still more formal than an unwritten agreement?",
+                options: ["BPA", "SLA", "MOU", "AMS"],
+                correct: [2],
+                explanation: "An MOU (Memorandum of Understanding) is generally not a legally enforceable agreement but is more formal than an unwritten agreement."
+            },
+            {
+                id: 13,
+                text: "Angelo has received a document that is part of a contract that describes the work requirements for a specific project. What type of document is this?",
+                options: ["EOA", "BPP", "SOW", "EOS"],
+                correct: [2],
+                explanation: "A work order (WO)/statement of work (SOW) is a document within a contract that describes the work requirements for a specific project."
+            },
+            {
+                id: 14,
+                text: "Which of the following uses scientific tools to determine the amount of variation that is added to a process?",
+                options: ["XRS", "MSA", "RAR", "PDP"],
+                correct: [1],
+                explanation: "A measurement system analysis (MSA) uses scientific tools to determine the amount of variation that is added to a process by a measurement system."
+            },
+            {
+                id: 15,
+                text: "Which of the following risk management strategies utilizes cybersecurity insurance?",
+                options: ["Accept", "Transfer", "Mitigate", "Change"],
+                correct: [1],
+                explanation: "An organization may elect to purchase cybersecurity insurance as an example of transference (Risk Transfer)."
+            },
+            {
+                id: 16,
+                text: "Which of the following is NOT a third-party risk?",
+                options: ["On-boarding", "Social media network sharing", "Risk awareness", "Network assignment"],
+                correct: [3],
+                explanation: "Third-party risks include on-boarding and off-boarding, application and social media network sharing, and privacy and risk awareness. Network assignment is not listed as a risk category."
+            },
+            {
+                id: 17,
+                text: "Sergio has been asked to provide historical data for calculating the likelihood of a risk. Which of the following data sets would he NOT submit?",
+                options: ["Network packet analysis", "Law enforcement data", "Insurance company data", "Data from computer incident monitoring organizations"],
+                correct: [0],
+                explanation: "Historical data sources include law enforcement agencies, insurance companies, and computer incident monitoring organizations. Network packet analysis is not included."
+            },
+            {
+                id: 18,
+                text: "Which of the following is used to minimize biases and prejudices regarding analyzing risks?",
+                options: ["RCSA", "RCA", "SCRA", "DOS"],
+                correct: [0],
+                explanation: "The goal of RCSA (Risk Control Self-Assessment) is to minimize biases and prejudices and integrate risk management practices."
+            },
+            {
+                id: 19,
+                text: "Which of the following is NOT a standard operating procedure that can impact information security?",
+                options: ["Change in ownership or stakeholders", "Implement impact analysis or test results", "Execute backout plan or maintenance window", "Change allow lists/deny lists"],
+                correct: [3],
+                explanation: "Standard operating procedures (SOPs) include change in ownership, implementing impact analysis, and executing backout plans. Changing allow lists/deny lists is a technology process, not a business SOP."
+            },
+            {
+                id: 20,
+                text: "Gabe is creating a report for his supervisor Cora that outlines the total risk that the organization can bear in a given risk profile. Which of the following terms would Gabe be using?",
+                options: ["Risk tolerance", "Risk appetite", "Risk expansion", "Risk acceptance"],
+                correct: [1],
+                explanation: "Risk Appetite is the total risk that the organization can bear in a given risk profile."
+            }
+        ];
+
+        // --- QUIZ RENDER LOGIC ---
+        const quizContainer = document.getElementById('quiz-container');
+
+        function renderQuiz() {
+            quizContainer.innerHTML = ''; // Clear existing
+
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+
+                // Header
+                const qNumber = document.createElement('span');
+                qNumber.className = 'question-number';
+                qNumber.textContent = `QUESTION ${q.id}`;
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = q.text;
+
+                card.appendChild(qNumber);
+                card.appendChild(qText);
+
+                // Options
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options-grid';
+
+                // Explanation
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation';
+                if (q.explanation) {
+                    explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+                }
+
+                // Get options
+                const opts = q.options;
+
+                opts.forEach((optText, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = optText;
+
+                    btn.onclick = function () {
+                        handleAnswer(btn, index, q.correct, optionsDiv, explanationDiv);
+                    };
+
+                    optionsDiv.appendChild(btn);
+                });
+
+                card.appendChild(optionsDiv);
+                card.appendChild(explanationDiv);
+                quizContainer.appendChild(card);
+            });
+        }
+
+        function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+            const allBtns = parentDiv.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.classList.add('disabled'));
+
+            const isCorrect = correctIndices.includes(index);
+
+            if (isCorrect) {
+                clickedBtn.classList.add('correct');
+            } else {
+                clickedBtn.classList.add('incorrect');
+                correctIndices.forEach(correctIndex => {
+                    allBtns[correctIndex].classList.add('correct');
+                });
+            }
+            explanationDiv.style.display = 'block';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+        });
+    </script>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 M.A. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Back to Top functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+</body>
+
+</html>

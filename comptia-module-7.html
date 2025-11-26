@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7: Identity and Access Management (IAM)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Page Specific Overrides/Additions */
+        :root {
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --border: #30363d;
+            --danger: #da3633;
+            --highlight: #58a6ff;
+            --warning: #d29922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        /* Module Header */
+        .module-header {
+            background: linear-gradient(180deg, #161b22 0%, #0a0c10 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .module-header h1 {
+            color: var(--highlight);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .module-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .module-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-section h2 {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+            margin-top: 0;
+            color: var(--highlight);
+        }
+
+        .module-section h3 {
+            margin-top: 2rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .tag.policy {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .tag.standard {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .tag.procedure {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+
+        .tag.guideline {
+            background: rgba(139, 148, 158, 0.15);
+            color: #8b949e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--highlight);
+        }
+
+        tr:nth-child(even) {
+            background-color: #0d1117;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--highlight);
+            color: #0d1117;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #79c0ff;
+            transform: translateY(-3px);
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--highlight);
+            background-color: #21262d;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(35, 134, 54, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #7ee787 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.correct::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            color: #7ee787;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(218, 54, 51, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: #ff7b72 !important;
+            opacity: 0.7;
+        }
+
+        .option-btn.incorrect::after {
+            content: "✕";
+            position: absolute;
+            right: 15px;
+            color: #ff7b72;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--highlight);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            color: var(--text-main);
+        }
+
+        /* Interactive Quiz Styles */
+        .interactive-quiz {
+            margin: 1.5rem 0;
+        }
+
+        .interactive-quiz details {
+            background-color: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-quiz details:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+        }
+
+        .interactive-quiz summary {
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            list-style: none;
+            position: relative;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-quiz summary:hover {
+            color: var(--highlight);
+        }
+
+        .interactive-quiz summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-quiz details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .interactive-quiz details p {
+            padding: 0 1.5rem 1rem 1.5rem;
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">⚡ CYBER_SEC</a>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="studies.html">Studies</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="about.html">More about</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="module-header">
+            <h1>Module 7: Identity and Access Management (IAM)</h1>
+            <div class="subtitle" data-lang="en">Controlling user validation and access to digital resources.</div>
+        </div>
+
+        <!-- Section I: Identity and Access Management (IAM) -->
+        <section class="module-section">
+            <h2>Identity and Access Management (IAM)</h2>
+            <p>Identity and Access Management (IAM) is the foundational technology that provides control over user
+                validation and the digital resources that may be accessed. The primary goal of IAM is to ensure that the
+                right users access the right digital resources at the right time and for the right reasons. Essentially,
+                the foundation of security is keeping unauthorized users out while letting legitimate users in.</p>
+            <p>In information security, IAM requires two main steps when a user accesses a device: first, providing some
+                type of unique digital identity (the identity) and, second, providing proof that they are this unique
+                user (identity proofing, also known as authentication).</p>
+
+            <h3>1. Types of Authentication Credentials</h3>
+            <p>Authentication is the process of ensuring that the person or system desiring access to resources is
+                genuine and not an imposter. The elements that prove authenticity are called authentication credentials.
+                There are seven elements that can be used as credentials. The most common elements found in IAM are
+                "something you know," "something you have," and "something you are" (called factors), while the
+                remaining four are called attributes.</p>
+
+            <h4>Table 1: The Seven Elements of Authentication Credentials (Factors and Attributes)</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Description</th>
+                        <th>Example Scenario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Something you know</strong></td>
+                        <td>Knowledge that nobody else possesses</td>
+                        <td>Combination to unlock locker</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Something you have</strong></td>
+                        <td>Possession of an item that nobody else has</td>
+                        <td>Riker’s RFID card</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Something you are</strong></td>
+                        <td>Unique biological characteristic that cannot be changed</td>
+                        <td>Fingerprint reader to enter building</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Somewhere you are</strong></td>
+                        <td>Restricted location</td>
+                        <td>Restricted military base</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Something you can do</strong></td>
+                        <td>Perform an activity that cannot be exactly copied</td>
+                        <td>Paolo’s signature</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Something you exhibit</strong></td>
+                        <td>Genetically determined characteristic</td>
+                        <td>Peyton’s flaming red hair</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Someone you know</strong></td>
+                        <td>Validated by another person</td>
+                        <td>Li knows Peyton</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>1.1 Something You Know: Passwords</h4>
+            <p>Passwords (a secret combination of letters, numbers, and/or characters) are the most common type of IAM
+                authentication today. However, they provide weak protection and are constantly under attack.</p>
+
+            <h5>How Passwords Work</h5>
+            <p>When a user creates a password, the server converts the password into a scrambled set of characters,
+                called a message digest (or hash), using a one-way hash algorithm. The original unscrambled password is
+                not stored for security reasons. During authentication, the server creates a new digest of the entered
+                password and compares it with the stored digest; if the two scrambled digests match, access is granted.
+            </p>
+
+            <h5>Password Weaknesses</h5>
+            <p>The security of passwords relies on human memory, which, while immune to certain technological
+                vulnerabilities, has limitations. The weakness stems from the burden of remembering long, complex, and
+                unique passwords for numerous accounts (estimated at 207 per user on average). Furthermore, many
+                policies mandate password expiration, forcing users to repeatedly memorize new ones.</p>
+            <p>Because of this burden, users take shortcuts that create vulnerable passwords, such as password reuse or
+                the creation of predictable patterns like appending numbers (caitlin1) or substituting letters with
+                numbers (passw0rd). Weak passwords are an easy attack vector, causing four out of every five enterprise
+                data breaches.</p>
+
+            <h5>Password Attacks</h5>
+            <p>Attacks are classified into low-outcome and high-outcome categories:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type of Attack</th>
+                        <th>Description</th>
+                        <th>Outcome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Online Brute Force Attack</strong></td>
+                        <td>Continuous attempt of every possible combination (letters, numbers, characters) against a
+                            single account.</td>
+                        <td>Low Outcome. Rarely used because most accounts lock out after a limited number of incorrect
+                            attempts.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Password Spraying Attack</strong></td>
+                        <td>Using one or a few common passwords (e.g., 123456) across several different user accounts.
+                        </td>
+                        <td>Low Outcome. Less likely to raise alarms or lock out user accounts.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Offline Brute Force Attack</strong></td>
+                        <td>Uses a stolen password digest file. Password cracking software generates candidate digests
+                            of every possible character combination and matches them against the stolen file.</td>
+                        <td>High Outcome. Slowest yet most thorough method. GPUs are often used due to their superiority
+                            in repetitive tasks.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dictionary Attack</strong></td>
+                        <td>Creates digests of common dictionary words and phrases and compares them against the stolen
+                            digest file.</td>
+                        <td>High Outcome. Successful because users often create passwords from simple dictionary words.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Credential Stuffing</strong></td>
+                        <td>Injection of stolen username and password credentials across multiple websites.</td>
+                        <td>High Outcome. Exploits password reuse by users.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rule Attack</strong></td>
+                        <td>Conducts a statistical analysis on stolen passwords to create a mask defining the format of
+                            the candidate password (e.g., ?u?l?l?l?l?d?d?d?d).</td>
+                        <td>High Outcome. Significantly reduces the time needed to crack a password.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>1.2 Something You Have: Tokens and Security Keys</h4>
+            <p>This second type of common credential relies on the approved user possessing a specific item.</p>
+
+            <h5>Tokens and Multifactor Authentication (MFA)</h5>
+            <p>A token is an object that can be hardware or software.</p>
+            <ol>
+                <li><strong>Hardware Tokens (Windowed Tokens):</strong> Small devices displaying a dynamic value called
+                    a one-time password (OTP).
+                    <ul>
+                        <li><strong>TOTP (Time-based):</strong> OTP that changes after a set period (e.g., every 30–60
+                            seconds).</li>
+                        <li><strong>HOTP (HMAC-based):</strong> Event-driven OTP, changes when a specific event (like
+                            entering a PIN) occurs.</li>
+                    </ul>
+                </li>
+                <li><strong>Software Tokens:</strong> Typically generated through an app on a user’s smartphone.
+                    <ul>
+                        <li>Using more than one type of authentication credential (e.g., something you know + something
+                            you have) is called <strong>Multifactor Authentication (MFA)</strong>.</li>
+                        <li>A common software password supplement is an authentication app that sends a push
+                            notification to the smartphone, asking for approval or denial of the login.</li>
+                        <li><strong>Caution:</strong> Sending authentication codes via SMS text is not considered a
+                            secure option due to the risk of phishing and interception. "MFA fatigue" attacks exploit
+                            repeated notifications until the target accepts them to stop being bothered.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h5>Security Keys and Smart Cards</h5>
+            <ul>
+                <li><strong>Security Keys:</strong> A more secure option, these are dedicated dongles inserted into
+                    USB/Lightning ports or held near the device (NFC). They contain all the necessary cryptographic
+                    information for user authentication.
+                    <ul>
+                        <li>A feature is <strong>attestation</strong>, a key pair "burned" into the security key during
+                            manufacturing, specific to the device model, used to cryptographically prove the device's
+                            origin.</li>
+                    </ul>
+                </li>
+                <li><strong>Smart Cards:</strong> Credit-card-sized plastic cards that hold information for the
+                    authentication process. The Personal Identity Verification (PIV) standard covers all U.S. government
+                    employees.</li>
+            </ul>
+
+            <h4>1.3 Something You Are: Biometrics</h4>
+            <p>Biometrics relies on the unique features and characteristics of an individual. There are two main types:
+                physiological and cognitive.</p>
+
+            <h5>Physiological Biometrics</h5>
+            <p>Uses a person’s unique physical characteristics for authentication.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Biometric Type</th>
+                        <th>Device/Characteristic</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Retina</strong></td>
+                        <td>Retinal Scanner (specialized)</td>
+                        <td>Maps unique retinal patterns by directing a beam of low-energy infrared light (IR) into the
+                            eye.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fingerprint</strong></td>
+                        <td>Static Scanner (takes a picture) or Dynamic Scanner (finger swiped across a slit)</td>
+                        <td>Most common. Locates the point where ridges end and split.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vein</strong></td>
+                        <td>Vein-scanning tablet (specialized)</td>
+                        <td>Identifies vein images in the palm or finger.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gait</strong></td>
+                        <td>Small sensors on a floor (specialized)</td>
+                        <td>Recognition of the manner of walking.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Voice</strong></td>
+                        <td>Standard microphone</td>
+                        <td>Identifies users based on unique voice characteristics, including phonetic cadence.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Iris</strong></td>
+                        <td>Standard webcam</td>
+                        <td>Identifies unique random patterns in the circular structure of the eye.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Facial Recognition</strong></td>
+                        <td>Standard webcam</td>
+                        <td>Uses "landmarks" called nodal points (approx. 80) on the human face to create a numerical
+                            code (faceprint).</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Biometric Disadvantages:</strong> Using biometrics has disadvantages, including the high cost of
+                specialized hardware. Readers are not foolproof, resulting in false negatives (genuine users rejected)
+                or false positives (imposters accepted). Biometric systems can also be "tricked" (e.g., fingerprints
+                collected from water glasses). If digital biometric data is stolen, it cannot be reset like a password,
+                potentially leaving the victim unable to use biometrics again.</p>
+
+            <h5>Cognitive Biometrics</h5>
+            <p>Relates to the perception, thought process, and understanding of the user. It is based on the user’s life
+                experiences, making it easier for the user to remember and harder for an attacker to imitate. It is also
+                called knowledge-based authentication.</p>
+            <ul>
+                <li><strong>Example:</strong> Microsoft’s Picture Password for Windows 10, where users select a picture
+                    with at least 10 "points of interest" and reproduce specific gestures (tap, line, circle) for
+                    authentication.</li>
+            </ul>
+
+            <h4>1.4 Something You Do: Behavioral Biometrics</h4>
+            <p>Authenticates by normal actions the user performs.</p>
+            <ul>
+                <li><strong>Keystroke dynamics:</strong> Recognizes a user’s unique typing rhythm using two unique
+                    variables:
+                    <ol>
+                        <li><strong>Dwell time:</strong> The time it takes to press and release a key.</li>
+                        <li><strong>Flight time:</strong> The time between keystrokes. This biometrics holds great
+                            potential because it requires no specialized hardware.</li>
+                    </ol>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section II: Authentication Best Practices -->
+        <section class="module-section">
+            <h2>Authentication Best Practices</h2>
+            <p>Authentication best practices involve securing passwords and using secure authentication technologies.
+            </p>
+
+            <h3>2.1 Protecting Password Digests</h3>
+            <p>To secure stored password digests:</p>
+            <ul>
+                <li><strong>Salting:</strong> Consists of a random string (salt) added to the user's cleartext password
+                    before it is hashed. Salts make dictionary and brute force attacks much slower. They also ensure
+                    that identical passwords result in different digests. The salt should be random and unique for each
+                    user.</li>
+                <li><strong>Peppering:</strong> The message digest is created normally but then encrypted with a
+                    symmetrical encryption key before being stored.</li>
+                <li><strong>Key Stretching:</strong> A specialized password hash algorithm intentionally designed to be
+                    slower. This limits an attacker's speed in creating candidate digests. Using general-purpose hash
+                    algorithms, like MD5 and SHA, is not secure because they are too fast.
+                    <ul>
+                        <li><strong>Common key stretching algorithms:</strong> bcrypt, PBKDF2, and Argon2.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>2.2 Managing Passwords</h3>
+            <p>Solutions focus on keeping individual user passwords safe:</p>
+            <ul>
+                <li><strong>Password Vaulting (Enterprise Level):</strong> Stores user password credentials in a highly
+                    protected database (vault) on the organization's network. Offers advanced capabilities like rotating
+                    and randomizing passwords.</li>
+                <li><strong>User Password Manager:</strong> A software application or online website that stores
+                    multiple strong passwords in a single "vault" protected by one strong master password.</li>
+                <li><strong>Hardware Password Key:</strong> Serves as a hardware-based password manager, more secure
+                    against malware than software vaults.</li>
+            </ul>
+            <h4>General Password Best Practices</h4>
+            <ul>
+                <li>Default passwords should be changed.</li>
+                <li>Password reuse should be prohibited.</li>
+                <li>Password expiration (the point in time when a password is no longer valid) should not be utilized as
+                    a best practice.</li>
+                <li>Password age (the period a password must be used before changing it) should be set to at least 1
+                    day.</li>
+                <li>The most critical factor for a strong password is its length, not complexity. A longer password is
+                    always more secure.</li>
+            </ul>
+
+            <h3>2.3 Secure Authentication Technologies (SSO and Passwordless)</h3>
+            <h4>Single Sign-On (SSO) and Federation</h4>
+            <ul>
+                <li><strong>Identity Management:</strong> Using a single authentication credential shared across
+                    multiple networks.</li>
+                <li><strong>Federation (Federated Identity Management or FIM):</strong> Identity management when
+                    networks are owned by different organizations.</li>
+                <li><strong>SSO:</strong> An application of federation using one authentication credential to access
+                    multiple accounts or applications, reducing the user's memorization burden.</li>
+            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SAML (Security Assertion Markup Language)</strong></td>
+                        <td>XML standard for secure web domains to exchange user authentication and authorization data.
+                        </td>
+                        <td>Allows login credentials to be stored with a single identity provider.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LDAP (Lightweight Directory Access Protocol)</strong></td>
+                        <td>Makes it possible for almost any application to obtain directory information.</td>
+                        <td>The protocol enabling users to access network resources through a directory service.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OAuth (Open Authorization)</strong></td>
+                        <td>Open-source federation framework.</td>
+                        <td>Supports the development of authorization protocols.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenID</strong></td>
+                        <td>Open standard decentralized authentication protocol.</td>
+                        <td>Used in OAuth 2.0 as a standard means to obtain user identity.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shibboleth</strong></td>
+                        <td>Open-source software package for designing SSO.</td>
+                        <td>Uses federation standards to provide SSO and attribute exchange.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Passkeys</h4>
+            <ul>
+                <li>Passkeys are a passwordless alternative that stores authenticating information in hardware.</li>
+                <li>They combine multiple authentication factors (usually a device’s biometric scan or PIN) into a
+                    single package managed by the device’s OS, replacing traditional username/password/MFA.</li>
+                <li>Passkeys are "discoverable," meaning an enrolled device can automatically push a passkey through an
+                    encrypted tunnel to another device attempting to sign in.</li>
+            </ul>
+        </section>
+
+        <!-- Section III: Access Controls -->
+        <section class="module-section">
+            <h2>Access Controls</h2>
+            <p>Access control is the process of granting or denying approval to use specific resources once
+                authenticated. In enterprise settings, it is essential to enforce least privilege, limiting access only
+                to what is necessary for the user to complete their work.</p>
+            <p>An access control scheme is a predefined framework embedded in the software and hardware that
+                administrators use for configuring the necessary level of control.</p>
+
+            <h3>3.1 Access Control Schemes</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Key Characteristics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Discretionary Access Control (DAC)</strong></td>
+                        <td>Least restrictive scheme. Every object has an owner who has total control and discretion to
+                            grant permissions.</td>
+                        <td>Weaknesses: Relies on user decision to set security; permissions are inherited by programs
+                            executed by the subject. Example in Windows.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mandatory Access Control (MAC)</strong></td>
+                        <td>Most restrictive scheme. Assigns access controls strictly according to the custodian’s
+                            desires. End-users cannot set controls.</td>
+                        <td>Based on Labels (classification like confidential, secret) and Levels (hierarchy). Windows
+                            implementation is MIC (Mandatory Integrity Control).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Role-Based Access Control (RBAC)</strong></td>
+                        <td>Based on a user’s job function within an organization. Assigns permissions to particular
+                            roles, and users are assigned to those roles.</td>
+                        <td>Considered a more "real-world" approach.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rule-Based Access Control</strong></td>
+                        <td>Dynamically assigns roles to subjects based on a set of rules defined by a custodian.</td>
+                        <td>Used for managing user access to one or more systems.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Attribute-Based Access Control (ABAC)</strong></td>
+                        <td>Most flexible scheme. Uses policies that can combine attributes (object, subject, and
+                            environment attributes).</td>
+                        <td>Rules can be formatted using an If-Then-Else structure.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3.2 Access Control Lists (ACLs)</h3>
+            <p>An Access Control List (ACL) is a set of permissions (authorizations) attached to an object. This list
+                specifies who is allowed to access the object and what operations they can perform on it.</p>
+            <p>Although ACLs can be associated with any type of object, they are most often viewed in relation to
+                providing filesystem permissions for protecting files managed by the Operating System (OS).</p>
+            <p><strong>Limitations of ACLs:</strong> They can be inefficient, as the ACL for each resource must be
+                checked upon every access. They are also difficult to manage in a large enterprise setting where many
+                users require different access levels to many resources.</p>
+        </section>
+
+        <!-- Study Guide Section -->
+        <section class="module-section">
+            <h2>Study Guide for Module 7</h2>
+            <h3>Quiz: Short-Answer Questions</h3>
+            <div class="interactive-quiz">
+                <details>
+                    <summary>1. What are the three main categories of authentication factors?</summary>
+                    <p>Something you know (knowledge), something you have (possession), and something you are
+                        (inherence).</p>
+                </details>
+                <details>
+                    <summary>2. Why are passwords considered weak protection?</summary>
+                    <p>They rely on human memory, leading to reuse and simple patterns. They are also vulnerable to
+                        various attacks like brute force, dictionary, and phishing.</p>
+                </details>
+                <details>
+                    <summary>3. What is the difference between an Online Brute Force Attack and a Credential Stuffing
+                        attack?</summary>
+                    <p>Online Brute Force guesses passwords against a single account until locked out. Credential
+                        Stuffing uses stolen valid credentials (username/password pairs) from one breach to try and
+                        access accounts on other websites.</p>
+                </details>
+                <details>
+                    <summary>4. Explain the concept of "Salting" a password.</summary>
+                    <p>Salting involves adding a random string of characters to the password before it is hashed. This
+                        prevents identical passwords from producing the same hash and defends against rainbow table
+                        attacks.</p>
+                </details>
+                <details>
+                    <summary>5. What is TOTP and how does it differ from HOTP?</summary>
+                    <p>TOTP (Time-based One-Time Password) changes after a set period (e.g., 30 seconds). HOTP
+                        (HMAC-based One-Time Password) changes based on an event, such as pressing a button.</p>
+                </details>
+                <details>
+                    <summary>6. What is the False Acceptance Rate (FAR) in biometrics?</summary>
+                    <p>The rate at which a biometric system incorrectly accepts an unauthorized user (imposter) as a
+                        valid user.</p>
+                </details>
+                <details>
+                    <summary>7. Describe "Behavioral Biometrics" and give an example.</summary>
+                    <p>Authentication based on how a user performs an action. An example is keystroke dynamics, which
+                        measures dwell time (key press duration) and flight time (interval between keys).</p>
+                </details>
+                <details>
+                    <summary>8. What is Single Sign-On (SSO)?</summary>
+                    <p>A mechanism that allows a user to authenticate once and gain access to multiple independent
+                        software systems or applications without logging in again.</p>
+                </details>
+                <details>
+                    <summary>9. Which Access Control Scheme is considered the most restrictive and is based on
+                        labels/levels?</summary>
+                    <p>Mandatory Access Control (MAC).</p>
+                </details>
+                <details>
+                    <summary>10. What is the Principle of Least Privilege?</summary>
+                    <p>The security concept that a user should only be granted the minimum levels of access – or
+                        permissions – needed to perform their job functions.</p>
+                </details>
+            </div>
+
+            <h3>Essay Questions</h3>
+            <ol>
+                <li><strong>Analyze the trade-offs between security and usability in Multi-Factor Authentication
+                        (MFA).</strong> Discuss how "MFA fatigue" attacks exploit the human element and what measures
+                    can be taken to mitigate this risk without overburdening the user.</li>
+                <li><strong>Compare and contrast Discretionary Access Control (DAC) and Role-Based Access Control
+                        (RBAC).</strong> In which scenarios would DAC be appropriate? Why is RBAC generally preferred
+                    for medium-to-large enterprises?</li>
+                <li><strong>Evaluate the effectiveness of "passwordless" authentication technologies like
+                        Passkeys.</strong> How do they improve security over traditional passwords? What are the
+                    potential barriers to widespread adoption?</li>
+                <li><strong>Discuss the privacy and security implications of using biometric authentication.</strong>
+                    Consider issues such as the inability to reset compromised biometric data and the potential for
+                    "spoofing" sensors.</li>
+                <li><strong>Explain the importance of Identity and Access Management (IAM) as a foundational security
+                        layer.</strong> How does a robust IAM strategy support the concept of Zero Trust security?</li>
+            </ol>
+
+            <h3>Glossary of Key Terms</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td><strong>Authentication</strong></td>
+                    <td>The process of verifying the identity of a user, device, or system.</td>
+                </tr>
+                <tr>
+                    <td><strong>Authorization</strong></td>
+                    <td>The process of granting or denying specific permissions to an authenticated user.</td>
+                </tr>
+                <tr>
+                    <td><strong>Biometrics</strong></td>
+                    <td>Authentication methods based on unique physical (physiological) or behavioral characteristics of
+                        an individual.</td>
+                </tr>
+                <tr>
+                    <td><strong>Brute Force Attack</strong></td>
+                    <td>A trial-and-error method used to obtain information such as a user password or PIN.</td>
+                </tr>
+                <tr>
+                    <td><strong>Credential Stuffing</strong></td>
+                    <td>A cyberattack where stolen account credentials are used to gain unauthorized access to user
+                        accounts through large-scale automated login requests.</td>
+                </tr>
+                <tr>
+                    <td><strong>DAC (Discretionary Access Control)</strong></td>
+                    <td>An access control model where the owner of the object controls who has access to it.</td>
+                </tr>
+                <tr>
+                    <td><strong>Federation</strong></td>
+                    <td>A method of linking a user's identity across multiple distinct security domains.</td>
+                </tr>
+                <tr>
+                    <td><strong>IAM (Identity and Access Management)</strong></td>
+                    <td>A framework of policies and technologies for ensuring that the proper people in an enterprise
+                        have the appropriate access to technology resources.</td>
+                </tr>
+                <tr>
+                    <td><strong>MFA (Multi-Factor Authentication)</strong></td>
+                    <td>An authentication method that requires the user to provide two or more verification factors to
+                        gain access.</td>
+                </tr>
+                <tr>
+                    <td><strong>RBAC (Role-Based Access Control)</strong></td>
+                    <td>An access control method that restricts network access based on the roles of individual users
+                        within an organization.</td>
+                </tr>
+                <tr>
+                    <td><strong>Salt</strong></td>
+                    <td>Random data that is used as an additional input to a one-way function that hashes data, a
+                        password or passphrase.</td>
+                </tr>
+                <tr>
+                    <td><strong>SSO (Single Sign-On)</strong></td>
+                    <td>An authentication scheme that allows a user to log in with a single ID and password to any of
+                        several related, yet independent, software systems.</td>
+                </tr>
+                <tr>
+                    <td><strong>TOTP (Time-based One-Time Password)</strong></td>
+                    <td>A temporary passcode generated by an algorithm that uses the current time of day as one of its
+                        authentication factors.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Full Practice Simulation -->
+        <div class="quiz-header">
+            <h2>Full Practice Simulation</h2>
+            <p>Test your knowledge with 45 practice questions. Select the best answer(s) for each question.</p>
+        </div>
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/matheus-almeida-254103a8/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="mailto:matheus.almeidaus@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 M.A. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Back to Top functionality
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Quiz Logic
+            const questions = [
+                {
+                    id: 1,
+                    text: "What is the primary goal of Identity and Access Management (IAM)?",
+                    options: [
+                        "To encrypt all data at rest.",
+                        "To ensure the right users access the right resources at the right time.",
+                        "To prevent all external network traffic.",
+                        "To monitor hardware performance."
+                    ],
+                    correct: [1],
+                    explanation: "IAM ensures that authorized users have access to the resources they need when they need them, while keeping unauthorized users out."
+                },
+                {
+                    id: 2,
+                    text: "Which of the following is NOT one of the three main categories of authentication factors?",
+                    options: [
+                        "Something you know",
+                        "Something you have",
+                        "Something you want",
+                        "Something you are"
+                    ],
+                    correct: [2],
+                    explanation: "The three main factors are Something you know (knowledge), Something you have (possession), and Something you are (inherence). 'Something you want' is not a factor."
+                },
+                {
+                    id: 3,
+                    text: "A password is an example of which authentication factor?",
+                    options: [
+                        "Something you have",
+                        "Something you are",
+                        "Something you know",
+                        "Something you do"
+                    ],
+                    correct: [2],
+                    explanation: "A password is a piece of information that the user knows."
+                },
+                {
+                    id: 4,
+                    text: "What is a 'salt' in the context of password security?",
+                    options: [
+                        "A random string added to a password before hashing.",
+                        "A secondary password used for recovery.",
+                        "An encryption key used to decrypt the password database.",
+                        "A method of compressing password files."
+                    ],
+                    correct: [0],
+                    explanation: "Salting adds random data to a password before hashing it to defend against dictionary and rainbow table attacks."
+                },
+                {
+                    id: 5,
+                    text: "Which attack involves trying every possible combination of characters to guess a password?",
+                    options: [
+                        "Dictionary Attack",
+                        "Brute Force Attack",
+                        "Phishing",
+                        "SQL Injection"
+                    ],
+                    correct: [1],
+                    explanation: "A Brute Force attack systematically tries every possible combination until the correct one is found."
+                },
+                {
+                    id: 6,
+                    text: "What is the main difference between TOTP and HOTP?",
+                    options: [
+                        "TOTP is based on time; HOTP is based on an event counter.",
+                        "TOTP is for hardware tokens; HOTP is for software tokens.",
+                        "TOTP uses encryption; HOTP does not.",
+                        "TOTP is less secure than HOTP."
+                    ],
+                    correct: [0],
+                    explanation: "TOTP (Time-based One-Time Password) changes periodically, while HOTP (HMAC-based One-Time Password) changes based on an event like a button press."
+                },
+                {
+                    id: 7,
+                    text: "Fingerprint scanning is an example of which type of biometric?",
+                    options: [
+                        "Behavioral",
+                        "Cognitive",
+                        "Physiological",
+                        "Affective"
+                    ],
+                    correct: [2],
+                    explanation: "Fingerprints are a physical characteristic of the human body, making them a physiological biometric."
+                },
+                {
+                    id: 8,
+                    text: "Which of the following is a disadvantage of biometric authentication?",
+                    options: [
+                        "It is easy to share with others.",
+                        "It cannot be reset if compromised.",
+                        "It requires no special hardware.",
+                        "It is less secure than a 4-digit PIN."
+                    ],
+                    correct: [1],
+                    explanation: "Unlike a password, you cannot change your fingerprint or retina if the data is stolen."
+                },
+                {
+                    id: 9,
+                    text: "Keystroke dynamics is an example of:",
+                    options: [
+                        "Physiological Biometrics",
+                        "Behavioral Biometrics",
+                        "Knowledge-based Authentication",
+                        "Token-based Authentication"
+                    ],
+                    correct: [1],
+                    explanation: "Keystroke dynamics measures the behavior of how a user types (rhythm, speed), making it a behavioral biometric."
+                },
+                {
+                    id: 10,
+                    text: "What does SSO stand for?",
+                    options: [
+                        "Secure Socket Option",
+                        "Single Sign-On",
+                        "Simple Service Organization",
+                        "System Security Officer"
+                    ],
+                    correct: [1],
+                    explanation: "SSO stands for Single Sign-On."
+                },
+                {
+                    id: 11,
+                    text: "Which protocol is commonly used for Federation and SSO to exchange authentication and authorization data?",
+                    options: [
+                        "HTTP",
+                        "SAML",
+                        "FTP",
+                        "SMTP"
+                    ],
+                    correct: [1],
+                    explanation: "SAML (Security Assertion Markup Language) is an XML-based standard for exchanging authentication and authorization data between security domains."
+                },
+                {
+                    id: 12,
+                    text: "What is the primary benefit of using a Password Vault?",
+                    options: [
+                        "It automatically changes passwords every hour.",
+                        "It allows users to use the same password everywhere safely.",
+                        "It stores multiple complex passwords securely, requiring the user to remember only one master password.",
+                        "It prevents all phishing attacks."
+                    ],
+                    correct: [2],
+                    explanation: "Password vaults manage and store complex passwords, reducing the cognitive load on users."
+                },
+                {
+                    id: 13,
+                    text: "In Access Control, what is the 'Subject'?",
+                    options: [
+                        "The resource being accessed.",
+                        "The user or process requesting access.",
+                        "The rule defining access.",
+                        "The administrator configuring the system."
+                    ],
+                    correct: [1],
+                    explanation: "The Subject is the active entity (user, program, process) that requests access to an Object."
+                },
+                {
+                    id: 14,
+                    text: "Which Access Control Scheme is the most restrictive?",
+                    options: [
+                        "DAC",
+                        "RBAC",
+                        "MAC",
+                        "ABAC"
+                    ],
+                    correct: [2],
+                    explanation: "Mandatory Access Control (MAC) is the most restrictive, as users cannot change permissions; they are set by the system/administrator based on labels."
+                },
+                {
+                    id: 15,
+                    text: "In Discretionary Access Control (DAC), who determines access permissions?",
+                    options: [
+                        "The System Administrator only.",
+                        "The Operating System.",
+                        "The Owner of the object.",
+                        "The Security Auditor."
+                    ],
+                    correct: [2],
+                    explanation: "In DAC, the owner of the object has the discretion to grant or deny access to others."
+                },
+                {
+                    id: 16,
+                    text: "Role-Based Access Control (RBAC) assigns permissions based on:",
+                    options: [
+                        "The user's personal preference.",
+                        "The user's job function or title.",
+                        "The time of day.",
+                        "The user's location."
+                    ],
+                    correct: [1],
+                    explanation: "RBAC assigns permissions to roles (like 'Manager' or 'Clerk') and then assigns users to those roles."
+                },
+                {
+                    id: 17,
+                    text: "What is the 'Principle of Least Privilege'?",
+                    options: [
+                        "Users should have access to all files to ensure productivity.",
+                        "Users should only have the minimum access necessary to perform their job.",
+                        "Administrators should share their passwords with assistants.",
+                        "Security controls should be disabled during work hours."
+                    ],
+                    correct: [1],
+                    explanation: "Least Privilege dictates that a user should only be given the bare minimum permissions needed to do their work, reducing the attack surface."
+                },
+                {
+                    id: 18,
+                    text: "Which attack exploits password reuse across multiple sites?",
+                    options: [
+                        "Credential Stuffing",
+                        "Brute Force",
+                        "Dictionary Attack",
+                        "Rainbow Table Attack"
+                    ],
+                    correct: [0],
+                    explanation: "Credential Stuffing uses valid username/password pairs stolen from one site to try and login to other sites, relying on users reusing passwords."
+                },
+                {
+                    id: 19,
+                    text: "What is 'MFA Fatigue'?",
+                    options: [
+                        "When a user forgets their second factor.",
+                        "When a system slows down due to MFA processing.",
+                        "An attack where the user is bombarded with approval requests until they accept one out of frustration.",
+                        "The physical wear and tear on hardware tokens."
+                    ],
+                    correct: [2],
+                    explanation: "MFA Fatigue (or Push Bombing) involves spamming a user with push notifications until they accidentally or intentionally approve one to stop the noise."
+                },
+                {
+                    id: 20,
+                    text: "Which of the following is an example of 'Something you have'?",
+                    options: [
+                        "PIN",
+                        "Smart Card",
+                        "Fingerprint",
+                        "Mother's maiden name"
+                    ],
+                    correct: [1],
+                    explanation: "A Smart Card is a physical object that a user possesses."
+                },
+                {
+                    id: 21,
+                    text: "What is 'Geofencing' in the context of authentication?",
+                    options: [
+                        "Using a physical fence to secure a server room.",
+                        "Restricting access based on the user's geographic location.",
+                        "Blocking all IP addresses from foreign countries.",
+                        "Encrypting data based on time zones."
+                    ],
+                    correct: [1],
+                    explanation: "Geofencing uses GPS or other location data to create a virtual boundary, allowing or denying access based on whether the user is inside that boundary."
+                },
+                {
+                    id: 22,
+                    text: "Which of the following is a 'Cognitive Biometric'?",
+                    options: [
+                        "Retina Scan",
+                        "Voice Recognition",
+                        "Picture Password (recalling specific gestures on an image)",
+                        "Fingerprint"
+                    ],
+                    correct: [2],
+                    explanation: "Cognitive biometrics rely on the user's thought processes or memory, like remembering a specific sequence of gestures on a picture."
+                },
+                {
+                    id: 23,
+                    text: "What is 'Key Stretching'?",
+                    options: [
+                        "Making a physical key longer.",
+                        "Using a slow hashing algorithm to make brute-force attacks harder.",
+                        "Sharing a key across multiple servers.",
+                        "Encrypting a key with another key."
+                    ],
+                    correct: [1],
+                    explanation: "Key stretching uses algorithms like bcrypt or PBKDF2 to intentionally slow down the hashing process, making it computationally expensive for attackers to crack passwords."
+                },
+                {
+                    id: 24,
+                    text: "Which standard is commonly used for Smart Cards in the US Government?",
+                    options: [
+                        "PIV (Personal Identity Verification)",
+                        "PCI-DSS",
+                        "ISO 27001",
+                        "NIST 800-53"
+                    ],
+                    correct: [0],
+                    explanation: "PIV cards are the standard for US federal employees and contractors."
+                },
+                {
+                    id: 25,
+                    text: "What is a 'Passkey'?",
+                    options: [
+                        "A physical metal key for a server rack.",
+                        "A passwordless authentication method using cryptographic keys stored on a device.",
+                        "A master password for a password vault.",
+                        "A one-time code sent via SMS."
+                    ],
+                    correct: [1],
+                    explanation: "Passkeys are a modern, passwordless standard (FIDO) that uses public-key cryptography to authenticate users without a shared secret like a password."
+                },
+                {
+                    id: 26,
+                    text: "Which of the following is an Attribute-Based Access Control (ABAC) policy?",
+                    options: [
+                        "Managers can access the payroll system.",
+                        "User 'Bob' can read 'file.txt'.",
+                        "Allow access if User is in 'HR' AND Time is '9am-5pm' AND Location is 'Office'.",
+                        "Only users with 'Top Secret' clearance can view this document."
+                    ],
+                    correct: [2],
+                    explanation: "ABAC uses policies that combine multiple attributes (subject, object, environment) to make access decisions."
+                },
+                {
+                    id: 27,
+                    text: "What is the main weakness of Dictionary Attacks?",
+                    options: [
+                        "They are very slow.",
+                        "They only work if the password is a common word or phrase.",
+                        "They require physical access to the device.",
+                        "They cannot be automated."
+                    ],
+                    correct: [1],
+                    explanation: "Dictionary attacks fail against complex, random passwords that are not found in the dictionary file."
+                },
+                {
+                    id: 28,
+                    text: "Which of the following is NOT a recommended password best practice?",
+                    options: [
+                        "Using long passwords (passphrases).",
+                        "Using a password manager.",
+                        "Forcing password expiration every 30 days.",
+                        "Enabling MFA."
+                    ],
+                    correct: [2],
+                    explanation: "NIST and other standards bodies now recommend AGAINST forced periodic password expiration, as it leads to users choosing weaker, predictable passwords."
+                },
+                {
+                    id: 29,
+                    text: "What is 'OAuth' primarily used for?",
+                    options: [
+                        "Encrypting hard drives.",
+                        "Delegated authorization (allowing an app to access resources on your behalf).",
+                        "Creating firewalls.",
+                        "Scanning for viruses."
+                    ],
+                    correct: [1],
+                    explanation: "OAuth is an open standard for access delegation, commonly used to log in to websites using your Google or Facebook account without sharing your password."
+                },
+                {
+                    id: 30,
+                    text: "What is a 'False Rejection Rate' (FRR)?",
+                    options: [
+                        "The rate at which an imposter is accepted.",
+                        "The rate at which a legitimate user is denied access.",
+                        "The speed of the biometric scanner.",
+                        "The cost of the biometric system."
+                    ],
+                    correct: [1],
+                    explanation: "FRR (Type I error) is when the system fails to recognize a valid, authorized user."
+                },
+                {
+                    id: 31,
+                    text: "Which of the following is a 'Something you exhibit' factor?",
+                    options: [
+                        "A badge.",
+                        "A password.",
+                        "A genetically determined characteristic (like hair color).",
+                        "A signature."
+                    ],
+                    correct: [2],
+                    explanation: "Something you exhibit refers to a trait you show, often genetic or physical, but distinct from a biometric scan."
+                },
+                {
+                    id: 32,
+                    text: "What is the purpose of 'Peppering' a password?",
+                    options: [
+                        "Adding a random salt.",
+                        "Encrypting the hash with a secret key.",
+                        "Storing the password in plaintext.",
+                        "Sending the password via email."
+                    ],
+                    correct: [1],
+                    explanation: "Peppering involves encrypting the hashed password with a secret key (pepper) stored separately from the database."
+                },
+                {
+                    id: 33,
+                    text: "Which of the following is a 'Rule-Based Access Control' example?",
+                    options: [
+                        "Bob allows Alice to read his file.",
+                        "Managers can approve expenses.",
+                        "Firewall dropping packets from a specific IP address.",
+                        "Users with 'Secret' clearance can read 'Secret' files."
+                    ],
+                    correct: [2],
+                    explanation: "Rule-based access control applies global rules to all subjects, often used in firewalls and routers (e.g., deny all traffic from IP X)."
+                },
+                {
+                    id: 34,
+                    text: "What is 'Identity Proofing'?",
+                    options: [
+                        "Creating a username.",
+                        "Verifying that a user is who they claim to be during enrollment.",
+                        "Resetting a password.",
+                        "Deleting a user account."
+                    ],
+                    correct: [1],
+                    explanation: "Identity proofing is the initial validation of a person's identity before issuing them credentials."
+                },
+                {
+                    id: 35,
+                    text: "Which of the following is an example of 'Something you can do'?",
+                    options: [
+                        "Fingerprint.",
+                        "Signature.",
+                        "PIN.",
+                        "Smart Card."
+                    ],
+                    correct: [1],
+                    explanation: "A signature is an action you perform, making it 'Something you can do'."
+                },
+                {
+                    id: 36,
+                    text: "What is the 'Crossover Error Rate' (CER)?",
+                    options: [
+                        "The point where FAR and FRR are equal.",
+                        "The maximum error rate allowed.",
+                        "The speed of the system.",
+                        "The cost of the system."
+                    ],
+                    correct: [0],
+                    explanation: "CER is the metric where the False Acceptance Rate and False Rejection Rate intersect. A lower CER indicates a more accurate biometric system."
+                },
+                {
+                    id: 37,
+                    text: "Which of the following is a 'Hardware Token'?",
+                    options: [
+                        "Google Authenticator App.",
+                        "RSA SecurID Fob.",
+                        "A text message code.",
+                        "A password."
+                    ],
+                    correct: [1],
+                    explanation: "An RSA SecurID fob is a physical device that generates codes, making it a hardware token."
+                },
+                {
+                    id: 38,
+                    text: "What is 'Attestation' in the context of FIDO security keys?",
+                    options: [
+                        "Verifying the user's fingerprint.",
+                        "Cryptographically proving the make and model of the security key.",
+                        "Checking the battery level of the key.",
+                        "Connecting the key to Bluetooth."
+                    ],
+                    correct: [1],
+                    explanation: "Attestation allows a service to verify that the authenticator is a genuine, approved hardware device."
+                },
+                {
+                    id: 39,
+                    text: "Which of the following is a 'Something you know' attribute?",
+                    options: [
+                        "Mother's maiden name.",
+                        "Retina pattern.",
+                        "USB Key.",
+                        "GPS location."
+                    ],
+                    correct: [0],
+                    explanation: "Security questions like 'Mother's maiden name' rely on knowledge."
+                },
+                {
+                    id: 40,
+                    text: "What is the risk of 'SMS-based MFA'?",
+                    options: [
+                        "It is too expensive.",
+                        "It requires a smartphone.",
+                        "It is vulnerable to SIM swapping and interception.",
+                        "It is too slow."
+                    ],
+                    correct: [2],
+                    explanation: "SMS messages are not encrypted and can be intercepted or redirected via SIM swapping attacks."
+                },
+                {
+                    id: 41,
+                    text: "Which of the following is an example of 'Federated Identity'?",
+                    options: [
+                        "Logging into your work computer.",
+                        "Using your Google account to sign into Spotify.",
+                        "Using a VPN.",
+                        "Connecting to Wi-Fi."
+                    ],
+                    correct: [1],
+                    explanation: "Using a Google account (Identity Provider) to access a third-party service like Spotify (Service Provider) is a classic example of federation."
+                },
+                {
+                    id: 42,
+                    text: "What is 'Implicit Deny'?",
+                    options: [
+                        "Access is granted unless explicitly denied.",
+                        "Access is denied unless explicitly granted.",
+                        "Users can deny access to others.",
+                        "Administrators are denied access by default."
+                    ],
+                    correct: [1],
+                    explanation: "Implicit Deny ensures that if no rule explicitly allows access, the request is rejected by default."
+                },
+                {
+                    id: 43,
+                    text: "Which of the following is a 'Behavioral' characteristic used in biometrics?",
+                    options: [
+                        "Face shape.",
+                        "Iris pattern.",
+                        "Voice cadence.",
+                        "Fingerprint ridges."
+                    ],
+                    correct: [2],
+                    explanation: "Voice cadence (how you speak) is behavioral, whereas the physical structure of the vocal cords would be physiological."
+                },
+                {
+                    id: 44,
+                    text: "What is 'Rainbow Table' attack?",
+                    options: [
+                        "An attack using a table of pre-computed hash values.",
+                        "An attack on color-coded security badges.",
+                        "An attack on the display driver.",
+                        "A type of phishing email."
+                    ],
+                    correct: [0],
+                    explanation: "Rainbow tables are vast databases of pre-computed hash chains used to reverse cryptographic hash functions (crack passwords) quickly."
+                },
+                {
+                    id: 45,
+                    text: "Which of the following best describes 'Zero Trust'?",
+                    options: [
+                        "Trust but verify.",
+                        "Never trust, always verify.",
+                        "Trust internal users only.",
+                        "Trust external users only."
+                    ],
+                    correct: [1],
+                    explanation: "Zero Trust assumes that no user or device, inside or outside the network, should be trusted by default."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+
+            function renderQuiz() {
+                quizContainer.innerHTML = '';
+                questions.forEach((q, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'question-card';
+
+                    const questionNumber = document.createElement('span');
+                    questionNumber.className = 'question-number';
+                    questionNumber.innerText = `Question ${q.id}`;
+
+                    const questionText = document.createElement('div');
+                    questionText.className = 'question-text';
+                    questionText.innerText = q.text;
+
+                    const optionsGrid = document.createElement('div');
+                    optionsGrid.className = 'options-grid';
+
+                    q.options.forEach((option, optIndex) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'option-btn';
+                        btn.innerText = option;
+                        btn.onclick = () => handleAnswer(btn, index, q.correct, card, explanation);
+                        optionsGrid.appendChild(btn);
+                    });
+
+                    const explanation = document.createElement('div');
+                    explanation.className = 'explanation';
+                    explanation.innerText = q.explanation;
+
+                    card.appendChild(questionNumber);
+                    card.appendChild(questionText);
+                    card.appendChild(optionsGrid);
+                    card.appendChild(explanation);
+                    quizContainer.appendChild(card);
+                });
+            }
+
+            function handleAnswer(clickedBtn, index, correctIndices, parentDiv, explanationDiv) {
+                const buttons = parentDiv.querySelectorAll('.option-btn');
+                buttons.forEach(btn => btn.classList.add('disabled')); // Disable all buttons
+
+                // Check if the clicked button index is in the correctIndices array
+                // We need to find the index of the clicked button among its siblings
+                const clickedIndex = Array.from(buttons).indexOf(clickedBtn);
+
+                if (correctIndices.includes(clickedIndex)) {
+                    clickedBtn.classList.add('correct');
+                } else {
+                    clickedBtn.classList.add('incorrect');
+                    // Highlight the correct answer(s)
+                    correctIndices.forEach(correctIndex => {
+                        buttons[correctIndex].classList.add('correct');
+                    });
+                }
+
+                explanationDiv.style.display = 'block';
+            }
+
+            renderQuiz();
+        });
+    </script>
+</body>
+
+</html>
